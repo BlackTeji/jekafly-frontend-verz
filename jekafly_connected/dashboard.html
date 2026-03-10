@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+            caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+        }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Dashboard — Jekafly</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/utilities.css" />
+    <link rel="stylesheet" href="assets/css/apply.css" />
+    <link rel="stylesheet" href="assets/css/dashboard.css" />
+    <link rel="stylesheet" href="assets/css/hero-animation.css" />
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
+        </a>
+        <div class="nav-links"><a href="index.html">Home</a><a href="index.html#visa">Visa Check</a><a
+                href="apply.html">Apply</a></div>
+        <div class="nav-cta" id="nav-cta-area"></div>
+    </nav>
+
+    <div class="dash-page">
+        <div class="dash-wrap">
+
+            <!-- SIDEBAR -->
+            <div class="dash-sidebar">
+                <div class="dash-user">
+                    <div class="dash-avatar" id="user-avatar">JA</div>
+                    <div class="dash-username" id="user-name">Loading...</div>
+                    <div class="dash-email" id="user-email">...</div>
+                </div>
+                <div class="dash-nav-section">Menu</div>
+                <div class="dash-nav-item active" onclick="showTab('applications',this)"><span class="icon">📋</span>My
+                    Applications</div>
+                <div class="dash-nav-item" onclick="showTab('documents',this)"><span class="icon">🗓️</span>Travel
+                    Consultation
+                </div>
+                <div class="dash-nav-item" onclick="showTab('insurance',this)"><span class="icon">🛡️</span>My Insurance
+                </div>
+                <div class="dash-nav-item" onclick="showTab('track',this)"><span class="icon">🔍</span>Track Application
+                </div>
+                <div class="dash-nav-item" onclick="showTab('profile',this)"><span class="icon">👤</span>My Profile
+                </div>
+                <div class="dash-nav-section">Actions</div>
+                <div class="dash-nav-item" onclick="window.location.href='apply.html'"><span class="icon">➕</span>New
+                    Application</div>
+                <div class="dash-nav-item" onclick="window.location.href='index.html#insurance'"><span
+                        class="icon">🛡️</span>Get Insurance</div>
+                <div class="dash-nav-item" onclick="window.location.href='index.html#visa'"><span
+                        class="icon">🌍</span>Visa Checker</div>
+                <div class="dash-nav-section">Account</div>
+                <div class="dash-nav-item" onclick="doLogout()"><span class="icon">🚪</span>Logout</div>
+            </div>
+
+            <!-- MAIN CONTENT -->
+            <div class="dash-main">
+                <!-- Back to Admin (shown only when navigated from admin panel) -->
+                <div id="admin-back-bar"
+                    style="display:none;background:#F0F4FF;border:1.5px solid #C7D2FE;border-radius:10px;padding:10px 16px;margin-bottom:18px;display:none;align-items:center;justify-content:space-between;">
+                    <span style="font-size:0.85rem;color:#3730A3;">👀 Viewing as user — you came from Admin</span>
+                    <a href="admin.html"
+                        style="font-size:0.82rem;font-weight:600;color:#0E0EB8;text-decoration:none;padding:5px 14px;border:1.5px solid #C7D2FE;border-radius:6px;background:#fff;">←
+                        Back to Admin</a>
+                </div>
+
+                <!-- ── APPLICATIONS TAB ─────────────────────────────── -->
+                <div id="tab-applications">
+                    <div class="dash-title" id="dash-greeting">My Applications</div>
+                    <p class="dash-subtitle">Track and manage all your visa applications in one place.</p>
+                    <div class="dash-stats" id="dash-stats"></div>
+
+                    <!-- Detail panel -->
+                    <div class="detail-panel" id="detail-panel">
+                        <h3>
+                            <span id="detail-title">Application Details</span>
+                            <button class="close-panel" onclick="closeDetail()">✕</button>
+                        </h3>
+                        <div class="detail-grid" id="detail-grid"></div>
+                        <div>
+                            <p class="section-sublabel">Status Timeline</p>
+                            <div class="timeline" id="detail-timeline"></div>
+                        </div>
+                        <div class="dash-app-actions">
+                            <button class="btn-save" onclick="window.location.href='apply.html'">Apply Again →</button>
+                            <button class="btn-save" id="detail-pay-btn" onclick="goToPayment()">Complete Payment
+                                →</button>
+                            <button class="btn-save" id="detail-upload-btn" onclick="openDocUpload()">Upload Documents
+                                📎</button>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-card">
+                        <div class="table-header">
+                            <h3>All Applications</h3>
+                            <button class="btn-sm" onclick="window.location.href='apply.html'">+ New
+                                Application</button>
+                        </div>
+                        <div id="applications-table"></div>
+                    </div>
+                </div>
+
+                <!-- ── DOCUMENTS TAB ────────────────────────────────── -->
+                <div id="tab-documents" class="tab-panel-hidden">
+                    <div class="dash-title">Travel Consultation</div>
+                    <p class="dash-subtitle">Book a one-on-one session with a Jekafly visa expert. We'll guide you
+                        through your application, documents, and next steps.</p>
+
+                    <!-- STEP 1: Choose package (shown by default) -->
+                    <div id="consult-step-1">
+                        <div class="dash-section-card" style="margin-bottom:18px;">
+                            <div style="font-weight:700;font-size:1rem;color:#0D1560;margin-bottom:4px;">What's included
+                            </div>
+                            <p style="color:#6B7280;font-size:0.88rem;margin:0 0 16px;">Each consultation is a 30-minute
+                                video or phone session with a certified visa consultant.</p>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:6px;">
+                                <div
+                                    style="display:flex;align-items:flex-start;gap:8px;font-size:0.85rem;color:#374151;">
+                                    <span>✅</span>Personalised visa strategy</div>
+                                <div
+                                    style="display:flex;align-items:flex-start;gap:8px;font-size:0.85rem;color:#374151;">
+                                    <span>✅</span>Document checklist review</div>
+                                <div
+                                    style="display:flex;align-items:flex-start;gap:8px;font-size:0.85rem;color:#374151;">
+                                    <span>✅</span>Application form guidance</div>
+                                <div
+                                    style="display:flex;align-items:flex-start;gap:8px;font-size:0.85rem;color:#374151;">
+                                    <span>✅</span>Follow-up email summary</div>
+                            </div>
+                        </div>
+
+                        <!-- Packages -->
+                        <div
+                            style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:24px;">
+
+                            <div class="consult-pkg" id="pkg-standard" onclick="selectPackage('standard',15000)"
+                                style="border:2px solid #E5E9F5;border-radius:14px;padding:22px 20px;cursor:pointer;transition:border-color .2s,box-shadow .2s;">
+                                <div style="font-size:1.6rem;margin-bottom:8px;">💬</div>
+                                <div style="font-weight:700;font-size:1rem;color:#0D1560;">Standard</div>
+                                <div style="font-size:0.82rem;color:#6B7280;margin:4px 0 12px;">30-min video call</div>
+                                <div style="font-size:1.5rem;font-weight:800;color:#0E0EB8;">₦15,000</div>
+                                <div style="font-size:0.78rem;color:#9BA5C0;margin-top:4px;">One-time payment</div>
+                            </div>
+
+                            <div class="consult-pkg" id="pkg-priority" onclick="selectPackage('priority',25000)"
+                                style="border:2px solid #E5E9F5;border-radius:14px;padding:22px 20px;cursor:pointer;transition:border-color .2s,box-shadow .2s;position:relative;">
+                                <div
+                                    style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#0E0EB8;color:#fff;font-size:0.72rem;font-weight:700;padding:3px 12px;border-radius:20px;">
+                                    POPULAR</div>
+                                <div style="font-size:1.6rem;margin-bottom:8px;">⚡</div>
+                                <div style="font-weight:700;font-size:1rem;color:#0D1560;">Priority</div>
+                                <div style="font-size:0.82rem;color:#6B7280;margin:4px 0 12px;">30-min call + doc review
+                                </div>
+                                <div style="font-size:1.5rem;font-weight:800;color:#0E0EB8;">₦25,000</div>
+                                <div style="font-size:0.78rem;color:#9BA5C0;margin-top:4px;">Includes document audit
+                                </div>
+                            </div>
+
+                            <div class="consult-pkg" id="pkg-vip" onclick="selectPackage('vip',50000)"
+                                style="border:2px solid #E5E9F5;border-radius:14px;padding:22px 20px;cursor:pointer;transition:border-color .2s,box-shadow .2s;">
+                                <div style="font-size:1.6rem;margin-bottom:8px;">👑</div>
+                                <div style="font-weight:700;font-size:1rem;color:#0D1560;">VIP</div>
+                                <div style="font-size:0.82rem;color:#6B7280;margin:4px 0 12px;">60-min dedicated session
+                                </div>
+                                <div style="font-size:1.5rem;font-weight:800;color:#0E0EB8;">₦50,000</div>
+                                <div style="font-size:0.78rem;color:#9BA5C0;margin-top:4px;">Full application support
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="consult-pkg-error"
+                            style="display:none;color:#DC2626;font-size:0.85rem;margin-bottom:10px;">Please select a
+                            package to continue.</div>
+                        <button class="btn-next" onclick="startConsultPayment()" style="width:100%;">Pay & Book
+                            Appointment →</button>
+                    </div>
+
+                    <!-- STEP 2: Calendly (shown after payment verified) -->
+                    <div id="consult-step-2" style="display:none;">
+                        <div class="dash-section-card"
+                            style="background:linear-gradient(135deg,#F0F4FF,#E8F5E9);border:none;margin-bottom:18px;">
+                            <div style="display:flex;align-items:center;gap:12px;">
+                                <div style="font-size:2rem;">✅</div>
+                                <div>
+                                    <div style="font-weight:700;font-size:1rem;color:#0D1560;">Payment confirmed!</div>
+                                    <div style="font-size:0.85rem;color:#6B7280;" id="consult-paid-msg">Your
+                                        consultation fee has been received. Pick a time below.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Calendly embed -->
+                        <div style="border-radius:14px;overflow:hidden;border:1.5px solid #E5E9F5;min-height:650px;">
+                            <iframe id="calendly-iframe" src="https://calendly.com/jekaflynigeria/30min" width="100%"
+                                height="650" frameborder="0" style="display:block;">
+                            </iframe>
+                        </div>
+                        <p style="font-size:0.8rem;color:#9BA5C0;text-align:center;margin-top:10px;">
+                            Can't see the calendar? <a href="https://calendly.com/jekaflynigeria/30min" target="_blank"
+                                style="color:#0E0EB8;">Open in new tab ↗</a>
+                        </p>
+                    </div>
+
+                    <!-- Past bookings -->
+                    <div class="table-card" style="margin-top:24px;">
+                        <div class="table-header">
+                            <h3>Past Consultations</h3>
+                        </div>
+                        <div id="consult-history"></div>
+                    </div>
+                </div>
+
+                <!-- ── INSURANCE TAB ────────────────────────────────── -->
+                <div id="tab-insurance" class="tab-panel-hidden">
+                    <div class="dash-title">My Insurance</div>
+                    <p class="dash-subtitle">All your active and past travel insurance policies.</p>
+
+                    <div id="insurance-content"></div>
+
+                    <div class="ins-cta-card">
+                        <div class="ins-cta-icon">🛡️</div>
+                        <div>
+                            <div class="ins-cta-title">Need travel insurance?</div>
+                            <div class="ins-cta-sub">Get covered in minutes. Accepted by Schengen, UK, and global
+                                embassies.</div>
+                        </div>
+                        <button class="btn-next" onclick="window.location.href='index.html#insurance'">Get Insured
+                            →</button>
+                    </div>
+                </div>
+
+                <!-- ── TRACK TAB ────────────────────────────────────── -->
+                <div id="tab-track" class="tab-panel-hidden">
+                    <div class="dash-title">Track Application</div>
+                    <p class="dash-subtitle">Enter your reference number to see real-time status updates.</p>
+                    <div class="dash-section-card">
+                        <div class="dash-track-wrap">
+                            <input type="text" id="dash-track-ref" placeholder="e.g. JKF-2024-000001"
+                                class="dash-track-input" />
+                            <button onclick="dashTrack()" class="btn-dash-track">Track →</button>
+                        </div>
+                        <div id="dash-track-result"></div>
+                        <div class="dash-quick-refs">
+                            <p class="dash-quick-refs-label">Your applications:</p>
+                            <div id="quick-refs"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── PROFILE TAB ───────────────────────────────────── -->
+                <div id="tab-profile" class="tab-panel-hidden">
+                    <div class="dash-title">My Profile</div>
+                    <p class="dash-subtitle">Manage your personal information and account settings.</p>
+                    <div class="profile-card">
+                        <h3>Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Full Name</label><input type="text" id="p-name" /></div>
+                            <div class="form-group"><label>Email Address</label><input type="email" id="p-email" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Phone Number</label><input type="tel" id="p-phone" /></div>
+                            <div class="form-group"><label>Account ID</label><input type="text" id="p-id" disabled
+                                    class="input-disabled" /></div>
+                        </div>
+                        <button class="btn-save" onclick="saveProfile()">Save Changes</button>
+                    </div>
+                    <div class="profile-card">
+                        <h3>Change Password</h3>
+                        <div class="form-row">
+                            <div class="form-group"><label>Current Password</label><input type="password"
+                                    id="p-old-pass" placeholder="••••••••" /></div>
+                            <div class="form-group"><label>New Password</label><input type="password" id="p-new-pass"
+                                    placeholder="Min. 8 characters" /></div>
+                        </div>
+                        <button class="btn-save" onclick="changePassword()">Update Password</button>
+                    </div>
+                    <div class="profile-card profile-card-danger">
+                        <h3 class="danger-heading">Danger Zone</h3>
+                        <p class="danger-sub">Logging out will end your current session.</p>
+                        <button onclick="doLogout()" class="btn-danger">Logout of Jekafly</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Document upload modal -->
+    <div class="modal-overlay" id="doc-upload-modal" onclick="closeDocUpload(event)">
+        <div class="modal doc-modal">
+            <button class="modal-close" onclick="closeDocUploadDirect()">✕</button>
+            <h3 id="doc-modal-title">Upload Documents</h3>
+            <p class="modal-sub" id="doc-modal-sub">Upload supporting documents for your application.</p>
+
+            <!-- Required docs list — shown prominently BEFORE the dropzone -->
+            <div id="doc-modal-req-list"></div>
+
+            <!-- Divider -->
+            <div id="doc-modal-upload-divider" class="doc-modal-divider" style="display:none">
+                <span>Upload your files</span>
+            </div>
+
+            <div class="doc-dropzone">
+                <div class="doc-dropzone-inner">
+                    <div class="doc-dropzone-icon">📎</div>
+                    <div class="doc-dropzone-text">Drag & drop or <label class="doc-upload-browse-btn"
+                            for="modal-file-input">browse files</label></div>
+                    <div class="doc-dropzone-hint">PDF, JPG, PNG — max 10MB each</div>
+                    <input type="file" id="modal-file-input" multiple accept=".pdf,.jpg,.jpeg,.png"
+                        onchange="handleModalUpload(event)" />
+                </div>
+            </div>
+            <div id="modal-uploaded-list"></div>
+            <button class="btn-next btn-full-lg" onclick="submitModalDocuments()">Submit Documents →</button>
+        </div>
+    </div>
+
+    <style>
+        .consult-pkg:hover {
+            border-color: #0E0EB8 !important;
+            box-shadow: 0 4px 20px rgba(14, 14, 184, 0.12);
+        }
+
+        .consult-pkg.selected {
+            border-color: #0E0EB8 !important;
+            background: #F0F4FF;
+            box-shadow: 0 4px 20px rgba(14, 14, 184, 0.15);
+        }
+    </style>
+    <script src="api.js?v=4"></script>
+    <script src="app.js?v=4"></script>
+    <script>
+        let currentUser = null;
+        let selectedApp = null;
+        let dashUploads = [];
+        let modalUploads = [];
+        let vaultFiles = [];
+
+        const statusLabels = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved', delivered: 'Delivered', rejected: 'Rejected' };
+        const statusColors = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await Auth.init();
+            currentUser = Auth.getCurrent();
+            if (!currentUser) { window.location.href = 'index.html'; return; }
+
+            document.getElementById('nav-cta-area').innerHTML = `
+        <span class="nav-user-hi">Hi, <strong>${currentUser.name.split(' ')[0]}</strong></span>
+        ${currentUser.role === 'admin' ? '<a href="admin.html" class="btn-outline btn-outline-link btn-outline-danger">Admin ↗</a>' : ''}
+        <button class="btn-primary" onclick="doLogout()">Logout</button>`;
+
+            const initials = currentUser.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+            document.getElementById('user-avatar').textContent = initials;
+            document.getElementById('user-name').textContent = currentUser.name;
+            document.getElementById('user-email').textContent = currentUser.email;
+
+            const hour = new Date().getHours();
+            const greet = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
+            document.getElementById('dash-greeting').textContent = greet + ', ' + currentUser.name.split(' ')[0] + ' 👋';
+
+            loadApplications();
+            loadProfile();
+            loadVault();
+            populateDocAppSelect();
+        });
+
+        function showTab(tab, el) {
+            ['applications', 'documents', 'insurance', 'track', 'profile'].forEach(t => {
+                document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+            });
+            document.querySelectorAll('.dash-nav-item').forEach(i => i.classList.remove('active'));
+            if (el) el.classList.add('active');
+            if (tab === 'track') loadQuickRefs();
+            if (tab === 'insurance') loadInsurance();
+            if (tab === 'documents') { loadConsultHistory(); }
+        }
+
+        // ── APPLICATIONS ─────────────────────────────────────────────
+        async function loadApplications() {
+            const apps = await AppStore.getByUser();
+            const approved = apps.filter(a => ['approved', 'delivered'].includes(a.status)).length;
+            const pending = apps.filter(a => ['received', 'processing', 'embassy'].includes(a.status)).length;
+            const unpaid = apps.filter(a => !a.paid).length;
+            document.getElementById('dash-stats').innerHTML = `
+        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value">${apps.length}</div><div class="stat-label">Total</div></div>
+        <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value">${pending}</div><div class="stat-label">In Progress</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value">${approved}</div><div class="stat-label">Approved</div></div>
+        <div class="stat-card"><div class="stat-icon">💳</div><div class="stat-value">${unpaid}</div><div class="stat-label">Unpaid</div></div>`;
+
+            if (apps.length === 0) {
+                document.getElementById('applications-table').innerHTML = `<div class="empty-state"><div class="icon">✈️</div><h3>No applications yet</h3><p>Start your first visa application and we'll guide you through.</p><button class="btn-save" onclick="window.location.href='apply.html'">Apply for a Visa →</button></div>`;
+                return;
+            }
+            document.getElementById('applications-table').innerHTML = `
+        <table><thead><tr><th>Reference</th><th>Destination</th><th>Purpose</th><th>Travel Date</th><th>Status</th><th>Payment</th><th>Action</th></tr></thead>
+        <tbody>${apps.map(a => `<tr>
+            <td><span class="cell-ref">${a.ref}</span></td>
+            <td><strong>${a.destination}</strong></td>
+            <td>${a.purpose || '—'}</td>
+            <td>${a.travelDate ? new Date(a.travelDate + 'T00:00:00').toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td>
+            <td><span class="status-pill ${statusColors[a.status] || 'status-received'}">${statusLabels[a.status] || a.status}</span></td>
+            <td>${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}</td>
+            <td><button onclick="viewApp('${a.ref}')" class="btn-table-view">View →</button></td>
+        </tr>`).join('')}</tbody></table>`;
+        }
+
+        async function viewApp(ref) {
+            const app = await AppStore.getByRef(ref);
+            if (!app) return;
+            selectedApp = app;
+            document.getElementById('detail-title').textContent = app.ref + ' — ' + app.destination;
+            document.getElementById('detail-grid').innerHTML = [
+                { l: 'Applicant', v: app.applicantName },
+                { l: 'Destination', v: app.destination },
+                { l: 'Purpose', v: app.purpose || '—' },
+                { l: 'Travel Date', v: app.travelDate ? new Date(app.travelDate + 'T00:00:00').toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—' },
+                { l: 'Passport No.', v: app.passportNumber || '—' },
+                { l: 'Email', v: app.email },
+                { l: 'Phone', v: app.phone || '—' },
+                { l: 'Status', v: `<span class="status-pill ${statusColors[app.status]}">${statusLabels[app.status] || app.status}</span>` },
+                { l: 'Payment', v: app.paid ? '<span class="paid-yes">✅ Paid — ₦' + (app.fee || 0).toLocaleString() + '</span>' : '<span class="paid-no">⚠️ Unpaid</span>' },
+                { l: 'Submitted', v: new Date(app.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }) },
+            ].map(f => `<div class="detail-item"><div class="detail-label">${f.l}</div><div class="detail-value">${f.v}</div></div>`).join('');
+
+            document.getElementById('detail-timeline').innerHTML = (app.statusHistory || []).map(h => `
+        <div class="tl-item"><div class="tl-dot"></div><div class="tl-content">
+            <div class="tl-note">${h.note}</div>
+            <div class="tl-date">${new Date(h.date).toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' })}</div>
+        </div></div>`).join('');
+
+            document.getElementById('detail-pay-btn').style.display = app.paid ? 'none' : 'inline-block';
+            document.getElementById('detail-upload-btn').style.display = 'inline-block';
+            const panel = document.getElementById('detail-panel');
+            panel.classList.add('show');
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function closeDetail() { document.getElementById('detail-panel').classList.remove('show'); selectedApp = null; }
+
+        function goToPayment() {
+            if (!selectedApp) return;
+            sessionStorage.setItem('jkf_pending_payment', JSON.stringify({
+                type: 'visa', ref: selectedApp.ref, destination: selectedApp.destination,
+                amount: selectedApp.fee || 150000, userId: currentUser.id
+            }));
+            window.location.href = 'payment.html';
+        }
+
+        // ── DOCUMENT UPLOAD MODAL (from application detail panel) ────
+        function openDocUpload() {
+            const modal = document.getElementById('doc-upload-modal');
+            modal.style.display = 'flex';
+            document.body.classList.add('modal-open');
+            modalUploads = [];
+            renderModalUploads();
+
+            if (!selectedApp) {
+                document.getElementById('doc-modal-title').textContent = 'Upload Documents';
+                document.getElementById('doc-modal-sub').textContent = 'Upload supporting documents for your application.';
+                document.getElementById('doc-modal-req-list').innerHTML = '';
+                document.getElementById('doc-modal-upload-divider').style.display = 'none';
+                return;
+            }
+
+            const flag = window.visaRequirements?.[selectedApp.destination]?.flag || '🌍';
+            const reqs = window.visaRequirements?.[selectedApp.destination]?.docs || [];
+            const processing = window.visaRequirements?.[selectedApp.destination]?.processing || '—';
+
+            document.getElementById('doc-modal-title').textContent = `${flag} ${selectedApp.destination} Visa — Documents`;
+            document.getElementById('doc-modal-sub').textContent = `Application ${selectedApp.ref} · Please upload all required documents below.`;
+
+            const divider = document.getElementById('doc-modal-upload-divider');
+
+            if (reqs.length === 0) {
+                document.getElementById('doc-modal-req-list').innerHTML = `
+            <div class="doc-required-empty">No specific document list available for this destination. Upload all relevant documents.</div>`;
+                divider.style.display = 'flex';
+            } else {
+                divider.style.display = 'flex';
+                document.getElementById('doc-modal-req-list').innerHTML = `
+            <div class="doc-required-header">
+                <div class="doc-required-title">📋 ${reqs.length} documents required for your ${selectedApp.destination} visa</div>
+                <div class="doc-required-meta">Est. processing: <strong>${processing}</strong></div>
+            </div>
+            <div class="doc-required-disclaimer">
+                ⚠️ General requirements for Nigerian passport holders — Jekafly will confirm specifics for your case.
+            </div>
+            <div class="doc-required-list">
+                ${reqs.map((doc, i) => `
+                <div class="doc-required-item" id="mreq-${i}">
+                    <div class="doc-required-num">${i + 1}</div>
+                    <div class="doc-required-text">${doc}</div>
+                    <div class="doc-required-status" id="mreq-status-${i}">⬜ Needed</div>
+                </div>`).join('')}
+            </div>`;
+            }
+        }
+
+        function closeDocUpload(e) { if (e && e.target !== document.getElementById('doc-upload-modal')) return; closeDocUploadDirect(); }
+        function closeDocUploadDirect() {
+            document.getElementById('doc-upload-modal').style.display = 'none';
+            document.body.classList.remove('modal-open');
+        }
+
+        function handleModalUpload(event) {
+            Array.from(event.target.files).forEach(f => {
+                if (!modalUploads.find(u => u.name === f.name)) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        modalUploads.push({ name: f.name, size: f.size, type: f.type, dataUrl: e.target.result, ref: selectedApp?.ref || '' });
+                        renderModalUploads();
+                    };
+                    reader.readAsDataURL(f);
+                }
+            });
+            event.target.value = '';
+        }
+
+        function renderModalUploads() {
+            const list = document.getElementById('modal-uploaded-list');
+            if (!list) return;
+            list.innerHTML = modalUploads.length ? `<div class="uploaded-files">` + modalUploads.map((f, i) => `
+        <div class="uploaded-file">
+            <span class="file-icon">${f.type.includes('pdf') ? '📄' : '🖼️'}</span>
+            <span class="file-name">${escHtml(f.name)}</span>
+            <span class="file-size">${(f.size / 1024).toFixed(0)} KB</span>
+            <button class="file-preview-btn" onclick="previewDashFile(${i},'modal')">👁 Preview</button>
+            <button class="file-remove" onclick="modalUploads.splice(${i},1);renderModalUploads()">✕</button>
+        </div>`).join('') + `</div>` : '';
+        }
+
+        async function submitModalDocuments() {
+            if (modalUploads.length === 0) { showToast('Please select at least one file.', 'error'); return; }
+            showToast('Uploading...');
+            const uploaded = await DocStore.upload(modalUploads, selectedApp?.ref || null, null);
+            closeDocUploadDirect();
+            showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} uploaded successfully! 📎`);
+            loadVault();
+        }
+
+        // Track which app ref the Documents tab is currently uploading for
+        let docTabRef = null;
+
+        async function populateDocAppSelect() {
+            // Reset to step 1 view
+            const step1 = document.getElementById('doc-step-1');
+            const step2 = document.getElementById('doc-step-2');
+            if (step1) step1.style.display = 'block';
+            if (step2) step2.style.display = 'none';
+
+            const container = document.getElementById('doc-app-cards');
+            if (!container) return;
+            const apps = await AppStore.getByUser(); // async — called from async context
+
+            if (apps.length === 0) {
+                container.innerHTML = `
+            <div class="doc-no-apps">
+                <div class="doc-no-apps-icon">📋</div>
+                <div class="doc-no-apps-text">You don't have any applications yet.</div>
+                <a href="apply.html" class="doc-no-apps-link">Start a visa application →</a>
+            </div>`;
+                return;
+            }
+
+            // If only one app, auto-jump to step 2 immediately
+            if (apps.length === 1) {
+                container.innerHTML = '';
+                selectDocApp(apps[0].ref);
+                return;
+            }
+
+            container.innerHTML = apps.map(a => {
+                const vr = window.visaRequirements?.[a.destination];
+                const flag = vr?.flag || '🌍';
+                const docCount = vr?.docs?.length || 0;
+                const sl = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved', delivered: 'Delivered', rejected: 'Rejected' };
+                const sc = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
+                return `
+        <div class="doc-app-card" onclick="selectDocApp('${a.ref}')">
+            <div class="doc-app-card-flag">${flag}</div>
+            <div class="doc-app-card-info">
+                <div class="doc-app-card-dest">${a.destination}</div>
+                <div class="doc-app-card-ref">${a.ref}</div>
+                <div style="margin-top:5px"><span class="status-pill ${sc[a.status] || 'status-received'}">${sl[a.status] || a.status}</span></div>
+            </div>
+            <div class="doc-app-card-right">
+                <div class="doc-app-card-count">${docCount}</div>
+                <div class="doc-app-card-count-label">docs required</div>
+                <div class="doc-app-card-arrow">→</div>
+            </div>
+        </div>`;
+            }).join('');
+        }
+
+        async function selectDocApp(ref) {
+            docTabRef = ref;
+            dashUploads = [];
+            renderDashUploads();
+
+            document.getElementById('doc-step-1').style.display = 'none';
+            document.getElementById('doc-step-2').style.display = 'block';
+
+            if (!ref) {
+                // General upload — show the generic drop zone
+                document.getElementById('doc-step-2-app-label').textContent = 'General upload — not linked to a specific application';
+                document.getElementById('doc-required-panel').innerHTML = '';
+                document.getElementById('doc-dropzone').style.display = 'block';
+                document.getElementById('dash-uploaded-list').style.display = 'block';
+                return;
+            }
+
+            // Linked to an application — hide generic drop zone, use per-doc slots
+            document.getElementById('doc-dropzone').style.display = 'none';
+            document.getElementById('dash-uploaded-list').style.display = 'none';
+
+            const app = await AppStore.getByRef(ref);
+            if (!app) return;
+            const flag = window.visaRequirements?.[app.destination]?.flag || '🌍';
+            const reqs = window.visaRequirements?.[app.destination]?.docs || [];
+            const processing = window.visaRequirements?.[app.destination]?.processing || '—';
+
+            document.getElementById('doc-step-2-app-label').textContent = `${flag} ${app.destination} — ${app.ref}`;
+
+            // docSlots tracks uploaded file per doc index: { name, size, type, dataUrl }
+            window._docSlots = new Array(reqs.length).fill(null);
+
+            document.getElementById('doc-required-panel').innerHTML = `
+        <div class="doc-required-header">
+            <div class="doc-required-title">📋 Required documents for your ${app.destination} visa</div>
+            <div class="doc-required-meta">Processing time: <strong>${processing}</strong> · <strong>${reqs.length}</strong> documents needed</div>
+        </div>
+        <div class="doc-required-disclaimer">
+            ⚠️ General requirements for Nigerian passport holders — Jekafly will confirm specifics for your application.
+        </div>
+        <div class="doc-required-list" id="doc-slot-list">
+            ${reqs.length > 0 ? reqs.map((doc, i) => `
+            <div class="doc-required-item" id="dreq-${i}">
+                <div class="doc-required-num">${i + 1}</div>
+                <div class="doc-required-body">
+                    <div class="doc-required-text">${doc}</div>
+                    <div class="doc-required-file" id="dreq-file-${i}"></div>
+                </div>
+                <label class="doc-slot-upload-btn" for="dreq-input-${i}" id="dreq-btn-${i}" title="Upload file for this document">
+                    📎 Upload
+                </label>
+                <input type="file" id="dreq-input-${i}" accept=".pdf,.jpg,.jpeg,.png" style="display:none"
+                    onchange="handleSlotUpload(event, ${i})" />
+            </div>`).join('') : `<div class="doc-required-empty">No specific document list — use the upload area below.</div>`}
+        </div>
+        <div class="doc-required-footer" id="doc-slot-footer">
+            Click <strong>Upload</strong> next to each document to attach the file.
+        </div>`;
+        }
+
+        function resetDocTab() {
+            docTabRef = null;
+            dashUploads = [];
+            window._docSlots = [];
+            renderDashUploads();
+            document.getElementById('doc-step-1').style.display = 'block';
+            document.getElementById('doc-step-2').style.display = 'none';
+            document.getElementById('doc-required-panel').innerHTML = '';
+        }
+
+        function handleSlotUpload(event, slotIndex) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                window._docSlots[slotIndex] = { name: file.name, size: file.size, type: file.type, dataUrl: e.target.result };
+
+                // Update this row's UI
+                const row = document.getElementById(`dreq-${slotIndex}`);
+                const fileEl = document.getElementById(`dreq-file-${slotIndex}`);
+                const btn = document.getElementById(`dreq-btn-${slotIndex}`);
+                if (row) row.classList.add('dreq-done');
+                if (fileEl) fileEl.innerHTML = `
+            <span class="dreq-fname">${escHtml(file.name)}</span>
+            <button class="dreq-preview-btn" onclick="previewSlotFile(${slotIndex})">👁</button>
+            <button class="dreq-remove-btn" onclick="removeSlotFile(${slotIndex})">✕</button>`;
+                if (btn) btn.textContent = '✅ Uploaded';
+
+                updateSlotFooter();
+            };
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        function removeSlotFile(slotIndex) {
+            window._docSlots[slotIndex] = null;
+            const row = document.getElementById(`dreq-${slotIndex}`);
+            const fileEl = document.getElementById(`dreq-file-${slotIndex}`);
+            const btn = document.getElementById(`dreq-btn-${slotIndex}`);
+            if (row) row.classList.remove('dreq-done');
+            if (fileEl) fileEl.innerHTML = '';
+            if (btn) btn.textContent = '📎 Upload';
+            updateSlotFooter();
+        }
+
+        function previewSlotFile(slotIndex) {
+            const f = window._docSlots?.[slotIndex];
+            if (!f || !f.dataUrl) { showToast('File not available.', 'error'); return; }
+            let modal = document.getElementById('dash-preview-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'dash-preview-modal';
+                modal.style.cssText = 'position:fixed;inset:0;background:rgba(10,13,50,0.78);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+                modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
+                modal.innerHTML = `<div style="background:white;border-radius:16px;padding:24px;max-width:860px;width:100%;max-height:90vh;overflow:auto;position:relative">
+            <button onclick="document.getElementById('dash-preview-modal').style.display='none'"
+                style="position:absolute;top:12px;right:12px;background:#F4F6FB;border:none;border-radius:8px;width:34px;height:34px;font-size:1rem;cursor:pointer">✕</button>
+            <div id="dash-preview-content"></div></div>`;
+                document.body.appendChild(modal);
+            }
+            const content = document.getElementById('dash-preview-content');
+            content.innerHTML = f.type.includes('pdf')
+                ? `<iframe src="${f.dataUrl}" style="width:100%;height:70vh;border:none;border-radius:8px"></iframe>`
+                : `<img src="${f.dataUrl}" style="max-width:100%;max-height:70vh;border-radius:8px;display:block;margin:auto" alt="${escHtml(f.name)}" />`;
+            modal.style.display = 'flex';
+        }
+
+        function updateSlotFooter() {
+            const slots = window._docSlots || [];
+            const uploaded = slots.filter(Boolean).length;
+            const total = slots.length;
+            const footer = document.getElementById('doc-slot-footer');
+            if (!footer) return;
+            if (uploaded === 0) {
+                footer.innerHTML = `Click <strong>Upload</strong> next to each document to attach the file.`;
+            } else if (uploaded < total) {
+                footer.innerHTML = `<strong>${uploaded} of ${total}</strong> documents uploaded. Upload the remaining ${total - uploaded} to complete your application.`;
+            } else {
+                footer.innerHTML = `✅ All ${total} documents uploaded. Click <strong>Submit Documents</strong> below.`;
+            }
+        }
+
+        function handleDashUpload(event) {
+            // Fallback for general (no-app) uploads only
+            Array.from(event.target.files).forEach(f => {
+                if (!dashUploads.find(u => u.name === f.name)) {
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                        dashUploads.push({ name: f.name, size: f.size, type: f.type, dataUrl: e.target.result });
+                        renderDashUploads();
+                    };
+                    reader.readAsDataURL(f);
+                }
+            });
+            event.target.value = '';
+        }
+
+        function renderDashUploads() {
+            const list = document.getElementById('dash-uploaded-list');
+            if (!list) return;
+            list.innerHTML = dashUploads.length ? `<div class="uploaded-files">` + dashUploads.map((f, i) => `
+        <div class="uploaded-file">
+            <span class="file-icon">${f.type.includes('pdf') ? '📄' : '🖼️'}</span>
+            <span class="file-name">${escHtml(f.name)}</span>
+            <span class="file-size">${(f.size / 1024).toFixed(0)} KB</span>
+            <button class="file-remove" onclick="dashUploads.splice(${i},1);renderDashUploads()">✕</button>
+        </div>`).join('') + `</div>` : '';
+        }
+
+        function escHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+        function previewDashFile(i, source) {
+            const f = source === 'modal' ? modalUploads[i] : dashUploads[i];
+            if (!f || !f.dataUrl) { showToast('Preview not available yet — file still loading.', 'error'); return; }
+            let modal = document.getElementById('dash-preview-modal');
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = 'dash-preview-modal';
+                modal.style.cssText = 'position:fixed;inset:0;background:rgba(10,13,50,0.78);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+                modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
+                modal.innerHTML = `<div style="background:white;border-radius:16px;padding:24px;max-width:860px;width:100%;max-height:90vh;overflow:auto;position:relative">
+            <button onclick="document.getElementById('dash-preview-modal').style.display='none'"
+                style="position:absolute;top:12px;right:12px;background:#F4F6FB;border:none;border-radius:8px;width:34px;height:34px;font-size:1rem;cursor:pointer">✕</button>
+            <div id="dash-preview-content"></div>
+        </div>`;
+                document.body.appendChild(modal);
+            }
+            const content = document.getElementById('dash-preview-content');
+            if (f.type.includes('pdf')) {
+                content.innerHTML = `<iframe src="${f.dataUrl}" style="width:100%;height:70vh;border:none;border-radius:8px"></iframe>`;
+            } else {
+                content.innerHTML = `<img src="${f.dataUrl}" style="max-width:100%;max-height:70vh;border-radius:8px;display:block;margin:auto" alt="${escHtml(f.name)}" />`;
+            }
+            modal.style.display = 'flex';
+        }
+
+        async function submitDocuments() {
+            const isLinked = !!docTabRef;
+            const slots = window._docSlots || [];
+            const slotFiles = slots.filter(Boolean);
+
+            // For linked apps use slots; for general upload use dashUploads
+            const filesToSave = isLinked ? slotFiles : dashUploads;
+            if (filesToSave.length === 0) {
+                showToast('Please upload at least one file first.', 'error');
+                return;
+            }
+
+            showToast('Uploading documents...');
+            const uploaded = await DocStore.upload(filesToSave, docTabRef || null, null);
+            showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} saved to your vault! 📎`);
+            dashUploads = [];
+            window._docSlots = [];
+            renderDashUploads();
+            loadVault();
+        }
+
+        async function loadVault() {
+            const vault = await DocStore.getVault();
+            vaultFiles = vault;
+            const count = document.getElementById('vault-count');
+            if (count) count.textContent = vault.length + ' file' + (vault.length !== 1 ? 's' : '');
+            const list = document.getElementById('vault-list');
+            if (!list) return;
+            if (vault.length === 0) {
+                list.innerHTML = '<div class="empty-state"><div class="icon">📂</div><h3>No documents yet</h3><p>Upload documents from the section above or from an application.</p></div>';
+                return;
+            }
+            list.innerHTML = `<table><thead><tr><th>File</th><th>Application</th><th>Uploaded</th><th></th></tr></thead><tbody>` +
+                vault.map(f => `<tr>
+            <td><span class="file-icon-sm">${f.mimeType && f.mimeType.includes('pdf') ? '📄' : '🖼️'}</span> ${f.name}</td>
+            <td>${f.ref || '<span class="text-muted">General</span>'}</td>
+            <td>${new Date(f.uploadedAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
+            <td><button class="btn-table-view" onclick="removeVaultFile('${f.id}')">Remove</button></td>
+        </tr>`).join('') + `</tbody></table>`;
+        }
+
+        async function removeVaultFile(id) {
+            await DocStore.remove(id);
+            showToast('Document removed.');
+            loadVault();
+        }
+
+        // ── INSURANCE ────────────────────────────────────────────────
+        async function loadInsurance() {
+            const policies = await InsuranceStore.getAll();
+            const container = document.getElementById('insurance-content');
+            if (!container) return;
+            if (policies.length === 0) {
+                container.innerHTML = `<div class="empty-state"><div class="icon">🛡️</div><h3>No insurance policies yet</h3><p>Purchase travel insurance to see your active policies here.</p></div>`;
+                return;
+            }
+            container.innerHTML = `<div class="ins-policies-grid">` + policies.map(p => `
+        <div class="ins-policy-card">
+            <div class="ins-policy-header">
+                <div class="ins-policy-icon">🛡️</div>
+                <div>
+                    <div class="ins-policy-plan">${p.plan}</div>
+                    <div class="ins-policy-status status-active">✅ Active</div>
+                </div>
+            </div>
+            <div class="ins-policy-details">
+                <div class="ins-policy-row"><span>Destination</span><strong>${p.destination || 'Worldwide'}</strong></div>
+                <div class="ins-policy-row"><span>Travel Date</span><strong>${p.date || '—'}</strong></div>
+                <div class="ins-policy-row"><span>Travellers</span><strong>${p.travellers || 1}</strong></div>
+                <div class="ins-policy-row"><span>Amount Paid</span><strong>₦${(p.amount || 0).toLocaleString()}</strong></div>
+                <div class="ins-policy-row"><span>Policy ID</span><strong class="cell-mono">${p.id}</strong></div>
+                <div class="ins-policy-row"><span>Issued</span><strong>${new Date(p.purchasedAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</strong></div>
+            </div>
+        </div>`).join('') + `</div>`;
+        }
+
+        // ── TRACK ────────────────────────────────────────────────────
+        async function loadQuickRefs() {
+            const apps = await AppStore.getByUser();
+            const container = document.getElementById('quick-refs');
+            if (apps.length === 0) { container.innerHTML = '<p class="doc-empty">No applications yet.</p>'; return; }
+            container.innerHTML = apps.map(a => `<span onclick="quickFillRef('${a.ref}')" class="quick-ref-chip">${a.ref}</span>`).join('');
+        }
+
+        function quickFillRef(ref) { document.getElementById('dash-track-ref').value = ref; dashTrack(); }
+
+        async function dashTrack() {
+            const ref = document.getElementById('dash-track-ref').value.trim();
+            if (!ref) { showToast('Please enter a reference number.', 'error'); return; }
+            const app = await AppStore.getByRef(ref);
+            const container = document.getElementById('dash-track-result');
+            if (!app) { container.innerHTML = `<div class="track-not-found">No application found with reference <strong>${ref}</strong>.</div>`; return; }
+            const steps = ['received', 'processing', 'embassy', 'approved', 'delivered'];
+            const labels = ['Received', 'Docs Verified', 'Embassy Review', 'Decision', 'Delivered'];
+            const curIdx = steps.indexOf(app.status);
+            container.innerHTML = `
+        <div class="track-result-box">
+            <div class="track-result-header">
+                ${steps.map((s, i) => `
+                    <div class="track-step-mini">
+                        ${i < steps.length - 1 ? `<div class="track-step-mini-connector track-connector-dynamic" data-done="${i < curIdx}"></div>` : ''}
+                        <div class="track-step-mini-dot track-dot-dynamic" data-done="${i < curIdx}" data-active="${i === curIdx}">${i < curIdx ? '✓' : i + 1}</div>
+                        <div class="track-step-mini-label track-label-dynamic" data-active="${i <= curIdx}">${labels[i]}</div>
+                    </div>`).join('')}
+            </div>
+            <div class="track-result-meta"><strong>Ref:</strong> ${app.ref} &nbsp;·&nbsp; <strong>Destination:</strong> ${app.destination} &nbsp;·&nbsp; <strong>Status:</strong> <span class="status-pill ${statusColors[app.status]}">${statusLabels[app.status]}</span></div>
+            <p class="track-result-note">${app.statusHistory[app.statusHistory.length - 1].note}</p>
+        </div>`;
+        }
+
+        // ── PROFILE ──────────────────────────────────────────────────
+        async function loadProfile() {
+            if (!currentUser) return;
+            document.getElementById('p-name').value = currentUser.name || '';
+            document.getElementById('p-email').value = currentUser.email || '';
+            document.getElementById('p-phone').value = currentUser.phone || '';
+            document.getElementById('p-id').value = currentUser.id || '';
+        }
+
+        async function saveProfile() {
+            const name = document.getElementById('p-name').value.trim();
+            const phone = document.getElementById('p-phone').value.trim();
+            if (!name) { showToast('Name cannot be empty.', 'error'); return; }
+            const res = await Auth.updateMe(name, phone);
+            if (res?.ok) { currentUser = Auth.getCurrent(); document.getElementById('user-name').textContent = name; showToast('Profile updated!'); }
+            else { showToast(res?.error || 'Update failed.', 'error'); }
+            showToast('Profile updated successfully! ✅');
+        }
+
+        async function changePassword() {
+            const oldPass = document.getElementById('p-old-pass').value;
+            const newPass = document.getElementById('p-new-pass').value;
+            if (!oldPass || !newPass) { showToast('Please fill in both password fields.', 'error'); return; }
+            if (oldPass !== currentUser.password) { showToast('Current password is incorrect.', 'error'); return; }
+            if (newPass.length < 8) { showToast('New password must be at least 8 characters.', 'error'); return; }
+            const res = await Auth.changePassword(cur, newPass);
+            if (!res?.ok) { showToast(res?.error || 'Password update failed.', 'error'); return; }
+            showToast('Password updated. Please log in again.');
+            setTimeout(() => doLogout(), 1500);
+            document.getElementById('p-old-pass').value = ''; document.getElementById('p-new-pass').value = '';
+            showToast('Password updated successfully! 🔒');
+        }
+
+        async function doLogout() { await Auth.logout(); showToast('Logged out successfully.'); setTimeout(() => window.location.href = 'index.html', 800); }
+    </script>
+    <script>
+        window.addEventListener('scroll', () => {
+            document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20);
+        });
+    </script>
+
+    <script>
+        // ── Travel Consultation ─────────────────────────────────────────────────
+        const CALENDLY_URL = 'https://calendly.com/jekaflynigeria/30min';
+
+        const CONSULT_PACKAGES = {
+            standard: { name: 'Standard Consultation', amount: 15000, duration: '30 min' },
+            priority: { name: 'Priority Consultation', amount: 25000, duration: '30 min + doc review' },
+            vip: { name: 'VIP Consultation', amount: 50000, duration: '60 min' },
+        };
+
+        let _selectedPkg = null;
+
+        function selectPackage(pkg, amount) {
+            _selectedPkg = pkg;
+            document.querySelectorAll('.consult-pkg').forEach(el => el.classList.remove('selected'));
+            document.getElementById('pkg-' + pkg)?.classList.add('selected');
+            document.getElementById('consult-pkg-error').style.display = 'none';
+        }
+
+        async function startConsultPayment() {
+            if (!_selectedPkg) {
+                document.getElementById('consult-pkg-error').style.display = 'block';
+                return;
+            }
+            const pkg = CONSULT_PACKAGES[_selectedPkg];
+            const user = Auth.getCurrent();
+            if (!user) { window.location.href = 'login.html'; return; }
+
+            // Store pending consultation in sessionStorage for return
+            sessionStorage.setItem('jkf_pending_payment', JSON.stringify({
+                type: 'consultation',
+                ref: null,
+                amount: pkg.amount,
+                email: user.email,
+                metadata: { package: _selectedPkg, packageName: pkg.name }
+            }));
+
+            // Initiate Paystack payment
+            const res = await PaymentStore.initiate(
+                'CONSULTATION',
+                null,
+                pkg.amount * 100, // kobo
+                user.email,
+                { package: _selectedPkg, packageName: pkg.name }
+            );
+
+            if (res?.ok && res.data?.authorizationUrl) {
+                // Save return destination so payment.html redirects back to dashboard
+                sessionStorage.setItem('jkf_consult_return', '1');
+                window.location.href = res.data.authorizationUrl;
+            } else {
+                showToast(res?.error || 'Payment initiation failed. Please try again.', 'error');
+            }
+        }
+
+        async function checkConsultPaymentReturn() {
+            const params = new URLSearchParams(window.location.search);
+            const reference = params.get('ref') || params.get('reference') || params.get('trxref');
+            if (!reference) return;
+
+            // Clean the URL
+            window.history.replaceState({}, '', 'dashboard.html');
+
+            // Wait for auth to be ready before verifying
+            await Auth.init();
+            const user = Auth.getCurrent();
+            if (!user) { showToast('Please log in to confirm your booking.', 'error'); return; }
+
+            // Verify payment
+            const res = await PaymentStore.verify(reference);
+            if (res?.ok && res.data?.status === 'success') {
+                // Show success + Calendly
+                unlockCalendly(res.data);
+            } else {
+                showToast('Payment verification failed. Please contact support.', 'error');
+            }
+        }
+
+        function unlockCalendly(paymentData) {
+            document.getElementById('consult-step-1').style.display = 'none';
+            document.getElementById('consult-step-2').style.display = 'block';
+            const pkg = CONSULT_PACKAGES[paymentData?.metadata?.package] || {};
+            document.getElementById('consult-paid-msg').textContent =
+                `₦${(paymentData?.amount || 0).toLocaleString()} received for ${pkg.name || 'consultation'}. Pick a time below.`;
+            // Set Calendly URL with prefilled name/email
+            const user = Auth.getCurrent();
+            const base = CALENDLY_URL;
+            const params = user ? `?name=${encodeURIComponent(user.name)}&email=${encodeURIComponent(user.email)}` : '';
+            document.getElementById('calendly-iframe').src = base + params;
+            document.querySelectorAll('[href*="YOUR_CALENDLY_LINK"]').forEach(el => el.href = base);
+            // Switch to the consultation tab
+            const consultNavItem = document.querySelector('.dash-nav-item[onclick*="documents"]');
+            showTab('documents', consultNavItem);
+        }
+
+        async function loadConsultHistory() {
+            const payments = await PaymentStore.list();
+            const consultations = (payments || []).filter(p =>
+                p.type === 'CONSULTATION' && p.status === 'SUCCESS'
+            );
+            const el = document.getElementById('consult-history');
+            if (!el) return;
+            if (!consultations.length) {
+                el.innerHTML = '<div style="padding:20px;text-align:center;color:#9BA5C0;font-size:0.88rem;">No past consultations yet.</div>';
+                return;
+            }
+            el.innerHTML = `<table style="width:100%;border-collapse:collapse;">
+            <thead><tr style="background:#F7F8FC;">
+                <th style="padding:10px 14px;text-align:left;font-size:0.8rem;color:#6B7280;font-weight:600;">Date</th>
+                <th style="padding:10px 14px;text-align:left;font-size:0.8rem;color:#6B7280;font-weight:600;">Package</th>
+                <th style="padding:10px 14px;text-align:left;font-size:0.8rem;color:#6B7280;font-weight:600;">Amount</th>
+                <th style="padding:10px 14px;text-align:left;font-size:0.8rem;color:#6B7280;font-weight:600;">Status</th>
+            </tr></thead>
+            <tbody>${consultations.map(p => `
+            <tr style="border-top:1px solid #F3F4F6;">
+                <td style="padding:10px 14px;font-size:0.85rem;">${new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
+                <td style="padding:10px 14px;font-size:0.85rem;">${p.metadata?.packageName || 'Consultation'}</td>
+                <td style="padding:10px 14px;font-size:0.85rem;font-weight:600;">₦${(p.amount || 0).toLocaleString()}</td>
+                <td style="padding:10px 14px;"><span style="background:#D1FAE5;color:#065F46;padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;">✅ Paid</span></td>
+            </tr>`).join('')}
+            </tbody></table>`;
+        }
+
+        // Check for Paystack return on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            checkConsultPaymentReturn();
+            // Show back-to-admin bar if navigated from admin panel
+            if (new URLSearchParams(window.location.search).get('from') === 'admin') {
+                const bar = document.getElementById('admin-back-bar');
+                if (bar) bar.style.display = 'flex';
+            }
+        });
+    </script>
+
+</body>
+
+</html>

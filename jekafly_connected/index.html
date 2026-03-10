@@ -1,0 +1,1115 @@
+<!-- =============================
+INDEX.HTML — FULLY EDITED
+============================= -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jekafly Visa — Your Journey Simplified</title>
+    <script>
+        // Unregister any stale service workers that may be serving old cached scripts
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+            caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+        }
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/hero-animation.css" />
+    <link rel="stylesheet" href="assets/css/utilities.css" />
+
+    <style>
+        .consult-modal-pkg {
+            transition: border-color .15s, background .15s;
+        }
+
+        .consult-modal-pkg:hover {
+            border-color: #0E0EB8 !important;
+        }
+
+        .consult-modal-pkg.selected {
+            border-color: #0E0EB8 !important;
+            background: #F0F4FF !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =============================
+    NAV
+    ============================= -->
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
+        </a>
+        <div class="nav-links">
+            <a href="#services">Services</a>
+            <a href="#visa">Visa Check</a>
+            <a href="#insurance">Insurance</a>
+            <a href="#track">Track</a>
+            <a href="#destinations">Destinations</a>
+        </div>
+        <div class="nav-cta">
+            <button class="btn-outline" onclick="openModal('login')">Login</button>
+            <button class="btn-primary" onclick="openModal('register')">Get Started</button>
+        </div>
+    </nav>
+
+    <!-- =============================
+    HERO
+    ============================= -->
+    <section class="hero" id="hero-section">
+
+        <!-- Background slides -->
+        <div class="hero-slides" id="hero-slides">
+            <div class="hero-slide active"
+                style="background-image:url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=1600&q=80')">
+            </div>
+            <div class="hero-slide"
+                style="background-image:url('https://images.unsplash.com/photo-1526129318478-62ed807ebdf9?w=1600&q=80')">
+            </div>
+            <div class="hero-slide"
+                style="background-image:url('https://images.unsplash.com/photo-1538964173425-93884d739596?w=1600&q=80')">
+            </div>
+            <div class="hero-slide"
+                style="background-image:url('https://images.unsplash.com/photo-1504019347908-b45f9b0b8dd5?w=1600&q=80')">
+            </div>
+        </div>
+
+        <!-- Slide dots -->
+        <div class="hero-dots" id="hero-dots">
+            <div class="hero-dot active" onclick="goToSlide(0)"></div>
+            <div class="hero-dot" onclick="goToSlide(1)"></div>
+            <div class="hero-dot" onclick="goToSlide(2)"></div>
+            <div class="hero-dot" onclick="goToSlide(3)"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-badge"><span></span> Live Applications Processing</div>
+
+            <div class="hero-headline-wrap">
+                <div class="hero-headline animate" id="hero-headline">
+                    <span class="hero-line-1" id="hero-line-1">Visa Applications,</span>
+                    <span class="hero-line-2" id="hero-line-2">Simplified.</span>
+                </div>
+            </div>
+
+            <p id="hero-sub">Apply for visas to 195+ countries with a 95% success rate. Document prep, travel insurance,
+                and real-time tracking — all in one place.</p>
+            <div class="hero-stats">
+                <div class="hero-stat"><strong>95%</strong><span>Success Rate</span></div>
+                <div class="hero-stat"><strong>195+</strong><span>Countries</span></div>
+                <div class="hero-stat"><strong>48hrs</strong><span>Avg. Processing</span></div>
+            </div>
+            <div class="hero-actions">
+                <button class="btn-hero btn-hero-primary"
+                    onclick="document.getElementById('visa').scrollIntoView({behavior:'smooth'})">Apply for
+                    Visa</button>
+                <button class="btn-hero btn-hero-secondary"
+                    onclick="document.getElementById('track').scrollIntoView({behavior:'smooth'})">Track
+                    Application</button>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="hero-card">
+                <div class="hero-card-title">Latest Application</div>
+                <div class="hero-card-value"><span class="status-dot"></span> Approved ✓</div>
+                <div class="hero-card-sub">Schengen Visa · Lagos → Paris</div>
+            </div>
+            <div class="hero-card">
+                <div class="hero-card-title">Processing Time</div>
+                <div class="hero-card-value">36 Hours</div>
+                <div class="hero-card-sub">UK Tourist Visa</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+    QUICK SEARCH
+    ============================= -->
+    <section class="search-section">
+        <div class="search-container">
+            <div class="search-label">🔍 Check Visa Requirements Instantly</div>
+            <div class="search-box">
+                <div class="search-field">
+                    <label>From (Nationality)</label>
+                    <select id="s-from">
+                        <option value="">— Nationality —</option>
+                    </select>
+                </div>
+                <div class="search-field">
+                    <label>Destination</label>
+                    <select id="s-to">
+                        <option value="">Select Destination</option>
+                    </select>
+                </div>
+                <div class="search-field">
+                    <label>Travel Purpose</label>
+                    <select id="s-type">
+                        <option>🌴 Tourism</option>
+                        <option>💼 Business</option>
+                        <option>🎓 Study</option>
+                        <option>🏥 Medical</option>
+                        <option>👨‍👩‍👧 Family Visit</option>
+                    </select>
+                </div>
+                <button class="btn-search" id="btn-quick-search" type="button">Check →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+    SERVICES
+    ============================= -->
+    <section class="services" id="services">
+        <div class="section-header">
+            <div class="section-tag">Our Services</div>
+            <h2 class="section-title">Everything You Need to Travel</h2>
+            <p class="section-sub">From visa applications to travel insurance — your end-to-end travel companion.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card" onclick="window.location.href='apply.html'">
+                <div class="service-icon-bg">
+                    <div class="service-icon">📋</div>
+                </div>
+                <div class="service-title">Visa Application</div>
+                <div class="service-desc">Complete online visa application with document checklist, expert review,
+                    and embassy submission support.</div>
+                <div class="service-arrow">→</div>
+            </div>
+            <div class="service-card" onclick="openModal('insurance')">
+                <div class="service-icon-bg">
+                    <div class="service-icon">🛡️</div>
+                </div>
+                <div class="service-title">Travel Insurance</div>
+                <div class="service-desc">Comprehensive travel insurance. Medical emergencies, trip cancellation,
+                    lost baggage and more.</div>
+                <div class="service-arrow">→</div>
+            </div>
+            <div class="service-card" onclick="openConsultModal()">
+                <div class="service-icon-bg">
+                    <div class="service-icon">🗓️</div>
+                </div>
+                <div class="service-title">Travel Consultation</div>
+                <div class="service-desc">Book a one-on-one session with a Jekafly visa expert. Personalised guidance,
+                    document review, and application strategy.</div>
+                <div class="service-arrow">→</div>
+            </div>
+            <div class="service-card" onclick="document.getElementById('track').scrollIntoView({behavior:'smooth'})">
+                <div class="service-icon-bg">
+                    <div class="service-icon">🔍</div>
+                </div>
+                <div class="service-title">Application Tracking</div>
+                <div class="service-desc">Real-time status updates at every step of your visa journey — from
+                    submission to decision.</div>
+                <div class="service-arrow">→</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon-bg">
+                    <div class="service-icon">✈️</div>
+                </div>
+                <div class="service-title">Flight Booking</div>
+                <div class="service-desc">Book flights and get dummy tickets for visa applications. We handle flight
+                    itineraries too.</div>
+                <div class="service-arrow">→</div>
+            </div>
+            <div class="service-card">
+                <div class="service-icon-bg">
+                    <div class="service-icon">🏨</div>
+                </div>
+                <div class="service-title">Hotel Booking</div>
+                <div class="service-desc">Book accommodation or get hotel reservation proofs needed for your visa
+                    application instantly.</div>
+                <div class="service-arrow">→</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+    HOW IT WORKS
+    ============================= -->
+    <section class="how">
+        <div class="section-header">
+            <div class="section-tag">How It Works</div>
+            <h2 class="section-title">Apply in 4 Simple Steps</h2>
+            <p class="section-sub">From choosing your destination to receiving your visa, we make the process seamless.
+            </p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h4>Choose Destination</h4>
+                <p>Select where you're going and your travel purpose. We'll show you exactly what you need.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h4>Upload Documents</h4>
+                <p>Upload your documents securely. Our experts review them and guide you if anything is missing.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h4>Pay & Submit</h4>
+                <p>Pay the visa fee and service charge. We handle your application submission to the embassy.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">4</div>
+                <h4>Get Your Visa</h4>
+                <p>Track your application live. Receive your approved visa directly to your email.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+    VISA CHECKER
+    ============================= -->
+    <section class="visa-checker" id="visa">
+        <div class="checker-wrap">
+            <div class="checker-form">
+                <h3>Visa Requirements Checker</h3>
+                <p>Find out exactly what documents you need for your visa application.</p>
+                <div class="form-group">
+                    <label>Your Nationality</label>
+                    <select id="c-from">
+                        <option value="">— Select Nationality —</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Destination Country</label>
+                    <select id="c-to">
+                        <option value="">— Select Destination —</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Travel Purpose</label>
+                    <select id="c-type">
+                        <option>Tourism / Holiday</option>
+                        <option>Business</option>
+                        <option>Study</option>
+                        <option>Medical Treatment</option>
+                        <option>Family Visit</option>
+                    </select>
+                </div>
+                <button class="btn-check" id="btn-check-req" type="button">Check Requirements →</button>
+
+                <div class="checker-result" id="checker-result">
+                    <div class="result-header">
+                        <div class="result-dot result-dot-success"></div>
+                        <div class="result-title" id="result-title">Select a destination above</div>
+                    </div>
+                    <div id="result-meta" class="result-meta">
+                    </div>
+                    <ul class="result-items" id="result-list"></ul>
+                    <div class="checker-result-cta">
+                        <button class="btn-check btn-check-sm" onclick="applyWithDest(getSelectValue('c-to'))">Start
+                            Application →</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checker-info">
+                <h3>Why Jekafly Visa?</h3>
+                <p>We've helped thousands of Nigerians and Africans get their visas approved. Our experts know
+                    exactly what embassies want.</p>
+                <ul class="info-list">
+                    <li>
+                        <div class="icon">✅</div>
+                        <div><strong>95% Approval Rate</strong><br><span class="info-sub">Higher
+                                than industry average through expert document review</span></div>
+                    </li>
+                    <li>
+                        <div class="icon">⚡</div>
+                        <div><strong>48-Hour Turnaround</strong><br><span class="info-sub">Fastest
+                                processing times available for urgent travel needs</span></div>
+                    </li>
+                    <li>
+                        <div class="icon">🔒</div>
+                        <div><strong>Secure & Encrypted</strong><br><span class="info-sub">Your
+                                documents and data are protected with bank-grade security</span></div>
+                    </li>
+                    <li>
+                        <div class="icon">📱</div>
+                        <div><strong>24/7 Support</strong><br><span class="info-sub">Dedicated visa
+                                consultants available around the clock</span></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+    DESTINATIONS
+    ============================= -->
+    <section class="destinations" id="destinations">
+        <div class="section-header">
+            <div class="section-tag">Popular Destinations</div>
+            <h2 class="section-title">Where Will You Go?</h2>
+            <p class="section-sub">We process visas for 195+ countries. Here are the most popular ones.</p>
+        </div>
+        <div class="dest-grid">
+            <div class="dest-card" onclick="selectDest('United Kingdom')"
+                style="background-image:url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&q=80&fit=crop')">
+                <div class="dest-overlay">
+                    <div class="dest-name">🇬🇧 United Kingdom</div>
+                    <div class="dest-tag">Standard Visitor Visa</div>
+                </div>
+                <div class="dest-badge">Popular</div>
+            </div>
+            <div class="dest-card" onclick="selectDest('United States')"
+                style="background-image:url('https://images.unsplash.com/photo-1485871981521-5b1fd3805eee?w=600&q=80&fit=crop')">
+                <div class="dest-overlay">
+                    <div class="dest-name">🇺🇸 United States</div>
+                    <div class="dest-tag">B1/B2 Tourist Visa</div>
+                </div>
+            </div>
+            <div class="dest-card" onclick="selectDest('France')"
+                style="background-image:url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600&q=80&fit=crop')">
+                <div class="dest-overlay">
+                    <div class="dest-name">🇪🇺 Schengen Zone</div>
+                    <div class="dest-tag">26 Countries · One Visa</div>
+                </div>
+                <div class="dest-badge">Hot</div>
+            </div>
+            <div class="dest-card" onclick="selectDest('UAE')"
+                style="background-image:url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80&fit=crop')">
+                <div class="dest-overlay">
+                    <div class="dest-name">🇦🇪 UAE (Dubai)</div>
+                    <div class="dest-tag">Tourist Visa · 30/90 days</div>
+                </div>
+            </div>
+            <div class="dest-card" onclick="selectDest('Canada')"
+                style="background-image:url('https://images.unsplash.com/photo-1517935706615-2717063c2225?w=600&q=80&fit=crop')">
+                <div class="dest-overlay">
+                    <div class="dest-name">🇨🇦 Canada</div>
+                    <div class="dest-tag">Visitor Visa (TRV)</div>
+                </div>
+            </div>
+            <div class="dest-card" onclick="selectDest('Australia')"
+                style="background-image:url('https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=600&q=80&fit=crop')">
+                <div class="dest-overlay">
+                    <div class="dest-name">🇦🇺 Australia</div>
+                    <div class="dest-tag">Tourist Visa Subclass 600</div>
+                </div>
+            </div>
+            <div class="dest-card" onclick="selectDest('China')"
+                style="background-image:url('https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=600&q=80&fit=crop')">
+                <div class="dest-overlay">
+                    <div class="dest-name">🇨🇳 China</div>
+                    <div class="dest-tag">L Visa (Tourism)</div>
+                </div>
+            </div>
+            <div class="dest-card" onclick="selectDest('Japan')"
+                style="background-image:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80&fit=crop')">
+                <div class="dest-overlay">
+                    <div class="dest-name">🇯🇵 Japan</div>
+                    <div class="dest-tag">Tourist Visa</div>
+                </div>
+                <div class="dest-badge">eVisa</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+    INSURANCE
+    ============================= -->
+    <section class="insurance" id="insurance">
+        <div class="insurance-wrap">
+            <div class="insurance-visual">
+                <div class="ins-logo">🛡️</div>
+                <div class="ins-title">Jekafly Travel Insurance</div>
+                <div class="ins-sub">In partnership with Allianz Global Assistance</div>
+                <div class="ins-features">
+                    <div class="ins-feat">
+                        <div class="ins-feat-icon">🏥</div>
+                        <div class="ins-feat-title">Medical Emergency</div>
+                        <div class="ins-feat-desc">Up to $500,000 coverage</div>
+                    </div>
+                    <div class="ins-feat">
+                        <div class="ins-feat-icon">✈️</div>
+                        <div class="ins-feat-title">Trip Cancellation</div>
+                        <div class="ins-feat-desc">Full fare reimbursement</div>
+                    </div>
+                    <div class="ins-feat">
+                        <div class="ins-feat-icon">🧳</div>
+                        <div class="ins-feat-title">Lost Baggage</div>
+                        <div class="ins-feat-desc">Up to $2,500 per claim</div>
+                    </div>
+                    <div class="ins-feat">
+                        <div class="ins-feat-icon">🚑</div>
+                        <div class="ins-feat-title">Evacuation</div>
+                        <div class="ins-feat-desc">Global evacuation included</div>
+                    </div>
+                </div>
+                <div class="ins-partner">🤝 Powered by Allianz Global Assistance · 24/7 Worldwide Support</div>
+            </div>
+            <div class="insurance-content">
+                <div class="section-tag">Travel Insurance</div>
+                <h3>Travel with Total Peace of Mind</h3>
+                <p>Our travel insurance plans are crafted to meet Schengen and global embassy requirements, while
+                    protecting you
+                    from unexpected events abroad.</p>
+                <div class="ins-plans">
+                    <div class="ins-plan active" onclick="selectPlan(this)">
+                        <div>
+                            <div class="ins-plan-name">Basic Plan</div>
+                            <div class="ins-plan-desc">Medical emergencies + Baggage loss</div>
+                        </div>
+                        <div class="ins-plan-price" data-ins-preview="basic">From ₦25,000</div>
+                    </div>
+                    <div class="ins-plan" onclick="selectPlan(this)">
+                        <div>
+                            <div class="ins-plan-name">Standard Plan</div>
+                            <div class="ins-plan-desc">Basic + Trip cancellation + Delays</div>
+                        </div>
+                        <div class="ins-plan-price" data-ins-preview="standard">From ₦45,000</div>
+                    </div>
+                    <div class="ins-plan" onclick="selectPlan(this)">
+                        <div>
+                            <div class="ins-plan-name">Premium Plan</div>
+                            <div class="ins-plan-desc">All coverage + Adventure sports + COVID</div>
+                        </div>
+                        <div class="ins-plan-price" data-ins-preview="premium">From ₦80,000</div>
+                    </div>
+                </div>
+                <div class="ins-cta-wrap">
+                    <button class="btn-check btn-ins-cta" onclick="openModal('insurance')">Get
+                        Insured
+                        Today →</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+    TRACKING
+    ============================= -->
+    <section class="tracking" id="track">
+        <div class="track-wrap">
+            <div class="section-tag">Application Tracking</div>
+            <h2 class="section-title">Track Your Application</h2>
+            <p class="section-sub">Enter your application reference number to get real-time updates on your visa status.
+            </p>
+            <div class="track-input-wrap">
+                <input class="track-input" type="text" id="track-ref" placeholder="e.g. JKF-2024-000001" />
+                <button class="btn-track" id="btn-track" type="button">Track →</button>
+            </div>
+            <div class="track-demo" id="track-demo"></div>
+        </div>
+    </section>
+
+    <!-- =============================
+    TESTIMONIALS
+    ============================= -->
+    <section class="testimonials">
+        <div class="section-header">
+            <div class="section-tag">Reviews</div>
+            <h2 class="section-title">What Our Customers Say</h2>
+            <p class="section-sub">Thousands of Nigerians have simplified their journey with Jekafly.</p>
+        </div>
+        <div class="testi-grid">
+            <div class="testi-card">
+                <div class="testi-stars">★★★★★</div>
+                <div class="testi-text">"I applied for my UK visa through Jekafly and got approved in 5 days. The
+                    document checklist was super helpful — nothing was missing."</div>
+                <div class="testi-author">
+                    <div class="testi-avatar">AO</div>
+                    <div>
+                        <div class="testi-name">Adaeze Okonkwo</div>
+                        <div class="testi-meta">UK Visitor Visa · Lagos</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testi-card">
+                <div class="testi-stars">★★★★★</div>
+                <div class="testi-text">"Got my Schengen visa for my Paris trip. The team helped me understand exactly
+                    what the embassy needed. Absolutely recommend Jekafly!"</div>
+                <div class="testi-author">
+                    <div class="testi-avatar">BT</div>
+                    <div>
+                        <div class="testi-name">Babatunde Tunde</div>
+                        <div class="testi-meta">Schengen Visa · Abuja</div>
+                    </div>
+                </div>
+            </div>
+            <div class="testi-card">
+                <div class="testi-stars">★★★★★</div>
+                <div class="testi-text">"The insurance they recommended actually covered my medical bill when I fell ill
+                    in Dubai. Stress-free experience from start to finish."</div>
+                <div class="testi-author">
+                    <div class="testi-avatar">FI</div>
+                    <div>
+                        <div class="testi-name">Fatima Ibrahim</div>
+                        <div class="testi-meta">UAE Visa + Insurance · Kano</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- =============================
+    CTA
+    ============================= -->
+    <div class="cta-banner">
+        <div>
+            <h2>Ready to Travel? Start Your Visa Application Today.</h2>
+            <p>Join 50,000+ travellers who simplified their journey with Jekafly.</p>
+        </div>
+        <div class="cta-actions">
+            <button class="btn-hero btn-hero-primary" onclick="applyWithDest(getSelectValue('s-to'))">Apply Now
+                →</button>
+            <p class="cta-tagline">Takes under 10 minutes</p>
+        </div>
+    </div>
+
+    <!-- =============================
+    FOOTER
+    ============================= -->
+    <footer>
+        <div class="footer-top">
+            <div>
+                <div class="footer-logo-text">Jek<span>a</span>fly</div>
+                <div class="footer-tagline">Your Journey Simplified. Visa applications, travel insurance, and document
+                    support — all in one platform.</div>
+                <div class="footer-social">
+                    <div class="social-btn">𝕏</div>
+                    <div class="social-btn">f</div>
+                    <div class="social-btn">in</div>
+                    <div class="social-btn">▶</div>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>Services</h4><a href="apply.html">Visa Application</a><a href="#insurance">Travel Insurance</a><a
+                    href="apply.html">Document Support</a><a href="#">Flight Booking</a><a href="#">Hotel
+                    Reservations</a>
+            </div>
+            <div class="footer-col">
+                <h4>Destinations</h4><a href="#" onclick="selectDest('United Kingdom')">United Kingdom</a><a href="#"
+                    onclick="selectDest('United States')">United States</a><a href="#"
+                    onclick="selectDest('France')">Schengen Zone</a><a href="#" onclick="selectDest('UAE')">UAE /
+                    Dubai</a><a href="#" onclick="selectDest('Canada')">Canada</a>
+            </div>
+            <div class="footer-col">
+                <h4>Company</h4><a href="dashboard.html">My Dashboard</a><a href="#track">Track Application</a><a
+                    href="#">Blog & Travel Tips</a><a href="#">Contact Us</a><a href="admin.html">Admin Panel</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Jekafly Technologies Limited. All rights reserved. Registered in Nigeria.</p>
+            <div class="footer-badges"><span class="badge">🔒 SSL Secured</span><span class="badge">🇳🇬 Nigeria
+                    Registered</span><span class="badge">Allianz Partner</span></div>
+        </div>
+    </footer>
+
+    <!-- =============================
+    MODAL OVERLAY
+    ============================= -->
+    <div class="modal-overlay" id="modal" onclick="closeModalIfBg(event)">
+        <div class="modal">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+
+            <!-- =============================
+            AUTH MODAL
+            ============================= -->
+            <div id="modal-auth">
+                <h3 id="modal-title">Welcome Back</h3>
+                <p class="modal-sub">Login or create your Jekafly account</p>
+                <div class="tab-bar">
+                    <button class="tab active" onclick="switchTab('login')">Login</button>
+                    <button class="tab" onclick="switchTab('register')">Create Account</button>
+                </div>
+
+                <div class="tab-content active" id="tab-login">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input id="login-email" type="email" placeholder="you@example.com" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input id="login-pass" type="password" placeholder="••••••••" />
+                    </div>
+                    <button class="btn-check btn-check-mt" id="btn-login" type="button" onclick="handleLogin()">Login to
+                        Jekafly</button>
+                    <p class="modal-demo">Demo: <strong>admin@jekafly.com</strong> / <strong>admin1234</strong></p>
+                </div>
+
+                <div class="tab-content" id="tab-register">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input id="reg-name" type="text" placeholder="John Doe" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input id="reg-email" type="email" placeholder="you@example.com" />
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input id="reg-phone" type="tel" placeholder="+234 xxx xxx xxxx" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input id="reg-pass" type="password" placeholder="Min. 8 characters" />
+                    </div>
+                    <button class="btn-check btn-check-mt" id="btn-register" type="button"
+                        onclick="handleRegister()">Create Free
+                        Account</button>
+                </div>
+            </div>
+
+            <!-- =============================
+            INSURANCE MODAL
+            ============================= -->
+            <div id="modal-insurance" class="modal-section-hidden">
+                <h3>Get Travel Insurance</h3>
+                <p class="modal-sub">Certificate issued instantly after payment.</p>
+                <div class="form-group">
+                    <label>Destination Region</label>
+                    <select id="ins-dest">
+                        <option>Worldwide</option>
+                        <option>Schengen Only</option>
+                        <option>UK Only</option>
+                        <option>Middle East</option>
+                        <option>Africa</option>
+                        <option>Asia</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Departure Date</label>
+                    <input id="ins-date" type="date" />
+                </div>
+                <div class="form-group">
+                    <label>Number of Travellers</label>
+                    <input id="ins-travellers" type="number" value="1" min="1" max="10" />
+                </div>
+                <div class="ins-modal-plans">
+                    <p class="ins-plan-label">Select Plan</p>
+                    <div class="ins-plan active" onclick="selectPlan(this)">
+                        <div>
+                            <div class="ins-plan-name">Basic Plan</div>
+                            <div class="ins-plan-desc">Medical + Baggage</div>
+                        </div>
+                        <div class="ins-plan-price" data-ins-price="basic">₦25,000/person</div>
+                    </div>
+                    <div class="ins-plan" onclick="selectPlan(this)">
+                        <div>
+                            <div class="ins-plan-name">Standard Plan</div>
+                            <div class="ins-plan-desc">Medical + Cancellation + Baggage</div>
+                        </div>
+                        <div class="ins-plan-price" data-ins-price="standard">₦45,000/person</div>
+                    </div>
+                    <div class="ins-plan" onclick="selectPlan(this)">
+                        <div>
+                            <div class="ins-plan-name">Premium Plan</div>
+                            <div class="ins-plan-desc">All coverage + Adventure + COVID</div>
+                        </div>
+                        <div class="ins-plan-price" data-ins-price="premium">₦80,000/person</div>
+                    </div>
+                </div>
+                <button class="btn-check" id="btn-insurance-modal" type="button">Proceed to Payment →</button>
+            </div>
+
+
+            <!-- =============================
+            CONSULTATION MODAL
+            ============================= -->
+            <div id="modal-consultation" class="modal-section-hidden">
+                <button class="modal-close" onclick="closeModal()"
+                    style="position:absolute;top:14px;right:16px;">✕</button>
+
+                <!-- Step 1: Pick package -->
+                <div id="consult-modal-step-1">
+                    <h3 style="margin-bottom:4px;">Book a Travel Consultation</h3>
+                    <p class="modal-sub">One-on-one session with a Jekafly visa expert.</p>
+
+                    <div style="display:flex;flex-direction:column;gap:10px;margin:18px 0;">
+                        <div class="consult-modal-pkg" id="mpkg-standard" onclick="selectModalPkg('standard',15000)"
+                            style="border:2px solid #E5E9F5;border-radius:12px;padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+                            <div>
+                                <div style="font-weight:700;font-size:0.95rem;color:#0D1560;">💬 Standard</div>
+                                <div style="font-size:0.8rem;color:#6B7280;">30-min video call</div>
+                            </div>
+                            <div style="font-weight:800;font-size:1.1rem;color:#0E0EB8;" data-pkg-price>₦15,000</div>
+                        </div>
+                        <div class="consult-modal-pkg" id="mpkg-priority" onclick="selectModalPkg('priority',25000)"
+                            style="border:2px solid #0E0EB8;border-radius:12px;padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#F0F4FF;">
+                            <div>
+                                <div style="font-weight:700;font-size:0.95rem;color:#0D1560;">⚡ Priority <span
+                                        style="background:#0E0EB8;color:#fff;font-size:0.68rem;padding:2px 8px;border-radius:20px;margin-left:6px;">POPULAR</span>
+                                </div>
+                                <div style="font-size:0.8rem;color:#6B7280;">30-min call + document review</div>
+                            </div>
+                            <div style="font-weight:800;font-size:1.1rem;color:#0E0EB8;" data-pkg-price>₦25,000</div>
+                        </div>
+                        <div class="consult-modal-pkg" id="mpkg-vip" onclick="selectModalPkg('vip',50000)"
+                            style="border:2px solid #E5E9F5;border-radius:12px;padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+                            <div>
+                                <div style="font-weight:700;font-size:0.95rem;color:#0D1560;">👑 VIP</div>
+                                <div style="font-size:0.8rem;color:#6B7280;">60-min dedicated session</div>
+                            </div>
+                            <div style="font-weight:800;font-size:1.1rem;color:#0E0EB8;">₦50,000</div>
+                        </div>
+                    </div>
+
+                    <div id="consult-modal-pkg-error"
+                        style="display:none;color:#DC2626;font-size:0.82rem;margin-bottom:8px;">Please select a package.
+                    </div>
+                    <div id="consult-pay-error" style="display:none;color:#DC2626;font-size:0.82rem;margin-bottom:8px;">
+                    </div>
+                    <button class="btn-check btn-check-mt" onclick="consultModalNext()">Continue →</button>
+                </div>
+
+                <!-- Step 2: Login / Register (shown if not logged in) -->
+                <div id="consult-modal-step-2" style="display:none;">
+                    <button onclick="consultModalBack()"
+                        style="background:none;border:none;cursor:pointer;color:#6B7280;font-size:0.85rem;margin-bottom:12px;">←
+                        Back</button>
+                    <h3 style="margin-bottom:4px;">Create an account or log in</h3>
+                    <p class="modal-sub">We need an account to send your booking confirmation.</p>
+                    <div class="tab-bar" style="margin-bottom:16px;">
+                        <button class="tab active" id="consult-tab-login"
+                            onclick="switchConsultTab('login')">Login</button>
+                        <button class="tab" id="consult-tab-register"
+                            onclick="switchConsultTab('register')">Register</button>
+                    </div>
+
+                    <form id="consult-login-form" onsubmit="return false;">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input id="consult-login-email" type="email" placeholder="you@example.com" />
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input id="consult-login-pass" type="password" placeholder="••••••••" />
+                        </div>
+                        <div id="consult-login-error"
+                            style="display:none;color:#DC2626;font-size:0.82rem;margin-bottom:8px;"></div>
+                        <button class="btn-check btn-check-mt" onclick="consultModalLogin()">Login & Pay →</button>
+                    </form>
+
+                    <form id="consult-register-form" style="display:none;">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input id="consult-reg-name" type="text" placeholder="John Doe" />
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input id="consult-reg-email" type="email" placeholder="you@example.com" />
+                        </div>
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input id="consult-reg-phone" type="tel" placeholder="+234 xxx xxx xxxx" />
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input id="consult-reg-pass" type="password" placeholder="Min. 8 characters" />
+                        </div>
+                        <div id="consult-reg-error"
+                            style="display:none;color:#DC2626;font-size:0.82rem;margin-bottom:8px;"></div>
+                        <button class="btn-check btn-check-mt" onclick="consultModalRegister()">Create Account & Pay
+                            →</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- =============================
+    SCRIPTS
+    ============================= -->
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/2348000000000" target="_blank" rel="noopener" class="wa-float"
+        title="Chat with us on WhatsApp">💬</a>
+
+    <script src="api.js?v=4"></script>
+    <script src="app.js?v=4"></script>
+    <script>
+        // ── Hero slideshow + rotating headlines ──────────────────────
+        const heroSlides = [
+            { bg: 0, line1: 'Visa Applications,', line2: 'Simplified.' },
+            { bg: 1, line1: 'Travel the World,', line2: 'Stress-Free.' },
+            { bg: 2, line1: 'Your Passport to', line2: 'Every Destination.' },
+            { bg: 3, line1: 'Expert Help,', line2: '48-Hour Processing.' },
+        ];
+        let heroIdx = 0;
+        let heroTimer;
+
+        function goToSlide(i) {
+            const slides = document.querySelectorAll('.hero-slide');
+            const dots = document.querySelectorAll('.hero-dot');
+            slides[heroIdx].classList.remove('active');
+            dots[heroIdx].classList.remove('active');
+            heroIdx = i;
+            slides[heroIdx].classList.add('active');
+            dots[heroIdx].classList.add('active');
+
+            // Animate headline
+            const headline = document.getElementById('hero-headline');
+            if (headline) {
+                headline.classList.remove('animate');
+                void headline.offsetWidth; // reflow
+                document.getElementById('hero-line-1').textContent = heroSlides[i].line1;
+                document.getElementById('hero-line-2').textContent = heroSlides[i].line2;
+                headline.classList.add('animate');
+            }
+
+            clearInterval(heroTimer);
+            heroTimer = setInterval(() => goToSlide((heroIdx + 1) % heroSlides.length), 5000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            heroTimer = setInterval(() => goToSlide((heroIdx + 1) % heroSlides.length), 5000);
+        });
+    </script>
+
+    <!-- =============================
+    APPLY DRAFT → AUTH PREFILL + RETURN HANDLER
+    ============================= -->
+    <script>
+        const DRAFT_KEY = "jkf_apply_draft_v1";
+
+        function readApplyDraft_() {
+            try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch { return null; }
+        }
+
+        function prefillAuthFromDraft_() {
+            const draft = readApplyDraft_();
+            if (!draft) return;
+
+            const email = (draft.personal?.email || "").trim();
+            const phone = (draft.personal?.phone || "").trim();
+            const firstName = (draft.personal?.firstName || "").trim();
+            const lastName = (draft.personal?.lastName || "").trim();
+            const fullName = (firstName || lastName) ? `${firstName} ${lastName}`.trim() : "";
+
+            if (email) {
+                const loginEmail = document.getElementById("login-email");
+                if (loginEmail && !loginEmail.value) loginEmail.value = email;
+
+                const regEmail = document.getElementById("reg-email");
+                if (regEmail && !regEmail.value) regEmail.value = email;
+            }
+
+            if (phone) {
+                const regPhone = document.getElementById("reg-phone");
+                if (regPhone && !regPhone.value) regPhone.value = phone;
+            }
+
+            if (fullName) {
+                const regName = document.getElementById("reg-name");
+                if (regName && !regName.value) regName.value = fullName;
+            }
+        }
+
+        function maybeAutoOpenAuthFromReturn_() {
+            let qs = null;
+            try { qs = new URLSearchParams(window.location.search); } catch { qs = null; }
+            if (!qs) return;
+
+            const ret = qs.get("return");
+            if (!ret) return;
+
+            prefillAuthFromDraft_();
+
+            if (typeof openModal === "function") {
+                openModal("login");
+                if (typeof switchTab === "function") switchTab("login");
+            }
+        }
+
+        function wireReturnAfterAuth_() {
+            function getReturnParam_() {
+                try {
+                    const qs = new URLSearchParams(window.location.search);
+                    const r = qs.get("return");
+                    return r ? decodeURIComponent(r) : "";
+                } catch {
+                    return "";
+                }
+            }
+
+            const btnLogin = document.getElementById("btn-login");
+            if (btnLogin) {
+                btnLogin.addEventListener("click", () => {
+                    setTimeout(() => {
+                        const user = Auth?.getCurrent ? Auth.getCurrent() : null;
+                        if (!user) return;
+
+                        const ret = getReturnParam_();
+                        if (ret) window.location.href = ret;
+                    }, 120);
+                });
+            }
+
+            const btnRegister = document.getElementById("btn-register");
+            if (btnRegister) {
+                btnRegister.addEventListener("click", () => {
+                    setTimeout(() => {
+                        const user = Auth?.getCurrent ? Auth.getCurrent() : null;
+                        if (!user) return;
+
+                        const ret = getReturnParam_();
+                        if (ret) window.location.href = ret;
+                    }, 120);
+                });
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            prefillAuthFromDraft_();
+            maybeAutoOpenAuthFromReturn_();
+            wireReturnAfterAuth_();
+        });
+    </script>
+    <script>
+        window.addEventListener('scroll', () => {
+            document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 20);
+        });
+    </script>
+
+    <script>
+        // ── Consultation modal ────────────────────────────────────────────────
+        const CONSULT_PACKAGES = {
+            standard: { name: 'Standard Consultation', amount: 15000 },
+            priority: { name: 'Priority Consultation', amount: 25000 },
+            vip: { name: 'VIP Consultation', amount: 50000 },
+        };
+        let _cModalPkg = 'priority'; // default selected
+
+        // Called by app.js once live pricing is fetched
+        function applyConsultPricing(p) {
+            CONSULT_PACKAGES.standard.amount = p.consultStandard;
+            CONSULT_PACKAGES.priority.amount = p.consultPriority;
+            CONSULT_PACKAGES.vip.amount = p.consultVip;
+            // Update displayed prices in the modal
+            const fmt = v => '₦' + Number(v).toLocaleString();
+            const standardEl = document.querySelector('#mpkg-standard [data-pkg-price]');
+            const priorityEl = document.querySelector('#mpkg-priority [data-pkg-price]');
+            const vipEl = document.querySelector('#mpkg-vip [data-pkg-price]');
+            if (standardEl) standardEl.textContent = fmt(p.consultStandard);
+            if (priorityEl) priorityEl.textContent = fmt(p.consultPriority);
+            if (vipEl) vipEl.textContent = fmt(p.consultVip);
+            // Update onclick amounts
+            document.getElementById('mpkg-standard')?.setAttribute('onclick', `selectModalPkg('standard',${p.consultStandard})`);
+            document.getElementById('mpkg-priority')?.setAttribute('onclick', `selectModalPkg('priority',${p.consultPriority})`);
+            document.getElementById('mpkg-vip')?.setAttribute('onclick', `selectModalPkg('vip',${p.consultVip})`);
+        }
+
+        function applyInsPricing(p) {
+            const fmt = v => '₦' + Number(v).toLocaleString();
+            // Update ins-plan-price spans in both section display + modal
+            const prices = document.querySelectorAll('[data-ins-price]');
+            prices.forEach(el => {
+                const plan = el.getAttribute('data-ins-price');
+                if (plan === 'basic') el.textContent = `${fmt(p.insuranceBasic)}/person`;
+                if (plan === 'standard') el.textContent = `${fmt(p.insuranceStandard)}/person`;
+                if (plan === 'premium') el.textContent = `${fmt(p.insurancePremium)}/person`;
+            });
+            // Also update the section preview cards (From ₦...)
+            const previews = document.querySelectorAll('[data-ins-preview]');
+            previews.forEach(el => {
+                const plan = el.getAttribute('data-ins-preview');
+                if (plan === 'basic') el.textContent = `From ${fmt(p.insuranceBasic)}`;
+                if (plan === 'standard') el.textContent = `From ${fmt(p.insuranceStandard)}`;
+                if (plan === 'premium') el.textContent = `From ${fmt(p.insurancePremium)}`;
+            });
+        }
+
+        function openConsultModal() {
+            openModal('consultation');
+            selectModalPkg('priority', 25000);
+        }
+
+        function selectModalPkg(pkg, amount) {
+            _cModalPkg = pkg;
+            document.querySelectorAll('.consult-modal-pkg').forEach(el => el.classList.remove('selected'));
+            document.getElementById('mpkg-' + pkg)?.classList.add('selected');
+            document.getElementById('consult-modal-pkg-error').style.display = 'none';
+        }
+
+        function consultModalNext() {
+            if (!_cModalPkg) {
+                document.getElementById('consult-modal-pkg-error').style.display = 'block';
+                return;
+            }
+            const user = typeof Auth !== 'undefined' ? Auth.getCurrent() : null;
+            if (user) {
+                // Already logged in — go straight to payment
+                consultPay(user.email);
+            } else {
+                document.getElementById('consult-modal-step-1').style.display = 'none';
+                document.getElementById('consult-modal-step-2').style.display = 'block';
+            }
+        }
+
+        function consultModalBack() {
+            document.getElementById('consult-modal-step-2').style.display = 'none';
+            document.getElementById('consult-modal-step-1').style.display = 'block';
+        }
+
+        function switchConsultTab(tab) {
+            document.getElementById('consult-login-form').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('consult-register-form').style.display = tab === 'register' ? 'block' : 'none';
+            document.getElementById('consult-tab-login').classList.toggle('active', tab === 'login');
+            document.getElementById('consult-tab-register').classList.toggle('active', tab === 'register');
+        }
+
+        async function consultModalLogin() {
+            const email = document.getElementById('consult-login-email').value.trim();
+            const pass = document.getElementById('consult-login-pass').value;
+            const errEl = document.getElementById('consult-login-error');
+            errEl.style.display = 'none';
+            if (!email || !pass) { errEl.textContent = 'Please fill in all fields.'; errEl.style.display = 'block'; return; }
+            try {
+                const res = await Auth.login(email, pass);
+                if (!res.ok) throw new Error(res.error || 'Login failed');
+                await consultPay(email);
+            } catch (e) {
+                errEl.textContent = e.message;
+                errEl.style.display = 'block';
+            }
+        }
+
+        async function consultModalRegister() {
+            const name = document.getElementById('consult-reg-name').value.trim();
+            const email = document.getElementById('consult-reg-email').value.trim();
+            const phone = document.getElementById('consult-reg-phone').value.trim();
+            const pass = document.getElementById('consult-reg-pass').value;
+            const errEl = document.getElementById('consult-reg-error');
+            errEl.style.display = 'none';
+            if (!name || !email || !pass) { errEl.textContent = 'Please fill in all required fields.'; errEl.style.display = 'block'; return; }
+            try {
+                const res = await Auth.register(name, email, pass, phone);
+                if (!res.ok) throw new Error(res.error || 'Registration failed');
+                await consultPay(email);
+            } catch (e) {
+                errEl.textContent = e.message;
+                errEl.style.display = 'block';
+            }
+        }
+
+        async function consultPay(email) {
+            const pkg = CONSULT_PACKAGES[_cModalPkg];
+            try {
+                const res = await PaymentStore.initiate(
+                    'CONSULTATION', null, pkg.amount * 100, email,
+                    { package: _cModalPkg, packageName: pkg.name }
+                );
+                if (res?.ok && res.data?.authorizationUrl) {
+                    window.location.href = res.data.authorizationUrl;
+                } else {
+                    throw new Error(res?.error || 'Payment initiation failed');
+                }
+            } catch (e) {
+                // Show error near the pay button
+                const errEl = document.getElementById('consult-pay-error');
+                if (errEl) { errEl.textContent = e.message; errEl.style.display = 'block'; }
+                else alert(e.message);
+            }
+        }
+    </script>
+</body>
+
+</html>

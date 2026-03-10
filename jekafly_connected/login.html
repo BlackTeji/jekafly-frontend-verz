@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login or Create Account — Jekafly</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/login.css" />
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" />
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#visa">Visa Application</a>
+            <a href="apply.html">Apply</a>
+        </div>
+        <div class="nav-cta" id="nav-cta-area"></div>
+    </nav>
+
+    <div class="login-page">
+        <div class="login-wrap">
+
+            <div class="login-aside">
+                <div class="aside-logo">Jek<span>a</span>fly</div>
+                <h2 class="aside-heading">Almost there.<br>Let's save your application.</h2>
+                <p class="aside-sub">Create a free account or login to submit your visa application and track its
+                    progress in real time.</p>
+                <ul class="aside-perks">
+                    <li>
+                        <div class="perk-icon">📋</div> Your application is saved and ready to submit
+                    </li>
+                    <li>
+                        <div class="perk-icon">🔔</div> Get real-time status updates by email & SMS
+                    </li>
+                    <li>
+                        <div class="perk-icon">📁</div> Securely upload and manage your documents
+                    </li>
+                    <li>
+                        <div class="perk-icon">🔒</div> Your data is encrypted and never shared
+                    </li>
+                </ul>
+            </div>
+
+            <div class="login-form-panel">
+
+                <div class="return-notice" id="return-notice">
+                    🔒 Login to submit your visa application
+                </div>
+
+                <h1 class="login-heading" id="panel-heading">Welcome back</h1>
+                <p class="login-sub" id="panel-sub">Login to your Jekafly account to continue.</p>
+
+                <div class="tab-bar">
+                    <button class="tab active" onclick="switchTab('login')">Login</button>
+                    <button class="tab" onclick="switchTab('register')">Create Account</button>
+                </div>
+
+                <div class="tab-content active" id="tab-login">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" />
+                    </div>
+                    <button class="btn-auth" id="btn-login" type="button">Login to Jekafly →</button>
+                    <div class="demo-hint">
+                        Demo: <strong>admin@jekafly.com</strong> / <strong>admin1234</strong>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-register">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="reg-name" placeholder="As on your passport" autocomplete="name" />
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" />
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="reg-phone" placeholder="+234 xxx xxx xxxx" autocomplete="tel" />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="reg-pass" placeholder="Min. 8 characters"
+                            autocomplete="new-password" />
+                    </div>
+                    <button class="btn-auth" id="btn-register" type="button">Create Free Account →</button>
+                </div>
+
+                <a href="javascript:history.back()" class="back-link">← Go back</a>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Login / Register — uses real API
+        document.addEventListener('DOMContentLoaded', async () => {
+            await Auth.init();
+            const user = Auth.getCurrent();
+            if (user) {
+                window.location.href = user.role === 'ADMIN' ? 'admin.html' : 'dashboard.html';
+                return;
+            }
+
+            const params = new URLSearchParams(window.location.search);
+            const returnUrl = params.get('return') || 'dashboard.html';
+
+            document.getElementById('btn-login')?.addEventListener('click', async () => {
+                const email = document.getElementById('login-email')?.value.trim();
+                const pass = document.getElementById('login-pass')?.value;
+                if (!email || !pass) { showToast('Please enter email and password.', 'error'); return; }
+                const res = await Auth.login(email, pass);
+                if (res.ok) {
+                    showToast('Welcome back! 👋');
+                    setTimeout(() => {
+                        window.location.href = res.user.role === 'ADMIN' ? 'admin.html' : decodeURIComponent(returnUrl);
+                    }, 600);
+                } else {
+                    showToast(res.msg, 'error');
+                }
+            });
+
+            document.getElementById('btn-register')?.addEventListener('click', async () => {
+                const name = document.getElementById('reg-name')?.value.trim();
+                const email = document.getElementById('reg-email')?.value.trim();
+                const phone = document.getElementById('reg-phone')?.value.trim();
+                const pass = document.getElementById('reg-pass')?.value;
+                if (!name || !email || !pass) { showToast('Please fill in all required fields.', 'error'); return; }
+                const res = await Auth.register(name, email, phone, pass);
+                if (res.ok) {
+                    showToast('Account created! Welcome to Jekafly 🎉');
+                    setTimeout(() => window.location.href = decodeURIComponent(returnUrl), 800);
+                } else {
+                    showToast(res.msg, 'error');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,884 @@
+.apply-page {
+    margin-top: 68px;
+    min-height: calc(100vh - 68px);
+    background: var(--off-white);
+    padding: 48px 5%;
+}
+
+.apply-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.apply-header {
+    margin-bottom: 22px;
+}
+
+.apply-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 6px;
+}
+
+.apply-header p {
+    color: var(--text-light);
+}
+
+/* DRAFT BANNER */
+.draft-banner {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 24px rgba(14, 14, 184, 0.04);
+}
+
+.draft-banner .left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.draft-banner .title {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+.draft-banner .meta {
+    font-size: 0.82rem;
+    color: var(--text-light);
+}
+
+.draft-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.btn-small {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--off-white);
+    font-weight: 700;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all .2s;
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.btn-small:hover {
+    border-color: var(--blue);
+    background: white;
+}
+
+.btn-small.primary {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+}
+
+.btn-small.primary:hover {
+    background: var(--blue-dark);
+    border-color: var(--blue-dark);
+}
+
+/* STEPPER */
+.stepper {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+}
+
+.step-item::after {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 60%;
+    width: 80%;
+    height: 2px;
+    background: var(--border);
+    z-index: 0;
+}
+
+.step-item:last-child::after {
+    display: none;
+}
+
+.step-item.done::after {
+    background: var(--blue);
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--border);
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+    transition: all .3s;
+    border: 3px solid var(--off-white);
+}
+
+.step-item.active .step-circle {
+    background: var(--blue);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(14, 14, 184, 0.15);
+}
+
+.step-item.done .step-circle {
+    background: var(--success);
+    color: white;
+}
+
+.step-label {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    margin-top: 8px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.step-item.active .step-label,
+.step-item.done .step-label {
+    color: var(--text);
+    font-weight: 600;
+}
+
+/* FORM CARD */
+.form-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 24px rgba(14, 14, 184, 0.06);
+    border: 1.5px solid var(--border);
+}
+
+.form-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+}
+
+.form-card .sub {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 22px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--off-white);
+    outline: none;
+    transition: border .2s;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--blue);
+    background: white;
+}
+
+.form-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 32px;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.btn-back {
+    padding: 13px 28px;
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    background: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text-light);
+    transition: all .2s;
+}
+
+.btn-back:hover {
+    border-color: var(--text-light);
+    color: var(--text);
+}
+
+.btn-next {
+    padding: 13px 36px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all .2s;
+}
+
+.btn-next:hover {
+    background: var(--blue-dark);
+    transform: translateY(-1px);
+}
+
+.btn-save {
+    padding: 13px 18px;
+    border-radius: 10px;
+    background: rgba(14, 14, 184, 0.08);
+    border: 1.5px solid rgba(14, 14, 184, 0.18);
+    color: var(--blue);
+    font-weight: 800;
+    font-size: 0.86rem;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all .2s;
+}
+
+.btn-save:hover {
+    background: rgba(14, 14, 184, 0.12);
+    border-color: rgba(14, 14, 184, 0.28);
+}
+
+/* DOC CHECKLIST */
+.doc-checklist {
+    margin-top: 20px;
+}
+
+.doc-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all .2s;
+}
+
+.doc-item:hover {
+    border-color: var(--blue);
+    background: rgba(14, 14, 184, 0.02);
+}
+
+.doc-item.checked {
+    border-color: var(--success);
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.doc-cb {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all .2s;
+}
+
+.doc-item.checked .doc-cb {
+    background: var(--success);
+    border-color: var(--success);
+    color: white;
+    font-size: 0.75rem;
+}
+
+.doc-name {
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.doc-status {
+    margin-left: auto;
+    font-size: 0.75rem;
+}
+
+.doc-item.checked .doc-status {
+    color: var(--success);
+    font-weight: 600;
+}
+
+/* REVIEW */
+.review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.review-item {
+    background: var(--off-white);
+    border-radius: 12px;
+    padding: 14px 18px;
+}
+
+.review-label {
+    font-size: 0.73rem;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.review-value {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.fee-box {
+    background: rgba(14, 14, 184, 0.05);
+    border: 1.5px solid var(--blue);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 12px;
+}
+
+.fee-label {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.fee-amount {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--blue);
+    white-space: nowrap;
+}
+
+/* SUCCESS */
+.success-card {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.success-icon {
+    font-size: 4rem;
+    margin-bottom: 16px;
+}
+
+.success-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.success-card p {
+    color: var(--text-light);
+    margin-bottom: 24px;
+}
+
+.ref-box {
+    background: var(--blue);
+    color: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.ref-box .ref-label {
+    font-size: 0.78rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+}
+
+.ref-box .ref-code {
+    font-size: 1.8rem;
+    font-weight: 800;
+    font-family: monospace;
+    margin-top: 4px;
+}
+
+@media(max-width:600px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .review-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── APPLY V2 POLISH ──────────────────────────────────────── */
+.apply-page {
+    margin-top: 68px;
+    min-height: calc(100vh - 68px);
+    background: var(--off-white);
+    padding: 52px 5%;
+}
+
+.apply-header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.form-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-lg, 20px);
+    padding: 40px;
+    box-shadow: 0 4px 16px rgba(13, 21, 96, 0.07);
+    margin-bottom: 16px;
+}
+
+.form-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+}
+
+.form-card .sub {
+    color: var(--text-light);
+    font-size: 0.88rem;
+    margin-bottom: 28px;
+}
+
+.step-item.done .step-circle {
+    background: var(--success, #0CAF60);
+    color: white;
+}
+
+.step-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-light);
+    margin-top: 6px;
+    text-align: center;
+}
+
+.step-item.active .step-label {
+    color: var(--blue);
+    font-weight: 700;
+}
+
+.step-item.done .step-label {
+    color: var(--success, #0CAF60);
+}
+
+/* Doc checklist upgrade */
+.doc-item {
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-bottom: 8px;
+    background: white;
+}
+
+.doc-item:hover {
+    border-color: var(--blue);
+    background: rgba(13, 21, 96, 0.04);
+}
+
+.doc-item.checked {
+    border-color: var(--success, #0CAF60);
+    background: rgba(12, 175, 96, 0.04);
+}
+
+.doc-cb {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+    transition: all 0.18s;
+    background: white;
+}
+
+.doc-item.checked .doc-cb {
+    background: var(--success, #0CAF60);
+    border-color: var(--success, #0CAF60);
+}
+
+.doc-name {
+    flex: 1;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text);
+}
+
+.doc-status {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    flex-shrink: 0;
+}
+
+.doc-item.checked .doc-status {
+    color: var(--success, #0CAF60);
+    font-weight: 600;
+}
+
+/* Form nav */
+.form-nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+}
+
+.btn-next {
+    padding: 12px 28px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all 0.18s;
+    margin-left: auto;
+}
+
+.btn-next:hover {
+    background: var(--blue-dark, #090F4A);
+    transform: translateY(-1px);
+}
+
+.btn-back {
+    padding: 12px 20px;
+    background: transparent;
+    color: var(--text-light);
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all 0.18s;
+}
+
+.btn-back:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+.btn-save {
+    padding: 12px 20px;
+    background: transparent;
+    color: var(--text-light);
+    border: none;
+    font-weight: 500;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: color 0.18s;
+}
+
+.btn-save:hover {
+    color: var(--blue);
+}
+
+/* Review grid */
+.review-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1.5px solid var(--border);
+    border-radius: 9px;
+    overflow: hidden;
+    margin-bottom: 24px;
+}
+
+.review-item {
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+}
+
+.review-item:nth-child(even) {
+    border-right: none;
+}
+
+.review-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 4px;
+}
+
+.review-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+/* Draft banner */
+.draft-banner {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(13, 21, 96, 0.05);
+}
+
+.draft-banner .title {
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+.draft-banner .meta {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    margin-top: 2px;
+}
+
+/* ── Doc upload notice (top of step 3) ─────────────────── */
+.doc-upload-notice {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: linear-gradient(135deg, #EEF1FF 0%, #F0F9FF 100%);
+    border: 1.5px solid #C7D4F5;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 20px;
+    font-size: 0.88rem;
+    color: #1A2040;
+    line-height: 1.5;
+}
+
+.doc-upload-notice-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.doc-upload-notice strong {
+    color: #0D1560;
+}
+
+/* ── File preview button ────────────────────────────────── */
+.file-preview-btn {
+    padding: 3px 10px;
+    background: #EEF1FF;
+    border: 1.5px solid #C7D4F5;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #0D1560;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background 0.15s;
+    margin-left: auto;
+}
+
+.file-preview-btn:hover {
+    background: #DDE3FF;
+}
+
+/* ── Document preview modal ─────────────────────────────── */
+.doc-preview-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 13, 50, 0.75);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.doc-preview-inner {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 860px;
+    width: 100%;
+    max-height: 90vh;
+    overflow: auto;
+    position: relative;
+}
+
+.doc-preview-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: #F4F6FB;
+    border: none;
+    border-radius: 8px;
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: background 0.15s;
+}
+
+.doc-preview-close:hover {
+    background: #E8EBF4;
+}
+
+/* ── Copyable ref box in review step ───────────────────── */
+.review-ref-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #F0F4FF;
+    border: 1.5px solid #C7D4F5;
+    border-radius: 10px;
+    padding: 13px 16px;
+    margin-bottom: 16px;
+}
+
+.review-ref-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #8B93B0;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    white-space: nowrap;
+}
+
+.review-ref-code {
+    font-family: monospace;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #0D1560;
+    flex: 1;
+    letter-spacing: 0.04em;
+}
+
+.review-ref-copy {
+    padding: 6px 14px;
+    background: white;
+    border: 1.5px solid #C7D4F5;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    color: #0D1560;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.review-ref-copy:hover {
+    background: #EEF1FF;
+    border-color: #0D1560;
+}
+
+/* ── Payment page copyable ref ──────────────────────────── */
+.ref-copyable {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: monospace;
+    font-weight: 700;
+    color: #0D1560;
+    border-radius: 6px;
+    padding: 2px 8px;
+    background: #F0F4FF;
+    transition: background 0.15s;
+}
+
+.ref-copyable:hover {
+    background: #DDE3FF;
+}
+
+.copy-icon {
+    font-size: 0.85rem;
+}
+
+/* Visa preview disclaimer notice */
+.visa-preview-notice {
+    font-size: 0.78rem;
+    color: #6B7494;
+    background: #FFF9EC;
+    border: 1.5px solid #F5D88A;
+    border-radius: 8px;
+    padding: 9px 12px;
+    margin-bottom: 14px;
+    line-height: 1.5;
+}
+
+.visa-preview-notice strong {
+    color: #92400E;
+}

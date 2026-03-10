@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+            caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+        }
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel — Jekafly</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            overflow-y: scroll;
+            /* always reserve scrollbar space — prevents layout shift */
+        }
+
+        body {
+            background: #F5F7FC;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #1A2040;
+            margin: 0;
+        }
+
+        .admin-page {
+            margin-top: 68px;
+            min-height: calc(100vh - 68px);
+        }
+
+        .admin-wrap {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            min-height: calc(100vh - 68px);
+        }
+
+        /* SIDEBAR */
+        .admin-sidebar {
+            background: #fff;
+            border-right: 1.5px solid #E5E9F5;
+            padding: 24px 0;
+            position: sticky;
+            top: 68px;
+            height: calc(100vh - 68px);
+            overflow-y: auto;
+        }
+
+        .admin-logo {
+            padding: 0 20px 20px;
+            border-bottom: 1.5px solid #E5E9F5;
+            margin-bottom: 8px;
+        }
+
+        .admin-logo .al-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #E31E24;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+        }
+
+        .admin-logo .al-sub {
+            font-size: 0.72rem;
+            color: #9BA5C0;
+            margin-top: 2px;
+        }
+
+        .admin-nav-section {
+            font-size: 0.64rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: #B8C0D8;
+            padding: 16px 20px 6px;
+        }
+
+        .admin-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: #6B7494;
+            border-left: 3px solid transparent;
+            transition: all .15s;
+            user-select: none;
+        }
+
+        .admin-nav-item:hover {
+            background: #F5F7FC;
+            color: #0D1560;
+        }
+
+        .admin-nav-item.active {
+            background: #EEF1FF;
+            color: #0D1560;
+            border-left-color: #0D1560;
+        }
+
+        .admin-nav-item .ni {
+            font-size: 1rem;
+            width: 20px;
+            flex-shrink: 0;
+        }
+
+        /* MAIN */
+        .admin-main {
+            padding: 32px 36px;
+        }
+
+        .admin-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            color: #0D1560;
+            margin-bottom: 3px;
+        }
+
+        .admin-sub {
+            color: #9BA5C0;
+            font-size: 0.87rem;
+            margin-bottom: 26px;
+        }
+
+        /* STATS */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .astat {
+            background: #fff;
+            border-radius: 14px;
+            padding: 18px 20px;
+            border: 1.5px solid #E5E9F5;
+            transition: box-shadow .18s;
+        }
+
+        .astat:hover {
+            box-shadow: 0 4px 20px rgba(13, 21, 96, .07);
+        }
+
+        .astat-icon {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+
+        .astat-val {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #0D1560;
+            margin-bottom: 1px;
+        }
+
+        .astat-lbl {
+            font-size: 0.73rem;
+            color: #9BA5C0;
+            font-weight: 600;
+        }
+
+        /* CARD */
+        .acard {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #E5E9F5;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .acard-header {
+            padding: 16px 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1.5px solid #E5E9F5;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .acard-header h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.97rem;
+            font-weight: 800;
+            color: #0D1560;
+        }
+
+        /* REVENUE BARS */
+        .rev-card {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #E5E9F5;
+            padding: 22px 24px;
+            margin-bottom: 20px;
+        }
+
+        .rev-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.97rem;
+            font-weight: 800;
+            color: #0D1560;
+            margin-bottom: 18px;
+        }
+
+        .rev-bars {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 80px;
+        }
+
+        .rev-bar {
+            flex: 1;
+            background: linear-gradient(180deg, #0D1560 0%, #4B5AB8 100%);
+            border-radius: 4px 4px 0 0;
+            min-height: 4px;
+        }
+
+        .rev-labels {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+
+        .rev-label {
+            flex: 1;
+            font-size: 0.63rem;
+            text-align: center;
+            color: #B8C0D8;
+            font-weight: 600;
+        }
+
+        /* FILTERS */
+        .afilters {
+            display: flex;
+            gap: 7px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            padding: 6px 13px;
+            border-radius: 7px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1.5px solid #E5E9F5;
+            background: #fff;
+            color: #9BA5C0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all .14s;
+        }
+
+        .filter-btn:hover {
+            border-color: #0D1560;
+            color: #0D1560;
+        }
+
+        .filter-btn.active {
+            background: #0D1560;
+            color: #fff;
+            border-color: #0D1560;
+        }
+
+        .search-input {
+            padding: 7px 13px;
+            border-radius: 8px;
+            background: #F5F7FC;
+            border: 1.5px solid #E5E9F5;
+            color: #1A2040;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.84rem;
+            outline: none;
+            min-width: 210px;
+            transition: border-color .14s;
+        }
+
+        .search-input:focus {
+            border-color: #0D1560;
+            background: #fff;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            font-size: 0.67rem;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: #B8C0D8;
+            font-weight: 700;
+            padding: 11px 18px;
+            text-align: left;
+            background: #F8F9FD;
+        }
+
+        td {
+            padding: 12px 18px;
+            font-size: 0.83rem;
+            border-top: 1.5px solid #F0F3FA;
+            color: #3A4060;
+        }
+
+        tr:hover td {
+            background: #FAFBFF;
+        }
+
+        .cell-mono {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: #0D1560;
+            font-weight: 700;
+        }
+
+        .cell-sub {
+            font-size: 0.74rem;
+            color: #B8C0D8;
+        }
+
+        .cell-date {
+            font-size: 0.76rem;
+            color: #9BA5C0;
+        }
+
+        .atbl-empty {
+            padding: 32px;
+            text-align: center;
+            color: #B8C0D8;
+            font-size: 0.88rem;
+        }
+
+        /* STATUS PILLS */
+        .status-pill {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+
+        .status-received {
+            background: #F0F2F8;
+            color: #8B93B0;
+        }
+
+        .status-processing {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+
+        .status-embassy {
+            background: #EEF1FF;
+            color: #0D1560;
+        }
+
+        .status-approved {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-delivered {
+            background: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-rejected {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+
+        .paid-yes {
+            color: #065F46;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        .paid-no {
+            color: #92400E;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        /* BUTTONS */
+        .btn-manage {
+            padding: 5px 13px;
+            background: #0D1560;
+            color: #fff;
+            border: none;
+            border-radius: 7px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: opacity .14s;
+        }
+
+        .btn-manage:hover {
+            opacity: 0.82;
+        }
+
+        .btn-update-status {
+            padding: 10px 22px;
+            background: #0D1560;
+            color: #fff;
+            border: none;
+            border-radius: 9px;
+            font-size: 0.86rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: opacity .14s;
+            margin-top: 6px;
+        }
+
+        .btn-update-status:hover {
+            opacity: 0.82;
+        }
+
+        .btn-close-detail {
+            padding: 5px 12px;
+            background: #F5F7FC;
+            color: #6B7494;
+            border: 1.5px solid #E5E9F5;
+            border-radius: 7px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .btn-close-detail:hover {
+            border-color: #E31E24;
+            color: #E31E24;
+        }
+
+        .btn-logout {
+            padding: 7px 16px;
+            background: none;
+            border: 1.5px solid #E5E9F5;
+            border-radius: 8px;
+            font-size: 0.81rem;
+            font-weight: 700;
+            color: #6B7494;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all .14s;
+        }
+
+        .btn-logout:hover {
+            border-color: #E31E24;
+            color: #E31E24;
+        }
+
+        /* DETAIL PANEL */
+        .app-detail {
+            background: #fff;
+            border-radius: 14px;
+            border: 1.5px solid #E5E9F5;
+            padding: 26px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .app-detail.show {
+            display: block;
+        }
+
+        .app-detail h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: #0D1560;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 1.5px solid #E5E9F5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .detail-item {
+            background: #F8F9FD;
+            border-radius: 9px;
+            padding: 11px 13px;
+            border: 1.5px solid #E5E9F5;
+        }
+
+        .detail-label {
+            font-size: 0.67rem;
+            color: #B8C0D8;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .detail-value {
+            font-size: 0.86rem;
+            font-weight: 600;
+            color: #1A2040;
+        }
+
+        /* UPDATE FORM */
+        .update-form {
+            background: #F0F4FF;
+            border: 1.5px solid #C7D4F5;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 14px;
+        }
+
+        .update-form label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            color: #9BA5C0;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .update-form select,
+        .update-form textarea {
+            width: 100%;
+            padding: 10px 13px;
+            background: #fff;
+            border: 1.5px solid #C7D4F5;
+            color: #1A2040;
+            border-radius: 8px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.86rem;
+            outline: none;
+            margin-bottom: 10px;
+            resize: vertical;
+            transition: border-color .14s;
+        }
+
+        .update-form select:focus,
+        .update-form textarea:focus {
+            border-color: #0D1560;
+        }
+
+        /* NAV OVERRIDES */
+        .nav-admin-user {
+            font-size: 0.83rem;
+            color: #6B7494;
+            font-weight: 600;
+        }
+
+        @media (max-width: 900px) {
+            .admin-wrap {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-sidebar {
+                position: static;
+                height: auto;
+            }
+
+            .admin-stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .admin-main {
+                padding: 20px;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
+        </a>
+        <div class="nav-links">
+            <a href="index.html">← Back to Site</a>
+            <a href="dashboard.html?from=admin">User Dashboard</a>
+        </div>
+        <div class="nav-cta" id="nav-cta-area"></div>
+    </nav>
+
+    <div class="admin-page">
+        <div class="admin-wrap">
+
+            <!-- SIDEBAR -->
+            <aside class="admin-sidebar">
+                <div class="admin-logo">
+                    <div class="al-title">⚙️ Admin</div>
+                    <div class="al-sub">Jekafly Management</div>
+                </div>
+                <div class="admin-nav-section">Overview</div>
+                <div class="admin-nav-item active" onclick="adminTab('overview',this)"><span
+                        class="ni">📊</span>Dashboard</div>
+                <div class="admin-nav-section">Manage</div>
+                <div class="admin-nav-item" onclick="adminTab('applications',this)"><span class="ni">📋</span>All
+                    Applications</div>
+                <div class="admin-nav-item" onclick="adminTab('users',this)"><span class="ni">👥</span>Users</div>
+                <div class="admin-nav-item" onclick="adminTab('fees',this)"><span class="ni">💰</span>Manage Fees</div>
+                <div class="admin-nav-item" onclick="adminTab('documents',this)"><span class="ni">📁</span>Documents
+                </div>
+                <div class="admin-nav-section">Quick Links</div>
+                <div class="admin-nav-item" onclick="location.href='index.html'"><span class="ni">🌐</span>View Website
+                </div>
+                <div class="admin-nav-item" onclick="doLogout()"><span class="ni">🚪</span>Logout</div>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <main class="admin-main">
+
+                <!-- ── OVERVIEW ──────────────────────────── -->
+                <div id="tab-overview">
+                    <div class="admin-title">Admin Dashboard</div>
+                    <p class="admin-sub" id="admin-greeting">Welcome back.</p>
+
+                    <div class="admin-stats" id="admin-stats"></div>
+
+                    <div class="rev-card">
+                        <h3>Revenue Overview — Last 7 Months</h3>
+                        <div class="rev-bars" id="rev-bars"></div>
+                        <div class="rev-labels" id="rev-labels"></div>
+                    </div>
+
+                    <div class="acard">
+                        <div class="acard-header">
+                            <h3>Recent Applications</h3>
+                        </div>
+                        <div id="overview-recent"></div>
+                    </div>
+                </div>
+
+                <!-- ── APPLICATIONS ──────────────────────── -->
+                <div id="tab-applications" style="display:none">
+                    <div class="admin-title">All Applications</div>
+                    <p class="admin-sub">View, filter, and update status for all visa applications.</p>
+
+                    <!-- Detail panel -->
+                    <div class="app-detail" id="admin-detail">
+                        <h3>
+                            <span id="detail-title">Application Details</span>
+                            <button class="btn-close-detail" onclick="closeDetail()">✕ Close</button>
+                        </h3>
+                        <div class="detail-grid" id="detail-grid"></div>
+                        <div id="admin-doc-section" style="margin:18px 0 6px;">
+                            <div style="font-weight:700;font-size:0.95rem;color:#0D1560;margin-bottom:10px;">📎 Uploaded
+                                Documents</div>
+                            <div id="admin-doc-list" style="font-size:0.85rem;color:#9BA5C0;">Select an application to
+                                view documents.</div>
+                        </div>
+                        <div class="update-form">
+                            <label>Update Status</label>
+                            <select id="new-status">
+                                <option value="received">📥 Received</option>
+                                <option value="processing">🔍 Processing (Docs Verified)</option>
+                                <option value="embassy">🏛️ Embassy Review</option>
+                                <option value="approved">✅ Approved</option>
+                                <option value="delivered">📬 Delivered</option>
+                                <option value="rejected">❌ Rejected</option>
+                            </select>
+                            <label>Note to Applicant</label>
+                            <textarea id="status-note" rows="2"
+                                placeholder="e.g. Documents verified, submitted to embassy."></textarea>
+                            <button class="btn-update-status" onclick="updateStatus()">Update Status →</button>
+                        </div>
+                    </div>
+
+                    <div class="acard">
+                        <div class="acard-header">
+                            <h3>Applications</h3>
+                            <div class="afilters">
+                                <input type="text" class="search-input" id="app-search"
+                                    placeholder="🔍 Search ref, name, destination..." oninput="filterApps()" />
+                                <button class="btn-manage" onclick="exportCSV('applications')"
+                                    style="margin-left:auto;white-space:nowrap;">⬇ Export CSV</button>
+                                <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+                                <button class="filter-btn" onclick="setFilter('received',this)">Received</button>
+                                <button class="filter-btn" onclick="setFilter('processing',this)">Processing</button>
+                                <button class="filter-btn" onclick="setFilter('embassy',this)">Embassy</button>
+                                <button class="filter-btn" onclick="setFilter('approved',this)">Approved</button>
+                            </div>
+                        </div>
+                        <div id="apps-table"></div>
+                    </div>
+                </div>
+
+                <!-- ── USERS ─────────────────────────────── -->
+                <div id="tab-documents" style="display:none">
+                    <div class="admin-section-title">📁 Applicant Documents</div>
+                    <div style="margin-bottom:16px;display:flex;gap:10px;align-items:center;">
+                        <input id="doc-ref-filter" type="text"
+                            placeholder="Filter by application ref (e.g. JKF-2026-000001)"
+                            style="padding:9px 14px;border:1.5px solid #E5E9F5;border-radius:8px;font-size:0.9rem;width:320px;outline:none;"
+                            oninput="filterDocs()" />
+                        <button class="btn-manage" onclick="loadDocs()">Refresh</button>
+                        <button class="btn-manage" onclick="exportCSV('documents')" style="white-space:nowrap;">⬇ Export
+                            CSV</button>
+                    </div>
+                    <div id="docs-table">
+                        <div class="atbl-empty">Click Refresh to load documents.</div>
+                    </div>
+                </div>
+                <div id="tab-users" style="display:none">
+                    <div class="admin-title">Registered Users</div>
+                    <p class="admin-sub" id="user-count-sub">All accounts registered on Jekafly.</p>
+                    <div class="acard">
+                        <div class="acard-header">
+                            <h3>Users</h3>
+                            <button class="btn-manage" onclick="exportCSV('users')" style="white-space:nowrap;">⬇ Export
+                                CSV</button>
+                        </div>
+                        <div id="users-table"></div>
+                    </div>
+                </div>
+
+                <!-- ── FEES ──────────────────────────────── -->
+                <div id="tab-fees" style="display:none">
+                    <div class="admin-title">Manage Fees</div>
+                    <p class="admin-sub">Set Jekafly's service fees per destination. These override the default fees
+                        shown to applicants.</p>
+
+                    <div class="acard" style="margin-bottom:20px">
+                        <div class="acard-header">
+                            <h3>Global Service Fee</h3>
+                        </div>
+                        <div style="padding:22px 24px">
+                            <p style="font-size:0.85rem;color:#6B7494;margin-bottom:14px">This flat fee is added to
+                                every application on top of the destination fee.</p>
+                            <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+                                <label
+                                    style="font-size:0.78rem;font-weight:700;color:#9BA5C0;text-transform:uppercase;letter-spacing:.06em">Jekafly
+                                    Service Fee (₦)</label>
+                                <input type="number" id="fee-service" placeholder="25000" min="0" step="500"
+                                    style="padding:9px 13px;border:1.5px solid #E5E9F5;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;width:160px;outline:none" />
+                                <button class="btn-manage" onclick="saveServiceFee()">Save</button>
+                            </div>
+                            <div style="font-size:0.78rem;color:#9BA5C0;margin-top:8px" id="service-fee-current"></div>
+                        </div>
+                    </div>
+
+                    <div class="acard" style="margin-bottom:20px">
+                        <div class="acard-header">
+                            <h3>Service Pricing</h3>
+                        </div>
+                        <div style="padding:22px 24px">
+                            <p style="font-size:0.85rem;color:#6B7494;margin-bottom:18px">Set prices for Travel
+                                Consultation packages and Travel Insurance plans shown to applicants.</p>
+
+                            <div
+                                style="font-size:0.78rem;font-weight:700;color:#0D1560;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">
+                                💬 Travel Consultation</div>
+                            <div
+                                style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px">
+                                <div>
+                                    <label
+                                        style="font-size:0.75rem;color:#9BA5C0;display:block;margin-bottom:4px">Standard
+                                        (₦)</label>
+                                    <input type="number" id="price-consult-standard" min="0" step="500"
+                                        style="padding:9px 13px;border:1.5px solid #E5E9F5;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;width:100%;box-sizing:border-box;outline:none" />
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:0.75rem;color:#9BA5C0;display:block;margin-bottom:4px">Priority
+                                        (₦)</label>
+                                    <input type="number" id="price-consult-priority" min="0" step="500"
+                                        style="padding:9px 13px;border:1.5px solid #E5E9F5;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;width:100%;box-sizing:border-box;outline:none" />
+                                </div>
+                                <div>
+                                    <label style="font-size:0.75rem;color:#9BA5C0;display:block;margin-bottom:4px">VIP
+                                        (₦)</label>
+                                    <input type="number" id="price-consult-vip" min="0" step="500"
+                                        style="padding:9px 13px;border:1.5px solid #E5E9F5;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;width:100%;box-sizing:border-box;outline:none" />
+                                </div>
+                            </div>
+
+                            <div
+                                style="font-size:0.78rem;font-weight:700;color:#0D1560;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">
+                                🛡️ Travel Insurance (per person)</div>
+                            <div
+                                style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px">
+                                <div>
+                                    <label style="font-size:0.75rem;color:#9BA5C0;display:block;margin-bottom:4px">Basic
+                                        (₦)</label>
+                                    <input type="number" id="price-ins-basic" min="0" step="500"
+                                        style="padding:9px 13px;border:1.5px solid #E5E9F5;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;width:100%;box-sizing:border-box;outline:none" />
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:0.75rem;color:#9BA5C0;display:block;margin-bottom:4px">Standard
+                                        (₦)</label>
+                                    <input type="number" id="price-ins-standard" min="0" step="500"
+                                        style="padding:9px 13px;border:1.5px solid #E5E9F5;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;width:100%;box-sizing:border-box;outline:none" />
+                                </div>
+                                <div>
+                                    <label
+                                        style="font-size:0.75rem;color:#9BA5C0;display:block;margin-bottom:4px">Premium
+                                        (₦)</label>
+                                    <input type="number" id="price-ins-premium" min="0" step="500"
+                                        style="padding:9px 13px;border:1.5px solid #E5E9F5;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;width:100%;box-sizing:border-box;outline:none" />
+                                </div>
+                            </div>
+
+                            <div style="display:flex;align-items:center;gap:12px">
+                                <button class="btn-manage" onclick="savePricing()">Save Prices</button>
+                                <span id="pricing-save-status" style="font-size:0.82rem;color:#6B7494"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="acard">
+                        <div class="acard-header">
+                            <h3>Destination Fees</h3>
+                            <div style="display:flex;gap:8px;align-items:center">
+                                <button class="btn-manage" onclick="exportCSV('fees')"
+                                    style="white-space:nowrap;margin-left:auto;">⬇ Export CSV</button>
+                                <input type="text" class="search-input" id="fee-search"
+                                    placeholder="🔍 Search country..." oninput="filterFeeTable()"
+                                    style="min-width:180px" />
+                            </div>
+                        </div>
+                        <div
+                            style="padding:16px 24px;background:#F8F9FD;border-bottom:1.5px solid #E5E9F5;font-size:0.78rem;color:#9BA5C0">
+                            ⚠️ These are Jekafly's charges per destination (what the applicant pays you). They are
+                            separate from the embassy's own fees.
+                        </div>
+                        <div id="fees-table"></div>
+                        <div
+                            style="padding:16px 24px;border-top:1.5px solid #E5E9F5;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                            <input type="text" id="new-fee-country" placeholder="Country name"
+                                style="padding:8px 12px;border:1.5px solid #E5E9F5;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.86rem;flex:1;min-width:160px;outline:none" />
+                            <input type="number" id="new-fee-amount" placeholder="Amount in ₦" min="0" step="500"
+                                style="padding:8px 12px;border:1.5px solid #E5E9F5;border-radius:8px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.86rem;width:160px;outline:none" />
+                            <button class="btn-manage" onclick="addCustomFee()">+ Add / Update</button>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="api.js?v=4"></script>
+    <script src="app.js?v=4"></script>
+    <script>
+        let allApps = [], appFilter = 'all', selectedApp = null;
+        const SL = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved', delivered: 'Delivered', rejected: 'Rejected' };
+        const SC = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await Auth.init();
+            const admin = Auth.getCurrent();
+            if (!admin) { location.href = 'index.html'; return; }
+            if (admin.role !== 'ADMIN') { showToast('Access denied.', 'error'); setTimeout(() => location.href = 'index.html', 1200); return; }
+
+            document.getElementById('nav-cta-area').innerHTML =
+                `<span class="nav-admin-user">Admin: <strong>${admin.name.split(' ')[0]}</strong></span>
+         <button class="btn-logout" onclick="doLogout()">Logout</button>`;
+
+            const h = new Date().getHours();
+            document.getElementById('admin-greeting').textContent =
+                (h < 12 ? 'Good Morning' : h < 17 ? 'Good Afternoon' : 'Good Evening') + ', ' + admin.name.split(' ')[0] + '. Here\'s your overview.';
+
+            loadOverview();
+        });
+
+        function adminTab(tab, el) {
+            ['overview', 'applications', 'users', 'fees'].forEach(t =>
+                document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none');
+            document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
+            if (el) el.classList.add('active');
+            if (tab === 'applications') loadApps();
+            if (tab === 'users') loadUsers();
+            if (tab === 'fees') loadFeesTab();
+            if (tab === 'documents') loadDocs();
+        }
+
+        async function loadOverview() {
+            allApps = await AppStore.getAll();
+            const approved = allApps.filter(a => ['approved', 'delivered'].includes(a.status)).length;
+            const pending = allApps.filter(a => ['received', 'processing', 'embassy'].includes(a.status)).length;
+            const revenue = allApps.filter(a => a.paid).reduce((s, a) => s + (a.fee || 0), 0);
+            const userList = await AdminStore.getUsers();
+            const users = userList.filter(u => u.role !== 'ADMIN').length;
+
+            document.getElementById('admin-stats').innerHTML = `
+        <div class="astat"><div class="astat-icon">📋</div><div class="astat-val">${allApps.length}</div><div class="astat-lbl">Total Applications</div></div>
+        <div class="astat"><div class="astat-icon">⏳</div><div class="astat-val">${pending}</div><div class="astat-lbl">Pending</div></div>
+        <div class="astat"><div class="astat-icon">✅</div><div class="astat-val">${approved}</div><div class="astat-lbl">Approved</div></div>
+        <div class="astat"><div class="astat-icon">💰</div><div class="astat-val">₦${revenue >= 1e6 ? (revenue / 1e6).toFixed(1) + 'M' : (revenue / 1e3).toFixed(0) + 'k'}</div><div class="astat-lbl">Revenue</div></div>
+        <div class="astat"><div class="astat-icon">👥</div><div class="astat-val">${users}</div><div class="astat-lbl">Users</div></div>`;
+
+            const months = ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'];
+            const vals = [180, 240, 195, 310, 275, 420, 380], mx = Math.max(...vals);
+            document.getElementById('rev-bars').innerHTML = vals.map((v, i) =>
+                `<div class="rev-bar" style="height:${Math.round(v / mx * 80)}px;opacity:${(0.4 + i / vals.length * 0.6).toFixed(2)}"></div>`).join('');
+            document.getElementById('rev-labels').innerHTML = months.map(m => `<div class="rev-label">${m}</div>`).join('');
+
+            const recent = [...allApps].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+            document.getElementById('overview-recent').innerHTML = renderTable(recent, false);
+        }
+
+        async function loadApps() { allApps = await AppStore.getAll(); renderFiltered(); }
+
+        function setFilter(f, el) {
+            appFilter = f;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            renderFiltered();
+        }
+
+        function filterApps() { renderFiltered(); }
+
+        function renderFiltered() {
+            const q = (document.getElementById('app-search')?.value || '').toLowerCase();
+            let apps = appFilter === 'all' ? allApps : allApps.filter(a => a.status === appFilter);
+            if (q) apps = apps.filter(a => (a.ref + a.applicantName + a.destination + a.email).toLowerCase().includes(q));
+            document.getElementById('apps-table').innerHTML = renderTable(apps, true);
+        }
+
+        function renderTable(apps, actions) {
+            if (!apps.length) return '<div class="atbl-empty">No applications found.</div>';
+            return `<table>
+        <thead><tr><th>Reference</th><th>Applicant</th><th>Destination</th><th>Date</th><th>Status</th><th>Payment</th>${actions ? '<th></th>' : ''}</tr></thead>
+        <tbody>${apps.map(a => `
+        <tr>
+            <td><span class="cell-mono">${a.ref}</span></td>
+            <td><strong>${a.applicantName}</strong><br><span class="cell-sub">${a.email}</span></td>
+            <td>${a.destination}</td>
+            <td class="cell-date">${new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
+            <td><span class="status-pill ${SC[a.status]}">${SL[a.status] || a.status}</span></td>
+            <td>${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}</td>
+            ${actions ? `<td><button class="btn-manage" onclick="viewApp('${a.ref}')">Manage →</button></td>` : ''}
+        </tr>`).join('')}</tbody>
+    </table>`;
+        }
+
+        async function viewApp(ref) {
+            const app = await AppStore.getByRef(ref);
+            if (!app) return;
+            selectedApp = app;
+            document.getElementById('detail-title').textContent = app.ref + ' — ' + app.applicantName;
+            document.getElementById('detail-grid').innerHTML = [
+                { l: 'Applicant', v: app.applicantName }, { l: 'Email', v: app.email }, { l: 'Phone', v: app.phone || '—' },
+                { l: 'Nationality', v: app.nationality || '—' }, { l: 'Destination', v: app.destination }, { l: 'Purpose', v: app.purpose || '—' },
+                { l: 'Travel Date', v: app.travelDate || '—' }, { l: 'Passport No.', v: app.passportNumber || '—' }, { l: 'Passport Expiry', v: app.passportExpiry || '—' },
+                { l: 'Status', v: `<span class="status-pill ${SC[app.status]}">${SL[app.status] || app.status}</span>` },
+                { l: 'Payment', v: app.paid ? `<span class="paid-yes">✅ Paid — ₦${(app.fee || 0).toLocaleString()}</span>` : '<span class="paid-no">⚠️ Unpaid</span>' },
+                { l: 'Submitted', v: new Date(app.createdAt).toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' }) },
+            ].map(f => `<div class="detail-item"><div class="detail-label">${f.l}</div><div class="detail-value">${f.v}</div></div>`).join('');
+            document.getElementById('new-status').value = app.status;
+            document.getElementById('status-note').value = '';
+
+            // Load documents for this application
+            const docList = document.getElementById('admin-doc-list');
+            docList.innerHTML = 'Loading documents...';
+            const docs = await DocStore.getVault(app.ref);
+            if (!docs || docs.length === 0) {
+                docList.innerHTML = '<em style="color:#9BA5C0;">No documents uploaded yet.</em>';
+            } else {
+                docList.innerHTML = docs.map(d => `
+                    <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#F7F8FC;border-radius:8px;margin-bottom:6px;">
+                        <span style="font-size:1.3rem;">${d.mimeType === 'application/pdf' ? '📄' : '🖼️'}</span>
+                        <div style="flex:1;min-width:0;">
+                            <div style="font-weight:600;color:#0D1560;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${d.name}</div>
+                            <div style="font-size:0.75rem;color:#9BA5C0;">${(d.size / 1024).toFixed(1)} KB · ${new Date(d.uploadedAt).toLocaleDateString('en-NG')}</div>
+                        </div>
+                        <a href="${d.signedUrl || d.url || '#'}" target="_blank" rel="noopener"
+                           style="padding:5px 12px;background:#0E0EB8;color:#fff;border-radius:6px;font-size:0.78rem;font-weight:600;text-decoration:none;white-space:nowrap;">
+                            View ↗
+                        </a>
+                    </div>`).join('');
+            }
+
+            const panel = document.getElementById('admin-detail');
+            panel.classList.add('show');
+            panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function closeDetail() { document.getElementById('admin-detail').classList.remove('show'); selectedApp = null; }
+
+        async function updateStatus() {
+            if (!selectedApp) return;
+            const s = document.getElementById('new-status').value;
+            const note = document.getElementById('status-note').value.trim() || 'Status updated by admin.';
+            const res = await AppStore.updateStatus(selectedApp.ref, s, note);
+            if (!res) { showToast('Failed to update status.', 'error'); return; }
+            showToast('Status updated to "' + (SL[s] || s) + '" ✅');
+            closeDetail();
+            allApps = await AppStore.getAll();
+            renderFiltered();
+        }
+
+        async function loadUsers() {
+            const users = await AdminStore.getUsers();
+            document.getElementById('user-count-sub').textContent = users.length + ' registered users on Jekafly.';
+            document.getElementById('users-table').innerHTML = `<table>
+        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Joined</th><th>Apps</th></tr></thead>
+        <tbody>${users.map(u => {
+                const n = u.applicationCount || 0;
+                return `<tr>
+                <td><span class="cell-mono" style="font-size:.72rem">${u.id}</span></td>
+                <td><strong>${u.name}</strong></td><td>${u.email}</td><td>${u.phone || '—'}</td>
+                <td><span class="status-pill ${u.role === 'admin' ? 'status-embassy' : 'status-received'}">${u.role || 'user'}</span></td>
+                <td class="cell-date">${new Date(u.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
+                <td><strong>${n}</strong></td>
+            </tr>`;
+            }).join('')}</tbody>
+    </table>`;
+        }
+
+        function doLogout() { Auth.logout(); showToast('Logged out.'); setTimeout(() => location.href = 'index.html', 700); }
+
+        // ── FEE MANAGEMENT ──────────────────────────────────────────
+        const DEFAULT_FEES = {
+            'United Kingdom': 185000, 'United States': 220000, 'Canada': 195000, 'Australia': 210000,
+            'France': 160000, 'Germany': 160000, 'UAE': 95000, 'Japan': 175000, 'China': 180000,
+            'South Africa': 120000, 'Italy': 155000, 'Spain': 155000, 'Netherlands': 155000,
+            'Portugal': 155000, 'Belgium': 155000, 'Switzerland': 170000, 'Sweden': 160000,
+            'Norway': 160000, 'Denmark': 160000, 'Turkey': 85000, 'India': 75000, 'Brazil': 130000,
+            'Saudi Arabia': 90000, 'Ghana': 60000, 'Kenya': 65000, 'Egypt': 70000,
+        };
+
+        // ── Fee management — all via FeeStore API ──────────────────────────────
+        let _cachedFees = null; // { serviceFee, destinations: { Country: amount } }
+
+        async function loadFeesTab() {
+            document.getElementById('fees-table').innerHTML = '<div class="atbl-empty">Loading fees...</div>';
+            _cachedFees = await FeeStore.getAll();
+            const svc = _cachedFees.serviceFee || 25000;
+            document.getElementById('fee-service').value = svc;
+            document.getElementById('service-fee-current').textContent = `Current: ₦${Number(svc).toLocaleString()} per application`;
+            renderFeeTable();
+            loadPricing();
+        }
+
+        async function loadPricing() {
+            const p = await PricingStore.get();
+            if (!p) return;
+            document.getElementById('price-consult-standard').value = p.consultStandard;
+            document.getElementById('price-consult-priority').value = p.consultPriority;
+            document.getElementById('price-consult-vip').value = p.consultVip;
+            document.getElementById('price-ins-basic').value = p.insuranceBasic;
+            document.getElementById('price-ins-standard').value = p.insuranceStandard;
+            document.getElementById('price-ins-premium').value = p.insurancePremium;
+        }
+
+        async function savePricing() {
+            const n = (id) => { const v = parseInt(document.getElementById(id).value); return isNaN(v) ? null : v; };
+            const payload = {
+                consultStandard: n('price-consult-standard'),
+                consultPriority: n('price-consult-priority'),
+                consultVip: n('price-consult-vip'),
+                insuranceBasic: n('price-ins-basic'),
+                insuranceStandard: n('price-ins-standard'),
+                insurancePremium: n('price-ins-premium'),
+            };
+            if (Object.values(payload).some(v => v === null || v < 0)) {
+                showToast('Please enter valid amounts for all fields.', 'error'); return;
+            }
+            const status = document.getElementById('pricing-save-status');
+            status.textContent = 'Saving…';
+            const res = await PricingStore.update(payload);
+            if (res?.ok) {
+                status.textContent = '✅ Saved';
+                showToast('Service prices updated.');
+                setTimeout(() => status.textContent = '', 3000);
+            } else {
+                status.textContent = '❌ Failed';
+                showToast('Failed to save prices.', 'error');
+            }
+        }
+
+        async function saveServiceFee() {
+            const val = parseInt(document.getElementById('fee-service').value);
+            if (isNaN(val) || val < 0) { showToast('Enter a valid amount.', 'error'); return; }
+            await FeeStore.setServiceFee(val);
+            _cachedFees = null;
+            document.getElementById('service-fee-current').textContent = `Saved: ₦${val.toLocaleString()} per application ✅`;
+            showToast('Service fee updated to ₦' + val.toLocaleString());
+        }
+
+        function renderFeeTable(filter = '') {
+            if (!_cachedFees) return;
+            const overrides = _cachedFees.destinations || {};
+            const enabledSet = new Set(_cachedFees.enabledCountries || Object.keys(overrides));
+            // Merge DEFAULT_FEES with API overrides
+            const allCountries = {};
+            Object.entries(DEFAULT_FEES).forEach(([k, v]) => allCountries[k] = { default: v, override: overrides[k] });
+            Object.entries(overrides).forEach(([k, v]) => {
+                if (!allCountries[k]) allCountries[k] = { default: null, override: v };
+            });
+            const sorted = Object.entries(allCountries)
+                .filter(([k]) => !filter || k.toLowerCase().includes(filter.toLowerCase()))
+                .sort(([a], [b]) => a.localeCompare(b));
+
+            if (!sorted.length) { document.getElementById('fees-table').innerHTML = '<div class="atbl-empty">No matching countries.</div>'; return; }
+
+            document.getElementById('fees-table').innerHTML = `<table>
+        <thead><tr>
+            <th>Country</th>
+            <th>Processing</th>
+            <th>Default Fee</th>
+            <th>Custom Fee</th>
+            <th>Effective Fee</th>
+            <th></th>
+        </tr></thead>
+        <tbody>${sorted.map(([country, data]) => {
+                const enabled = enabledSet.has(country);
+                return `
+        <tr style="opacity:${enabled ? 1 : 0.65};background:${enabled ? '' : '#FAFAFA'}">
+            <td><strong>${country}</strong> ${window.visaRequirements?.[country]?.flag || ''}</td>
+            <td>
+                <button onclick="toggleCountry('${country}')" style="border:none;cursor:pointer;padding:3px 10px;border-radius:6px;font-size:0.75rem;font-weight:500;
+                    background:${enabled ? '#F0FDF4' : '#F9FAFB'};color:${enabled ? '#16A34A' : '#9CA3AF'};border:1px solid ${enabled ? '#BBF7D0' : '#E5E7EB'};">
+                    ${enabled ? '● Active' : '○ Inactive'}
+                </button>
+            </td>
+            <td style="color:#9BA5C0">₦${data.default ? data.default.toLocaleString() : '—'}</td>
+            <td>
+                <input type="number" value="${data.override != null ? data.override : ''}" placeholder="—"
+                    style="padding:5px 9px;border:1.5px solid #E5E9F5;border-radius:6px;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.82rem;width:120px;outline:none"
+                    onchange="updateFeeInline('${country}',this.value)" min="0" step="500" />
+            </td>
+            <td style="font-weight:700;color:#0D1560">₦${((data.override != null ? data.override : data.default) || 0).toLocaleString()}</td>
+            <td>${data.override != null ? `<button class="btn-manage" style="background:#FEE2E2;color:#991B1B;font-size:0.72rem" onclick="resetFee('${country}')">Reset</button>` : '<span style="font-size:0.72rem;color:#B8C0D8">default</span>'}</td>
+        </tr>`;
+            }).join('')}</tbody>
+    </table>`;
+        }
+
+        async function toggleCountry(country) {
+            const res = await FeeStore.toggleCountry(country);
+            if (!res?.ok) { showToast('Failed to update country status.', 'error'); return; }
+            const enabled = res.data?.enabled;
+
+            // Update cache silently
+            if (_cachedFees?.enabledCountries) {
+                if (enabled) {
+                    if (!_cachedFees.enabledCountries.includes(country)) _cachedFees.enabledCountries.push(country);
+                } else {
+                    _cachedFees.enabledCountries = _cachedFees.enabledCountries.filter(c => c !== country);
+                }
+            }
+
+            // Update just the button and row in place — no full reload
+            const btn = document.querySelector(`button[onclick="toggleCountry('${country}')"]`);
+            if (btn) {
+                btn.style.background = enabled ? '#F0FDF4' : '#F9FAFB';
+                btn.style.color = enabled ? '#16A34A' : '#9CA3AF';
+                btn.style.borderColor = enabled ? '#BBF7D0' : '#E5E7EB';
+                btn.textContent = enabled ? '● Active' : '○ Inactive';
+                const row = btn.closest('tr');
+                if (row) {
+                    row.style.opacity = enabled ? '1' : '0.65';
+                    row.style.background = enabled ? '' : '#FAFAFA';
+                }
+            }
+        }
+
+        function filterFeeTable() {
+            renderFeeTable(document.getElementById('fee-search').value);
+        }
+
+        async function updateFeeInline(country, val) {
+            const n = parseInt(val);
+            if (!isNaN(n) && n >= 0) {
+                const res = await FeeStore.setDestinationFee(country, n);
+                if (!res?.ok) { showToast('Failed to update fee: ' + (res?.error || 'Unknown error'), 'error'); return; }
+                _cachedFees = await FeeStore.getAll();
+                showToast(country + ' fee set to ₦' + n.toLocaleString());
+                renderFeeTable(document.getElementById('fee-search').value);
+            }
+        }
+
+        async function resetFee(country) {
+            const res = await FeeStore.resetDestinationFee(country);
+            if (!res?.ok) { showToast('Failed to reset fee: ' + (res?.error || 'Unknown error'), 'error'); return; }
+            _cachedFees = await FeeStore.getAll();
+            showToast(country + ' reset to default fee.');
+            renderFeeTable(document.getElementById('fee-search').value);
+        }
+
+        async function addCustomFee() {
+            const country = document.getElementById('new-fee-country').value.trim();
+            const amount = parseInt(document.getElementById('new-fee-amount').value);
+            if (!country) { showToast('Enter a country name.', 'error'); return; }
+            if (isNaN(amount) || amount < 0) { showToast('Enter a valid amount.', 'error'); return; }
+            const res = await FeeStore.setDestinationFee(country, amount);
+            if (!res?.ok) { showToast('Failed to set fee: ' + (res?.error || 'Unknown error'), 'error'); return; }
+            _cachedFees = await FeeStore.getAll();
+            document.getElementById('new-fee-country').value = '';
+            document.getElementById('new-fee-amount').value = '';
+            showToast(country + ' fee set to ₦' + amount.toLocaleString() + ' ✅');
+            renderFeeTable(document.getElementById('fee-search').value);
+        }
+
+
+        // ── Documents tab ────────────────────────────────────────────────────────────
+        let _allDocs = [];
+
+        async function loadDocs() {
+            document.getElementById('docs-table').innerHTML = '<div class="atbl-empty">Loading...</div>';
+            _allDocs = await AdminStore.getDocuments();
+            renderDocs();
+        }
+
+        function filterDocs() {
+            renderDocs();
+        }
+
+        function renderDocs() {
+            const filter = (document.getElementById('doc-ref-filter')?.value || '').toLowerCase();
+            const docs = _allDocs.filter(d => !filter || (d.ref || '').toLowerCase().includes(filter) || d.name.toLowerCase().includes(filter) || (d.uploadedBy || '').toLowerCase().includes(filter));
+            if (!docs.length) {
+                document.getElementById('docs-table').innerHTML = '<div class="atbl-empty">No documents found.</div>';
+                return;
+            }
+            document.getElementById('docs-table').innerHTML = `<table>
+                <thead><tr><th>File</th><th>Applicant</th><th>Application Ref</th><th>Size</th><th>Uploaded</th><th></th></tr></thead>
+                <tbody>${docs.map(d => `
+                <tr>
+                    <td><span style="font-size:1.2rem">${d.mimeType === 'application/pdf' ? '📄' : '🖼️'}</span> ${d.name}</td>
+                    <td>${d.uploadedBy}</td>
+                    <td>${d.ref ? `<span class="ref-badge">${d.ref}</span>` : '—'}</td>
+                    <td style="color:#9BA5C0">${d.size ? (d.size / 1024).toFixed(0) + ' KB' : '—'}</td>
+                    <td style="color:#9BA5C0">${new Date(d.uploadedAt).toLocaleDateString('en-NG')}</td>
+                    <td><a href="${d.url}" target="_blank" class="btn-manage" style="text-decoration:none">View</a></td>
+                </tr>`).join('')}</tbody>
+            </table>`;
+        }
+        // ── CSV Export ───────────────────────────────────────────────────────────────
+        function toCSV(rows) {
+            return rows.map(row =>
+                row.map(cell => {
+                    const s = String(cell ?? '');
+                    // Force phone numbers / long digit strings to text in Excel (prevents 2.34904E+12)
+                    if (/^[+]?[\d\s()\-]{7,}$/.test(s.trim())) {
+                        return `"=""${s.replace(/"/g, '""')}"""`;
+                    }
+                    const escaped = s.replace(/"/g, '""');
+                    return /[,"\n]/.test(s) ? `"${escaped}"` : escaped;
+                }).join(',')
+            ).join('\n');
+        }
+
+        function downloadCSV(filename, content) {
+            const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = filename; a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function exportCSV(type) {
+            const date = new Date().toISOString().slice(0, 10);
+            if (type === 'applications') {
+                if (!allApps?.length) { showToast('No applications to export.', 'error'); return; }
+                const rows = [['Ref', 'Applicant Name', 'Email', 'Phone', 'Nationality', 'Destination', 'Purpose', 'Visa Type', 'Passport No.', 'Passport Issue Date', 'Passport Expiry', 'Date of Birth', 'Travel Date', 'Return Date', 'Status', 'Fee (₦)', 'Submitted']];
+                allApps.forEach(a => rows.push([
+                    a.ref,
+                    a.applicantName || '',
+                    a.email || '',
+                    a.phone || '',
+                    a.nationality || '',
+                    a.destination || '',
+                    a.purpose || '',
+                    a.visaType || '',
+                    a.passportNumber || '',
+                    a.passportIssueDate ? new Date(a.passportIssueDate).toLocaleDateString('en-NG') : '',
+                    a.passportExpiry ? new Date(a.passportExpiry).toLocaleDateString('en-NG') : '',
+                    a.dob ? new Date(a.dob).toLocaleDateString('en-NG') : '',
+                    a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG') : '',
+                    a.returnDate ? new Date(a.returnDate).toLocaleDateString('en-NG') : '',
+                    a.status || '',
+                    a.fee || '',
+                    a.createdAt ? new Date(a.createdAt).toLocaleDateString('en-NG') : '',
+                ]));
+                downloadCSV(`jekafly-applications-${date}.csv`, toCSV(rows));
+
+            } else if (type === 'users') {
+                const userList = await AdminStore.getUsers();
+                if (!userList?.length) { showToast('No users to export.', 'error'); return; }
+                const rows = [['Name', 'Email', 'Phone', 'Role', 'Registered']];
+                userList.forEach(u => rows.push([
+                    u.name, u.email, u.phone || '', u.role,
+                    u.createdAt ? new Date(u.createdAt).toLocaleDateString('en-NG') : ''
+                ]));
+                downloadCSV(`jekafly-users-${date}.csv`, toCSV(rows));
+
+            } else if (type === 'documents') {
+                if (!_allDocs?.length) { showToast('No documents to export.', 'error'); return; }
+                const rows = [['File Name', 'Applicant', 'Application Ref', 'Size (KB)', 'Uploaded']];
+                _allDocs.forEach(d => rows.push([
+                    d.name, d.uploadedBy || '', d.ref || '',
+                    d.size ? (d.size / 1024).toFixed(0) : '',
+                    d.uploadedAt ? new Date(d.uploadedAt).toLocaleDateString('en-NG') : ''
+                ]));
+                downloadCSV(`jekafly-documents-${date}.csv`, toCSV(rows));
+
+            } else if (type === 'fees') {
+                if (!_cachedFees) { showToast('Load fees tab first.', 'error'); return; }
+                const overrides = _cachedFees.destinations || {};
+                const enabledSet = new Set(_cachedFees.enabledCountries || Object.keys(overrides));
+                const rows = [['Country', 'Default Fee (₦)', 'Custom Fee (₦)', 'Effective Fee (₦)', 'Processing']];
+                const allC = {};
+                Object.entries(DEFAULT_FEES).forEach(([k, v]) => allC[k] = { def: v, ovr: overrides[k] });
+                Object.entries(overrides).forEach(([k, v]) => { if (!allC[k]) allC[k] = { def: null, ovr: v }; });
+                Object.entries(allC).sort(([a], [b]) => a.localeCompare(b)).forEach(([country, data]) => {
+                    rows.push([
+                        country,
+                        data.def ?? '',
+                        data.ovr != null ? data.ovr : '',
+                        data.ovr != null ? data.ovr : (data.def ?? ''),
+                        enabledSet.has(country) ? 'Active' : 'Inactive'
+                    ]);
+                });
+                downloadCSV(`jekafly-fees-${date}.csv`, toCSV(rows));
+            }
+        }
+
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (nav) nav.style.boxShadow = scrollY > 20 ? '0 2px 20px rgba(14,14,184,.08)' : 'none';
+        });
+    </script>
+</body>
+
+</html>

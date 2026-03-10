@@ -1,0 +1,843 @@
+/* ============================================================
+   JEKAFLY — ANIMATED HERO
+   ============================================================ */
+
+/* Hero slides */
+.hero-slides {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.hero-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.4s ease;
+    transform: scale(1.05);
+    transition: opacity 1.4s ease, transform 8s ease;
+}
+
+.hero-slide.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Dark overlay on each slide */
+.hero-slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+            rgba(13, 21, 96, 0.88) 0%,
+            rgba(13, 21, 96, 0.72) 40%,
+            rgba(13, 21, 96, 0.55) 100%);
+}
+
+/* The existing .hero gradient orbs stay as pseudo-elements on .hero itself */
+.hero {
+    background: var(--blue) !important;
+}
+
+/* ── TYPEWRITER headline ────────────────────────────────────── */
+.hero-headline-wrap {
+    overflow: hidden;
+    min-height: 4.5rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.hero-headline {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 4.5vw, 3.7rem);
+    color: white;
+    line-height: 1.08;
+    margin-bottom: 20px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.hero-headline .hero-line-2 {
+    color: var(--red);
+    display: block;
+    position: relative;
+}
+
+/* Fade-in each headline phrase */
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-headline.animate .hero-line-1 {
+    animation: fadeSlideUp 0.6s ease both;
+}
+
+.hero-headline.animate .hero-line-2 {
+    animation: fadeSlideUp 0.6s 0.18s ease both;
+}
+
+/* ── Animated badge pulse ───────────────────────────────────── */
+.hero-badge span {
+    animation: blink 1.8s ease-in-out infinite;
+}
+
+/* ── Floating stat counters ─────────────────────────────────── */
+.hero-stats {
+    opacity: 0;
+    animation: fadeSlideUp 0.7s 0.5s ease both;
+}
+
+/* ── CTA buttons ────────────────────────────────────────────── */
+.hero-actions {
+    opacity: 0;
+    animation: fadeSlideUp 0.7s 0.7s ease both;
+}
+
+/* ── Slide indicators ───────────────────────────────────────── */
+.hero-dots {
+    position: absolute;
+    bottom: 28px;
+    left: 5%;
+    display: flex;
+    gap: 8px;
+    z-index: 2;
+}
+
+.hero-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.32);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.hero-dot.active {
+    background: white;
+    width: 24px;
+}
+
+/* ── Typography stretch (letter-spacing & line-height boost) ── */
+body {
+    letter-spacing: 0.008em;
+}
+
+p,
+li,
+span,
+td,
+th,
+label,
+div {
+    line-height: 1.68;
+}
+
+.section-title {
+    letter-spacing: -0.02em;
+    line-height: 1.12;
+}
+
+.hero-headline {
+    letter-spacing: -0.025em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    letter-spacing: -0.015em;
+}
+
+/* ── Enhanced custom select (searchable) ────────────────────── */
+.cs-wrapper {
+    position: relative;
+    width: 100%;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.cs-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--off-white);
+    cursor: pointer;
+    user-select: none;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+    min-height: 47px;
+}
+
+.cs-wrapper.has-value .cs-trigger {
+    color: var(--text);
+}
+
+.cs-wrapper.open .cs-trigger,
+.cs-trigger:focus {
+    border-color: var(--blue);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(13, 21, 96, 0.08);
+    outline: none;
+}
+
+.cs-value {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cs-arrow {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--text-light);
+    transition: transform 0.2s;
+}
+
+.cs-wrapper.open .cs-arrow {
+    transform: rotate(180deg);
+    color: var(--blue);
+}
+
+.cs-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(13, 21, 96, 0.14);
+    z-index: 9000;
+    overflow: hidden;
+    animation: csDropIn 0.18s ease;
+}
+
+@keyframes csDropIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cs-wrapper.open .cs-dropdown {
+    display: block;
+}
+
+.cs-wrapper.cs-up .cs-dropdown {
+    top: auto;
+    bottom: calc(100% + 6px);
+    animation: csDropUp 0.18s ease;
+}
+
+@keyframes csDropUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cs-search-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1.5px solid var(--border);
+}
+
+.cs-search-wrap svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: var(--text-light);
+}
+
+.cs-search {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text);
+    background: transparent;
+}
+
+.cs-search::placeholder {
+    color: var(--text-light);
+}
+
+.cs-list {
+    max-height: 230px;
+    overflow-y: auto;
+    padding: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+}
+
+.cs-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.88rem;
+    transition: background 0.12s;
+    color: var(--text);
+}
+
+.cs-option:hover {
+    background: var(--off-white);
+}
+
+.cs-option.selected {
+    background: var(--blue-soft);
+    color: var(--blue);
+    font-weight: 600;
+}
+
+.cs-flag {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.cs-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cs-empty {
+    display: none;
+    padding: 20px;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+/* ── Enhanced native select (non-searchable, e.g. purpose/gender) ── */
+/* Only applies to visible native selects, NOT the hidden ones inside .cs-wrapper */
+.form-group select:not(.cs-wrapper select) {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237480A0' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+.form-group select:not(.cs-wrapper select):focus {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%230D1560' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* Ensure hidden native selects inside cs-wrapper show NO arrow */
+.cs-wrapper select {
+    display: none !important;
+}
+
+/* ── Date picker UX ─────────────────────────────────────────── */
+.date-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.date-input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.date-display {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: var(--off-white);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 40px;
+}
+
+.date-display.has-value {
+    color: var(--text);
+    background: white;
+    border-color: rgba(13, 21, 96, 0.2);
+}
+
+.date-input:focus~.date-display,
+.date-input-wrap:has(.date-input:focus) .date-display {
+    border-color: var(--blue);
+    background: white;
+    box-shadow: 0 0 0 3px rgba(13, 21, 96, 0.08);
+}
+
+.date-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: var(--text-light);
+    pointer-events: none;
+    z-index: 3;
+}
+
+.date-hint {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    margin-top: 6px;
+    display: none;
+    font-weight: 500;
+}
+
+/* ── Visa requirements preview panel ────────────────────────── */
+.visa-preview-panel {
+    margin-top: 20px;
+    background: linear-gradient(135deg, rgba(13, 21, 96, 0.04) 0%, rgba(13, 21, 96, 0.02) 100%);
+    border: 1.5px solid rgba(13, 21, 96, 0.12);
+    border-radius: 14px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+.visa-preview-panel.has-data {
+    border-color: rgba(13, 21, 96, 0.2);
+    background: linear-gradient(135deg, rgba(13, 21, 96, 0.05) 0%, rgba(13, 21, 96, 0.02) 100%);
+}
+
+.visa-preview-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.visa-preview-flag {
+    font-size: 1.6rem;
+    line-height: 1;
+}
+
+.visa-preview-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.05rem;
+    letter-spacing: -0.02em;
+}
+
+.visa-type-badge {
+    display: inline-block;
+    color: white;
+    font-size: 0.62rem;
+    padding: 3px 9px;
+    border-radius: 100px;
+    margin-left: 8px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.visa-preview-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 14px;
+    font-size: 0.82rem;
+    color: var(--text-light);
+}
+
+.visa-preview-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.visa-preview-meta-item strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.visa-preview-docs-title {
+    font-size: 0.73rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+}
+
+.visa-req-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.visa-req-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.84rem;
+    color: var(--text);
+}
+
+.visa-req-item::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex-shrink: 0;
+    opacity: 0.5;
+}
+
+/* ── Fee breakdown in review ────────────────────────────────── */
+.fee-breakdown-box {
+    background: linear-gradient(135deg, rgba(13, 21, 96, 0.04) 0%, rgba(13, 21, 96, 0.02) 100%);
+    border: 1.5px solid rgba(13, 21, 96, 0.15);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+}
+
+.fee-breakdown-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+    color: var(--blue);
+}
+
+.fee-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+    padding: 7px 0;
+    color: var(--text);
+    border-bottom: 1px solid rgba(13, 21, 96, 0.06);
+}
+
+.fee-line:last-child {
+    border-bottom: none;
+}
+
+.fee-divider {
+    height: 1.5px;
+    background: rgba(13, 21, 96, 0.12);
+    margin: 8px 0;
+}
+
+.fee-line.fee-total {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--blue);
+    border-bottom: none;
+    padding-top: 12px;
+    margin-top: 4px;
+}
+
+/* ── Payment success — centered overlay ─────────────────────── */
+.pay-success-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 21, 96, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 5000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.25s ease;
+}
+
+.pay-success-overlay.show {
+    display: flex;
+}
+
+.pay-success-modal {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 40px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.22);
+    animation: popIn 0.35s ease;
+    position: relative;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.88);
+        opacity: 0;
+    }
+
+    70% {
+        transform: scale(1.03);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.pay-success-modal .pay-success-icon {
+    font-size: 4.5rem;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.pay-success-modal h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+}
+
+.pay-success-modal p {
+    color: var(--text-light);
+    font-size: 0.92rem;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+/* ── Doc optional tag ───────────────────────────────────────── */
+.doc-optional-tag {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-top: 2px;
+    opacity: 0.7;
+}
+
+/* ── Additional traveller card ──────────────────────────────── */
+.travellers-section {
+    margin: 24px 0;
+    padding: 20px;
+    background: var(--off-white);
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+}
+
+.travellers-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.travellers-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.travellers-sub {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    margin-top: 2px;
+}
+
+.btn-add-traveller {
+    padding: 10px 18px;
+    background: white;
+    border: 1.5px solid var(--blue);
+    border-radius: 9px;
+    color: var(--blue);
+    font-weight: 700;
+    font-size: 0.84rem;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all 0.18s;
+    white-space: nowrap;
+}
+
+.btn-add-traveller:hover {
+    background: var(--blue-soft);
+}
+
+.traveller-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    animation: fadeSlideUp 0.25s ease;
+}
+
+.traveller-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.traveller-num {
+    font-weight: 700;
+    font-size: 0.88rem;
+    color: var(--blue);
+}
+
+.traveller-remove {
+    background: none;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    padding: 5px 10px;
+    font-size: 0.76rem;
+    color: var(--text-light);
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+    transition: all 0.15s;
+}
+
+.traveller-remove:hover {
+    border-color: var(--red);
+    color: var(--red);
+}
+
+/* ── Make all dropdowns searchable on index.html too ─────────── */
+.search-field .cs-trigger {
+    background: var(--off-white);
+    padding: 11px 14px;
+    font-size: 0.9rem;
+    min-height: 43px;
+}
+
+/* ── Insurance badge on dashboard ───────────────────────────── */
+.ins-policies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.ins-policy-card {
+    background: white;
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    transition: box-shadow 0.2s;
+}
+
+.ins-policy-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.ins-policy-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.ins-policy-icon {
+    font-size: 1.8rem;
+}
+
+.ins-policy-plan {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.ins-policy-status {
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 3px;
+}
+
+.status-active {
+    color: var(--success);
+}
+
+.ins-policy-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ins-policy-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.84rem;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.ins-policy-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.ins-policy-row span {
+    color: var(--text-light);
+}
+
+.ins-policy-row strong {
+    color: var(--text);
+}
+
+/* ── Dashboard insurance nav indicator ──────────────────────── */
+.dash-nav-item .ins-badge {
+    margin-left: auto;
+    background: var(--success);
+    color: white;
+    border-radius: 100px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    letter-spacing: 0.05em;
+}
