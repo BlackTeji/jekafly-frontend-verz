@@ -1,266 +1,390 @@
-<script>
-    let pendingPayment = null;
-    let payMethod = 'card';
+<!DOCTYPE html>
+<html lang="en">
 
-    document.addEventListener('DOMContentLoaded', async () => {
-        await Auth.init();
-        const user = Auth.getCurrent();
-        const navCta = document.getElementById('nav-cta-area');
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment — Jekafly</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/utilities.css" />
+    <link rel="stylesheet" href="assets/css/apply.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/payment.css">
+    <link rel="stylesheet" href="assets/css/hero-animation.css">
+</head>
 
-        if (!user) {
-            window.location.href = 'index.html';
-            return;
-        }
+<body>
 
-        navCta.innerHTML = `<span class="nav-user-hi">Hi, <strong>${user.name.split(' ')[0]}</strong></span>
-        <a href="dashboard.html" class="btn-outline btn-outline-link">Dashboard</a>`;
+    <nav>
+        <a href="index.html" class="nav-logo">
+            <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
+        </a>
+        <div class="nav-links"><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a></div>
+        <div class="nav-cta" id="nav-cta-area"></div>
+    </nav>
 
-        try {
-            pendingPayment = JSON.parse(localStorage.getItem('jkf_pending_payment'));
-        } catch {
-            pendingPayment = null;
-        }
+    <div class="pay-page">
+        <div class="pay-wrap">
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const returnRef = urlParams.get('ref') || urlParams.get('reference') || urlParams.get('trxref');
+            <!-- LEFT: PAYMENT FORM -->
+            <div>
+                <!-- FORM VIEW -->
+                <div id="pay-form-view">
+                    <div class="pay-card">
+                        <div class="section-tag">Secure Payment</div>
+                        <h2>Complete Your Payment</h2>
+                        <p class="sub">Your information is encrypted and secure. We use 256-bit SSL.</p>
 
-        if (returnRef) {
-            await checkPaystackReturn();
-            return;
-        }
+                        <div class="dest-badge-lg" id="order-dest-badge">
+                            <span class="pay-dest-icon">✈️</span>
+                            <div>
+                                <div class="pay-dest-title" id="badge-title">Loading...</div>
+                                <div class="pay-dest-sub" id="badge-sub">Loading...</div>
+                            </div>
+                        </div>
 
-        if (!pendingPayment) {
-            document.querySelector('.pay-page').innerHTML = `
-                <div class="pay-empty">
-                    <div class="pay-empty-icon">😕</div>
-                    <h2 class="pay-empty-title">No pending payment found</h2>
-                    <p class="pay-empty-sub">Start a new application to proceed to payment.</p>
-                    <button class="btn-next" onclick="window.location.href='apply.html'">Start Application</button>
+                        <!-- PAYMENT METHOD -->
+                        <p class="pay-method-label">
+                            Payment Method</p>
+                        <div class="method-tabs">
+                            <div class="method-tab active" onclick="setMethod('card', this)"><span
+                                    class="tab-icon">💳</span>Card</div>
+                            <div class="method-tab" onclick="setMethod('transfer', this)"><span
+                                    class="tab-icon">🏦</span>Bank Transfer</div>
+                            <div class="method-tab" onclick="setMethod('ussd', this)"><span
+                                    class="tab-icon">📱</span>USSD</div>
+                        </div>
+
+                        <!-- CARD FORM -->
+                        <div id="method-card">
+                            <div class="form-group">
+                                <label>Cardholder Name</label>
+                                <input type="text" id="pay-name" placeholder="As on card" />
+                            </div>
+                            <div class="form-group">
+                                <label>Card Number</label>
+                                <div class="card-input-wrap">
+                                    <input type="text" id="pay-card" placeholder="0000 0000 0000 0000" maxlength="19"
+                                        oninput="formatCard(this)" />
+                                    <span class="card-icon" id="card-icon">💳</span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Expiry Date</label>
+                                    <input type="text" id="pay-expiry" placeholder="MM / YY" maxlength="7"
+                                        oninput="formatExpiry(this)" />
+                                </div>
+                                <div class="form-group">
+                                    <label>CVV</label>
+                                    <input type="password" id="pay-cvv" placeholder="•••" maxlength="4" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BANK TRANSFER -->
+                        <div id="method-transfer" class="method-panel-hidden">
+                            <div class="transfer-box">
+                                <p class="transfer-note">Transfer the
+                                    exact amount to:</p>
+                                <div class="transfer-row"><span class="transfer-label">Bank:</span> <strong>Guaranty
+                                        Trust Bank
+                                        (GTB)</strong></div>
+                                <div class="transfer-row"><span class="transfer-label">Account Name:</span>
+                                    <strong>Jekafly
+                                        Technologies Ltd</strong>
+                                </div>
+                                <div class="transfer-row"><span class="transfer-label">Account Number:</span> <strong
+                                        class="transfer-acct">0123456789</strong>
+                                </div>
+                                <div class="transfer-row"><span class="transfer-label">Reference:</span> <strong
+                                        id="transfer-ref" class="transfer-ref">JKF-PAY-XXXXXX</strong></div>
+                                <p class="transfer-note">⚠️ Use your application reference
+                                    as the transfer narration. Payment confirmed within 30 minutes.</p>
+                            </div>
+                        </div>
+
+                        <!-- USSD -->
+                        <div id="method-ussd" class="method-panel-hidden">
+                            <div class="ussd-box">
+                                <p class="ussd-intro">Dial the code below on
+                                    your phone:</p>
+                                <div class="ussd-code">
+                                    *737*2*<span id="ussd-amount">150000</span>#</div>
+                                <p class="ussd-note">Works on all
+                                    Nigerian networks (GTB, Zenith, Access, First Bank etc.)</p>
+                                <p class="ussd-note">After payment, click
+                                    "I've Paid" below.</p>
+                            </div>
+                        </div>
+
+                        <button class="btn-pay" id="btn-pay" onclick="processPayment()">Pay <span
+                                id="pay-btn-amount">₦150,000</span> Securely 🔒</button>
+                        <p class="secure-note">🔒 256-bit SSL Encrypted &nbsp;·&nbsp; 🇳🇬 CBN Compliant &nbsp;·&nbsp; ✅
+                            PCI DSS Certified</p>
+                    </div>
                 </div>
-            `;
-            return;
-        }
 
-        document.getElementById('pay-name').value = user.name;
+                <!-- PROCESSING VIEW -->
+                <div class="pay-card processing" id="pay-processing">
+                    <div class="spinner"></div>
+                    <h3 class="pay-processing-title">Processing Payment...</h3>
+                    <p class="pay-processing-sub">Please wait, do not close this tab.</p>
+                </div>
 
-        if (pendingPayment.type === 'visa') {
-            const data = visaRequirements[pendingPayment.destination] || {};
-            document.getElementById('badge-title').textContent =
-                (data.flag || '✈️') + ' ' + pendingPayment.destination + ' Visa';
-            document.getElementById('badge-sub').textContent = 'Ref: ' + pendingPayment.ref;
-        } else {
-            document.getElementById('badge-title').textContent = '🛡️ ' + pendingPayment.plan;
-            document.getElementById('badge-sub').textContent =
-                pendingPayment.dest + ' · ' + pendingPayment.travellers + ' traveller(s)';
-        }
+                <!-- SUCCESS VIEW (placeholder in flow — actual success shown in overlay) -->
+                <div class="pay-card pay-success" id="pay-success" style="display:none;"></div>
+            </div>
 
-        document.getElementById('transfer-ref').textContent =
-            pendingPayment.ref || ('JKF-PAY-' + Date.now().toString().slice(-6));
+            <!-- RIGHT: ORDER SUMMARY -->
+            <div class="order-summary" id="order-summary-box">
+                <h3>Order Summary</h3>
+                <div id="summary-body">
+                    <div class="pay-loading">Loading...</div>
+                </div>
+                <div class="order-divider"></div>
+                <div class="order-total">
+                    <div class="label">Total</div>
+                    <div class="val" id="summary-total">₦0</div>
+                </div>
+                <div class="pay-included-box">
+                    <p class="pay-included-text"><strong>✅ What's included:</strong> Expert document
+                        review, embassy submission, real-time tracking, dedicated support agent.</p>
+                </div>
+            </div>
 
-        renderSummary();
-    });
+        </div>
+    </div>
 
-    function getPaymentTotal() {
-        if (!pendingPayment) return 0;
+    <script src="jekafly-api.js"></script>
+    <script src="jekafly-app.js"></script>
+    <script>
+        let pendingPayment = null;
+        let payMethod = 'card';
 
-        const fb = pendingPayment._feeBreakdown;
-
-        if (pendingPayment.type === 'visa' && fb) {
-            return Number(fb.total || 0);
-        }
-
-        if (pendingPayment.type === 'visa') {
-            const amt = Number(pendingPayment.amount || 0);
-            const svc = 25000;
-            return amt + svc;
-        }
-
-        const amt = Number(pendingPayment.amount || 0);
-        const svc = Math.round(amt * 0.05);
-        return amt + svc;
-    }
-
-    function renderSummary() {
-        if (!pendingPayment) return;
-
-        const fb = pendingPayment._feeBreakdown;
-        let rows = '';
-        let total = getPaymentTotal();
-
-        if (pendingPayment.type === 'visa' && fb) {
-            rows = `
-                <div class="order-row"><span class="label">Destination</span><span class="val">${pendingPayment.destination}</span></div>
-                <div class="order-row order-ref-row"><span class="label">Application Ref</span><span class="val ref-copyable" onclick="copyRef(this)" title="Click to copy">${pendingPayment.ref} <span class="copy-icon">📋</span></span></div>
-                <div class="order-row"><span class="label">Visa Processing Fee</span><span class="val">₦${fb.visaFee.toLocaleString()}</span></div>
-                ${fb.extraTravellers > 0 ? `<div class="order-row"><span class="label">Additional Travellers (×${fb.extraTravellers})</span><span class="val">₦${fb.extraFee.toLocaleString()}</span></div>` : ''}
-                <div class="order-row"><span class="label">Jekafly Service Fee</span><span class="val">₦${fb.serviceFee.toLocaleString()}</span></div>
-            `;
-        } else if (pendingPayment.type === 'visa') {
-            const amt = Number(pendingPayment.amount || 0);
-            const svc = 25000;
-            rows = `
-                <div class="order-row"><span class="label">Destination</span><span class="val">${pendingPayment.destination}</span></div>
-                <div class="order-row order-ref-row"><span class="label">Application Ref</span><span class="val ref-copyable" onclick="copyRef(this)" title="Click to copy">${pendingPayment.ref} <span class="copy-icon">📋</span></span></div>
-                <div class="order-row"><span class="label">Visa Processing Fee</span><span class="val">₦${amt.toLocaleString()}</span></div>
-                <div class="order-row"><span class="label">Jekafly Service Fee</span><span class="val">₦${svc.toLocaleString()}</span></div>
-            `;
-        } else {
-            const amt = Number(pendingPayment.amount || 0);
-            const svc = Math.round(amt * 0.05);
-            rows = `
-                <div class="order-row"><span class="label">Insurance Plan</span><span class="val">${pendingPayment.plan}</span></div>
-                <div class="order-row"><span class="label">Destination</span><span class="val">${pendingPayment.dest}</span></div>
-                <div class="order-row"><span class="label">Travellers</span><span class="val">${pendingPayment.travellers}</span></div>
-                <div class="order-row"><span class="label">Plan Cost</span><span class="val">₦${amt.toLocaleString()}</span></div>
-                <div class="order-row"><span class="label">Processing Fee</span><span class="val">₦${svc.toLocaleString()}</span></div>
-            `;
-        }
-
-        document.getElementById('summary-body').innerHTML = rows;
-        document.getElementById('summary-total').textContent = '₦' + total.toLocaleString();
-        document.getElementById('pay-btn-amount').textContent = '₦' + total.toLocaleString();
-        document.getElementById('ussd-amount').textContent = total.toLocaleString();
-    }
-
-    function copyRef(el) {
-        const ref = el.textContent.replace('📋', '').trim();
-        navigator.clipboard.writeText(ref).then(() => {
-            el.querySelector('.copy-icon').textContent = '✅';
-            setTimeout(() => { el.querySelector('.copy-icon').textContent = '📋'; }, 2000);
-        });
-    }
-
-    function setMethod(method, el) {
-        payMethod = method;
-        document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
-        el.classList.add('active');
-
-        document.getElementById('method-card').style.display = method === 'card' ? 'block' : 'none';
-        document.getElementById('method-transfer').style.display = method === 'transfer' ? 'block' : 'none';
-        document.getElementById('method-ussd').style.display = method === 'ussd' ? 'block' : 'none';
-
-        const btnText =
-            method === 'ussd'
-                ? "I've Paid via USSD ✓"
-                : method === 'transfer'
-                    ? "I've Made the Transfer ✓"
-                    : "Pay " + document.getElementById('pay-btn-amount').textContent + " Securely 🔒";
-
-        document.getElementById('btn-pay').textContent = btnText;
-    }
-
-    function formatCard(input) {
-        let val = input.value.replace(/\D/g, '').slice(0, 16);
-        input.value = val.replace(/(.{4})/g, '$1 ').trim();
-
-        const icon = document.getElementById('card-icon');
-        if (val.startsWith('4')) icon.textContent = '💳';
-        else if (val.startsWith('5')) icon.textContent = '💳';
-        else icon.textContent = '💳';
-    }
-
-    function formatExpiry(input) {
-        let val = input.value.replace(/\D/g, '').slice(0, 4);
-        if (val.length >= 2) val = val.slice(0, 2) + ' / ' + val.slice(2);
-        input.value = val;
-    }
-
-    function validateCardForm() {
-        if (payMethod !== 'card') return true;
-
-        const name = document.getElementById('pay-name').value.trim();
-        const card = document.getElementById('pay-card').value.replace(/\s/g, '');
-        const expiry = document.getElementById('pay-expiry').value;
-        const cvv = document.getElementById('pay-cvv').value;
-
-        if (!name) {
-            showToast('Please enter cardholder name.', 'error');
-            return false;
-        }
-        if (card.length < 16) {
-            showToast('Please enter a valid 16-digit card number.', 'error');
-            return false;
-        }
-        if (!expiry.includes('/')) {
-            showToast('Please enter a valid expiry date (MM / YY).', 'error');
-            return false;
-        }
-        if (cvv.length < 3) {
-            showToast('Please enter your 3 or 4 digit CVV.', 'error');
-            return false;
-        }
-
-        return true;
-    }
-
-    async function processPayment() {
-        if (!pendingPayment) {
-            showToast('No pending payment found.', 'error');
-            return;
-        }
-
-        if (!validateCardForm()) return;
-
-        document.getElementById('pay-form-view').style.display = 'none';
-        document.getElementById('pay-processing').classList.add('show');
-
-        try {
+        document.addEventListener('DOMContentLoaded', async () => {
+            await Auth.init();
             const user = Auth.getCurrent();
-            const total = getPaymentTotal();
-            const amountKobo = Math.round(total * 100);
+            const navCta = document.getElementById('nav-cta-area');
 
-            const res = await PaymentStore.initiate(
-                (pendingPayment.type || 'visa').toUpperCase(),
-                pendingPayment.ref || null,
-                amountKobo,
-                pendingPayment.email || user.email,
-                {
-                    destination: pendingPayment.destination || pendingPayment.dest || '',
-                    plan: pendingPayment.plan || '',
-                    callbackPage: 'payment.html'
-                }
-            );
-
-            if (res?.ok && res.data?.authorizationUrl) {
-                localStorage.setItem('jkf_last_payment_ref', pendingPayment.ref || '');
-                window.location.href = res.data.authorizationUrl;
-            } else {
-                throw new Error(res?.error || 'Payment initiation failed.');
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
             }
-        } catch (err) {
-            document.getElementById('pay-processing').classList.remove('show');
-            document.getElementById('pay-form-view').style.display = 'block';
-            showToast(err.message || 'Payment failed. Please try again.', 'error');
+
+            navCta.innerHTML = `<span class="nav-user-hi">Hi, <strong>${user.name.split(' ')[0]}</strong></span>
+    <a href="dashboard.html" class="btn-outline btn-outline-link">Dashboard</a>`;
+
+            // Load pending payment
+            try { pendingPayment = JSON.parse(localStorage.getItem('jkf_pending_payment')); } catch { }
+
+            // If returning from Paystack redirect, verify immediately — don't require pendingPayment
+            const urlParams = new URLSearchParams(window.location.search);
+            const returnRef = urlParams.get('ref') || urlParams.get('reference') || urlParams.get('trxref');
+            if (returnRef) {
+                checkPaystackReturn();
+                return;
+            }
+
+            if (!pendingPayment) {
+                document.querySelector('.pay-page').innerHTML = '<div class="pay-empty"><div class="pay-empty-icon">😕</div><h2 class="pay-empty-title">No pending payment found</h2><p class="pay-empty-sub">Start a new application to proceed to payment.</p><button class="btn-next" onclick="window.location.href=\'apply.html\'">Start Application</button></div>';
+                return;
+            }
+
+            // Pre-fill cardholder name
+            document.getElementById('pay-name').value = user.name;
+
+            // Update badge
+            if (pendingPayment.type === 'visa') {
+                const data = visaRequirements[pendingPayment.destination] || {};
+                document.getElementById('badge-title').textContent = (data.flag || '✈️') + ' ' + pendingPayment.destination + ' Visa';
+                document.getElementById('badge-sub').textContent = 'Ref: ' + pendingPayment.ref;
+            } else {
+                document.getElementById('badge-title').textContent = '🛡️ ' + pendingPayment.plan;
+                document.getElementById('badge-sub').textContent = pendingPayment.dest + ' · ' + pendingPayment.travellers + ' traveller(s)';
+            }
+
+            // Update transfer ref and USSD amount
+            document.getElementById('transfer-ref').textContent = pendingPayment.ref || ('JKF-PAY-' + Date.now().toString().slice(-6));
+            document.getElementById('ussd-amount').textContent = pendingPayment.amount;
+
+            // Render summary
+            renderSummary();
+            checkPaystackReturn();
+        });
+
+        function renderSummary() {
+            if (!pendingPayment) return;
+            const fb = pendingPayment._feeBreakdown; // set by apply.html buildReview
+            let rows = '';
+            let total;
+            if (pendingPayment.type === 'visa' && fb) {
+                // Use EXACT same breakdown as shown in review step
+                total = fb.total;
+                rows = `
+      <div class="order-row"><span class="label">Destination</span><span class="val">${pendingPayment.destination}</span></div>
+      <div class="order-row order-ref-row"><span class="label">Application Ref</span><span class="val ref-copyable" onclick="copyRef(this)" title="Click to copy">${pendingPayment.ref} <span class="copy-icon">📋</span></span></div>
+      <div class="order-row"><span class="label">Visa Processing Fee</span><span class="val">₦${fb.visaFee.toLocaleString()}</span></div>
+      ${fb.extraTravellers > 0 ? `<div class="order-row"><span class="label">Additional Travellers (×${fb.extraTravellers})</span><span class="val">₦${fb.extraFee.toLocaleString()}</span></div>` : ''}
+      <div class="order-row"><span class="label">Jekafly Service Fee</span><span class="val">₦${fb.serviceFee.toLocaleString()}</span></div>`;
+            } else if (pendingPayment.type === 'visa') {
+                const amt = pendingPayment.amount;
+                const svc = 25000;
+                total = amt + svc;
+                rows = `
+      <div class="order-row"><span class="label">Destination</span><span class="val">${pendingPayment.destination}</span></div>
+      <div class="order-row order-ref-row"><span class="label">Application Ref</span><span class="val ref-copyable" onclick="copyRef(this)" title="Click to copy">${pendingPayment.ref} <span class="copy-icon">📋</span></span></div>
+      <div class="order-row"><span class="label">Visa Processing Fee</span><span class="val">₦${amt.toLocaleString()}</span></div>
+      <div class="order-row"><span class="label">Jekafly Service Fee</span><span class="val">₦${svc.toLocaleString()}</span></div>`;
+            } else {
+                const amt = pendingPayment.amount;
+                const svc = Math.round(amt * 0.05);
+                total = amt + svc;
+                rows = `
+      <div class="order-row"><span class="label">Insurance Plan</span><span class="val">${pendingPayment.plan}</span></div>
+      <div class="order-row"><span class="label">Destination</span><span class="val">${pendingPayment.dest}</span></div>
+      <div class="order-row"><span class="label">Travellers</span><span class="val">${pendingPayment.travellers}</span></div>
+      <div class="order-row"><span class="label">Plan Cost</span><span class="val">₦${amt.toLocaleString()}</span></div>
+      <div class="order-row"><span class="label">Processing Fee</span><span class="val">₦${svc.toLocaleString()}</span></div>`;
+            }
+            document.getElementById('summary-body').innerHTML = rows;
+            document.getElementById('summary-total').textContent = '₦' + total.toLocaleString();
+            document.getElementById('pay-btn-amount').textContent = '₦' + total.toLocaleString();
+            // Keep ussd amount in sync
+            document.getElementById('ussd-amount').textContent = total;
         }
-    }
 
-    async function checkPaystackReturn() {
-        const params = new URLSearchParams(window.location.search);
-        const reference = params.get('ref') || params.get('reference') || params.get('trxref');
+        function copyRef(el) {
+            const ref = el.textContent.replace('📋', '').trim();
+            navigator.clipboard.writeText(ref).then(() => {
+                el.querySelector('.copy-icon').textContent = '✅';
+                setTimeout(() => { el.querySelector('.copy-icon').textContent = '📋'; }, 2000);
+            });
+        }
 
-        if (!reference) return;
+        function setMethod(method, el) {
+            payMethod = method;
+            document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            document.getElementById('method-card').style.display = method === 'card' ? 'block' : 'none';
+            document.getElementById('method-transfer').style.display = method === 'transfer' ? 'block' : 'none';
+            document.getElementById('method-ussd').style.display = method === 'ussd' ? 'block' : 'none';
+            const btnText = method === 'ussd' ? "I've Paid via USSD ✓" : method === 'transfer' ? "I've Made the Transfer ✓" : "Pay " + document.getElementById('pay-btn-amount').textContent + " Securely 🔒";
+            document.getElementById('btn-pay').textContent = btnText;
+        }
 
-        document.getElementById('pay-form-view').style.display = 'none';
-        document.getElementById('pay-processing').classList.add('show');
+        function formatCard(input) {
+            let val = input.value.replace(/\D/g, '').slice(0, 16);
+            input.value = val.replace(/(.{4})/g, '$1 ').trim();
+            const icon = document.getElementById('card-icon');
+            if (val.startsWith('4')) icon.textContent = '💳'; // Visa
+            else if (val.startsWith('5')) icon.textContent = '💳'; // Mastercard
+            else icon.textContent = '💳';
+        }
 
-        try {
+        function formatExpiry(input) {
+            let val = input.value.replace(/\D/g, '').slice(0, 4);
+            if (val.length >= 2) val = val.slice(0, 2) + ' / ' + val.slice(2);
+            input.value = val;
+        }
+
+        function validateCardForm() {
+            if (payMethod !== 'card') return true;
+            const name = document.getElementById('pay-name').value.trim();
+            const card = document.getElementById('pay-card').value.replace(/\s/g, '');
+            const expiry = document.getElementById('pay-expiry').value;
+            const cvv = document.getElementById('pay-cvv').value;
+            if (!name) { showToast('Please enter cardholder name.', 'error'); return false; }
+            if (card.length < 16) { showToast('Please enter a valid 16-digit card number.', 'error'); return false; }
+            if (!expiry.includes('/')) { showToast('Please enter a valid expiry date (MM / YY).', 'error'); return false; }
+            if (cvv.length < 3) { showToast('Please enter your 3 or 4 digit CVV.', 'error'); return false; }
+            return true;
+        }
+
+        async function processPayment() {
+            if (!validateCardForm()) return;
+
+            document.getElementById('pay-form-view').style.display = 'none';
+            document.getElementById('pay-processing').classList.add('show');
+
+            try {
+                const user = Auth.getCurrent();
+                const amountKobo = Math.round((pendingPayment.amount || 0) * 100);
+                const res = await PaymentStore.initiate(
+                    (pendingPayment.type || 'visa').toUpperCase(),
+                    pendingPayment.ref || null,
+                    amountKobo,
+                    pendingPayment.email || user.email,
+                    { destination: pendingPayment.destination, plan: pendingPayment.plan }
+                );
+
+                if (res?.ok && res.data?.authorizationUrl) {
+                    // Redirect to Paystack payment page
+                    localStorage.removeItem('jkf_pending_payment');
+                    window.location.href = res.data.authorizationUrl;
+                } else {
+                    throw new Error(res?.error || 'Payment initiation failed.');
+                }
+            } catch (err) {
+                document.getElementById('pay-processing').classList.remove('show');
+                document.getElementById('pay-form-view').style.display = 'block';
+                showToast(err.message || 'Payment failed. Please try again.', 'error');
+            }
+        }
+
+        // Called when Paystack redirects back after payment
+        async function checkPaystackReturn() {
+            const params = new URLSearchParams(window.location.search);
+            const reference = params.get('ref') || params.get('reference') || params.get('trxref');
+            if (!reference) return;
+
+            document.getElementById('pay-form-view').style.display = 'none';
+            document.getElementById('pay-processing').classList.add('show');
+
             const res = await PaymentStore.verify(reference);
             document.getElementById('pay-processing').classList.remove('show');
 
             if (res?.ok && res.data?.status === 'success') {
-                localStorage.removeItem('jkf_pending_payment');
-                localStorage.setItem('jkf_last_verified_payment', JSON.stringify(res.data));
-
-                window.location.href = `receipt.html?reference=${encodeURIComponent(reference)}`;
-                return;
+                const receipt = res.data.receipt || {};
+                const now = new Date().toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
+                document.getElementById('receipt-box').innerHTML = `
+    <div class="receipt-row"><span class="rl">Transaction ID</span><span class="rv receipt-tx">${reference}</span></div>
+    <div class="receipt-row"><span class="rl">Date & Time</span><span class="rv">${now}</span></div>
+    ${res.data.ref ? `<div class="receipt-row"><span class="rl">Application Ref</span><span class="rv receipt-tx">${res.data.ref}</span></div>` : ''}
+    <div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv receipt-amount">₦${(res.data.amount || 0).toLocaleString()}</span></div>
+    <div class="receipt-row"><span class="rl">Status</span><span class="rv receipt-status-ok">✅ Confirmed</span></div>`;
+                document.getElementById('pay-success-overlay').classList.add('show');
+                document.body.classList.add('modal-open');
+            } else {
+                showToast('Payment could not be verified. Please contact support.', 'error');
+                document.getElementById('pay-form-view').style.display = 'block';
             }
-
-            showToast('Payment could not be verified. Please contact support.', 'error');
-            document.getElementById('pay-form-view').style.display = 'block';
-        } catch (err) {
-            document.getElementById('pay-processing').classList.remove('show');
-            document.getElementById('pay-form-view').style.display = 'block';
-            showToast(err.message || 'Payment verification failed.', 'error');
         }
-    }
-</script>
+    </script>
+    <script>
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (nav) nav.classList.toggle('scrolled', window.scrollY > 20);
+        });
+    </script>
+
+    <!-- Payment Success Overlay (centered modal) -->
+    <div class="pay-success-overlay" id="pay-success-overlay">
+        <div class="pay-success-modal">
+            <span class="pay-success-icon">🎉</span>
+            <h2>Payment Successful!</h2>
+            <p>Your payment has been confirmed and your application is now active. You'll receive a confirmation email
+                shortly.</p>
+            <div class="receipt-box" id="receipt-box"></div>
+            <div class="pay-success-actions">
+                <button class="btn-next" onclick="window.location.href='dashboard.html'">Go to My Dashboard →</button>
+                <button class="btn-back" onclick="window.location.href='index.html'">Back to Home</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
