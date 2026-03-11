@@ -873,6 +873,8 @@
     <script src="api.js"></script>
     <script src="app.js"></script>
     <script>
+        function escHtml(s) { return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+
         let allApps = [], appFilter = 'all', selectedApp = null;
         const SL = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved', delivered: 'Delivered', rejected: 'Rejected' };
         const SC = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
