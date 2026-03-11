@@ -629,8 +629,6 @@
                     Applications</div>
                 <div class="admin-nav-item" onclick="adminTab('users',this)"><span class="ni">👥</span>Users</div>
                 <div class="admin-nav-item" onclick="adminTab('fees',this)"><span class="ni">💰</span>Manage Fees</div>
-                <div class="admin-nav-item" onclick="adminTab('documents',this)"><span class="ni">📁</span>Documents
-                </div>
                 <div class="admin-nav-section">Quick Links</div>
                 <div class="admin-nav-item" onclick="location.href='index.html'"><span class="ni">🌐</span>View Website
                 </div>
@@ -674,8 +672,14 @@
                         </h3>
                         <div class="detail-grid" id="detail-grid"></div>
                         <div id="admin-doc-section" style="margin:18px 0 6px;">
-                            <div style="font-weight:700;font-size:0.95rem;color:#0D1560;margin-bottom:10px;">📎 Uploaded
-                                Documents</div>
+                            <div
+                                style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                                <div style="font-weight:700;font-size:0.95rem;color:#0D1560;">📎 Uploaded Documents
+                                </div>
+                                <button id="admin-zip-btn" onclick="downloadDocsZip()"
+                                    style="display:none;background:#0a1f44;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:0.85rem;font-weight:600;cursor:pointer;">⬇
+                                    Download All as ZIP</button>
+                            </div>
                             <div id="admin-doc-list" style="font-size:0.85rem;color:#9BA5C0;">Select an application to
                                 view documents.</div>
                         </div>
@@ -716,34 +720,6 @@
                 </div>
 
                 <!-- ── USERS ─────────────────────────────── -->
-                <div id="tab-documents" style="display:none">
-                    <div class="admin-section-title">📁 Applicant Documents</div>
-                    <div style="margin-bottom:16px;display:flex;gap:10px;align-items:center;">
-                        <input id="doc-ref-filter" type="text"
-                            placeholder="Filter by application ref (e.g. JKF-2026-000001)"
-                            style="padding:9px 14px;border:1.5px solid #E5E9F5;border-radius:8px;font-size:0.9rem;width:320px;outline:none;"
-                            oninput="filterDocs()" />
-                        <button class="btn-manage" onclick="loadDocs()">Refresh</button>
-                        <button class="btn-manage" onclick="exportCSV('documents')" style="white-space:nowrap;">⬇ Export
-                            CSV</button>
-                    </div>
-                    <div id="docs-table">
-                        <div class="atbl-empty">Loading documents...</div>
-                    </div>
-                </div>
-                <div id="tab-users" style="display:none">
-                    <div class="admin-title">Registered Users</div>
-                    <p class="admin-sub" id="user-count-sub">All accounts registered on Jekafly.</p>
-                    <div class="acard">
-                        <div class="acard-header">
-                            <h3>Users</h3>
-                            <button class="btn-manage" onclick="exportCSV('users')" style="white-space:nowrap;">⬇ Export
-                                CSV</button>
-                        </div>
-                        <div id="users-table"></div>
-                    </div>
-                </div>
-
                 <!-- ── FEES ──────────────────────────────── -->
                 <div id="tab-fees" style="display:none">
                     <div class="admin-title">Manage Fees</div>
@@ -904,7 +880,6 @@
             if (tab === 'applications') loadApps();
             if (tab === 'users') loadUsers();
             if (tab === 'fees') loadFeesTab();
-            if (tab === 'documents') loadDocs();
         }
 
         async function loadOverview() {
@@ -984,14 +959,17 @@
             document.getElementById('status-note').value = '';
 
             // Load documents for this application
+            _currentAppDocs = [];
             const docList = document.getElementById('admin-doc-list');
+            const zipBtn = document.getElementById('admin-zip-btn');
             docList.innerHTML = 'Loading documents...';
+            zipBtn.style.display = 'none';
             const docs = await DocStore.getVault(app.ref);
             if (!docs || docs.length === 0) {
                 docList.innerHTML = '<em style="color:#9BA5C0;">No documents uploaded yet.</em>';
             } else {
-                // Store URLs in map for safe access
-                // URLs fetched on demand via adminViewDoc/adminDownloadDoc
+                _currentAppDocs = docs;
+                zipBtn.style.display = 'inline-block';
                 docList.innerHTML = docs.map(d => `
                     <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#F7F8FC;border-radius:8px;margin-bottom:6px;">
                         <span style="font-size:1.3rem;">${d.mimeType === 'application/pdf' ? '📄' : '🖼️'}</span>
@@ -1236,111 +1214,80 @@
         }
 
 
-        // ── Documents tab ────────────────────────────────────────────────────────────
-        let _allDocs = [];
-
-        async function loadDocs() {
-            document.getElementById('docs-table').innerHTML = '<div class="atbl-empty">Loading...</div>';
-            _allDocs = await AdminStore.getDocuments();
-            renderDocs();
-        }
-
-        function filterDocs() {
-            renderDocs();
-        }
-
-        async function downloadDoc(url, name) {
-            try {
-                const res = await fetch(url);
-                const blob = await res.blob();
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(blob);
-                a.download = name;
-                a.click();
-                URL.revokeObjectURL(a.href);
-            } catch (e) {
-                window.open(url, '_blank');
-            }
-        }
-
-        async function downloadAllDocs(ref) {
-            const docs = _allDocs.filter(d => d.ref === ref);
-            if (!docs.length) { showToast('No documents for this application.', 'error'); return; }
-            showToast(`Downloading ${docs.length} document${docs.length > 1 ? 's' : ''}...`);
-            for (const d of docs) {
-                await downloadDoc(d.url, d.name);
-                await new Promise(r => setTimeout(r, 400)); // slight delay between downloads
-            }
-        }
-
-        // Store doc URLs by id to avoid S3 URL special chars breaking HTML attributes
+        // ── Document helpers ─────────────────────────────────────────────────────────
         const _docUrlMap = {};
+        let _currentAppDocs = []; // docs loaded for the open application
 
-        function renderDocs() {
-            const filter = (document.getElementById('doc-ref-filter')?.value || '').toLowerCase();
-            const docs = _allDocs.filter(d => !filter || (d.ref || '').toLowerCase().includes(filter) || (d.name || '').toLowerCase().includes(filter) || (d.uploadedBy || '').toLowerCase().includes(filter));
-            if (!docs.length) {
-                document.getElementById('docs-table').innerHTML = '<div class="atbl-empty">No documents found.</div>';
-                return;
+        async function adminGetDocUrl(id) {
+            if (!_docUrlMap[id]) {
+                const url = await DocStore.getSignedUrl(id);
+                if (url) _docUrlMap[id] = url;
             }
-
-            // Store URLs in map keyed by doc id
-            docs.forEach(d => { if (d.url) _docUrlMap[d.id] = d.url; });
-
-            // Group by application ref
-            const grouped = {};
-            docs.forEach(d => {
-                const key = d.ref || 'No Application';
-                if (!grouped[key]) grouped[key] = { ref: d.ref, uploadedBy: d.uploadedBy, docs: [] };
-                grouped[key].docs.push(d);
-            });
-
-            document.getElementById('docs-table').innerHTML = Object.values(grouped).map(g => `
-                <div style="margin-bottom:24px;border:1.5px solid #eef0f6;border-radius:12px;overflow:hidden;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#f8f9fb;border-bottom:1px solid #eef0f6;">
-                        <div style="display:flex;align-items:center;gap:10px;">
-                            ${g.ref ? `<span class="ref-badge">${g.ref}</span>` : '<span style="color:#9BA5C0;">No Application</span>'}
-                            <span style="color:#9BA5C0;font-size:0.82rem;">${g.docs.length} document${g.docs.length > 1 ? 's' : ''} · ${escHtml(g.uploadedBy || '')}</span>
-                        </div>
-                        ${g.ref ? `<button onclick="downloadAllDocs('${g.ref}')" class="btn-manage" style="background:#0a1f44;color:#fff;white-space:nowrap;">⬇ Download All</button>` : ''}
-                    </div>
-                    <table style="margin-bottom:0;">
-                        <thead><tr><th>File</th><th>Type</th><th>Size</th><th>Uploaded</th><th>Actions</th></tr></thead>
-                        <tbody>${g.docs.map(d => `
-                        <tr>
-                            <td><span style="font-size:1.1rem">${d.mimeType === 'application/pdf' ? '📄' : '🖼️'}</span> ${escHtml(d.name)}</td>
-                            <td style="color:#9BA5C0">${d.mimeType?.split('/')[1]?.toUpperCase() || '—'}</td>
-                            <td style="color:#9BA5C0">${d.size ? (d.size / 1024).toFixed(0) + ' KB' : '—'}</td>
-                            <td style="color:#9BA5C0">${new Date(d.uploadedAt).toLocaleDateString('en-NG')}</td>
-                            <td style="display:flex;gap:6px;">
-                                <button onclick="adminViewDoc('${d.id}')" class="btn-manage">👁 View</button>
-                                <button onclick="adminDownloadDoc('${d.id}','${escHtml(d.name)}')" class="btn-manage" style="background:#16a34a;color:#fff;border:none;cursor:pointer;">⬇ Download</button>
-                            </td>
-                        </tr>`).join('')}</tbody>
-                    </table>
-                </div>`).join('');
+            return _docUrlMap[id] || null;
         }
 
         async function adminViewDoc(id) {
-            let url = _docUrlMap[id];
-            if (!url) {
-                showToast('Fetching document...');
-                url = await DocStore.getSignedUrl(id);
-                if (!url) { showToast('Could not load document.', 'error'); return; }
-                _docUrlMap[id] = url;
-            }
+            showToast('Opening document...');
+            const url = await adminGetDocUrl(id);
+            if (!url) { showToast('Could not load document.', 'error'); return; }
             window.open(url, '_blank');
         }
 
         async function adminDownloadDoc(id, name) {
-            let url = _docUrlMap[id];
-            if (!url) {
-                showToast('Fetching document...');
-                url = await DocStore.getSignedUrl(id);
-                if (!url) { showToast('Could not load document.', 'error'); return; }
-                _docUrlMap[id] = url;
+            showToast('Preparing download...');
+            const url = await adminGetDocUrl(id);
+            if (!url) { showToast('Could not load document.', 'error'); return; }
+            const res = await fetch(url);
+            const blob = await res.blob();
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = name;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        async function downloadDocsZip() {
+            if (!_currentAppDocs.length) { showToast('No documents to download.', 'error'); return; }
+            const ref = selectedApp?.ref || 'documents';
+            const btn = document.getElementById('admin-zip-btn');
+            btn.disabled = true;
+            btn.textContent = '⏳ Preparing ZIP...';
+            showToast(`Fetching ${_currentAppDocs.length} document(s)...`);
+
+            try {
+                // Fetch JSZip from CDN
+                if (!window.JSZip) {
+                    await new Promise((res, rej) => {
+                        const s = document.createElement('script');
+                        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+                        s.onload = res; s.onerror = rej;
+                        document.head.appendChild(s);
+                    });
+                }
+
+                const zip = new JSZip();
+                for (const d of _currentAppDocs) {
+                    const url = await adminGetDocUrl(d.id);
+                    if (!url) continue;
+                    const res = await fetch(url);
+                    const blob = await res.blob();
+                    zip.file(d.name, blob);
+                }
+
+                const zipBlob = await zip.generateAsync({ type: 'blob' });
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(zipBlob);
+                a.download = `${ref}-documents.zip`;
+                a.click();
+                URL.revokeObjectURL(a.href);
+                showToast(`ZIP downloaded with ${_currentAppDocs.length} file(s) ✅`);
+            } catch (e) {
+                showToast('ZIP generation failed. Try again.', 'error');
+                console.error(e);
             }
-            downloadDoc(url, name);
+
+            btn.disabled = false;
+            btn.textContent = '⬇ Download All as ZIP';
         }
         // ── CSV Export ───────────────────────────────────────────────────────────────
         function toCSV(rows) {
