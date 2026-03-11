@@ -45,6 +45,8 @@
                 <div class="dash-nav-section">Menu</div>
                 <div class="dash-nav-item active" onclick="showTab('applications',this)"><span class="icon">📋</span>My
                     Applications</div>
+                <div class="dash-nav-item" onclick="showTab('mydocs',this)"><span class="icon">📁</span>My Documents
+                </div>
                 <div class="dash-nav-item" onclick="showTab('documents',this)"><span class="icon">🗓️</span>Travel
                     Consultation
                 </div>
@@ -114,6 +116,54 @@
                 </div>
 
                 <!-- ── DOCUMENTS TAB ────────────────────────────────── -->
+                <!-- ═══ MY DOCUMENTS TAB ═══ -->
+                <div id="tab-mydocs" class="tab-panel-hidden">
+                    <div class="dash-title">My Documents</div>
+                    <p class="dash-subtitle">Upload and manage documents for each of your visa applications.</p>
+
+                    <!-- Step 1: Choose application -->
+                    <div id="mydocs-step-1">
+                        <div class="dash-section-card" style="margin-bottom:18px;">
+                            <div style="font-weight:700;font-size:1rem;color:#0D1560;margin-bottom:12px;">Select an
+                                Application</div>
+                            <div id="mydocs-app-list">
+                                <div style="color:#9aa5b4;text-align:center;padding:24px;">Loading applications...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Upload documents per slot -->
+                    <div id="mydocs-step-2" style="display:none;">
+                        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
+                            <button onclick="resetMyDocs()"
+                                style="background:#f4f6fb;border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:0.85rem;color:#0D1560;font-weight:600;">←
+                                Back</button>
+                            <div id="mydocs-app-label" style="font-weight:700;font-size:1rem;color:#0D1560;"></div>
+                        </div>
+
+                        <!-- Already uploaded docs for this app -->
+                        <div class="dash-section-card" id="mydocs-uploaded-panel"
+                            style="margin-bottom:18px;display:none;">
+                            <div style="font-weight:700;font-size:0.95rem;color:#0D1560;margin-bottom:12px;">📂 Uploaded
+                                Documents</div>
+                            <div id="mydocs-uploaded-list"></div>
+                        </div>
+
+                        <!-- Required doc slots -->
+                        <div class="dash-section-card" id="mydocs-required-panel">
+                            <div style="font-weight:700;font-size:0.95rem;color:#0D1560;margin-bottom:4px;">📋 Required
+                                Documents</div>
+                            <div style="font-size:0.82rem;color:#9aa5b4;margin-bottom:16px;">Upload each document one by
+                                one. You can preview before submitting.</div>
+                            <div id="mydocs-slot-list"></div>
+                            <div id="mydocs-slot-footer" style="margin-top:16px;display:none;">
+                                <button id="mydocs-submit-btn" onclick="submitMyDocs()" class="btn-next"
+                                    style="width:100%;">Submit Documents →</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="tab-documents" class="tab-panel-hidden">
                     <div class="dash-title">Travel Consultation</div>
                     <p class="dash-subtitle">Book a one-on-one session with a Jekafly visa expert. We'll guide you
@@ -379,7 +429,7 @@
         });
 
         function showTab(tab, el) {
-            ['applications', 'documents', 'insurance', 'track', 'profile'].forEach(t => {
+            ['applications', 'documents', 'insurance', 'track', 'profile', 'mydocs'].forEach(t => {
                 document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
             });
             document.querySelectorAll('.dash-nav-item').forEach(i => i.classList.remove('active'));
@@ -387,6 +437,7 @@
             if (tab === 'track') loadQuickRefs();
             if (tab === 'insurance') loadInsurance();
             if (tab === 'documents') { loadConsultHistory(); }
+            if (tab === 'mydocs') { loadMyDocsApps(); }
         }
 
         // ── APPLICATIONS ─────────────────────────────────────────────
@@ -946,6 +997,257 @@
         }
 
         async function doLogout() { await Auth.logout(); showToast('Logged out successfully.'); setTimeout(() => window.location.href = 'index.html', 800); }
+
+        // ══════════════════════════════════════════════════════════════
+        // MY DOCUMENTS TAB
+        // ══════════════════════════════════════════════════════════════
+        let myDocsRef = null;
+        let myDocSlots = [];
+        let myDocsPreviewModal = null;
+
+        async function loadMyDocsApps() {
+            const container = document.getElementById('mydocs-app-list');
+            if (!container) return;
+            const apps = await AppStore.getByUser();
+            if (!apps || apps.length === 0) {
+                container.innerHTML = `<div style="text-align:center;padding:32px;color:#9aa5b4;">
+                    <div style="font-size:2rem;margin-bottom:8px;">📋</div>
+                    <div>No applications yet.</div>
+                    <a href="apply.html" style="color:#e8613a;font-weight:600;">Start a visa application →</a>
+                </div>`;
+                return;
+            }
+            const sl = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved ✅', delivered: 'Delivered 🎉', rejected: 'Rejected ❌' };
+            const sc = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
+            container.innerHTML = apps.map(a => {
+                const vr = window.visaRequirements?.[a.destination];
+                const flag = vr?.flag || '🌍';
+                const docCount = vr?.docs?.length || 0;
+                return `<div onclick="openMyDocsApp('${a.ref}')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border:1.5px solid #eef0f6;border-radius:12px;cursor:pointer;margin-bottom:10px;transition:border-color .2s,box-shadow .2s;" onmouseover="this.style.borderColor='#e8613a';this.style.boxShadow='0 2px 12px rgba(232,97,58,0.1)'" onmouseout="this.style.borderColor='#eef0f6';this.style.boxShadow='none'">
+                    <div style="font-size:2rem;">${flag}</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:700;color:#0D1560;">${a.destination}</div>
+                        <div style="font-size:0.8rem;color:#9aa5b4;">${a.ref}</div>
+                        <div style="margin-top:4px;"><span class="status-pill ${sc[a.status] || 'status-received'}">${sl[a.status] || a.status}</span></div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:1.2rem;font-weight:800;color:#0D1560;">${docCount}</div>
+                        <div style="font-size:0.75rem;color:#9aa5b4;">docs needed</div>
+                        <div style="color:#e8613a;margin-top:4px;">→</div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        async function openMyDocsApp(ref) {
+            myDocsRef = ref;
+            myDocSlots = [];
+            document.getElementById('mydocs-step-1').style.display = 'none';
+            document.getElementById('mydocs-step-2').style.display = 'block';
+
+            const app = await AppStore.getByRef(ref);
+            if (!app) return;
+
+            const vr = window.visaRequirements?.[app.destination];
+            const flag = vr?.flag || '🌍';
+            const reqs = vr?.docs || [];
+            document.getElementById('mydocs-app-label').textContent = `${flag} ${app.destination} — ${app.ref}`;
+
+            // Load already uploaded docs
+            await loadMyDocsUploaded(ref);
+
+            // Build per-slot upload list
+            myDocSlots = new Array(reqs.length).fill(null);
+            const slotList = document.getElementById('mydocs-slot-list');
+
+            if (reqs.length === 0) {
+                slotList.innerHTML = `<div style="color:#9aa5b4;text-align:center;padding:20px;">No specific document list for this destination. Upload any relevant documents using the button below.</div>
+                <div style="margin-top:12px;">
+                    <label style="display:inline-flex;align-items:center;gap:8px;background:#e8613a;color:#fff;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;">
+                        📎 Upload Document <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleMyDocGeneral(event)">
+                    </label>
+                </div>`;
+                document.getElementById('mydocs-slot-footer').style.display = 'none';
+                return;
+            }
+
+            slotList.innerHTML = reqs.map((doc, i) => `
+                <div id="mydocs-slot-${i}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid #eef0f6;border-radius:10px;margin-bottom:8px;transition:border-color .2s;">
+                    <div style="width:28px;height:28px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0D1560;font-size:0.85rem;flex-shrink:0;">${i + 1}</div>
+                    <div style="flex:1;">
+                        <div style="font-weight:600;color:#1a1a2e;font-size:0.9rem;">${escHtml(doc)}</div>
+                        <div id="mydocs-slot-file-${i}" style="margin-top:4px;font-size:0.8rem;color:#9aa5b4;"></div>
+                    </div>
+                    <div style="display:flex;gap:6px;align-items:center;">
+                        <div id="mydocs-slot-status-${i}" style="font-size:0.8rem;color:#9aa5b4;">⬜ Needed</div>
+                        <label id="mydocs-slot-btn-${i}" style="background:#f4f6fb;border:1.5px solid #e0e4ef;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:0.8rem;font-weight:600;color:#0D1560;white-space:nowrap;">
+                            📎 Upload <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleMyDocSlot(event,${i})">
+                        </label>
+                    </div>
+                </div>`).join('');
+
+            document.getElementById('mydocs-slot-footer').style.display = 'none';
+            updateMyDocsFooter();
+        }
+
+        async function loadMyDocsUploaded(ref) {
+            const panel = document.getElementById('mydocs-uploaded-panel');
+            const list = document.getElementById('mydocs-uploaded-list');
+            const docs = await DocStore.getVault(ref);
+            if (!docs || docs.length === 0) {
+                panel.style.display = 'none';
+                return;
+            }
+            panel.style.display = 'block';
+            list.innerHTML = docs.map(d => `
+                <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f8f9fb;border-radius:8px;margin-bottom:6px;">
+                    <span style="font-size:1.3rem;">${d.mimeType?.includes('pdf') ? '📄' : '🖼️'}</span>
+                    <div style="flex:1;">
+                        <div style="font-weight:600;font-size:0.85rem;color:#1a1a2e;">${escHtml(d.originalName || d.name || 'Document')}</div>
+                        <div style="font-size:0.75rem;color:#9aa5b4;">${d.label || ''} · ${d.createdAt ? new Date(d.createdAt).toLocaleDateString() : ''}</div>
+                    </div>
+                    <button onclick="previewMyDoc('${d.id}')" style="background:#f0f4ff;border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:0.8rem;color:#0D1560;">👁 View</button>
+                </div>`).join('');
+        }
+
+        function handleMyDocSlot(event, i) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                myDocSlots[i] = { file, name: file.name, size: file.size, type: file.type, dataUrl: e.target.result, label: document.querySelector(`#mydocs-slot-${i} .doc-req-text`)?.textContent || '' };
+                const row = document.getElementById(`mydocs-slot-${i}`);
+                const fileEl = document.getElementById(`mydocs-slot-file-${i}`);
+                const statusEl = document.getElementById(`mydocs-slot-status-${i}`);
+                const btn = document.getElementById(`mydocs-slot-btn-${i}`);
+                if (row) row.style.borderColor = '#16a34a';
+                if (fileEl) fileEl.innerHTML = `<span style="color:#16a34a;font-weight:600;">${escHtml(file.name)}</span>
+                    <button onclick="previewMyDocSlot(${i})" style="background:none;border:none;cursor:pointer;color:#0D1560;margin-left:6px;">👁 Preview</button>
+                    <button onclick="removeMyDocSlot(${i})" style="background:none;border:none;cursor:pointer;color:#dc2626;margin-left:4px;">✕</button>`;
+                if (statusEl) statusEl.innerHTML = `<span style="color:#16a34a;font-weight:700;">✅ Ready</span>`;
+                if (btn) btn.innerHTML = `✅ Change <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleMyDocSlot(event,${i})">`;
+                updateMyDocsFooter();
+            };
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        function handleMyDocGeneral(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async e => {
+                showToast('Uploading...');
+                const uploaded = await DocStore.upload([{ file, name: file.name }], myDocsRef, null);
+                if (uploaded.length > 0) {
+                    showToast('Document uploaded! ✅');
+                    await loadMyDocsUploaded(myDocsRef);
+                } else {
+                    showToast('Upload failed. Please try again.', 'error');
+                }
+            };
+            reader.readAsDataURL(file);
+            event.target.value = '';
+        }
+
+        function removeMyDocSlot(i) {
+            myDocSlots[i] = null;
+            const row = document.getElementById(`mydocs-slot-${i}`);
+            const fileEl = document.getElementById(`mydocs-slot-file-${i}`);
+            const statusEl = document.getElementById(`mydocs-slot-status-${i}`);
+            const btn = document.getElementById(`mydocs-slot-btn-${i}`);
+            if (row) row.style.borderColor = '#eef0f6';
+            if (fileEl) fileEl.innerHTML = '';
+            if (statusEl) statusEl.innerHTML = `<span style="color:#9aa5b4;">⬜ Needed</span>`;
+            if (btn) btn.innerHTML = `📎 Upload <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleMyDocSlot(event,${i})">`;
+            updateMyDocsFooter();
+        }
+
+        function updateMyDocsFooter() {
+            const filled = myDocSlots.filter(Boolean).length;
+            const total = myDocSlots.length;
+            const footer = document.getElementById('mydocs-slot-footer');
+            const btn = document.getElementById('mydocs-submit-btn');
+            if (!footer || total === 0) return;
+            if (filled > 0) {
+                footer.style.display = 'block';
+                btn.textContent = `Submit ${filled} of ${total} Documents →`;
+            } else {
+                footer.style.display = 'none';
+            }
+        }
+
+        function previewMyDocSlot(i) {
+            const f = myDocSlots[i];
+            if (!f || !f.dataUrl) return;
+            showMyDocPreview(f.dataUrl, f.type, f.name);
+        }
+
+        async function previewMyDoc(id) {
+            showToast('Loading preview...');
+            const url = await DocStore.getSignedUrl(id);
+            if (!url) { showToast('Could not load document.', 'error'); return; }
+            showMyDocPreview(url, url.includes('.pdf') ? 'application/pdf' : 'image/jpeg', 'Document');
+        }
+
+        function showMyDocPreview(src, type, name) {
+            if (!myDocsPreviewModal) {
+                myDocsPreviewModal = document.createElement('div');
+                myDocsPreviewModal.style.cssText = 'position:fixed;inset:0;background:rgba(10,13,50,0.82);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;';
+                myDocsPreviewModal.onclick = e => { if (e.target === myDocsPreviewModal) myDocsPreviewModal.style.display = 'none'; };
+                myDocsPreviewModal.innerHTML = `<div style="background:#fff;border-radius:16px;padding:24px;max-width:880px;width:100%;max-height:92vh;overflow:auto;position:relative;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                        <div id="mydocs-preview-name" style="font-weight:700;color:#0D1560;font-size:0.95rem;"></div>
+                        <button onclick="myDocsPreviewModal.style.display='none'" style="background:#f4f6fb;border:none;border-radius:8px;width:34px;height:34px;font-size:1rem;cursor:pointer;">✕</button>
+                    </div>
+                    <div id="mydocs-preview-content"></div>
+                </div>`;
+                document.body.appendChild(myDocsPreviewModal);
+            }
+            document.getElementById('mydocs-preview-name').textContent = name;
+            document.getElementById('mydocs-preview-content').innerHTML = type?.includes('pdf')
+                ? `<iframe src="${src}" style="width:100%;height:72vh;border:none;border-radius:8px;"></iframe>`
+                : `<img src="${src}" style="max-width:100%;max-height:72vh;border-radius:8px;display:block;margin:auto;" alt="${escHtml(name)}"/>`;
+            myDocsPreviewModal.style.display = 'flex';
+        }
+
+        async function submitMyDocs() {
+            const toUpload = myDocSlots.map((s, i) => s ? { ...s, docIndex: i } : null).filter(Boolean);
+            if (toUpload.length === 0) { showToast('No documents to upload.', 'error'); return; }
+            const btn = document.getElementById('mydocs-submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Uploading...';
+            try {
+                const uploaded = await DocStore.upload(toUpload, myDocsRef, null);
+                if (uploaded.length > 0) {
+                    showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} uploaded successfully! 📎`);
+                    // Reset slots
+                    myDocSlots = myDocSlots.map(() => null);
+                    document.querySelectorAll('[id^="mydocs-slot-"]').forEach(el => {
+                        if (el.id.match(/^mydocs-slot-\d+$/)) el.style.borderColor = '#eef0f6';
+                    });
+                    document.querySelectorAll('[id^="mydocs-slot-file-"]').forEach(el => el.innerHTML = '');
+                    document.querySelectorAll('[id^="mydocs-slot-status-"]').forEach(el => el.innerHTML = '<span style="color:#9aa5b4;">⬜ Needed</span>');
+                    document.getElementById('mydocs-slot-footer').style.display = 'none';
+                    await loadMyDocsUploaded(myDocsRef);
+                } else {
+                    showToast('Upload failed. Please try again.', 'error');
+                }
+            } catch (e) {
+                showToast('Upload failed. Please try again.', 'error');
+            }
+            btn.disabled = false;
+            btn.textContent = 'Submit Documents →';
+        }
+
+        function resetMyDocs() {
+            myDocsRef = null;
+            myDocSlots = [];
+            document.getElementById('mydocs-step-1').style.display = 'block';
+            document.getElementById('mydocs-step-2').style.display = 'none';
+            document.getElementById('mydocs-uploaded-panel').style.display = 'none';
+            loadMyDocsApps();
+        }
     </script>
     <script>
         window.addEventListener('scroll', () => {
