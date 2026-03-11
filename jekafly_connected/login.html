@@ -126,13 +126,19 @@
                 const email = document.getElementById('login-email')?.value.trim();
                 const pass = document.getElementById('login-pass')?.value;
                 if (!email || !pass) { showToast('Please enter email and password.', 'error'); return; }
+                const btn = document.getElementById('btn-login');
+                btn.disabled = true;
+                btn.textContent = 'Logging in...';
                 const res = await Auth.login(email, pass);
                 if (res.ok) {
+                    btn.textContent = 'Welcome back! ✅';
                     showToast('Welcome back! 👋');
                     setTimeout(() => {
                         window.location.href = res.user.role === 'ADMIN' ? 'admin.html' : decodeURIComponent(returnUrl);
                     }, 600);
                 } else {
+                    btn.disabled = false;
+                    btn.textContent = 'Login to Jekafly →';
                     showToast(res.msg, 'error');
                 }
             });
@@ -143,11 +149,17 @@
                 const phone = document.getElementById('reg-phone')?.value.trim();
                 const pass = document.getElementById('reg-pass')?.value;
                 if (!name || !email || !pass) { showToast('Please fill in all required fields.', 'error'); return; }
+                const btn = document.getElementById('btn-register');
+                btn.disabled = true;
+                btn.textContent = 'Creating Account...';
                 const res = await Auth.register(name, email, phone, pass);
                 if (res.ok) {
+                    btn.textContent = 'Account Created! ✅';
                     showToast('Account created! Welcome to Jekafly 🎉');
                     setTimeout(() => window.location.href = decodeURIComponent(returnUrl), 800);
                 } else {
+                    btn.disabled = false;
+                    btn.textContent = 'Create Free Account →';
                     showToast(res.msg, 'error');
                 }
             });
