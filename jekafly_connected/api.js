@@ -171,6 +171,21 @@ var AppStore = {
 // ─── Documents (Vault) ────────────────────────────────────────────────────────
 var DocStore = {
   async upload(files, ref, docIndex) {
+    // If files have individual docIndex, upload each separately to preserve slot mapping
+    const hasSlotIndex = files.some(f => f.docIndex != null);
+    if (hasSlotIndex) {
+      const results = [];
+      for (const f of files) {
+        const form = new FormData();
+        form.append('files', f.file, f.name);
+        if (ref) form.append('ref', ref);
+        if (f.docIndex != null) form.append('docIndex', String(f.docIndex));
+        const res = await upload('/documents/upload', form);
+        if (res?.ok) results.push(...res.data.uploaded);
+      }
+      return results;
+    }
+    // Batch upload without slot index
     const form = new FormData();
     files.forEach(f => form.append('files', f.file, f.name));
     if (ref) form.append('ref', ref);

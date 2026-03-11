@@ -1067,8 +1067,9 @@
             const reqs = vr?.docs || [];
             document.getElementById('mydocs-app-label').textContent = `${flag} ${app.destination} — ${app.ref}`;
 
-            // Load already uploaded docs
-            await loadMyDocsUploaded(ref);
+            // Load already uploaded docs first so we can mark slots
+            const uploadedDocs = await DocStore.getVault(ref);
+            renderMyDocsUploaded(uploadedDocs);
 
             // Build per-slot upload list
             myDocSlots = new Array(reqs.length).fill(null);
@@ -1085,29 +1086,55 @@
                 return;
             }
 
-            slotList.innerHTML = reqs.map((doc, i) => `
-                <div id="mydocs-slot-${i}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid #eef0f6;border-radius:10px;margin-bottom:8px;transition:border-color .2s;">
-                    <div style="width:28px;height:28px;border-radius:50%;background:#f4f6fb;display:flex;align-items:center;justify-content:center;font-weight:700;color:#0D1560;font-size:0.85rem;flex-shrink:0;">${i + 1}</div>
+            // Map uploaded docs by docIndex for quick lookup
+            const uploadedByIndex = {};
+            (uploadedDocs || []).forEach(d => {
+                if (d.docIndex != null) uploadedByIndex[d.docIndex] = d;
+            });
+
+            slotList.innerHTML = reqs.map((doc, i) => {
+                const alreadyUploaded = uploadedByIndex[i];
+                const borderColor = alreadyUploaded ? '#16a34a' : '#eef0f6';
+                const statusHtml = alreadyUploaded
+                    ? `<span style="color:#16a34a;font-weight:700;">✅ Uploaded</span>`
+                    : `<span style="color:#9aa5b4;">⬜ Needed</span>`;
+                const fileHtml = alreadyUploaded
+                    ? `<span style="color:#16a34a;font-weight:600;">${escHtml(alreadyUploaded.originalName || alreadyUploaded.name || 'Document')}</span>
+                       <button onclick="previewMyDoc('${alreadyUploaded.id}')" style="background:none;border:none;cursor:pointer;color:#0D1560;margin-left:6px;">👁 Preview</button>`
+                    : '';
+                const btnHtml = alreadyUploaded
+                    ? `<label id="mydocs-slot-btn-${i}" style="background:#f0fdf4;border:1.5px solid #16a34a;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:0.8rem;font-weight:600;color:#16a34a;white-space:nowrap;">
+                            🔄 Replace <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleMyDocSlot(event,${i})">
+                       </label>`
+                    : `<label id="mydocs-slot-btn-${i}" style="background:#f4f6fb;border:1.5px solid #e0e4ef;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:0.8rem;font-weight:600;color:#0D1560;white-space:nowrap;">
+                            📎 Upload <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleMyDocSlot(event,${i})">
+                       </label>`;
+                return `
+                <div id="mydocs-slot-${i}" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid ${borderColor};border-radius:10px;margin-bottom:8px;transition:border-color .2s;">
+                    <div style="width:28px;height:28px;border-radius:50%;background:${alreadyUploaded ? '#f0fdf4' : '#f4f6fb'};display:flex;align-items:center;justify-content:center;font-weight:700;color:${alreadyUploaded ? '#16a34a' : '#0D1560'};font-size:0.85rem;flex-shrink:0;">${alreadyUploaded ? '✓' : i + 1}</div>
                     <div style="flex:1;">
                         <div style="font-weight:600;color:#1a1a2e;font-size:0.9rem;">${escHtml(doc)}</div>
-                        <div id="mydocs-slot-file-${i}" style="margin-top:4px;font-size:0.8rem;color:#9aa5b4;"></div>
+                        <div id="mydocs-slot-file-${i}" style="margin-top:4px;font-size:0.8rem;">${fileHtml}</div>
                     </div>
                     <div style="display:flex;gap:6px;align-items:center;">
-                        <div id="mydocs-slot-status-${i}" style="font-size:0.8rem;color:#9aa5b4;">⬜ Needed</div>
-                        <label id="mydocs-slot-btn-${i}" style="background:#f4f6fb;border:1.5px solid #e0e4ef;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:0.8rem;font-weight:600;color:#0D1560;white-space:nowrap;">
-                            📎 Upload <input type="file" accept=".pdf,.jpg,.jpeg,.png" style="display:none" onchange="handleMyDocSlot(event,${i})">
-                        </label>
+                        <div id="mydocs-slot-status-${i}">${statusHtml}</div>
+                        ${btnHtml}
                     </div>
-                </div>`).join('');
+                </div>`;
+            }).join('');
 
             document.getElementById('mydocs-slot-footer').style.display = 'none';
             updateMyDocsFooter();
         }
 
         async function loadMyDocsUploaded(ref) {
+            const docs = await DocStore.getVault(ref);
+            renderMyDocsUploaded(docs);
+        }
+
+        function renderMyDocsUploaded(docs) {
             const panel = document.getElementById('mydocs-uploaded-panel');
             const list = document.getElementById('mydocs-uploaded-list');
-            const docs = await DocStore.getVault(ref);
             if (!docs || docs.length === 0) {
                 panel.style.display = 'none';
                 return;
@@ -1118,7 +1145,7 @@
                     <span style="font-size:1.3rem;">${d.mimeType?.includes('pdf') ? '📄' : '🖼️'}</span>
                     <div style="flex:1;">
                         <div style="font-weight:600;font-size:0.85rem;color:#1a1a2e;">${escHtml(d.originalName || d.name || 'Document')}</div>
-                        <div style="font-size:0.75rem;color:#9aa5b4;">${d.label || ''} · ${d.createdAt ? new Date(d.createdAt).toLocaleDateString() : ''}</div>
+                        <div style="font-size:0.75rem;color:#9aa5b4;">${d.createdAt ? new Date(d.createdAt).toLocaleDateString() : ''}</div>
                     </div>
                     <button onclick="previewMyDoc('${d.id}')" style="background:#f0f4ff;border:none;border-radius:6px;padding:5px 10px;cursor:pointer;font-size:0.8rem;color:#0D1560;">👁 View</button>
                 </div>`).join('');
@@ -1155,7 +1182,7 @@
                 const uploaded = await DocStore.upload([{ file, name: file.name }], myDocsRef, null);
                 if (uploaded.length > 0) {
                     showToast('Document uploaded! ✅');
-                    await loadMyDocsUploaded(myDocsRef);
+                    await openMyDocsApp(myDocsRef);
                 } else {
                     showToast('Upload failed. Please try again.', 'error');
                 }
@@ -1226,7 +1253,7 @@
         }
 
         async function submitMyDocs() {
-            const toUpload = myDocSlots.map((s, i) => s ? { ...s, docIndex: i } : null).filter(Boolean);
+            const toUpload = myDocSlots.map((s, i) => s ? { file: s.file, name: s.name, docIndex: i } : null).filter(Boolean);
             if (toUpload.length === 0) { showToast('No documents to upload.', 'error'); return; }
             const btn = document.getElementById('mydocs-submit-btn');
             btn.disabled = true;
@@ -1243,7 +1270,7 @@
                     document.querySelectorAll('[id^="mydocs-slot-file-"]').forEach(el => el.innerHTML = '');
                     document.querySelectorAll('[id^="mydocs-slot-status-"]').forEach(el => el.innerHTML = '<span style="color:#9aa5b4;">⬜ Needed</span>');
                     document.getElementById('mydocs-slot-footer').style.display = 'none';
-                    await loadMyDocsUploaded(myDocsRef);
+                    await openMyDocsApp(myDocsRef);
                 } else {
                     showToast('Upload failed. Please try again.', 'error');
                 }
