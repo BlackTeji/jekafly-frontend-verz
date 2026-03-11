@@ -96,10 +96,11 @@
                             <div class="timeline" id="detail-timeline"></div>
                         </div>
                         <div class="dash-app-actions">
-                            <button class="btn-save" onclick="window.location.href='apply.html'">Apply Again →</button>
+
                             <button class="btn-save" id="detail-pay-btn" onclick="goToPayment()">Complete Payment
                                 →</button>
-                            <button class="btn-save" id="detail-upload-btn" onclick="openDocUpload()">Upload Documents
+                            <button class="btn-save" id="detail-upload-btn" onclick="goToMyDocsForApp()">Upload
+                                Documents
                                 📎</button>
                         </div>
                     </div>
@@ -596,11 +597,24 @@
 
         async function submitModalDocuments() {
             if (modalUploads.length === 0) { showToast('Please select at least one file.', 'error'); return; }
-            showToast('Uploading...');
-            const uploaded = await DocStore.upload(modalUploads, selectedApp?.ref || null, null);
-            closeDocUploadDirect();
-            showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} uploaded successfully! 📎`);
-            loadVault();
+            const btn = document.querySelector('#doc-upload-modal .btn-next');
+            if (btn) { btn.disabled = true; btn.textContent = 'Uploading...'; }
+            try {
+                // Convert dataUrl files back to File objects for upload
+                const fileObjects = await Promise.all(modalUploads.map(async u => {
+                    const res = await fetch(u.dataUrl);
+                    const blob = await res.blob();
+                    const file = new File([blob], u.name, { type: u.type });
+                    return { file, name: u.name };
+                }));
+                const uploaded = await DocStore.upload(fileObjects, selectedApp?.ref || null, null);
+                closeDocUploadDirect();
+                showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} uploaded successfully! 📎`);
+                loadVault();
+            } catch (e) {
+                showToast('Upload failed. Please try again.', 'error');
+            }
+            if (btn) { btn.disabled = false; btn.textContent = 'Submit Documents →'; }
         }
 
         // Track which app ref the Documents tab is currently uploading for
@@ -1238,6 +1252,16 @@
             }
             btn.disabled = false;
             btn.textContent = 'Submit Documents →';
+        }
+
+        function goToMyDocsForApp() {
+            if (!selectedApp) return;
+            const ref = selectedApp.ref;
+            closeDetail();
+            const navItem = document.querySelector('.dash-nav-item[onclick*="mydocs"]');
+            showTab('mydocs', navItem);
+            // Pre-open the app in step 2
+            setTimeout(() => openMyDocsApp(ref), 100);
         }
 
         function resetMyDocs() {
