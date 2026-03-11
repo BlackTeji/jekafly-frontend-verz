@@ -989,7 +989,7 @@
                 docList.innerHTML = '<em style="color:#9BA5C0;">No documents uploaded yet.</em>';
             } else {
                 // Store URLs in map for safe access
-                docs.forEach(d => { if (d.url || d.signedUrl) _docUrlMap[d.id] = d.signedUrl || d.url; });
+                // URLs fetched on demand via adminViewDoc/adminDownloadDoc
                 docList.innerHTML = docs.map(d => `
                     <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#F7F8FC;border-radius:8px;margin-bottom:6px;">
                         <span style="font-size:1.3rem;">${d.mimeType === 'application/pdf' ? '📄' : '🖼️'}</span>
@@ -1319,15 +1319,25 @@
                 </div>`).join('');
         }
 
-        function adminViewDoc(id) {
-            const url = _docUrlMap[id];
-            if (!url) { showToast('URL not available. Try refreshing.', 'error'); return; }
+        async function adminViewDoc(id) {
+            let url = _docUrlMap[id];
+            if (!url) {
+                showToast('Fetching document...');
+                url = await DocStore.getSignedUrl(id);
+                if (!url) { showToast('Could not load document.', 'error'); return; }
+                _docUrlMap[id] = url;
+            }
             window.open(url, '_blank');
         }
 
-        function adminDownloadDoc(id, name) {
-            const url = _docUrlMap[id];
-            if (!url) { showToast('URL not available. Try refreshing.', 'error'); return; }
+        async function adminDownloadDoc(id, name) {
+            let url = _docUrlMap[id];
+            if (!url) {
+                showToast('Fetching document...');
+                url = await DocStore.getSignedUrl(id);
+                if (!url) { showToast('Could not load document.', 'error'); return; }
+                _docUrlMap[id] = url;
+            }
             downloadDoc(url, name);
         }
         // ── CSV Export ───────────────────────────────────────────────────────────────
