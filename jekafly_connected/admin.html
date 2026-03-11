@@ -995,10 +995,16 @@
                             <div style="font-weight:600;color:#0D1560;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${d.name}</div>
                             <div style="font-size:0.75rem;color:#9BA5C0;">${(d.size / 1024).toFixed(1)} KB · ${new Date(d.uploadedAt).toLocaleDateString('en-NG')}</div>
                         </div>
-                        <a href="${d.signedUrl || d.url || '#'}" target="_blank" rel="noopener"
-                           style="padding:5px 12px;background:#0E0EB8;color:#fff;border-radius:6px;font-size:0.78rem;font-weight:600;text-decoration:none;white-space:nowrap;">
-                            View ↗
-                        </a>
+                        <div style="display:flex;gap:6px;">
+                            <a href="${d.signedUrl || d.url || '#'}" target="_blank" rel="noopener"
+                               style="padding:5px 10px;background:#0E0EB8;color:#fff;border-radius:6px;font-size:0.78rem;font-weight:600;text-decoration:none;white-space:nowrap;">
+                                👁 View
+                            </a>
+                            <a href="${d.signedUrl || d.url || '#'}" download="${d.name}"
+                               style="padding:5px 10px;background:#16a34a;color:#fff;border-radius:6px;font-size:0.78rem;font-weight:600;text-decoration:none;white-space:nowrap;">
+                                ⬇ Download
+                            </a>
+                        </div>
                     </div>`).join('');
             }
 
@@ -1241,21 +1247,24 @@
 
         function renderDocs() {
             const filter = (document.getElementById('doc-ref-filter')?.value || '').toLowerCase();
-            const docs = _allDocs.filter(d => !filter || (d.ref || '').toLowerCase().includes(filter) || d.name.toLowerCase().includes(filter) || (d.uploadedBy || '').toLowerCase().includes(filter));
+            const docs = _allDocs.filter(d => !filter || (d.ref || '').toLowerCase().includes(filter) || (d.name || '').toLowerCase().includes(filter) || (d.uploadedBy || '').toLowerCase().includes(filter));
             if (!docs.length) {
-                document.getElementById('docs-table').innerHTML = '<div class="atbl-empty">No documents found.</div>';
+                document.getElementById('docs-table').innerHTML = '<div class="atbl-empty">No documents found. Click Refresh to load.</div>';
                 return;
             }
             document.getElementById('docs-table').innerHTML = `<table>
-                <thead><tr><th>File</th><th>Applicant</th><th>Application Ref</th><th>Size</th><th>Uploaded</th><th></th></tr></thead>
+                <thead><tr><th>File</th><th>Applicant</th><th>Application Ref</th><th>Size</th><th>Uploaded</th><th>Actions</th></tr></thead>
                 <tbody>${docs.map(d => `
                 <tr>
-                    <td><span style="font-size:1.2rem">${d.mimeType === 'application/pdf' ? '📄' : '🖼️'}</span> ${d.name}</td>
-                    <td>${d.uploadedBy}</td>
+                    <td><span style="font-size:1.2rem">${d.mimeType === 'application/pdf' ? '📄' : '🖼️'}</span> ${escHtml(d.name)}</td>
+                    <td>${escHtml(d.uploadedBy)}</td>
                     <td>${d.ref ? `<span class="ref-badge">${d.ref}</span>` : '—'}</td>
                     <td style="color:#9BA5C0">${d.size ? (d.size / 1024).toFixed(0) + ' KB' : '—'}</td>
                     <td style="color:#9BA5C0">${new Date(d.uploadedAt).toLocaleDateString('en-NG')}</td>
-                    <td><a href="${d.url}" target="_blank" class="btn-manage" style="text-decoration:none">View</a></td>
+                    <td style="display:flex;gap:6px;">
+                        <a href="${d.url}" target="_blank" rel="noopener" class="btn-manage" style="text-decoration:none;">👁 View</a>
+                        <a href="${d.url}" download="${escHtml(d.name)}" class="btn-manage" style="text-decoration:none;background:#16a34a;color:#fff;">⬇ Download</a>
+                    </td>
                 </tr>`).join('')}</tbody>
             </table>`;
         }
