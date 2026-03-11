@@ -966,8 +966,8 @@
         }
 
         async function viewApp(ref) {
-            const app = await AppStore.getByRef(ref);
-            if (!app) return;
+            const app = await AdminStore.getByRef(ref);
+            if (!app) { showToast('Could not load application. Please try again.', 'error'); return; }
             selectedApp = app;
             document.getElementById('detail-title').textContent = app.ref + ' — ' + app.applicantName;
             document.getElementById('detail-grid').innerHTML = [

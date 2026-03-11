@@ -279,6 +279,11 @@ var InsuranceStore = {
 
 // ─── Admin ────────────────────────────────────────────────────────────────────
 var AdminStore = {
+  async getByRef(ref) {
+    const res = await get(`/admin/applications/${ref}`);
+    return res?.ok ? res.data.application : null;
+  },
+
   async getUsers() {
     const res = await get('/admin/users?limit=100');
     return res?.ok ? res.data.users : [];
