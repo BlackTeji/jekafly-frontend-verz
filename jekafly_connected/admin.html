@@ -720,6 +720,21 @@
                 </div>
 
                 <!-- ── USERS ─────────────────────────────── -->
+                <div id="tab-users" style="display:none">
+                    <div class="admin-title">Users</div>
+                    <p class="admin-sub" id="user-count-sub">All registered users on Jekafly.</p>
+                    <div class="acard">
+                        <div class="acard-header">
+                            <h3>Registered Users</h3>
+                            <button class="btn-manage" onclick="exportCSV('users')" style="white-space:nowrap;">⬇ Export
+                                CSV</button>
+                        </div>
+                        <div id="users-table">
+                            <div class="atbl-empty">Loading users...</div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ── FEES ──────────────────────────────── -->
                 <div id="tab-fees" style="display:none">
                     <div class="admin-title">Manage Fees</div>
@@ -873,7 +888,7 @@
         });
 
         function adminTab(tab, el) {
-            ['overview', 'applications', 'users', 'fees'].forEach(t =>
+            ['overview', 'applications', 'users', 'fees'].filter(t => document.getElementById('tab-' + t)).forEach(t =>
                 document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none');
             document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
             if (el) el.classList.add('active');
