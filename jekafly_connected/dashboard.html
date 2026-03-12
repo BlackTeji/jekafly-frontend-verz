@@ -463,7 +463,7 @@
             <td><span class="cell-ref">${a.ref}</span></td>
             <td><strong>${a.destination}</strong></td>
             <td>${a.purpose || '—'}</td>
-            <td>${a.travelDate ? new Date(a.travelDate + 'T00:00:00').toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td>
+            <td>${a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td>
             <td><span class="status-pill ${statusColors[a.status] || 'status-received'}">${statusLabels[a.status] || a.status}</span></td>
             <td>${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}</td>
             <td><button onclick="viewApp('${a.ref}')" class="btn-table-view">View →</button></td>
@@ -479,12 +479,13 @@
                 { l: 'Applicant', v: app.applicantName },
                 { l: 'Destination', v: app.destination },
                 { l: 'Purpose', v: app.purpose || '—' },
-                { l: 'Travel Date', v: app.travelDate ? new Date(app.travelDate + 'T00:00:00').toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—' },
+                { l: 'Travel Date', v: app.travelDate ? new Date(app.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—' },
+                { l: 'Return Date', v: app.returnDate ? new Date(app.returnDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—' },
                 { l: 'Passport No.', v: app.passportNumber || '—' },
                 { l: 'Email', v: app.email },
                 { l: 'Phone', v: app.phone || '—' },
                 { l: 'Status', v: `<span class="status-pill ${statusColors[app.status]}">${statusLabels[app.status] || app.status}</span>` },
-                { l: 'Payment', v: app.paid ? '<span class="paid-yes">✅ Paid — ₦' + (app.fee || 0).toLocaleString() + '</span>' : '<span class="paid-no">⚠️ Unpaid</span>' },
+                { l: 'Amount Paid', v: app.paid ? '<span class="paid-yes">✅ ₦' + Number(app.fee || 0).toLocaleString() + '</span>' : '<span class="paid-no">⚠️ Unpaid</span>' },
                 { l: 'Submitted', v: new Date(app.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }) },
             ].map(f => `<div class="detail-item"><div class="detail-label">${f.l}</div><div class="detail-value">${f.v}</div></div>`).join('');
 

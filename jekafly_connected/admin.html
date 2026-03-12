@@ -965,9 +965,11 @@
             document.getElementById('detail-grid').innerHTML = [
                 { l: 'Applicant', v: app.applicantName }, { l: 'Email', v: app.email }, { l: 'Phone', v: app.phone || '—' },
                 { l: 'Nationality', v: app.nationality || '—' }, { l: 'Destination', v: app.destination }, { l: 'Purpose', v: app.purpose || '—' },
-                { l: 'Travel Date', v: app.travelDate || '—' }, { l: 'Passport No.', v: app.passportNumber || '—' }, { l: 'Passport Expiry', v: app.passportExpiry || '—' },
+                { l: 'Travel Date', v: app.travelDate ? new Date(app.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—' },
+                { l: 'Return Date', v: app.returnDate ? new Date(app.returnDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—' },
+                { l: 'Passport No.', v: app.passportNumber || '—' }, { l: 'Passport Expiry', v: app.passportExpiry ? new Date(app.passportExpiry).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—' },
                 { l: 'Status', v: `<span class="status-pill ${SC[app.status]}">${SL[app.status] || app.status}</span>` },
-                { l: 'Payment', v: app.paid ? `<span class="paid-yes">✅ Paid — ₦${(app.fee || 0).toLocaleString()}</span>` : '<span class="paid-no">⚠️ Unpaid</span>' },
+                { l: 'Amount Paid', v: app.paid ? `<span class="paid-yes">✅ ₦${Number(app.fee || 0).toLocaleString()}</span>` : '<span class="paid-no">⚠️ Unpaid</span>' },
                 { l: 'Submitted', v: new Date(app.createdAt).toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' }) },
             ].map(f => `<div class="detail-item"><div class="detail-label">${f.l}</div><div class="detail-value">${f.v}</div></div>`).join('');
             document.getElementById('new-status').value = app.status;
