@@ -6,157 +6,676 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Payment — Jekafly</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap"
         rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/styles.css" />
-    <link rel="stylesheet" href="assets/css/utilities.css" />
-    <link rel="stylesheet" href="assets/css/apply.css">
-    <link rel="stylesheet" href="assets/css/dashboard.css">
-    <link rel="stylesheet" href="assets/css/payment.css">
-    <link rel="stylesheet" href="assets/css/hero-animation.css">
     <script src="https://js.paystack.co/v1/inline.js"></script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --brand: #e8613a;
+            --brand-dark: #c04e2a;
+            --navy: #0a1f44;
+            --navy-mid: #1a3560;
+            --ink: #1c1c2e;
+            --muted: #6b7280;
+            --border: #e8ecf4;
+            --surface: #f7f8fc;
+            --white: #ffffff;
+            --green: #16a34a;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--surface);
+            min-height: 100vh;
+            color: var(--ink);
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            height: 62px;
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo img {
+            height: 34px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--muted);
+            font-size: .875rem;
+            font-weight: 500;
+            transition: color .2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--brand);
+        }
+
+        .nav-user {
+            font-size: .82rem;
+            color: var(--muted);
+        }
+
+        .nav-user strong {
+            color: var(--navy);
+        }
+
+        .pay-page {
+            min-height: 100vh;
+            padding: 90px 20px 60px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .pay-layout {
+            width: 100%;
+            max-width: 1020px;
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        .summary-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .page-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .72rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--brand);
+            margin-bottom: 4px;
+        }
+
+        .page-eyebrow::before {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--brand);
+            border-radius: 2px;
+        }
+
+        .page-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.2rem;
+            line-height: 1.15;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+
+        .page-sub {
+            font-size: .9rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .dest-card {
+            background: var(--navy);
+            border-radius: 20px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dest-card::before {
+            content: '';
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(232, 97, 58, .25) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .dest-card-top {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .dest-flag-box {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, .1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .dest-card-info {
+            flex: 1;
+        }
+
+        .dest-card-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .dest-card-ref {
+            font-size: .75rem;
+            color: rgba(255, 255, 255, .5);
+            font-family: monospace;
+            letter-spacing: .05em;
+        }
+
+        .dest-card-amount {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2rem;
+            color: #fff;
+            text-align: right;
+        }
+
+        .dest-card-amount small {
+            display: block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .7rem;
+            color: rgba(255, 255, 255, .5);
+            font-weight: 400;
+            margin-bottom: 2px;
+        }
+
+        .line-items {
+            background: var(--white);
+            border-radius: 16px;
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+        }
+
+        .line-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: .875rem;
+        }
+
+        .line-item:last-child {
+            border-bottom: none;
+        }
+
+        .line-item .li-label {
+            color: var(--muted);
+        }
+
+        .line-item .li-val {
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .line-item .li-val.ref-val {
+            font-family: monospace;
+            font-size: .78rem;
+            background: var(--surface);
+            padding: 3px 9px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--navy);
+        }
+
+        .line-item.total-line {
+            background: var(--surface);
+            border-top: 2px solid var(--border);
+            padding: 16px 20px;
+        }
+
+        .line-item.total-line .li-label {
+            font-weight: 700;
+            font-size: .95rem;
+            color: var(--ink);
+        }
+
+        .line-item.total-line .li-val {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.4rem;
+            color: var(--brand);
+        }
+
+        .included-strip {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            background: #f0fdf4;
+            border: 1.5px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-size: .82rem;
+            color: #065f46;
+            line-height: 1.55;
+        }
+
+        .pay-panel {
+            position: sticky;
+            top: 82px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .pay-box {
+            background: var(--white);
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(10, 31, 68, .08);
+        }
+
+        .pay-box-header {
+            padding: 20px 24px 0;
+        }
+
+        .pay-box-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+
+        .pay-box-sub {
+            font-size: .8rem;
+            color: var(--muted);
+        }
+
+        .pay-total-display {
+            padding: 16px 24px;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .pay-total-currency {
+            font-size: 1rem;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .pay-total-amount {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.4rem;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .pay-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0 24px;
+        }
+
+        .pay-cta-wrap {
+            padding: 20px 24px;
+        }
+
+        .btn-pay {
+            width: 100%;
+            background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 18px 24px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform .15s, box-shadow .15s, opacity .15s;
+            box-shadow: 0 6px 24px rgba(232, 97, 58, .4);
+        }
+
+        .btn-pay:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px rgba(232, 97, 58, .5);
+        }
+
+        .btn-pay:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-pay:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .btn-pay-sub {
+            font-weight: 400;
+            font-size: .82rem;
+            opacity: .8;
+        }
+
+        .trust-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            padding: 0 24px 20px;
+        }
+
+        .trust-badge {
+            font-size: .72rem;
+            color: var(--muted);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 4px 10px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .pay-processing {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+            text-align: center;
+            gap: 14px;
+        }
+
+        .pay-processing.show {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--brand);
+            border-radius: 50%;
+            animation: spin .75s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .processing-title {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--navy);
+        }
+
+        .processing-sub {
+            font-size: .82rem;
+            color: var(--muted);
+        }
+
+        .pay-empty {
+            text-align: center;
+            padding: 64px 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pay-empty-icon {
+            font-size: 3rem;
+        }
+
+        .pay-empty h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .pay-empty p {
+            font-size: .875rem;
+            color: var(--muted);
+        }
+
+        .btn-start {
+            margin-top: 8px;
+            background: var(--brand);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-size: .9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .success-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(10, 31, 68, .75);
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .success-overlay.show {
+            display: flex;
+        }
+
+        .success-modal {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 44px 36px;
+            max-width: 460px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 28px 72px rgba(0, 0, 0, .25);
+            animation: popIn .38s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(.85);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-icon-wrap {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: #f0fdf4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+        }
+
+        .success-modal h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.7rem;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .success-modal p {
+            font-size: .875rem;
+            color: var(--muted);
+            line-height: 1.65;
+            margin-bottom: 24px;
+        }
+
+        .receipt {
+            background: var(--surface);
+            border-radius: 14px;
+            border: 1.5px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 24px;
+            text-align: left;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: .82rem;
+        }
+
+        .receipt-row:last-child {
+            border-bottom: none;
+        }
+
+        .receipt-row .rl {
+            color: var(--muted);
+        }
+
+        .receipt-row .rv {
+            font-weight: 600;
+            color: var(--ink);
+        }
+
+        .receipt-row .rv.amount {
+            color: var(--green);
+            font-size: 1rem;
+        }
+
+        .receipt-row .rv.tx {
+            font-family: monospace;
+            font-size: .73rem;
+            color: var(--muted);
+            word-break: break-all;
+        }
+
+        .success-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn-dashboard {
+            background: var(--navy);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-dashboard:hover {
+            background: var(--navy-mid);
+        }
+
+        .btn-home {
+            background: none;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: 13px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .875rem;
+            font-weight: 500;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        .btn-home:hover {
+            border-color: #d1d5db;
+            color: var(--ink);
+        }
+
+        @media (max-width: 760px) {
+            nav {
+                padding: 0 18px;
+            }
+
+            .pay-page {
+                padding: 80px 16px 48px;
+            }
+
+            .pay-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .pay-panel {
+                position: static;
+            }
+
+            .page-title {
+                font-size: 1.7rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
     <nav>
-        <a href="index.html" class="nav-logo">
-            <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
-        </a>
+        <a href="index.html" class="nav-logo"><img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" /></a>
         <div class="nav-links"><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a></div>
-        <div class="nav-cta" id="nav-cta-area"></div>
+        <div id="nav-user-area" class="nav-user"></div>
     </nav>
 
     <div class="pay-page">
-        <div class="pay-wrap">
+        <div id="pay-root"></div>
+    </div>
 
-            <!-- LEFT: PAYMENT FORM -->
-            <div>
-                <!-- FORM VIEW -->
-                <div id="pay-form-view">
-                    <div class="pay-card">
-                        <div class="section-tag">Secure Payment</div>
-                        <h2>Complete Your Payment</h2>
-                        <p class="sub">Your information is encrypted and secure. We use 256-bit SSL.</p>
-
-                        <div class="dest-badge-lg" id="order-dest-badge">
-                            <span class="pay-dest-icon">✈️</span>
-                            <div>
-                                <div class="pay-dest-title" id="badge-title">Loading...</div>
-                                <div class="pay-dest-sub" id="badge-sub">Loading...</div>
-                            </div>
-                        </div>
-
-                        <!-- PAYMENT METHOD -->
-                        <p class="pay-method-label">
-                            Payment Method</p>
-                        <div class="method-tabs">
-                            <div class="method-tab active" onclick="setMethod('card', this)"><span
-                                    class="tab-icon">💳</span>Card</div>
-                            <div class="method-tab" onclick="setMethod('transfer', this)"><span
-                                    class="tab-icon">🏦</span>Bank Transfer</div>
-                            <div class="method-tab" onclick="setMethod('ussd', this)"><span
-                                    class="tab-icon">📱</span>USSD</div>
-                        </div>
-
-                        <!-- CARD FORM -->
-                        <div id="method-card">
-                            <div class="form-group">
-                                <label>Cardholder Name</label>
-                                <input type="text" id="pay-name" placeholder="As on card" />
-                            </div>
-                            <div class="form-group">
-                                <label>Card Number</label>
-                                <div class="card-input-wrap">
-                                    <input type="text" id="pay-card" placeholder="0000 0000 0000 0000" maxlength="19"
-                                        oninput="formatCard(this)" />
-                                    <span class="card-icon" id="card-icon">💳</span>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Expiry Date</label>
-                                    <input type="text" id="pay-expiry" placeholder="MM / YY" maxlength="7"
-                                        oninput="formatExpiry(this)" />
-                                </div>
-                                <div class="form-group">
-                                    <label>CVV</label>
-                                    <input type="password" id="pay-cvv" placeholder="•••" maxlength="4" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- BANK TRANSFER -->
-                        <div id="method-transfer" class="method-panel-hidden">
-                            <div class="transfer-box">
-                                <p class="transfer-note">Transfer the
-                                    exact amount to:</p>
-                                <div class="transfer-row"><span class="transfer-label">Bank:</span> <strong>Guaranty
-                                        Trust Bank
-                                        (GTB)</strong></div>
-                                <div class="transfer-row"><span class="transfer-label">Account Name:</span>
-                                    <strong>Jekafly
-                                        Technologies Ltd</strong>
-                                </div>
-                                <div class="transfer-row"><span class="transfer-label">Account Number:</span> <strong
-                                        class="transfer-acct">0123456789</strong>
-                                </div>
-                                <div class="transfer-row"><span class="transfer-label">Reference:</span> <strong
-                                        id="transfer-ref" class="transfer-ref">JKF-PAY-XXXXXX</strong></div>
-                                <p class="transfer-note">⚠️ Use your application reference
-                                    as the transfer narration. Payment confirmed within 30 minutes.</p>
-                            </div>
-                        </div>
-
-                        <!-- USSD -->
-                        <div id="method-ussd" class="method-panel-hidden">
-                            <div class="ussd-box">
-                                <p class="ussd-intro">Dial the code below on
-                                    your phone:</p>
-                                <div class="ussd-code">
-                                    *737*2*<span id="ussd-amount">150000</span>#</div>
-                                <p class="ussd-note">Works on all
-                                    Nigerian networks (GTB, Zenith, Access, First Bank etc.)</p>
-                                <p class="ussd-note">After payment, click
-                                    "I've Paid" below.</p>
-                            </div>
-                        </div>
-
-                        <button class="btn-pay" id="btn-pay" onclick="processPayment()">Pay <span
-                                id="pay-btn-amount">₦150,000</span> Securely 🔒</button>
-                        <p class="secure-note">🔒 256-bit SSL Encrypted &nbsp;·&nbsp; 🇳🇬 CBN Compliant &nbsp;·&nbsp; ✅
-                            PCI DSS Certified</p>
-                    </div>
-                </div>
-
-                <!-- PROCESSING VIEW -->
-                <div class="pay-card processing" id="pay-processing">
-                    <div class="spinner"></div>
-                    <h3 class="pay-processing-title">Processing Payment...</h3>
-                    <p class="pay-processing-sub">Please wait, do not close this tab.</p>
-                </div>
-
-                <!-- SUCCESS VIEW (placeholder in flow — actual success shown in overlay) -->
-                <div class="pay-card pay-success" id="pay-success" style="display:none;"></div>
+    <div class="success-overlay" id="pay-success-overlay">
+        <div class="success-modal">
+            <div class="success-icon-wrap">&#127881;</div>
+            <h2>Payment Confirmed!</h2>
+            <p>Your application is now active and under expert review. A confirmation email has been sent to you.</p>
+            <div class="receipt" id="receipt-box"></div>
+            <div class="success-actions">
+                <button class="btn-dashboard" onclick="window.location.href='dashboard.html'">Go to My Dashboard
+                    &rarr;</button>
+                <button class="btn-home" onclick="window.location.href='index.html'">Back to Home</button>
             </div>
-
-            <!-- RIGHT: ORDER SUMMARY -->
-            <div class="order-summary" id="order-summary-box">
-                <h3>Order Summary</h3>
-                <div id="summary-body">
-                    <div class="pay-loading">Loading...</div>
-                </div>
-                <div class="order-divider"></div>
-                <div class="order-total">
-                    <div class="label">Total</div>
-                    <div class="val" id="summary-total">₦0</div>
-                </div>
-                <div class="pay-included-box">
-                    <p class="pay-included-text"><strong>✅ What's included:</strong> Expert document
-                        review, embassy submission, real-time tracking, dedicated support agent.</p>
-                </div>
-            </div>
-
         </div>
     </div>
 
@@ -164,145 +683,102 @@
     <script src="app.js"></script>
     <script>
         let pendingPayment = null;
-        let payMethod = 'card';
 
         document.addEventListener('DOMContentLoaded', async () => {
             await Auth.init();
             const user = Auth.getCurrent();
-            const navCta = document.getElementById('nav-cta-area');
-
-            if (!user) {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            navCta.innerHTML = `<span class="nav-user-hi">Hi, <strong>${user.name.split(' ')[0]}</strong></span>
-    <a href="dashboard.html" class="btn-outline btn-outline-link">Dashboard</a>`;
-
-            // Load pending payment
+            if (!user) { window.location.href = 'index.html'; return; }
+            document.getElementById('nav-user-area').innerHTML =
+                '<span class="nav-user">Hi, <strong>' + user.name.split(' ')[0] + '</strong></span>';
             try { pendingPayment = JSON.parse(localStorage.getItem('jkf_pending_payment')); } catch { }
-
-            // If returning from Paystack redirect, verify immediately — don't require pendingPayment
             const urlParams = new URLSearchParams(window.location.search);
             const returnRef = urlParams.get('ref') || urlParams.get('reference') || urlParams.get('trxref');
-            if (returnRef) {
-                checkPaystackReturn();
-                return;
-            }
-
+            if (returnRef) { renderProcessing(); checkPaystackReturn(returnRef); return; }
             if (!pendingPayment) {
-                document.querySelector('.pay-page').innerHTML = '<div class="pay-empty"><div class="pay-empty-icon">😕</div><h2 class="pay-empty-title">No pending payment found</h2><p class="pay-empty-sub">Start a new application to proceed to payment.</p><button class="btn-next" onclick="window.location.href=\'apply.html\'">Start Application</button></div>';
+                document.getElementById('pay-root').innerHTML =
+                    '<div class="pay-box pay-empty"><div class="pay-empty-icon">&#128533;</div><h2>No pending payment</h2><p>Start a new application to proceed to payment.</p><button class="btn-start" onclick="window.location.href=\'apply.html\'">Start Application</button></div>';
                 return;
             }
-
-            // Pre-fill cardholder name
-            document.getElementById('pay-name').value = user.name;
-
-            // Update badge
-            if (pendingPayment.type === 'visa') {
-                const data = visaRequirements[pendingPayment.destination] || {};
-                document.getElementById('badge-title').textContent = (data.flag || '✈️') + ' ' + pendingPayment.destination + ' Visa';
-                document.getElementById('badge-sub').textContent = 'Ref: ' + pendingPayment.ref;
-            } else {
-                document.getElementById('badge-title').textContent = '🛡️ ' + pendingPayment.plan;
-                document.getElementById('badge-sub').textContent = pendingPayment.dest + ' · ' + pendingPayment.travellers + ' traveller(s)';
-            }
-
-            // Update transfer ref and USSD amount
-            document.getElementById('transfer-ref').textContent = pendingPayment.ref || ('JKF-PAY-' + Date.now().toString().slice(-6));
-            document.getElementById('ussd-amount').textContent = pendingPayment.amount;
-
-            // Render summary
-            renderSummary();
-            checkPaystackReturn();
+            renderLayout();
         });
 
-        function renderSummary() {
-            if (!pendingPayment) return;
-            const fb = pendingPayment._feeBreakdown; // set by apply.html buildReview
-            let rows = '';
-            let total;
-            if (pendingPayment.type === 'visa' && fb) {
-                // Use EXACT same breakdown as shown in review step
-                total = fb.total;
-                rows = `
-      <div class="order-row"><span class="label">Destination</span><span class="val">${pendingPayment.destination}</span></div>
-      <div class="order-row order-ref-row"><span class="label">Application Ref</span><span class="val ref-copyable" onclick="copyRef(this)" title="Click to copy">${pendingPayment.ref} <span class="copy-icon">📋</span></span></div>
-      <div class="order-row"><span class="label">Visa Processing Fee</span><span class="val">₦${fb.visaFee.toLocaleString()}</span></div>
-      ${fb.extraTravellers > 0 ? `<div class="order-row"><span class="label">Additional Travellers (×${fb.extraTravellers})</span><span class="val">₦${fb.extraFee.toLocaleString()}</span></div>` : ''}
-      <div class="order-row"><span class="label">Jekafly Service Fee</span><span class="val">₦${fb.serviceFee.toLocaleString()}</span></div>`;
-            } else if (pendingPayment.type === 'visa') {
-                const amt = pendingPayment.amount;
-                const svc = 25000;
-                total = amt + svc;
-                rows = `
-      <div class="order-row"><span class="label">Destination</span><span class="val">${pendingPayment.destination}</span></div>
-      <div class="order-row order-ref-row"><span class="label">Application Ref</span><span class="val ref-copyable" onclick="copyRef(this)" title="Click to copy">${pendingPayment.ref} <span class="copy-icon">📋</span></span></div>
-      <div class="order-row"><span class="label">Visa Processing Fee</span><span class="val">₦${amt.toLocaleString()}</span></div>
-      <div class="order-row"><span class="label">Jekafly Service Fee</span><span class="val">₦${svc.toLocaleString()}</span></div>`;
+        function renderLayout() {
+            const p = pendingPayment;
+            const fb = p._feeBreakdown;
+            let rows = [], total = p.amount || 0;
+            let flag = '&#9992;', destName = '', destRef = '';
+
+            if (p.type === 'visa' || !p.type) {
+                const vr = window.visaRequirements?.[p.destination] || {};
+                flag = vr.flag || '&#9992;';
+                destName = (vr.flag ? vr.flag + ' ' : '') + (p.destination || '') + ' Visa';
+                destRef = p.ref ? 'Ref: ' + p.ref : '';
+                if (fb) {
+                    total = fb.total;
+                    rows.push({ l: 'Visa Processing Fee', v: '&#8358;' + fb.visaFee.toLocaleString() });
+                    if (fb.extraTravellers > 0) rows.push({ l: 'Additional Travellers (&times;' + fb.extraTravellers + ')', v: '&#8358;' + fb.extraFee.toLocaleString() });
+                    rows.push({ l: 'Jekafly Service Fee', v: '&#8358;' + fb.serviceFee.toLocaleString() });
+                } else {
+                    rows.push({ l: 'Visa Processing Fee', v: '&#8358;' + (p.amount || 0).toLocaleString() });
+                }
+                if (p.ref) rows.push({ l: 'Application Ref', v: p.ref, isRef: true });
             } else {
-                const amt = pendingPayment.amount;
-                const svc = Math.round(amt * 0.05);
-                total = amt + svc;
-                rows = `
-      <div class="order-row"><span class="label">Insurance Plan</span><span class="val">${pendingPayment.plan}</span></div>
-      <div class="order-row"><span class="label">Destination</span><span class="val">${pendingPayment.dest}</span></div>
-      <div class="order-row"><span class="label">Travellers</span><span class="val">${pendingPayment.travellers}</span></div>
-      <div class="order-row"><span class="label">Plan Cost</span><span class="val">₦${amt.toLocaleString()}</span></div>
-      <div class="order-row"><span class="label">Processing Fee</span><span class="val">₦${svc.toLocaleString()}</span></div>`;
+                flag = '&#128737;'; destName = p.plan || 'Insurance';
+                destRef = (p.dest || '') + (p.travellers ? ' &middot; ' + p.travellers + ' traveller(s)' : '');
+                const svc = Math.round((p.amount || 0) * 0.05);
+                total = (p.amount || 0) + svc;
+                rows.push({ l: 'Insurance Plan', v: p.plan || '&mdash;' });
+                rows.push({ l: 'Destination', v: p.dest || '&mdash;' });
+                rows.push({ l: 'Plan Cost', v: '&#8358;' + (p.amount || 0).toLocaleString() });
+                rows.push({ l: 'Processing Fee', v: '&#8358;' + svc.toLocaleString() });
             }
-            document.getElementById('summary-body').innerHTML = rows;
-            document.getElementById('summary-total').textContent = '₦' + total.toLocaleString();
-            document.getElementById('pay-btn-amount').textContent = '₦' + total.toLocaleString();
-            // Keep ussd amount in sync
-            document.getElementById('ussd-amount').textContent = total;
+            pendingPayment.amount = total;
+
+            const totalStr = '&#8358;' + total.toLocaleString();
+            const lineItemsHtml = rows.map(r =>
+                '<div class="line-item"><span class="li-label">' + r.l + '</span>' +
+                '<span class="li-val' + (r.isRef ? ' ref-val' : '') + '"' + (r.isRef ? ' onclick="copyRef(this)" title="Click to copy"' : '') + '>' +
+                r.v + (r.isRef ? ' <span>&#128203;</span>' : '') + '</span></div>'
+            ).join('') +
+                '<div class="line-item total-line"><span class="li-label">Total Due</span><span class="li-val">' + totalStr + '</span></div>';
+
+            document.getElementById('pay-root').innerHTML =
+                '<div class="pay-layout">' +
+                '<div class="summary-panel">' +
+                '<div><div class="page-eyebrow">Secure Checkout</div>' +
+                '<h1 class="page-title">Review Your Order</h1>' +
+                '<p class="page-sub">Confirm the details below, then click Pay to complete your payment securely via Paystack.</p></div>' +
+                '<div class="dest-card"><div class="dest-card-top">' +
+                '<div class="dest-flag-box">' + flag + '</div>' +
+                '<div class="dest-card-info"><div class="dest-card-name">' + destName + '</div><div class="dest-card-ref">' + destRef + '</div></div>' +
+                '<div class="dest-card-amount"><small>Total</small>' + totalStr + '</div>' +
+                '</div></div>' +
+                '<div class="line-items">' + lineItemsHtml + '</div>' +
+                '<div class="included-strip"><span>&#9989;</span><span><strong>What&#39;s included:</strong> Expert document review, embassy submission, real-time tracking, and a dedicated support agent.</span></div>' +
+                '</div>' +
+                '<div class="pay-panel"><div class="pay-box" id="pay-box-main">' +
+                '<div id="pay-form-view">' +
+                '<div class="pay-box-header"><div class="pay-box-title">Complete Payment</div><div class="pay-box-sub">You&#39;ll be prompted to pay securely via Paystack</div></div>' +
+                '<div class="pay-total-display"><span class="pay-total-currency">&#8358;</span><span class="pay-total-amount">' + total.toLocaleString() + '</span></div>' +
+                '<div class="pay-divider"></div>' +
+                '<div class="pay-cta-wrap"><button class="btn-pay" id="btn-pay" onclick="processPayment()">Pay ' + totalStr + ' Securely <span class="btn-pay-sub">&#128274;</span></button></div>' +
+                '<div class="trust-row"><span class="trust-badge">&#128274; SSL Encrypted</span><span class="trust-badge">&#127470;&#127468; CBN Compliant</span><span class="trust-badge">&#9889; Paystack</span></div>' +
+                '</div>' +
+                '<div class="pay-processing" id="pay-processing"><div class="spinner"></div><div class="processing-title">Connecting to Paystack...</div><div class="processing-sub">Please wait, do not close this tab.</div></div>' +
+                '</div></div></div>';
+        }
+
+        function renderProcessing() {
+            document.getElementById('pay-root').innerHTML =
+                '<div class="pay-box" style="max-width:440px;width:100%;"><div class="pay-processing show"><div class="spinner"></div><div class="processing-title">Verifying payment...</div><div class="processing-sub">Please wait.</div></div></div>';
         }
 
         function copyRef(el) {
-            const ref = el.textContent.replace('📋', '').trim();
+            const ref = el.textContent.replace('&#128203;', '').trim();
             navigator.clipboard.writeText(ref).then(() => {
-                el.querySelector('.copy-icon').textContent = '✅';
-                setTimeout(() => { el.querySelector('.copy-icon').textContent = '📋'; }, 2000);
+                el.querySelector('span').textContent = '&#9989;';
+                setTimeout(() => { el.querySelector('span').textContent = '&#128203;'; }, 2000);
             });
-        }
-
-        function setMethod(method, el) {
-            payMethod = method;
-            document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
-            document.getElementById('method-card').style.display = method === 'card' ? 'block' : 'none';
-            document.getElementById('method-transfer').style.display = method === 'transfer' ? 'block' : 'none';
-            document.getElementById('method-ussd').style.display = method === 'ussd' ? 'block' : 'none';
-            const btnText = method === 'ussd' ? "I've Paid via USSD ✓" : method === 'transfer' ? "I've Made the Transfer ✓" : "Pay " + document.getElementById('pay-btn-amount').textContent + " Securely 🔒";
-            document.getElementById('btn-pay').textContent = btnText;
-        }
-
-        function formatCard(input) {
-            let val = input.value.replace(/\D/g, '').slice(0, 16);
-            input.value = val.replace(/(.{4})/g, '$1 ').trim();
-            const icon = document.getElementById('card-icon');
-            if (val.startsWith('4')) icon.textContent = '💳'; // Visa
-            else if (val.startsWith('5')) icon.textContent = '💳'; // Mastercard
-            else icon.textContent = '💳';
-        }
-
-        function formatExpiry(input) {
-            let val = input.value.replace(/\D/g, '').slice(0, 4);
-            if (val.length >= 2) val = val.slice(0, 2) + ' / ' + val.slice(2);
-            input.value = val;
-        }
-
-        function validateCardForm() {
-            if (payMethod !== 'card') return true;
-            const name = document.getElementById('pay-name').value.trim();
-            const card = document.getElementById('pay-card').value.replace(/\s/g, '');
-            const expiry = document.getElementById('pay-expiry').value;
-            const cvv = document.getElementById('pay-cvv').value;
-            if (!name) { showToast('Please enter cardholder name.', 'error'); return false; }
-            if (card.length < 16) { showToast('Please enter a valid 16-digit card number.', 'error'); return false; }
-            if (!expiry.includes('/')) { showToast('Please enter a valid expiry date (MM / YY).', 'error'); return false; }
-            if (cvv.length < 3) { showToast('Please enter your 3 or 4 digit CVV.', 'error'); return false; }
-            return true;
         }
 
         async function handlePaystackCallback(ref) {
@@ -311,18 +787,16 @@
             localStorage.removeItem('jkf_pending_payment');
             const verify = await PaymentStore.verify(ref);
             document.getElementById('pay-processing').classList.remove('show');
-
             if (verify?.ok && verify.data?.status === 'success') {
-                const receipt = verify.data;
+                const r = verify.data;
                 const now = new Date().toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
-                document.getElementById('receipt-box').innerHTML = `
-    <div class="receipt-row"><span class="rl">Transaction ID</span><span class="rv receipt-tx">${ref}</span></div>
-    <div class="receipt-row"><span class="rl">Date & Time</span><span class="rv">${now}</span></div>
-    ${receipt.ref ? `<div class="receipt-row"><span class="rl">Application Ref</span><span class="rv receipt-tx">${receipt.ref}</span></div>` : ''}
-    <div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv receipt-amount">₦${(receipt.amount || 0).toLocaleString()}</span></div>
-    <div class="receipt-row"><span class="rl">Status</span><span class="rv receipt-status-ok">✅ Confirmed</span></div>`;
+                document.getElementById('receipt-box').innerHTML =
+                    '<div class="receipt-row"><span class="rl">Transaction ID</span><span class="rv tx">' + ref + '</span></div>' +
+                    '<div class="receipt-row"><span class="rl">Date &amp; Time</span><span class="rv">' + now + '</span></div>' +
+                    (r.ref ? '<div class="receipt-row"><span class="rl">Application Ref</span><span class="rv tx">' + r.ref + '</span></div>' : '') +
+                    '<div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv amount">&#8358;' + (r.amount || 0).toLocaleString() + '</span></div>' +
+                    '<div class="receipt-row"><span class="rl">Status</span><span class="rv" style="color:#16a34a;font-weight:700;">&#9989; Confirmed</span></div>';
                 document.getElementById('pay-success-overlay').classList.add('show');
-                document.body.classList.add('modal-open');
             } else {
                 document.getElementById('pay-form-view').style.display = 'block';
                 showToast('Payment could not be verified. Contact support.', 'error');
@@ -330,102 +804,65 @@
         }
 
         async function processPayment() {
-            if (!validateCardForm()) return;
-
+            const btn = document.getElementById('btn-pay');
+            btn.disabled = true; btn.textContent = 'Connecting...';
             document.getElementById('pay-form-view').style.display = 'none';
             document.getElementById('pay-processing').classList.add('show');
-
             try {
                 const user = Auth.getCurrent();
                 const amountKobo = Math.round((pendingPayment.amount || 0) * 100);
                 const res = await PaymentStore.initiate(
                     (pendingPayment.type || 'visa').toUpperCase(),
-                    pendingPayment.ref || null,
-                    amountKobo,
+                    pendingPayment.ref || null, amountKobo,
                     pendingPayment.email || user.email,
                     { destination: pendingPayment.destination, plan: pendingPayment.plan }
                 );
-
                 if (!res?.ok) throw new Error(res?.error || 'Payment initiation failed.');
-
                 const { accessCode, reference, publicKey } = res.data;
-
-                // Hide processing, launch Paystack inline popup
                 document.getElementById('pay-processing').classList.remove('show');
-
+                document.getElementById('pay-form-view').style.display = 'block';
+                btn.disabled = false;
+                btn.innerHTML = 'Pay &#8358;' + (pendingPayment.amount || 0).toLocaleString() + ' Securely <span class="btn-pay-sub">&#128274;</span>';
                 const handler = PaystackPop.setup({
                     key: publicKey,
                     email: pendingPayment.email || user.email,
                     amount: amountKobo,
                     access_code: accessCode,
                     ref: reference,
-                    onClose: function () {
-                        document.getElementById('pay-form-view').style.display = 'block';
-                        showToast('Payment cancelled.', 'error');
-                    },
-                    callback: function (response) {
-                        handlePaystackCallback(response.reference || reference);
-                    }
+                    onClose: function () { showToast('Payment cancelled.', 'error'); },
+                    callback: function (response) { handlePaystackCallback(response.reference || reference); }
                 });
                 handler.openIframe();
-
             } catch (err) {
                 document.getElementById('pay-processing').classList.remove('show');
                 document.getElementById('pay-form-view').style.display = 'block';
+                btn.disabled = false;
+                btn.innerHTML = 'Pay &#8358;' + (pendingPayment.amount || 0).toLocaleString() + ' Securely <span class="btn-pay-sub">&#128274;</span>';
                 showToast(err.message || 'Payment failed. Please try again.', 'error');
             }
         }
 
-        // Called when Paystack redirects back after payment
-        async function checkPaystackReturn() {
-            const params = new URLSearchParams(window.location.search);
-            const reference = params.get('ref') || params.get('reference') || params.get('trxref');
-            if (!reference) return;
-
-            document.getElementById('pay-form-view').style.display = 'none';
-            document.getElementById('pay-processing').classList.add('show');
-
+        async function checkPaystackReturn(reference) {
             const res = await PaymentStore.verify(reference);
-            document.getElementById('pay-processing').classList.remove('show');
-
             if (res?.ok && res.data?.status === 'success') {
-                const receipt = res.data.receipt || {};
+                const r = res.data;
                 const now = new Date().toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
-                document.getElementById('receipt-box').innerHTML = `
-    <div class="receipt-row"><span class="rl">Transaction ID</span><span class="rv receipt-tx">${reference}</span></div>
-    <div class="receipt-row"><span class="rl">Date & Time</span><span class="rv">${now}</span></div>
-    ${res.data.ref ? `<div class="receipt-row"><span class="rl">Application Ref</span><span class="rv receipt-tx">${res.data.ref}</span></div>` : ''}
-    <div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv receipt-amount">₦${(res.data.amount || 0).toLocaleString()}</span></div>
-    <div class="receipt-row"><span class="rl">Status</span><span class="rv receipt-status-ok">✅ Confirmed</span></div>`;
+                document.getElementById('receipt-box').innerHTML =
+                    '<div class="receipt-row"><span class="rl">Transaction ID</span><span class="rv tx">' + reference + '</span></div>' +
+                    '<div class="receipt-row"><span class="rl">Date &amp; Time</span><span class="rv">' + now + '</span></div>' +
+                    (r.ref ? '<div class="receipt-row"><span class="rl">Application Ref</span><span class="rv tx">' + r.ref + '</span></div>' : '') +
+                    '<div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv amount">&#8358;' + (r.amount || 0).toLocaleString() + '</span></div>' +
+                    '<div class="receipt-row"><span class="rl">Status</span><span class="rv" style="color:#16a34a;font-weight:700;">&#9989; Confirmed</span></div>';
                 document.getElementById('pay-success-overlay').classList.add('show');
-                document.body.classList.add('modal-open');
             } else {
                 showToast('Payment could not be verified. Please contact support.', 'error');
-                document.getElementById('pay-form-view').style.display = 'block';
             }
         }
-    </script>
-    <script>
+
         window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            if (nav) nav.classList.toggle('scrolled', window.scrollY > 20);
+            document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20);
         });
     </script>
-
-    <!-- Payment Success Overlay (centered modal) -->
-    <div class="pay-success-overlay" id="pay-success-overlay">
-        <div class="pay-success-modal">
-            <span class="pay-success-icon">🎉</span>
-            <h2>Payment Successful!</h2>
-            <p>Your payment has been confirmed and your application is now active. You'll receive a confirmation email
-                shortly.</p>
-            <div class="receipt-box" id="receipt-box"></div>
-            <div class="pay-success-actions">
-                <button class="btn-next" onclick="window.location.href='dashboard.html'">Go to My Dashboard →</button>
-                <button class="btn-back" onclick="window.location.href='index.html'">Back to Home</button>
-            </div>
-        </div>
-    </div>
 </body>
 
 </html>
