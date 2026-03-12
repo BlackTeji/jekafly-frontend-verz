@@ -1,330 +1,1704 @@
+function updateNav() {
+    const user = Auth.getCurrent();
+    const ctaEl = document.querySelector('.nav-cta');
+    if (!ctaEl) return;
+
+    if (user) {
+        const first = (user.name || 'User').split(' ')[0];
+        ctaEl.innerHTML = `
+      <span style="font-size:0.85rem;color:var(--text-light)">Hi, <strong>${first}</strong></span>
+      <a href="dashboard.html" class="btn-outline" style="text-decoration:none;">My Dashboard</a>
+      ${user.role === 'admin' ? '<a href="admin.html" class="btn-outline" style="text-decoration:none;border-color:var(--red);color:var(--red)">Admin</a>' : ''}
+      <button class="btn-primary" onclick="handleLogout()">Logout</button>`;
+    } else {
+        ctaEl.innerHTML = `
+      <button class="btn-outline" onclick="openModal('login')">Login</button>
+      <button class="btn-primary" onclick="openModal('register')">Get Started</button>`;
+    }
+}
+
+async function handleLogout() {
+    await Auth.logout();
+    updateNav();
+    showToast('Logged out successfully.');
+}
+
 // ============================================================
-// JEKAFLY API CLIENT
-// Replaces all localStorage / AppStore / Auth calls
+// TOAST NOTIFICATIONS
 // ============================================================
 
-var API_BASE = 'https://jekafly-api-production.up.railway.app/api/v1';
+function showToast(msg, type = 'success') {
+    let t = document.getElementById('jkf-toast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = 'jkf-toast';
+        t.style.cssText =
+            'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:9999;padding:14px 28px;border-radius:12px;font-family:"Plus Jakarta Sans",sans-serif;font-weight:600;font-size:0.9rem;box-shadow:0 8px 32px rgba(0,0,0,0.18);transition:opacity .3s;pointer-events:none;';
+        document.body.appendChild(t);
+    }
+    t.style.background = type === 'error' ? '#E31E24' : '#10B981';
+    t.style.color = 'white';
+    t.textContent = msg;
+    t.style.opacity = '1';
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => { t.style.opacity = '0'; }, 3000);
+}
 
-var _accessToken = null;
+// ============================================================
+// MODAL SYSTEM (null-safe; won't crash if modal-apply missing)
+// ============================================================
 
-// ─── Core fetch wrapper ───────────────────────────────────────────────────────
-async function apiFetch(method, path, body, isFormData = false) {
-    const headers = {};
-    if (!isFormData) headers['Content-Type'] = 'application/json';
-    if (_accessToken) headers['Authorization'] = `Bearer ${_accessToken}`;
+function openModal(type) {
+    const auth = document.getElementById("modal-auth");
+    const apply = document.getElementById("modal-apply"); // may not exist yet
+    const ins = document.getElementById("modal-insurance");
+    const overlay = document.getElementById("modal");
 
-    const res = await fetch(API_BASE + path, {
-        method,
-        credentials: 'include',
-        headers,
-        body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
+    const consult = document.getElementById("modal-consultation");
+    if (auth) auth.style.display = "none";
+    if (apply) apply.style.display = "none";
+    if (ins) ins.style.display = "none";
+    if (consult) consult.style.display = "none";
+
+    if (type === "login" || type === "register") {
+        if (auth) auth.style.display = "block";
+        switchTab(type === "register" ? "register" : "login");
+    } else if (type === "apply") {
+        if (apply) apply.style.display = "block";
+    } else if (type === "insurance") {
+        if (ins) ins.style.display = "block";
+        // Refresh prices in case admin updated them
+        if (typeof PricingStore !== 'undefined') {
+            PricingStore.get().then(p => { if (p) { window._livePricing = p; if (typeof applyInsPricing === 'function') applyInsPricing(p); } }).catch(() => { });
+        }
+    } else if (type === "consultation") {
+        if (consult) consult.style.display = "block";
+        // Refresh prices in case admin updated them
+        if (typeof PricingStore !== 'undefined') {
+            PricingStore.get().then(p => { if (p) { window._livePricing = p; if (typeof applyConsultPricing === 'function') applyConsultPricing(p); } }).catch(() => { });
+        }
+    }
+
+    overlay?.classList.add("open");
+}
+
+function closeModal() {
+    document.getElementById("modal")?.classList.remove("open");
+}
+
+function closeModalIfBg(e) {
+    if (e.target === document.getElementById("modal")) closeModal();
+}
+
+function switchTab(tab) {
+    const tabs = document.querySelectorAll(".tab");
+    tabs.forEach((t, i) => {
+        t.classList.toggle("active", (i === 0 && tab === "login") || (i === 1 && tab === "register"));
+    });
+    document.getElementById("tab-login")?.classList.toggle("active", tab === "login");
+    document.getElementById("tab-register")?.classList.toggle("active", tab === "register");
+}
+
+// ============================================================
+// INSURANCE PLAN SELECTOR
+// ============================================================
+
+function selectPlan(el) {
+    document.querySelectorAll(".ins-plan").forEach(p => p.classList.remove("active"));
+    el.classList.add("active");
+}
+
+// ============================================================
+// AUTH HANDLERS
+// ============================================================
+
+async function handleLogin() {
+    const email = document.getElementById('login-email')?.value?.trim();
+    const pass = document.getElementById('login-pass')?.value;
+
+    if (!email || !pass) { showToast('Please fill in all fields.', 'error'); return; }
+
+    const res = await Auth.login(email, pass);
+    if (!res.ok) { showToast(res.msg, 'error'); return; }
+
+    closeModal();
+    updateNav();
+    showToast('Welcome back, ' + res.user.name.split(' ')[0] + '! 👋');
+
+    if (window.JKF_afterLoginRedirect && window.JKF_afterLoginRedirect()) return;
+
+    setTimeout(() => {
+        window.location.href = res.user.role === 'ADMIN' ? 'admin.html' : 'dashboard.html';
+    }, 900);
+}
+
+async function handleRegister() {
+    const name = document.getElementById('reg-name')?.value?.trim();
+    const email = document.getElementById('reg-email')?.value?.trim();
+    const phone = document.getElementById('reg-phone')?.value?.trim();
+    const pass = document.getElementById('reg-pass')?.value;
+
+    if (!name || !email || !phone || !pass) { showToast('Please fill in all fields.', 'error'); return; }
+
+    const res = await Auth.register(name, email, phone, pass);
+    if (!res.ok) { showToast(res.msg, 'error'); return; }
+
+    closeModal();
+    updateNav();
+    showToast('Account created! Welcome to Jekafly 🎉');
+
+
+    if (window.JKF_afterLoginRedirect && window.JKF_afterLoginRedirect()) return;
+
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
+}
+
+function handleInsuranceModal() {
+    const dest = document.getElementById('ins-dest')?.value;
+    const date = document.getElementById('ins-date')?.value;
+    const travellers = document.getElementById('ins-travellers')?.value;
+    const plan = document.querySelector('.ins-plan.active .ins-plan-name')?.textContent || 'Standard Plan';
+
+    if (!dest || !date || !travellers) { showToast('Please fill in all fields.', 'error'); return; }
+
+    const user = Auth.getCurrent();
+    if (!user) { closeModal(); openModal('login'); showToast('Please login to get insured.', 'error'); return; }
+
+    const priceMap = {
+        'Basic Plan': window._livePricing?.insuranceBasic || 25000,
+        'Standard Plan': window._livePricing?.insuranceStandard || 45000,
+        'Premium Plan': window._livePricing?.insurancePremium || 80000,
+    };
+    const price = priceMap[plan] || 45000;
+
+    localStorage.setItem('jkf_pending_payment', JSON.stringify({
+        type: 'insurance',
+        plan,
+        dest,
+        date,
+        travellers,
+        amount: price * parseInt(travellers, 10),
+        userId: user.id
+    }));
+
+    window.location.href = 'payment.html';
+}
+
+// ============================================================
+// TRACKING
+// ============================================================
+
+async function handleTrackModal() {
+    const ref = document.getElementById('track-ref')?.value?.trim();
+    if (!ref) { document.getElementById('track-ref')?.focus(); return; }
+
+    const app = await AppStore.track(ref);
+    const demo = document.getElementById('track-demo');
+    if (!demo) return;
+
+    if (!app) { showToast('No application found with that reference.', 'error'); return; }
+
+    const steps = ['received', 'processing', 'embassy', 'approved', 'delivered'];
+    const labels = ['Received', 'Docs Verified', 'Embassy Review', 'Decision', 'Delivered'];
+    const icons = ['📥', '✅', '🏛️', '⭐', '📬'];
+    const curIdx = steps.indexOf(app.status);
+
+    demo.innerHTML = `
+    <div class="track-progress">
+      ${steps.map((s, i) => `
+        <div class="track-step ${i < curIdx ? 'done' : i === curIdx ? 'active' : ''}">
+          <div class="track-step-dot">${i < curIdx ? '✓' : icons[i]}</div>
+          <div class="track-step-label">${labels[i]}</div>
+        </div>`).join('')}
+    </div>
+    <div class="track-ref">
+      <p><strong>Ref:</strong> ${app.ref} &nbsp;|&nbsp; <strong>Destination:</strong> ${app.destination} &nbsp;|&nbsp; <strong>Purpose:</strong> ${app.purpose}</p>
+      <p style="margin-top:8px;color:var(--blue);font-weight:600;">${(app.statusHistory || [])[app.statusHistory?.length - 1]?.note || ''}</p>
+    </div>
+  `;
+
+    demo.classList.add('visible');
+    demo.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ============================================================
+// VISA REQUIREMENTS DATABASE (PASTE YOUR FULL OBJECT HERE)
+// ============================================================
+
+var visaRequirements = window.visaRequirements = {
+
+    // ── EUROPE ──────────────────────────────────────────────
+    "Albania": {
+        flag: "🇦🇱", region: "Europe", type: "Visa Required",
+        fee: "€35", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months validity)", "Completed visa application form", "Recent passport photos (2)", "Bank statements (3 months)", "Return flight booking", "Hotel reservation or invitation letter", "Travel insurance (€30,000 min)", "Proof of employment or enrollment"]
+    },
+    "Andorra": {
+        flag: "🇦🇩", region: "Europe", type: "Visa-Free (via Schengen)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid Schengen visa or residence permit", "Valid passport", "Note: No direct entry point — must enter via France or Spain with valid Schengen visa"]
+    },
+    "Austria": {
+        flag: "🇦🇹", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return date)", "Schengen visa application form", "2 passport-sized photos", "Travel insurance (€30,000 min coverage)", "Bank statements (last 3 months)", "Proof of accommodation", "Return flight itinerary", "Employment letter or proof of business", "ITR or payslips"]
+    },
+    "Belarus": {
+        flag: "🇧🇾", region: "Europe", type: "Visa Required",
+        fee: "$65", processing: "5 business days",
+        docs: ["Valid passport", "Visa application form", "Passport photo", "Travel insurance", "Invitation letter from Belarus (if visiting)", "Bank statements", "Hotel booking confirmation"]
+    },
+    "Belgium": {
+        flag: "🇧🇪", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return date)", "Schengen visa application form", "2 passport-sized photos", "Travel insurance (€30,000 min)", "Bank statements (3 months)", "Proof of accommodation in Belgium", "Return flight itinerary", "Employment letter or proof of income"]
+    },
+    "Bosnia and Herzegovina": {
+        flag: "🇧🇦", region: "Europe", type: "Visa Required",
+        fee: "€35", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Hotel reservation", "Travel insurance", "Return flight booking"]
+    },
+    "Bulgaria": {
+        flag: "🇧🇬", region: "Europe", type: "Visa Required",
+        fee: "€35", processing: "10–15 business days",
+        docs: ["Valid passport (6+ months)", "Visa application form", "2 passport photos", "Travel insurance", "Bank statements", "Hotel reservation", "Return flight itinerary", "Employment/income proof"]
+    },
+    "Croatia": {
+        flag: "🇭🇷", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen application form", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Hotel booking", "Return ticket", "Employment letter"]
+    },
+    "Cyprus": {
+        flag: "🇨🇾", region: "Europe", type: "Visa Required",
+        fee: "€30", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Cyprus visa application form", "Passport photos (2)", "Travel insurance", "Bank statements", "Hotel booking", "Return flight ticket", "Proof of employment"]
+    },
+    "Czech Republic": {
+        flag: "🇨🇿", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen visa form", "2 passport photos", "Travel insurance (€30,000 min)", "Bank statements (3 months)", "Accommodation proof", "Return ticket", "Employment/income proof"]
+    },
+    "Denmark": {
+        flag: "🇩🇰", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen visa application", "2 passport photos", "Travel insurance (€30,000 min)", "Bank statements", "Accommodation proof", "Return ticket", "Employment letter"]
+    },
+    "Estonia": {
+        flag: "🇪🇪", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen form", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Hotel booking", "Return ticket", "Employment proof"]
+    },
+    "Finland": {
+        flag: "🇫🇮", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application form", "2 passport photos", "Travel insurance (€30,000 min)", "Bank statements (3 months)", "Hotel reservation", "Return flight", "Employment letter"]
+    },
+    "France": {
+        flag: "🇫🇷", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen visa application form", "2 passport photos", "Travel insurance (€30,000 min)", "Bank statements (last 3 months)", "Proof of accommodation", "Return flight itinerary", "Employment letter & payslips"]
+    },
+    "Germany": {
+        flag: "🇩🇪", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen visa application form", "2 biometric passport photos", "Travel insurance (€30,000 min)", "Bank statements (3–6 months)", "Proof of accommodation", "Return flight booking", "Employment letter / proof of financial means"]
+    },
+    "Greece": {
+        flag: "🇬🇷", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen application", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Hotel booking", "Return ticket", "Proof of employment"]
+    },
+    "Hungary": {
+        flag: "🇭🇺", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application", "2 photos", "Travel insurance", "Bank statements", "Accommodation proof", "Return ticket", "Employment or income proof"]
+    },
+    "Iceland": {
+        flag: "🇮🇸", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Hotel booking", "Return ticket", "Proof of funds/employment"]
+    },
+    "Ireland": {
+        flag: "🇮🇪", region: "Europe", type: "Visa Required",
+        fee: "€60", processing: "8 weeks",
+        docs: ["Valid passport (6+ months)", "Irish visa application form (online)", "Passport photos (2)", "Bank statements (6 months)", "Proof of accommodation in Ireland", "Return flight booking", "Travel insurance", "Employment/school letter", "Payslips or business proof"]
+    },
+    "Italy": {
+        flag: "🇮🇹", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen application form", "2 passport photos", "Travel insurance (€30,000 min)", "Bank statements", "Hotel reservation", "Return flight", "Employment letter / proof of income"]
+    },
+    "Kosovo": {
+        flag: "🇽🇰", region: "Europe", type: "Visa Required",
+        fee: "€40", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Hotel booking", "Return ticket", "Travel insurance"]
+    },
+    "Latvia": {
+        flag: "🇱🇻", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen form", "2 photos", "Travel insurance", "Bank statements", "Accommodation proof", "Return ticket", "Employment proof"]
+    },
+    "Liechtenstein": {
+        flag: "🇱🇮", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen visa (apply via Switzerland)", "2 photos", "Travel insurance", "Bank statements", "Hotel booking", "Return ticket"]
+    },
+    "Lithuania": {
+        flag: "🇱🇹", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Accommodation proof", "Return ticket", "Income/employment proof"]
+    },
+    "Luxembourg": {
+        flag: "🇱🇺", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application", "2 photos", "Travel insurance", "Bank statements", "Hotel reservation", "Return ticket", "Employment proof"]
+    },
+    "Malta": {
+        flag: "🇲🇹", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application form", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Accommodation proof", "Return ticket", "Employment/income proof"]
+    },
+    "Moldova": {
+        flag: "🇲🇩", region: "Europe", type: "Visa Required",
+        fee: "$50", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Hotel booking or invitation", "Return ticket", "Travel insurance"]
+    },
+    "Monaco": {
+        flag: "🇲🇨", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid Schengen visa (apply via France)", "Valid passport", "Travel insurance", "Hotel booking", "Proof of funds"]
+    },
+    "Montenegro": {
+        flag: "🇲🇪", region: "Europe", type: "Visa Required",
+        fee: "€35", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photos", "Bank statements", "Hotel reservation", "Return ticket", "Travel insurance"]
+    },
+    "Netherlands": {
+        flag: "🇳🇱", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen application", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Accommodation proof", "Return ticket", "Employment letter"]
+    },
+    "North Macedonia": {
+        flag: "🇲🇰", region: "Europe", type: "Visa Required",
+        fee: "€35", processing: "5–10 business days",
+        docs: ["Valid passport", "Application form", "Photo", "Bank statements", "Hotel booking", "Return ticket", "Travel insurance"]
+    },
+    "Norway": {
+        flag: "🇳🇴", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Accommodation proof", "Return ticket", "Employment proof"]
+    },
+    "Poland": {
+        flag: "🇵🇱", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application form", "2 photos", "Travel insurance", "Bank statements", "Hotel reservation", "Return ticket", "Income/employment proof"]
+    },
+    "Portugal": {
+        flag: "🇵🇹", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Hotel booking", "Return flight", "Employment/income proof"]
+    },
+    "Romania": {
+        flag: "🇷🇴", region: "Europe", type: "Visa Required",
+        fee: "€35", processing: "10–15 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "2 passport photos", "Travel insurance", "Bank statements", "Accommodation proof", "Return ticket", "Employment proof"]
+    },
+    "Russia": {
+        flag: "🇷🇺", region: "Europe / Asia", type: "Visa Required",
+        fee: "$50–$160", processing: "10–20 business days",
+        docs: ["Valid passport (6+ months)", "Russian visa application form", "Invitation letter from Russia (tourist voucher from hotel or tour operator)", "2 passport photos", "Travel insurance", "Bank statements", "Flight itinerary"]
+    },
+    "San Marino": {
+        flag: "🇸🇲", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid Schengen visa (apply via Italy)", "Valid passport", "Travel insurance", "Hotel booking"]
+    },
+    "Serbia": {
+        flag: "🇷🇸", region: "Europe", type: "Visa Required",
+        fee: "€35", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Hotel reservation", "Return ticket", "Travel insurance"]
+    },
+    "Slovakia": {
+        flag: "🇸🇰", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen form", "2 photos", "Travel insurance", "Bank statements", "Accommodation proof", "Return ticket", "Employment proof"]
+    },
+    "Slovenia": {
+        flag: "🇸🇮", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Hotel booking", "Return ticket", "Employment proof"]
+    },
+    "Spain": {
+        flag: "🇪🇸", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen application", "2 passport photos", "Travel insurance (€30,000 min)", "Bank statements (3 months)", "Hotel reservation", "Return flight itinerary", "Employment letter / proof of funds"]
+    },
+    "Sweden": {
+        flag: "🇸🇪", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport", "Schengen application", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Accommodation proof", "Return ticket", "Income/employment proof"]
+    },
+    "Switzerland": {
+        flag: "🇨🇭", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid passport (3+ months beyond return)", "Schengen application form", "2 photos", "Travel insurance (€30,000 min)", "Bank statements", "Hotel booking", "Return ticket", "Employment letter"]
+    },
+    "Ukraine": {
+        flag: "🇺🇦", region: "Europe", type: "Visa Required",
+        fee: "$65", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Visa application form", "Passport photo", "Travel insurance", "Bank statements", "Hotel booking or invitation", "Return ticket"]
+    },
+    "United Kingdom": {
+        flag: "🇬🇧", region: "Europe", type: "Visa Required",
+        fee: "£115", processing: "3 weeks (standard)",
+        docs: ["Valid passport (6+ months validity)", "UK visa application form (online)", "Biometric appointment", "Bank statements (last 6 months)", "Employment letter & payslips", "Proof of accommodation in UK", "Return flight itinerary", "Travel insurance", "Invitation letter (if visiting family/friends)", "Proof of ties to Nigeria (property, family, job)"]
+    },
+    "Vatican City": {
+        flag: "🇻🇦", region: "Europe (Schengen)", type: "Schengen Visa Required",
+        fee: "€80", processing: "10–15 business days",
+        docs: ["Valid Schengen visa (apply via Italy)", "Valid passport", "No separate Vatican visa required"]
+    },
+
+    // ── NORTH AMERICA ────────────────────────────────────────
+    "Antigua and Barbuda": {
+        flag: "🇦🇬", region: "Caribbean", type: "Visa-Free (30 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Bahamas": {
+        flag: "🇧🇸", region: "Caribbean", type: "Visa Required",
+        fee: "$100", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Hotel reservation", "Return ticket", "Travel insurance"]
+    },
+    "Barbados": {
+        flag: "🇧🇧", region: "Caribbean", type: "Visa-Free (6 months)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Belize": {
+        flag: "🇧🇿", region: "Central America", type: "Visa Required",
+        fee: "$50", processing: "5–10 business days",
+        docs: ["Valid passport", "Application form", "Passport photo", "Bank statements", "Hotel reservation", "Return ticket"]
+    },
+    "Canada": {
+        flag: "🇨🇦", region: "North America", type: "Visa Required (TRV)",
+        fee: "CAD $100", processing: "4–8 weeks",
+        docs: ["Valid passport (6+ months)", "Application form IMM5257 (online)", "Digital photo", "Bank statements (6–12 months)", "Employment/income proof", "Letter of invitation (if applicable)", "Travel history documentation", "Biometrics enrollment", "Proof of ties to Nigeria", "Travel insurance"]
+    },
+    "Costa Rica": {
+        flag: "🇨🇷", region: "Central America", type: "Visa Required",
+        fee: "$100", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Hotel booking", "Return ticket", "Travel insurance"]
+    },
+    "Cuba": {
+        flag: "🇨🇺", region: "Caribbean", type: "Tourist Card Required",
+        fee: "$25–$75", processing: "Immediate",
+        docs: ["Valid passport (6+ months)", "Tourist card (can be purchased on arrival or before travel)", "Travel insurance (mandatory)", "Return/onward ticket", "Proof of accommodation"]
+    },
+    "Dominica": {
+        flag: "🇩🇲", region: "Caribbean", type: "Visa-Free (21 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Dominican Republic": {
+        flag: "🇩🇴", region: "Caribbean", type: "Tourist Card Required",
+        fee: "$10", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Tourist card (included in most flight tickets)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "El Salvador": {
+        flag: "🇸🇻", region: "Central America", type: "Visa Required",
+        fee: "$50", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Hotel booking"]
+    },
+    "Grenada": {
+        flag: "🇬🇩", region: "Caribbean", type: "Visa-Free (30 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Guatemala": {
+        flag: "🇬🇹", region: "Central America", type: "Visa Required",
+        fee: "$30", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Hotel booking"]
+    },
+    "Haiti": {
+        flag: "🇭🇹", region: "Caribbean", type: "Visa-Free (3 months)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Sufficient funds"]
+    },
+    "Honduras": {
+        flag: "🇭🇳", region: "Central America", type: "Visa Required",
+        fee: "$30", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket"]
+    },
+    "Jamaica": {
+        flag: "🇯🇲", region: "Caribbean", type: "Visa-Free (30 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Mexico": {
+        flag: "🇲🇽", region: "North America", type: "Visa Required",
+        fee: "$36", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Mexico visa application form", "Passport photo", "Bank statements (3 months)", "Return/onward ticket", "Hotel reservation", "Employment/income proof", "Travel insurance"]
+    },
+    "Nicaragua": {
+        flag: "🇳🇮", region: "Central America", type: "Visa Required",
+        fee: "$52", processing: "5–10 business days",
+        docs: ["Valid passport", "Application form", "Passport photo", "Bank statements", "Return ticket"]
+    },
+    "Panama": {
+        flag: "🇵🇦", region: "Central America", type: "Visa Required",
+        fee: "$50", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Hotel booking"]
+    },
+    "Saint Kitts and Nevis": {
+        flag: "🇰🇳", region: "Caribbean", type: "Visa-Free (30 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Saint Lucia": {
+        flag: "🇱🇨", region: "Caribbean", type: "Visa-Free (42 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Saint Vincent and the Grenadines": {
+        flag: "🇻🇨", region: "Caribbean", type: "Visa-Free (30 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return ticket", "Proof of accommodation"]
+    },
+    "Trinidad and Tobago": {
+        flag: "🇹🇹", region: "Caribbean", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "United States": {
+        flag: "🇺🇸", region: "North America", type: "Visa Required (B1/B2)",
+        fee: "$185 (MRV fee)", processing: "2–8 weeks (after interview)",
+        docs: ["Valid passport (6+ months)", "DS-160 online application form", "Application fee payment receipt", "Embassy interview appointment letter", "Passport photo", "Bank statements (12 months)", "Employment letter & payslips", "Proof of strong ties to Nigeria (property, family)", "Travel itinerary", "Letter of invitation (if visiting family/friends)"]
+    },
+
+    // ── SOUTH AMERICA ─────────────────────────────────────────
+    "Argentina": {
+        flag: "🇦🇷", region: "South America", type: "Visa Required",
+        fee: "$100", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Hotel reservation", "Travel insurance"]
+    },
+    "Bolivia": {
+        flag: "🇧🇴", region: "South America", type: "Visa Required",
+        fee: "$30", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Yellow fever vaccination certificate"]
+    },
+    "Brazil": {
+        flag: "🇧🇷", region: "South America", type: "eVisa Required",
+        fee: "$40", processing: "5–15 business days",
+        docs: ["Valid passport (6+ months)", "Brazil e-visa application (online)", "Passport photo", "Bank statements", "Return/onward ticket", "Hotel reservation", "Yellow fever vaccination certificate"]
+    },
+    "Chile": {
+        flag: "🇨🇱", region: "South America", type: "Visa Required",
+        fee: "$100", processing: "10–15 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Hotel booking", "Employment/income proof"]
+    },
+    "Colombia": {
+        flag: "🇨🇴", region: "South America", type: "Visa Required",
+        fee: "$52", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Colombia visa application (online)", "Passport photo", "Bank statements", "Return/onward ticket", "Hotel booking"]
+    },
+    "Ecuador": {
+        flag: "🇪🇨", region: "South America", type: "Visa Required",
+        fee: "$50", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Hotel reservation"]
+    },
+    "Guyana": {
+        flag: "🇬🇾", region: "South America", type: "Visa-Free (30 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Paraguay": {
+        flag: "🇵🇾", region: "South America", type: "Visa Required",
+        fee: "$45", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket"]
+    },
+    "Peru": {
+        flag: "🇵🇪", region: "South America", type: "Visa Required",
+        fee: "$30", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Hotel booking"]
+    },
+    "Suriname": {
+        flag: "🇸🇷", region: "South America", type: "Tourist Card (eVisa)",
+        fee: "$25", processing: "Online — immediate",
+        docs: ["Valid passport (6+ months)", "Suriname tourist card (online application)", "Return/onward ticket", "Hotel reservation", "Yellow fever vaccination certificate"]
+    },
+    "Uruguay": {
+        flag: "🇺🇾", region: "South America", type: "Visa Required",
+        fee: "$50", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Hotel booking"]
+    },
+    "Venezuela": {
+        flag: "🇻🇪", region: "South America", type: "Visa Required",
+        fee: "$30", processing: "5–15 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Invitation letter (if applicable)"]
+    },
+
+    // ── AFRICA ──────────────────────────────────────────────
+    "Algeria": {
+        flag: "🇩🇿", region: "Africa", type: "Visa Required",
+        fee: "DZD 5,000", processing: "10–15 business days",
+        docs: ["Valid passport (6+ months)", "Algeria visa application form", "2 passport photos", "Bank statements", "Return ticket", "Hotel booking or invitation letter", "Travel insurance", "Yellow fever vaccination certificate"]
+    },
+    "Angola": {
+        flag: "🇦🇴", region: "Africa", type: "Visa Required",
+        fee: "$80", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "2 passport photos", "Yellow fever vaccination certificate", "Bank statements", "Return ticket", "Hotel booking or invitation"]
+    },
+    "Benin": {
+        flag: "🇧🇯", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Sufficient funds", "Yellow fever vaccination certificate (recommended)"]
+    },
+    "Botswana": {
+        flag: "🇧🇼", region: "Africa", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Burkina Faso": {
+        flag: "🇧🇫", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate"]
+    },
+    "Burundi": {
+        flag: "🇧🇮", region: "Africa", type: "Visa on Arrival",
+        fee: "$90", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Yellow fever vaccination certificate", "Sufficient funds"]
+    },
+    "Cabo Verde": {
+        flag: "🇨🇻", region: "Africa", type: "eVisa / Visa on Arrival",
+        fee: "€25", processing: "Immediate / online",
+        docs: ["Valid passport (6+ months)", "Cape Verde eVisa (apply online)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Cameroon": {
+        flag: "🇨🇲", region: "Africa", type: "Visa Required",
+        fee: "CFA 75,000", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "2 passport photos", "Yellow fever vaccination certificate", "Bank statements", "Return ticket", "Hotel booking or invitation letter"]
+    },
+    "Central African Republic": {
+        flag: "🇨🇫", region: "Africa", type: "Visa Required",
+        fee: "$65", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Yellow fever vaccination certificate", "Return ticket", "Invitation letter (recommended)"]
+    },
+    "Chad": {
+        flag: "🇹🇩", region: "Africa", type: "Visa Required",
+        fee: "$75", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Yellow fever vaccination certificate", "Return ticket", "Invitation letter"]
+    },
+    "Comoros": {
+        flag: "🇰🇲", region: "Africa", type: "Visa on Arrival",
+        fee: "$30", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Democratic Republic of Congo": {
+        flag: "🇨🇩", region: "Africa", type: "Visa Required",
+        fee: "$85", processing: "5–15 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "2 passport photos", "Yellow fever vaccination certificate", "Bank statements", "Return ticket", "Invitation letter (recommended)"]
+    },
+    "Republic of Congo": {
+        flag: "🇨🇬", region: "Africa", type: "Visa Required",
+        fee: "$65", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Yellow fever vaccination certificate", "Return ticket", "Hotel booking or invitation"]
+    },
+    "Djibouti": {
+        flag: "🇩🇯", region: "Africa", type: "eVisa / Visa on Arrival",
+        fee: "$35", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Djibouti eVisa (recommended to apply online)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Egypt": {
+        flag: "🇪🇬", region: "Africa", type: "eVisa / Visa on Arrival",
+        fee: "$25", processing: "On arrival / 3–5 days online",
+        docs: ["Valid passport (6+ months)", "Egypt eVisa (apply online) or obtain on arrival", "Return/onward ticket", "Proof of accommodation", "Bank statements", "Travel insurance"]
+    },
+    "Equatorial Guinea": {
+        flag: "🇬🇶", region: "Africa", type: "Visa Required",
+        fee: "$100", processing: "5–15 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Yellow fever certificate", "Return ticket", "Invitation letter (required)"]
+    },
+    "Eritrea": {
+        flag: "🇪🇷", region: "Africa", type: "Visa Required",
+        fee: "$40", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Return ticket", "Invitation letter (required)", "Bank statements"]
+    },
+    "Eswatini": {
+        flag: "🇸🇿", region: "Africa", type: "Visa-Free (30 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Ethiopia": {
+        flag: "🇪🇹", region: "Africa", type: "eVisa Required",
+        fee: "$52", processing: "3–5 business days (online)",
+        docs: ["Valid passport (6+ months)", "Ethiopia eVisa (apply online at evisa.gov.et)", "Digital passport photo", "Return/onward flight", "Hotel reservation", "Yellow fever vaccination certificate (if coming from endemic country)", "Sufficient funds"]
+    },
+    "Gabon": {
+        flag: "🇬🇦", region: "Africa", type: "eVisa Required",
+        fee: "$80", processing: "Online — 3–5 days",
+        docs: ["Valid passport (6+ months)", "Gabon eVisa (apply online)", "Yellow fever vaccination certificate (mandatory)", "Return ticket", "Hotel booking", "Bank statements"]
+    },
+    "Gambia": {
+        flag: "🇬🇲", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate", "Sufficient funds"]
+    },
+    "Ghana": {
+        flag: "🇬🇭", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid Nigerian passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Guinea": {
+        flag: "🇬🇳", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate"]
+    },
+    "Guinea-Bissau": {
+        flag: "🇬🇼", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate"]
+    },
+    "Ivory Coast": {
+        flag: "🇨🇮", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate", "Sufficient funds"]
+    },
+    "Kenya": {
+        flag: "🇰🇪", region: "Africa", type: "eVisa Required",
+        fee: "$51", processing: "2–3 business days (online)",
+        docs: ["Valid passport (6+ months)", "Kenya eVisa (apply online at evisa.go.ke)", "Digital passport photo", "Return/onward flight booking", "Hotel reservation or invitation", "Yellow fever vaccination certificate", "Bank statements", "Travel insurance"]
+    },
+    "Lesotho": {
+        flag: "🇱🇸", region: "Africa", type: "Visa on Arrival",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Liberia": {
+        flag: "🇱🇷", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate"]
+    },
+    "Libya": {
+        flag: "🇱🇾", region: "Africa", type: "Visa Required",
+        fee: "Varies", processing: "Variable",
+        docs: ["Valid passport (6+ months)", "Visa application form", "Invitation letter from Libya (required)", "Passport photo", "Bank statements", "Return ticket", "⚠️ Travel to Libya is not recommended due to ongoing instability"]
+    },
+    "Madagascar": {
+        flag: "🇲🇬", region: "Africa", type: "Visa on Arrival",
+        fee: "€35 (30 days)", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds", "Yellow fever vaccination certificate (if applicable)"]
+    },
+    "Malawi": {
+        flag: "🇲🇼", region: "Africa", type: "Visa on Arrival",
+        fee: "$75", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds", "Yellow fever certificate (if applicable)"]
+    },
+    "Mali": {
+        flag: "🇲🇱", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate"]
+    },
+    "Mauritania": {
+        flag: "🇲🇷", region: "Africa", type: "Visa on Arrival",
+        fee: "MRO 1,000", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Yellow fever vaccination certificate", "Sufficient funds"]
+    },
+    "Mauritius": {
+        flag: "🇲🇺", region: "Africa", type: "Visa-Free (60 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation (hotel booking)", "Sufficient funds (USD 100/day)"]
+    },
+    "Morocco": {
+        flag: "🇲🇦", region: "Africa", type: "Visa Required",
+        fee: "MAD 200", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "2 passport photos", "Bank statements (3 months)", "Return ticket", "Hotel reservation", "Employment letter", "Travel insurance"]
+    },
+    "Mozambique": {
+        flag: "🇲🇿", region: "Africa", type: "eVisa / Visa on Arrival",
+        fee: "$50", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Mozambique eVisa (apply online) or on arrival", "Return/onward ticket", "Proof of accommodation", "Yellow fever certificate (if applicable)", "Sufficient funds"]
+    },
+    "Namibia": {
+        flag: "🇳🇦", region: "Africa", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Niger": {
+        flag: "🇳🇪", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate"]
+    },
+    "Rwanda": {
+        flag: "🇷🇼", region: "Africa", type: "eVisa / Visa on Arrival",
+        fee: "$30", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Rwanda eVisa (apply at visitrwanda.com) or on arrival", "Return/onward ticket", "Proof of accommodation", "Yellow fever vaccination certificate", "Sufficient funds"]
+    },
+    "Sao Tome and Principe": {
+        flag: "🇸🇹", region: "Africa", type: "Visa on Arrival",
+        fee: "€30", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Yellow fever vaccination certificate", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Senegal": {
+        flag: "🇸🇳", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate", "Sufficient funds"]
+    },
+    "Seychelles": {
+        flag: "🇸🇨", region: "Africa", type: "Visa-Free (Visitor's Permit on Arrival)",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds (proof may be required)"]
+    },
+    "Sierra Leone": {
+        flag: "🇸🇱", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate"]
+    },
+    "Somalia": {
+        flag: "🇸🇴", region: "Africa", type: "Visa on Arrival",
+        fee: "$60", processing: "On arrival",
+        docs: ["Valid passport", "Return/onward ticket", "Invitation letter (recommended)", "⚠️ Travel not recommended due to security concerns"]
+    },
+    "South Africa": {
+        flag: "🇿🇦", region: "Africa", type: "Visa Required",
+        fee: "Free (no visa fee)", processing: "10–15 business days",
+        docs: ["Valid passport (30+ days beyond return)", "South Africa visa application form", "2 passport photos", "Bank statements (3 months)", "Employment letter", "Return flight itinerary", "Yellow fever vaccination certificate", "Proof of accommodation", "Certified copy of birth certificate (with apostille)"]
+    },
+    "South Sudan": {
+        flag: "🇸🇸", region: "Africa", type: "Visa Required",
+        fee: "$100", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Yellow fever vaccination certificate", "Return ticket", "Invitation letter (required)"]
+    },
+    "Sudan": {
+        flag: "🇸🇩", region: "Africa", type: "Visa Required",
+        fee: "$100", processing: "10–15 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Yellow fever vaccination certificate", "Bank statements", "Return ticket", "Invitation letter"]
+    },
+    "Tanzania": {
+        flag: "🇹🇿", region: "Africa", type: "eVisa / Visa on Arrival",
+        fee: "$50", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Tanzania eVisa (apply at immigration.go.tz) or on arrival", "Return/onward ticket", "Proof of accommodation", "Yellow fever vaccination certificate", "Sufficient funds ($50/day)"]
+    },
+    "Togo": {
+        flag: "🇹🇬", region: "Africa (ECOWAS)", type: "Visa-Free (90 days)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport or ECOWAS travel document", "Return/onward ticket", "Yellow fever vaccination certificate"]
+    },
+    "Tunisia": {
+        flag: "🇹🇳", region: "Africa", type: "Visa Required",
+        fee: "TND 30", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "2 passport photos", "Bank statements", "Return ticket", "Hotel booking", "Employment proof"]
+    },
+    "Uganda": {
+        flag: "🇺🇬", region: "Africa", type: "eVisa / Visa on Arrival",
+        fee: "$50", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Uganda eVisa (apply at visas.immigration.go.ug)", "Return/onward ticket", "Yellow fever vaccination certificate (mandatory)", "Proof of accommodation", "Bank statements", "Sufficient funds ($50/day)"]
+    },
+    "Zambia": {
+        flag: "🇿🇲", region: "Africa", type: "eVisa / Visa on Arrival",
+        fee: "$50 (single entry)", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Zambia eVisa (apply online) or on arrival", "Return/onward ticket", "Yellow fever vaccination certificate", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Zimbabwe": {
+        flag: "🇿🇼", region: "Africa", type: "Visa on Arrival",
+        fee: "$30–$75", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Yellow fever vaccination certificate (if applicable)", "Sufficient funds ($30/day)"]
+    },
+
+    // ── MIDDLE EAST ──────────────────────────────────────────
+    "Bahrain": {
+        flag: "🇧🇭", region: "Middle East", type: "eVisa Required",
+        fee: "BHD 29", processing: "Online — immediate",
+        docs: ["Valid passport (6+ months)", "Bahrain eVisa (apply online at evisa.gov.bh)", "Digital passport photo", "Return/onward ticket", "Hotel reservation", "Bank statements"]
+    },
+    "Iran": {
+        flag: "🇮🇷", region: "Middle East", type: "Visa on Arrival / eVisa",
+        fee: "$30–$75", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Iran visa authorization code (apply through travel agency or embassy)", "Passport photo", "Travel insurance", "Return/onward ticket", "Hotel reservation", "Bank statements"]
+    },
+    "Iraq": {
+        flag: "🇮🇶", region: "Middle East", type: "Visa Required",
+        fee: "$75", processing: "5–15 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation letter from Iraq (required for most cases)", "Bank statements", "Return ticket", "Travel insurance"]
+    },
+    "Israel": {
+        flag: "🇮🇱", region: "Middle East", type: "Visa on Arrival",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds", "Evidence of purpose of visit", "⚠️ Entry may be denied at discretion of border officers"]
+    },
+    "Jordan": {
+        flag: "🇯🇴", region: "Middle East", type: "Visa on Arrival",
+        fee: "JOD 40", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds", "Travel insurance (recommended)"]
+    },
+    "Kuwait": {
+        flag: "🇰🇼", region: "Middle East", type: "Visa Required",
+        fee: "KWD 3", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Kuwait visa application form", "Passport photo", "Bank statements", "Return ticket", "Hotel reservation or sponsor letter", "Employment letter"]
+    },
+    "Lebanon": {
+        flag: "🇱🇧", region: "Middle East", type: "Visa on Arrival",
+        fee: "$17", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds", "⚠️ Entry conditions variable — check before travel"]
+    },
+    "Oman": {
+        flag: "🇴🇲", region: "Middle East", type: "eVisa Required",
+        fee: "OMR 6", processing: "Online — 24–48 hours",
+        docs: ["Valid passport (6+ months)", "Oman eVisa (apply at evisa.rop.gov.om)", "Digital passport photo", "Return/onward ticket", "Hotel reservation", "Bank statements", "Travel insurance"]
+    },
+    "Palestine": {
+        flag: "🇵🇸", region: "Middle East", type: "Coordinated via Israel",
+        fee: "Varies", processing: "Via Israeli border control",
+        docs: ["Valid passport (6+ months)", "Onward/return ticket", "Proof of accommodation", "⚠️ Entry subject to Israeli border controls"]
+    },
+    "Qatar": {
+        flag: "🇶🇦", region: "Middle East", type: "Visa on Arrival / eVisa",
+        fee: "Free (on arrival)", processing: "Immediate / online",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Hotel reservation or invitation from Qatari national", "Bank statements (showing sufficient funds)", "Travel insurance (recommended)"]
+    },
+    "Saudi Arabia": {
+        flag: "🇸🇦", region: "Middle East", type: "eVisa Required",
+        fee: "SAR 300 + insurance", processing: "Online — immediate to 24 hours",
+        docs: ["Valid passport (6+ months)", "Saudi Arabia tourist eVisa (apply at visa.visitsaudi.com)", "Digital passport photo", "Return/onward flight", "Hotel reservation", "Travel insurance (mandatory — included in eVisa fee)", "Bank statements"]
+    },
+    "Syria": {
+        flag: "🇸🇾", region: "Middle East", type: "Visa Required",
+        fee: "$70", processing: "Variable",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation or sponsorship letter from Syria", "⚠️ Travel to Syria is not recommended due to ongoing conflict"]
+    },
+    "Turkey": {
+        flag: "🇹🇷", region: "Middle East / Europe", type: "eVisa Required",
+        fee: "$33.50", processing: "Online — immediate",
+        docs: ["Valid passport (6+ months)", "Turkey eVisa (apply at evisa.gov.tr)", "Digital passport photo", "Return/onward ticket", "Hotel reservation or invitation", "Bank statements (showing sufficient funds)"]
+    },
+    "UAE": {
+        flag: "🇦🇪", region: "Middle East", type: "Visa Required",
+        fee: "AED 270–1,100 (30–90 days)", processing: "3–5 business days",
+        docs: ["Valid passport (6+ months)", "UAE visa application (through airline, hotel, or Jekafly)", "White-background passport photo", "Return flight ticket", "Bank statements (minimum $1,000 balance)", "Hotel booking or sponsor letter", "Travel insurance (recommended)"]
+    },
+    "Yemen": {
+        flag: "🇾🇪", region: "Middle East", type: "Visa Required",
+        fee: "$60", processing: "Variable",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation letter from Yemen", "⚠️ Travel to Yemen not recommended due to ongoing conflict"]
+    },
+
+    // ── ASIA ─────────────────────────────────────────────────
+    "Afghanistan": {
+        flag: "🇦🇫", region: "Asia", type: "Visa Required",
+        fee: "$50", processing: "Variable",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation letter or proof of purpose", "⚠️ Travel to Afghanistan not recommended"]
+    },
+    "Armenia": {
+        flag: "🇦🇲", region: "Asia", type: "eVisa / Visa on Arrival",
+        fee: "$6–$31", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Armenia eVisa (apply at evisa.am)", "Return/onward ticket", "Hotel reservation", "Sufficient funds"]
+    },
+    "Azerbaijan": {
+        flag: "🇦🇿", region: "Asia", type: "eVisa Required",
+        fee: "$26", processing: "Online — 3 business days",
+        docs: ["Valid passport (6+ months)", "Azerbaijan eVisa (apply at evisa.gov.az)", "Digital passport photo", "Return ticket", "Hotel booking", "Bank statements"]
+    },
+    "Bangladesh": {
+        flag: "🇧🇩", region: "Asia", type: "eVisa / Visa on Arrival",
+        fee: "$51", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Bangladesh eVisa (apply online) or on arrival at Dhaka airport", "Passport photo", "Return ticket", "Hotel reservation", "Bank statements", "Yellow fever certificate (if applicable)"]
+    },
+    "Bhutan": {
+        flag: "🇧🇹", region: "Asia", type: "Visa Required (via tour only)",
+        fee: "$200/day (Sustainable Development Fee)", processing: "Via authorized tour operator",
+        docs: ["Valid passport (6+ months)", "Bhutan visa (must be applied through authorized Bhutanese tour operator)", "Pre-arranged tour itinerary", "Visa approval letter", "Return flight booking", "Travel insurance"]
+    },
+    "Brunei": {
+        flag: "🇧🇳", region: "Asia", type: "Visa Required",
+        fee: "BND 20", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Hotel booking", "Employment proof"]
+    },
+    "Cambodia": {
+        flag: "🇰🇭", region: "Asia", type: "eVisa / Visa on Arrival",
+        fee: "$30", processing: "On arrival / online (3 days)",
+        docs: ["Valid passport (6+ months)", "Cambodia eVisa (apply at evisa.gov.kh) or on arrival", "Passport photo", "Return ticket", "Hotel booking", "Sufficient funds ($50/day)", "Yellow fever certificate (if applicable)"]
+    },
+    "China": {
+        flag: "🇨🇳", region: "Asia", type: "Visa Required",
+        fee: "$140", processing: "4–5 business days",
+        docs: ["Valid passport (6+ months)", "China visa application form", "Recent passport photo (white background)", "Original return flight itinerary", "Hotel reservation or invitation letter", "Bank statements (3 months)", "Employment letter", "Travel insurance"]
+    },
+    "Georgia": {
+        flag: "🇬🇪", region: "Asia", type: "eVisa / Visa on Arrival",
+        fee: "$20", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Georgia eVisa (apply at evisa.gov.ge) or on arrival", "Return ticket", "Hotel reservation", "Bank statements", "Sufficient funds"]
+    },
+    "India": {
+        flag: "🇮🇳", region: "Asia", type: "eVisa Required",
+        fee: "$25–$80", processing: "Online — 72–96 hours",
+        docs: ["Valid passport (6+ months, 2 blank pages)", "India eVisa (apply at indianvisaonline.gov.in)", "Digital passport photo (white background)", "Return/onward flight ticket", "Hotel reservation or invitation letter", "Bank statements", "Yellow fever vaccination certificate (if arriving from endemic country)"]
+    },
+    "Indonesia": {
+        flag: "🇮🇩", region: "Asia", type: "eVisa / Visa on Arrival",
+        fee: "$35", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Indonesia eVisa (molina.imigrasi.go.id) or on arrival", "Return/onward ticket", "Hotel reservation", "Bank statements", "Sufficient funds ($1,000 min)", "Yellow fever certificate (if applicable)"]
+    },
+    "Japan": {
+        flag: "🇯🇵", region: "Asia", type: "Visa Required",
+        fee: "JPY 3,000", processing: "5–7 business days",
+        docs: ["Valid passport (6+ months)", "Japan visa application form", "Passport photo", "Bank statements (3–6 months)", "Employment letter", "Return flight itinerary", "Hotel reservation", "Day-by-day itinerary", "Travel insurance", "Proof of ties to Nigeria"]
+    },
+    "Kazakhstan": {
+        flag: "🇰🇿", region: "Asia", type: "eVisa Required",
+        fee: "$18", processing: "Online — 5 business days",
+        docs: ["Valid passport (6+ months)", "Kazakhstan eVisa (apply at evisa.mfa.gov.kz)", "Digital photo", "Return ticket", "Hotel booking", "Bank statements"]
+    },
+    "Kyrgyzstan": {
+        flag: "🇰🇬", region: "Asia", type: "eVisa Required",
+        fee: "$25", processing: "Online — 3 business days",
+        docs: ["Valid passport (6+ months)", "Kyrgyzstan eVisa (apply at evisa.e-gov.kg)", "Passport photo", "Return ticket", "Hotel booking"]
+    },
+    "Laos": {
+        flag: "🇱🇦", region: "Asia", type: "eVisa / Visa on Arrival",
+        fee: "$30–$42", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Laos eVisa (apply at laoevisa.gov.la) or on arrival", "Passport photo (2)", "Return ticket", "Hotel reservation", "Sufficient funds ($50/day)", "Yellow fever certificate (if applicable)"]
+    },
+    "Malaysia": {
+        flag: "🇲🇾", region: "Asia", type: "eVisa Required",
+        fee: "MYR 120 (~$25)", processing: "Online — immediate",
+        docs: ["Valid passport (6+ months)", "Malaysia eVisa (apply at windowmalaysia.my)", "Digital passport photo", "Return/onward ticket", "Hotel reservation", "Bank statements", "Sufficient funds"]
+    },
+    "Maldives": {
+        flag: "🇲🇻", region: "Asia", type: "Visa on Arrival (Free)",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Confirmed hotel booking", "Sufficient funds ($100/day)", "Travel insurance (recommended)"]
+    },
+    "Mongolia": {
+        flag: "🇲🇳", region: "Asia", type: "eVisa Required",
+        fee: "$53", processing: "Online — 3–5 business days",
+        docs: ["Valid passport (6+ months)", "Mongolia eVisa (apply at evisa.mfa.mn)", "Passport photo", "Return ticket", "Hotel booking", "Bank statements"]
+    },
+    "Myanmar": {
+        flag: "🇲🇲", region: "Asia", type: "eVisa Required",
+        fee: "$50", processing: "Online — 3 business days",
+        docs: ["Valid passport (6+ months)", "Myanmar eVisa (apply at evisa.moip.gov.mm)", "Passport photo", "Return/onward ticket", "Hotel reservation", "Bank statements"]
+    },
+    "Nepal": {
+        flag: "🇳🇵", region: "Asia", type: "eVisa / Visa on Arrival",
+        fee: "$25–$100", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "Nepal eVisa (apply at nepalimmigration.gov.np) or on arrival", "Passport photo", "Return/onward ticket", "Hotel reservation", "Bank statements", "Yellow fever certificate (if applicable)"]
+    },
+    "North Korea": {
+        flag: "🇰🇵", region: "Asia", type: "Visa Required (via tour only)",
+        fee: "Varies", processing: "Via authorized tour operator",
+        docs: ["Valid passport", "Organized tour with authorized operator", "Visa approval from North Korean authorities", "⚠️ Extremely limited tourist access — consult embassy"]
+    },
+    "Pakistan": {
+        flag: "🇵🇰", region: "Asia", type: "eVisa Required",
+        fee: "$25–$80", processing: "Online — 5–7 business days",
+        docs: ["Valid passport (6+ months)", "Pakistan eVisa (apply at visa.nadra.gov.pk)", "Digital passport photo", "Return ticket", "Hotel reservation or invitation letter", "Bank statements"]
+    },
+    "Philippines": {
+        flag: "🇵🇭", region: "Asia", type: "Visa Required",
+        fee: "PHP 3,000 (~$55)", processing: "5–10 business days",
+        docs: ["Valid passport (6+ months)", "Philippines visa application form", "Passport photo", "Bank statements", "Return/onward ticket", "Hotel reservation", "Employment letter", "Travel insurance"]
+    },
+    "Singapore": {
+        flag: "🇸🇬", region: "Asia", type: "Visa Required",
+        fee: "SGD 30", processing: "5–10 business days (online)",
+        docs: ["Valid passport (6+ months)", "Singapore visa application (online via ICA portal)", "Digital passport photo", "Return/onward ticket", "Hotel reservation", "Bank statements (3–6 months)", "Employment letter or business proof", "Travel insurance"]
+    },
+    "South Korea": {
+        flag: "🇰🇷", region: "Asia", type: "Visa Required",
+        fee: "KRW 60,000", processing: "5–7 business days",
+        docs: ["Valid passport (6+ months)", "South Korea visa application form", "Passport photo", "Bank statements (3–6 months)", "Employment letter & payslips", "Return flight ticket", "Hotel reservation", "Day-by-day travel plan"]
+    },
+    "Sri Lanka": {
+        flag: "🇱🇰", region: "Asia", type: "eVisa Required (ETA)",
+        fee: "$20", processing: "Online — immediate",
+        docs: ["Valid passport (6+ months)", "Sri Lanka ETA (apply at eta.gov.lk)", "Digital photo", "Return/onward ticket", "Hotel reservation", "Sufficient funds ($50/day)"]
+    },
+    "Taiwan": {
+        flag: "🇹🇼", region: "Asia", type: "Visa Required",
+        fee: "TWD 1,600", processing: "5–7 business days",
+        docs: ["Valid passport (6+ months, 2 blank pages)", "Taiwan visa application form", "Passport photo", "Bank statements", "Return ticket", "Hotel reservation", "Employment/income proof", "Travel insurance"]
+    },
+    "Tajikistan": {
+        flag: "🇹🇯", region: "Asia", type: "eVisa Required",
+        fee: "$50", processing: "Online — 3–5 business days",
+        docs: ["Valid passport (6+ months)", "Tajikistan eVisa (apply at evisa.tj)", "Passport photo", "Return ticket", "Hotel booking"]
+    },
+    "Thailand": {
+        flag: "🇹🇭", region: "Asia", type: "eVisa / Visa on Arrival",
+        fee: "THB 2,000 (on arrival)", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months, 1 blank page)", "Thailand eVisa or visa on arrival", "Passport photo", "Return/onward ticket", "Hotel reservation", "Bank statements (minimum THB 20,000 or $600)", "Travel insurance", "Yellow fever certificate (if applicable)"]
+    },
+    "Timor-Leste": {
+        flag: "🇹🇱", region: "Asia", type: "Visa on Arrival",
+        fee: "$30", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Turkmenistan": {
+        flag: "🇹🇲", region: "Asia", type: "Visa Required",
+        fee: "$55", processing: "10–15 business days",
+        docs: ["Valid passport (6+ months)", "Letter of invitation from Turkmenistan (required)", "Application form", "Passport photo", "Return ticket", "Bank statements"]
+    },
+    "Uzbekistan": {
+        flag: "🇺🇿", region: "Asia", type: "eVisa Required",
+        fee: "$20", processing: "Online — 3–5 business days",
+        docs: ["Valid passport (6+ months)", "Uzbekistan eVisa (apply at e-visa.uz)", "Digital photo", "Return ticket", "Hotel booking", "Bank statements"]
+    },
+    "Vietnam": {
+        flag: "🇻🇳", region: "Asia", type: "eVisa Required",
+        fee: "$25", processing: "Online — 3 business days",
+        docs: ["Valid passport (6+ months)", "Vietnam eVisa (apply at evisa.xuatnhapcanh.gov.vn)", "Digital passport photo", "Return/onward ticket", "Hotel reservation", "Bank statements"]
+    },
+
+    // ── OCEANIA ──────────────────────────────────────────────
+    "Australia": {
+        flag: "🇦🇺", region: "Oceania", type: "Visa Required (Subclass 600)",
+        fee: "AUD 145", processing: "4–8 weeks",
+        docs: ["Valid passport (6+ months)", "Australia visitor visa application (ImmiAccount online)", "Digital passport photo", "Bank statements (6–12 months)", "Statement of purpose", "Return flight itinerary", "Hotel reservation", "Employment letter & payslips", "Health insurance", "Proof of ties to Nigeria"]
+    },
+    "Fiji": {
+        flag: "🇫🇯", region: "Oceania", type: "Visa-Free (4 months)",
+        fee: "Free", processing: "N/A",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds ($200/week)"]
+    },
+    "Kiribati": {
+        flag: "🇰🇮", region: "Oceania", type: "Visa on Arrival",
+        fee: "AUD 50", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Marshall Islands": {
+        flag: "🇲🇭", region: "Oceania", type: "Visa on Arrival",
+        fee: "$20", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Micronesia": {
+        flag: "🇫🇲", region: "Oceania", type: "Visa on Arrival (30 days)",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Nauru": {
+        flag: "🇳🇷", region: "Oceania", type: "Visa Required",
+        fee: "$100", processing: "Prior approval required",
+        docs: ["Valid passport (6+ months)", "Visa application to Nauru Government", "Return ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "New Zealand": {
+        flag: "🇳🇿", region: "Oceania", type: "Visa Required",
+        fee: "NZD 211", processing: "4–8 weeks",
+        docs: ["Valid passport (6+ months)", "New Zealand visitor visa (apply online via Immigration NZ)", "Digital photo", "Bank statements (3–6 months)", "Employment letter", "Return ticket", "Hotel reservation or itinerary", "Travel insurance", "Proof of ties to Nigeria"]
+    },
+    "Palau": {
+        flag: "🇵🇼", region: "Oceania", type: "Visa on Arrival (30 days)",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds", "Palau Pledge (environmental commitment — signed on arrival)"]
+    },
+    "Papua New Guinea": {
+        flag: "🇵🇬", region: "Oceania", type: "eVisa / Visa on Arrival",
+        fee: "PGK 100", processing: "On arrival / online",
+        docs: ["Valid passport (6+ months)", "PNG eVisa or on arrival", "Return ticket", "Hotel reservation", "Bank statements", "Yellow fever certificate (if applicable)"]
+    },
+    "Samoa": {
+        flag: "🇼🇸", region: "Oceania", type: "Visa on Arrival (60 days)",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Solomon Islands": {
+        flag: "🇸🇧", region: "Oceania", type: "Visa on Arrival (90 days)",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Tonga": {
+        flag: "🇹🇴", region: "Oceania", type: "Visa on Arrival (31 days)",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Tuvalu": {
+        flag: "🇹🇻", region: "Oceania", type: "Visa on Arrival (1 month)",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    },
+    "Vanuatu": {
+        flag: "🇻🇺", region: "Oceania", type: "Visa on Arrival (30 days)",
+        fee: "Free", processing: "On arrival",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
+    }
+};
+// ============================================================
+
+// ============================================================
+// NATIONALITY LIST (for c-from / s-from widgets)
+// ============================================================
+
+var nationalityList = [
+    { name: "Afghan", flag: "🇦🇫" },
+    { name: "Albanian", flag: "🇦🇱" },
+    { name: "Algerian", flag: "🇩🇿" },
+    { name: "Angolan", flag: "🇦🇴" },
+    { name: "Argentine", flag: "🇦🇷" },
+    { name: "Armenian", flag: "🇦🇲" },
+    { name: "Australian", flag: "🇦🇺" },
+    { name: "Austrian", flag: "🇦🇹" },
+    { name: "Azerbaijani", flag: "🇦🇿" },
+    { name: "Bahraini", flag: "🇧🇭" },
+    { name: "Bangladeshi", flag: "🇧🇩" },
+    { name: "Belarusian", flag: "🇧🇾" },
+    { name: "Belgian", flag: "🇧🇪" },
+    { name: "Belizean", flag: "🇧🇿" },
+    { name: "Beninese", flag: "🇧🇯" },
+    { name: "Bolivian", flag: "🇧🇴" },
+    { name: "Bosnian", flag: "🇧🇦" },
+    { name: "Botswanan", flag: "🇧🇼" },
+    { name: "Brazilian", flag: "🇧🇷" },
+    { name: "British", flag: "🇬🇧" },
+    { name: "Bulgarian", flag: "🇧🇬" },
+    { name: "Burkinabé", flag: "🇧🇫" },
+    { name: "Burundian", flag: "🇧🇮" },
+    { name: "Cambodian", flag: "🇰🇭" },
+    { name: "Cameroonian", flag: "🇨🇲" },
+    { name: "Canadian", flag: "🇨🇦" },
+    { name: "Cape Verdean", flag: "🇨🇻" },
+    { name: "Central African", flag: "🇨🇫" },
+    { name: "Chadian", flag: "🇹🇩" },
+    { name: "Chilean", flag: "🇨🇱" },
+    { name: "Chinese", flag: "🇨🇳" },
+    { name: "Colombian", flag: "🇨🇴" },
+    { name: "Comorian", flag: "🇰🇲" },
+    { name: "Congolese (DRC)", flag: "🇨🇩" },
+    { name: "Congolese (Rep.)", flag: "🇨🇬" },
+    { name: "Costa Rican", flag: "🇨🇷" },
+    { name: "Croatian", flag: "🇭🇷" },
+    { name: "Cuban", flag: "🇨🇺" },
+    { name: "Cypriot", flag: "🇨🇾" },
+    { name: "Czech", flag: "🇨🇿" },
+    { name: "Danish", flag: "🇩🇰" },
+    { name: "Djiboutian", flag: "🇩🇯" },
+    { name: "Dominican", flag: "🇩🇴" },
+    { name: "Dutch", flag: "🇳🇱" },
+    { name: "Ecuadorian", flag: "🇪🇨" },
+    { name: "Egyptian", flag: "🇪🇬" },
+    { name: "Emirati", flag: "🇦🇪" },
+    { name: "Eritrean", flag: "🇪🇷" },
+    { name: "Estonian", flag: "🇪🇪" },
+    { name: "Ethiopian", flag: "🇪🇹" },
+    { name: "Fijian", flag: "🇫🇯" },
+    { name: "Filipino", flag: "🇵🇭" },
+    { name: "Finnish", flag: "🇫🇮" },
+    { name: "French", flag: "🇫🇷" },
+    { name: "Gabonese", flag: "🇬🇦" },
+    { name: "Gambian", flag: "🇬🇲" },
+    { name: "Georgian", flag: "🇬🇪" },
+    { name: "German", flag: "🇩🇪" },
+    { name: "Ghanaian", flag: "🇬🇭" },
+    { name: "Greek", flag: "🇬🇷" },
+    { name: "Guatemalan", flag: "🇬🇹" },
+    { name: "Guinean", flag: "🇬🇳" },
+    { name: "Guyanese", flag: "🇬🇾" },
+    { name: "Haitian", flag: "🇭🇹" },
+    { name: "Honduran", flag: "🇭🇳" },
+    { name: "Hungarian", flag: "🇭🇺" },
+    { name: "Icelandic", flag: "🇮🇸" },
+    { name: "Indian", flag: "🇮🇳" },
+    { name: "Indonesian", flag: "🇮🇩" },
+    { name: "Iranian", flag: "🇮🇷" },
+    { name: "Iraqi", flag: "🇮🇶" },
+    { name: "Irish", flag: "🇮🇪" },
+    { name: "Israeli", flag: "🇮🇱" },
+    { name: "Italian", flag: "🇮🇹" },
+    { name: "Ivorian", flag: "🇨🇮" },
+    { name: "Jamaican", flag: "🇯🇲" },
+    { name: "Japanese", flag: "🇯🇵" },
+    { name: "Jordanian", flag: "🇯🇴" },
+    { name: "Kazakhstani", flag: "🇰🇿" },
+    { name: "Kenyan", flag: "🇰🇪" },
+    { name: "Kuwaiti", flag: "🇰🇼" },
+    { name: "Kyrgyz", flag: "🇰🇬" },
+    { name: "Laotian", flag: "🇱🇦" },
+    { name: "Latvian", flag: "🇱🇻" },
+    { name: "Lebanese", flag: "🇱🇧" },
+    { name: "Liberian", flag: "🇱🇷" },
+    { name: "Libyan", flag: "🇱🇾" },
+    { name: "Lithuanian", flag: "🇱🇹" },
+    { name: "Luxembourgish", flag: "🇱🇺" },
+    { name: "Malagasy", flag: "🇲🇬" },
+    { name: "Malawian", flag: "🇲🇼" },
+    { name: "Malaysian", flag: "🇲🇾" },
+    { name: "Maldivian", flag: "🇲🇻" },
+    { name: "Malian", flag: "🇲🇱" },
+    { name: "Maltese", flag: "🇲🇹" },
+    { name: "Mauritanian", flag: "🇲🇷" },
+    { name: "Mauritian", flag: "🇲🇺" },
+    { name: "Mexican", flag: "🇲🇽" },
+    { name: "Moldovan", flag: "🇲🇩" },
+    { name: "Mongolian", flag: "🇲🇳" },
+    { name: "Montenegrin", flag: "🇲🇪" },
+    { name: "Moroccan", flag: "🇲🇦" },
+    { name: "Mozambican", flag: "🇲🇿" },
+    { name: "Myanmarese", flag: "🇲🇲" },
+    { name: "Namibian", flag: "🇳🇦" },
+    { name: "Nepali", flag: "🇳🇵" },
+    { name: "New Zealander", flag: "🇳🇿" },
+    { name: "Nicaraguan", flag: "🇳🇮" },
+    { name: "Nigerien", flag: "🇳🇪" },
+    { name: "Nigerian", flag: "🇳🇬" },
+    { name: "Norwegian", flag: "🇳🇴" },
+    { name: "Omani", flag: "🇴🇲" },
+    { name: "Pakistani", flag: "🇵🇰" },
+    { name: "Panamanian", flag: "🇵🇦" },
+    { name: "Paraguayan", flag: "🇵🇾" },
+    { name: "Peruvian", flag: "🇵🇪" },
+    { name: "Polish", flag: "🇵🇱" },
+    { name: "Portuguese", flag: "🇵🇹" },
+    { name: "Qatari", flag: "🇶🇦" },
+    { name: "Romanian", flag: "🇷🇴" },
+    { name: "Russian", flag: "🇷🇺" },
+    { name: "Rwandan", flag: "🇷🇼" },
+    { name: "Saudi", flag: "🇸🇦" },
+    { name: "Senegalese", flag: "🇸🇳" },
+    { name: "Serbian", flag: "🇷🇸" },
+    { name: "Sierra Leonean", flag: "🇸🇱" },
+    { name: "Singaporean", flag: "🇸🇬" },
+    { name: "Slovak", flag: "🇸🇰" },
+    { name: "Slovenian", flag: "🇸🇮" },
+    { name: "Somali", flag: "🇸🇴" },
+    { name: "South African", flag: "🇿🇦" },
+    { name: "South Korean", flag: "🇰🇷" },
+    { name: "Spanish", flag: "🇪🇸" },
+    { name: "Sri Lankan", flag: "🇱🇰" },
+    { name: "Sudanese", flag: "🇸🇩" },
+    { name: "Swedish", flag: "🇸🇪" },
+    { name: "Swiss", flag: "🇨🇭" },
+    { name: "Syrian", flag: "🇸🇾" },
+    { name: "Taiwanese", flag: "🇹🇼" },
+    { name: "Tajik", flag: "🇹🇯" },
+    { name: "Tanzanian", flag: "🇹🇿" },
+    { name: "Thai", flag: "🇹🇭" },
+    { name: "Togolese", flag: "🇹🇬" },
+    { name: "Trinidadian", flag: "🇹🇹" },
+    { name: "Tunisian", flag: "🇹🇳" },
+    { name: "Turkish", flag: "🇹🇷" },
+    { name: "Ugandan", flag: "🇺🇬" },
+    { name: "Ukrainian", flag: "🇺🇦" },
+    { name: "American", flag: "🇺🇸" },
+    { name: "Uruguayan", flag: "🇺🇾" },
+    { name: "Uzbek", flag: "🇺🇿" },
+    { name: "Venezuelan", flag: "🇻🇪" },
+    { name: "Vietnamese", flag: "🇻🇳" },
+    { name: "Yemeni", flag: "🇾🇪" },
+    { name: "Zambian", flag: "🇿🇲" },
+    { name: "Zimbabwean", flag: "🇿🇼" },
+].sort((a, b) => a.name.localeCompare(b.name));
+
+
+// ============================================================
+// VISA REQUIREMENTS DATABASE
+// ============================================================
+
+
+// ============================================================
+// SEARCHABLE SELECT WIDGET
+// Handles both country lists (from visaRequirements) and
+// custom lists (e.g. nationalityList). Pass customList to override.
+// ============================================================
+
+function makeSearchableSelect(selectId, placeholder, customList) {
+    const nativeSelect = document.getElementById(selectId);
+    if (!nativeSelect) return;
+
+    // Remove any previously built widget (prevents duplicates on re-call)
+    const existing = nativeSelect.parentNode.querySelector('[data-select-id="' + selectId + '"]');
+    if (existing) existing.remove();
+
+    // Build item list
+    const items = customList
+        ? customList.map(item => ({ value: item.name, label: item.name, flag: item.flag || "" }))
+        : Object.entries(visaRequirements)
+            .map(([country, data]) => ({ value: country, label: country, flag: data.flag || "" }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+
+    // Populate native select with all options so nativeSelect.value = val actually sticks
+    nativeSelect.innerHTML = `<option value="">${placeholder || "— Select —"}</option>` +
+        items.map(i => `<option value="${i.value}">${i.flag} ${i.label}</option>`).join("");
+
+    const currentVal = nativeSelect.value;
+    const currentItem = items.find(i => i.value === currentVal);
+    const currentLabel = currentItem ? (currentItem.flag ? currentItem.flag + ' ' + currentItem.label : currentItem.label) : "";
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "cs-wrapper";
+    wrapper.setAttribute("data-select-id", selectId);
+    wrapper.dataset.value = currentVal; // store for reliable reading
+
+    wrapper.innerHTML = `
+      <div class="cs-trigger" tabindex="0">
+        <span class="cs-value">${currentLabel || placeholder || "— Select —"}</span>
+        <svg class="cs-arrow" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="cs-dropdown">
+        <div class="cs-search-wrap">
+          <svg viewBox="0 0 16 16" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input class="cs-search" type="text" placeholder="Search..." autocomplete="off" />
+        </div>
+        <div class="cs-list">
+          ${items.map(item =>
+        `<div class="cs-option${item.value === currentVal ? " selected" : ""}" data-value="${item.value}">
+               <span class="cs-flag">${item.flag}</span>
+               <span class="cs-name">${item.label}</span>
+             </div>`).join("")}
+        </div>
+        <div class="cs-empty">No results found</div>
+      </div>`;
+
+    nativeSelect.style.display = "none";
+    nativeSelect.parentNode.insertBefore(wrapper, nativeSelect);
+
+    const trigger = wrapper.querySelector(".cs-trigger");
+    const searchInput = wrapper.querySelector(".cs-search");
+    const list = wrapper.querySelector(".cs-list");
+    const emptyMsg = wrapper.querySelector(".cs-empty");
+    const valueEl = wrapper.querySelector(".cs-value");
+
+    function open() {
+        wrapper.classList.add("open");
+        searchInput.value = "";
+        filterList("");
+        setTimeout(() => searchInput.focus(), 50);
+        const rect = wrapper.getBoundingClientRect();
+        wrapper.classList.toggle("cs-up", window.innerHeight - rect.bottom < 260);
+    }
+    function close() { wrapper.classList.remove("open"); }
+
+    // stopPropagation prevents the document outside-click listener from
+    // closing the dropdown the same moment the trigger opens it
+    trigger.addEventListener("click", e => {
+        e.stopPropagation();
+        wrapper.classList.contains("open") ? close() : open();
+    });
+    trigger.addEventListener("keydown", e => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
     });
 
-    // Auto-refresh on 401
-    if (res.status === 401 && path !== '/auth/refresh') {
-        const refreshed = await fetch(API_BASE + '/auth/refresh', {
-            method: 'POST', credentials: 'include',
+    searchInput.addEventListener("input", () => filterList(searchInput.value));
+    searchInput.addEventListener("click", e => e.stopPropagation());
+
+    list.addEventListener("click", e => {
+        const opt = e.target.closest(".cs-option");
+        if (!opt) return;
+        const val = opt.dataset.value;
+        // Store on wrapper for reliable reading by any code
+        wrapper.dataset.value = val;
+        // Also sync native select (which now has all options pre-populated)
+        nativeSelect.value = val;
+        nativeSelect.dispatchEvent(new Event("change", { bubbles: true }));
+        const item = items.find(i => i.value === val);
+        // Use innerHTML so emoji flags render correctly (textContent strips nothing but some browsers clip emoji)
+        valueEl.textContent = item ? (item.flag ? item.flag + ' ' + item.label : item.label) : val;
+        wrapper.classList.add("has-value");
+        list.querySelectorAll(".cs-option").forEach(o => o.classList.remove("selected"));
+        opt.classList.add("selected");
+        close();
+    });
+
+    function filterList(q) {
+        const term = q.toLowerCase();
+        let visible = 0;
+        list.querySelectorAll(".cs-option").forEach(opt => {
+            const name = opt.querySelector(".cs-name").textContent.toLowerCase();
+            const show = name.includes(term);
+            opt.style.display = show ? "" : "none";
+            if (show) visible++;
         });
-        if (refreshed.ok) {
-            const data = await refreshed.json();
-            _accessToken = data.data.accessToken;
-            return apiFetch(method, path, body, isFormData); // retry
-        }
-        // Refresh failed — only redirect if we have no user stored
-        // (avoids redirect when race condition causes one refresh to fail)
-        const stored = localStorage.getItem('jkf_user');
-        if (!stored) {
-            _accessToken = null;
-            window.location.href = 'index.html';
-        }
-        return null;
+        emptyMsg.style.display = visible === 0 ? "block" : "none";
     }
 
-    return res.json();
+    document.addEventListener("click", e => {
+        if (!wrapper.contains(e.target)) close();
+    });
 }
 
-var get = (path) => apiFetch('GET', path);
-var post = (path, body) => apiFetch('POST', path, body);
-var patch = (path, body) => apiFetch('PATCH', path, body);
-var put = (path, body) => apiFetch('PUT', path, body);
-var del = (path, body) => apiFetch('DELETE', path, body);
-var upload = (path, form) => apiFetch('POST', path, form, true);
+// Helper: reliably read a searchable select's current value
+function getSelectValue(selectId) {
+    const wrapper = document.querySelector('[data-select-id="' + selectId + '"]');
+    if (wrapper) return wrapper.dataset.value || "";
+    return document.getElementById(selectId)?.value || "";
+}
 
-// ─── Auth ─────────────────────────────────────────────────────────────────────
-var Auth = {
-    async register(name, email, phone, password) {
-        const res = await post('/auth/register', { name, email, phone, password });
-        if (res?.ok) {
-            _accessToken = res.data.accessToken;
-            localStorage.setItem('jkf_user', JSON.stringify(res.data.user));
-        }
-        return res?.ok ? { ok: true, user: res.data.user } : { ok: false, msg: res?.error || 'Registration failed.' };
-    },
+// Legacy helper kept for any code that still calls it directly
+function populateCountrySelect(selectId, placeholder) {
+    makeSearchableSelect(selectId, placeholder);
+}
 
-    async login(email, password) {
-        const res = await post('/auth/login', { email, password });
-        if (res?.ok) {
-            _accessToken = res.data.accessToken;
-            localStorage.setItem('jkf_user', JSON.stringify(res.data.user));
-        }
-        return res?.ok ? { ok: true, user: res.data.user } : { ok: false, msg: res?.error || 'Login failed.' };
-    },
+// ============================================================
+// VISA CHECKER
+// ============================================================
 
-    async logout() {
-        await post('/auth/logout');
-        _accessToken = null;
-        localStorage.removeItem('jkf_user');
-    },
+function showRequirements() {
+    const dest = getSelectValue("c-to");
+    if (!dest) { showToast("Please select a destination country.", "error"); return; }
 
-    getCurrent() {
-        try { return JSON.parse(localStorage.getItem('jkf_user') || 'null'); } catch { return null; }
-    },
+    const data = visaRequirements[dest];
+    if (!data) return;
 
-    async refreshCurrent() {
-        const res = await get('/auth/me');
-        if (res?.ok) {
-            localStorage.setItem('jkf_user', JSON.stringify(res.data.user));
-            return res.data.user;
-        }
-        return null;
-    },
+    const result = document.getElementById("checker-result");
+    const title = document.getElementById("result-title");
+    const list = document.getElementById("result-list");
 
-    async updateMe(name, phone) {
-        const res = await patch('/auth/me', { name, phone });
-        if (res?.ok) localStorage.setItem('jkf_user', JSON.stringify(res.data.user));
-        return res;
-    },
+    let badgeColor = "#E31E24";
+    const t = (data.type || "").toLowerCase();
+    if (t.includes("visa-free")) badgeColor = "#10B981";
+    else if (t.includes("arrival") || t.includes("evisa")) badgeColor = "#F59E0B";
 
-    async deleteAccount(password) {
-        return del('/auth/me', { password });
-    },
-
-    async requestPasswordOtp() {
-        return post('/auth/request-password-otp', {});
-    },
-
-    async changePassword(currentPassword, newPassword, otp) {
-        return post('/auth/change-password', { currentPassword, newPassword, otp });
-    },
-
-    // Restore access token on page load by calling /auth/me
-    async init() {
-        const user = this.getCurrent();
-        if (!user) return null;
-        // Prevent multiple simultaneous refresh calls
-        if (Auth._initPromise) return Auth._initPromise;
-        Auth._initPromise = (async () => {
-            try {
-                const res = await fetch(API_BASE + '/auth/refresh', {
-                    method: 'POST', credentials: 'include',
-                });
-                if (res.ok) {
-                    const data = await res.json();
-                    _accessToken = data.data.accessToken;
-                    return user;
-                }
-                // Only clear user if refresh definitively failed (not a race condition)
-                if (res.status === 401) {
-                    localStorage.removeItem('jkf_user');
-                }
-                return null;
-            } finally {
-                Auth._initPromise = null;
-            }
-        })();
-        return Auth._initPromise;
+    if (title) {
+        title.innerHTML = `${data.flag || ""} ${dest}
+      <span style="display:inline-block;background:${badgeColor};color:white;font-size:0.65rem;padding:3px 10px;border-radius:100px;margin-left:8px;vertical-align:middle;font-weight:700;">${data.type || ""}</span>`;
     }
-};
 
-// ─── Applications ─────────────────────────────────────────────────────────────
-var AppStore = {
-    async create(data) {
-        const res = await post('/applications', data);
-        return res?.ok ? res.data.application : null;
-    },
+    const metaEl = document.getElementById("result-meta");
+    if (metaEl) {
+        metaEl.innerHTML = `
+      <span style="margin-right:16px">🏛️ <strong>Embassy fee (est.):</strong> ${data.fee || "N/A"}</span>
+      <span style="margin-right:16px">⏱ <strong>Processing (est.):</strong> ${data.processing || "N/A"}</span>
+      <span>🌍 <strong>Region:</strong> ${data.region || "N/A"}</span>
+      <div style="margin-top:10px;padding:8px 12px;background:#FFF9EC;border:1.5px solid #F5D88A;border-radius:8px;font-size:0.78rem;color:#92400E;line-height:1.5">
+        ⚠️ <strong>Disclaimer:</strong> Embassy fees, processing times, and document requirements shown are <em>general guidelines</em> based on Nigerian passport holders. Actual requirements may vary by embassy, application type, or individual circumstances. Jekafly will verify and confirm all details for your specific application.
+      </div>`;
+    }
 
-    async getAll() {
-        const res = await get('/admin/applications?limit=100');
-        return res?.ok ? res.data.applications : [];
-    },
-
-    async getByUser() {
-        const res = await get('/applications?limit=100');
-        return res?.ok ? res.data.applications : [];
-    },
-
-    async getByRef(ref) {
-        const res = await get(`/applications/${ref}`);
-        return res?.ok ? res.data.application : null;
-    },
-
-    async track(ref) {
-        const res = await get(`/applications/track/${ref}`);
-        return res?.ok ? res.data : null;
-    },
-
-    async updateStatus(ref, status, note) {
-        const res = await patch(`/admin/applications/${ref}/status`, {
-            status: status.toUpperCase(), note
-        });
-        return res?.ok ? res.data.application : null;
-    },
-
-    async setPaid(ref) {
-        // Handled server-side by payment webhook — no client action needed
-        return true;
-    },
-};
-
-// ─── Documents (Vault) ────────────────────────────────────────────────────────
-var DocStore = {
-    async upload(files, ref, docIndex) {
-        // If files have individual docIndex, upload each separately to preserve slot mapping
-        const hasSlotIndex = files.some(f => f.docIndex != null);
-        if (hasSlotIndex) {
-            const results = [];
-            for (const f of files) {
-                const form = new FormData();
-                form.append('files', f.file, f.name);
-                if (ref) form.append('ref', ref);
-                if (f.docIndex != null) form.append('docIndex', String(f.docIndex));
-                const res = await upload('/documents/upload', form);
-                if (res?.ok) results.push(...res.data.uploaded);
-            }
-            return results;
-        }
-        // Batch upload without slot index
-        const form = new FormData();
-        files.forEach(f => form.append('files', f.file, f.name));
-        if (ref) form.append('ref', ref);
-        if (docIndex != null) form.append('docIndex', docIndex);
-        const res = await upload('/documents/upload', form);
-        return res?.ok ? res.data.uploaded : [];
-    },
-
-    async getVault(ref) {
-        const path = ref ? `/documents?ref=${ref}` : '/documents';
-        const res = await get(path);
-        return res?.ok ? res.data.documents : [];
-    },
-
-    async getSignedUrl(id) {
-        const res = await get(`/documents/${id}/url`);
-        return res?.ok ? res.data.url : null;
-    },
-
-    async remove(id) {
-        return del(`/documents/${id}`);
-    },
-};
-
-// ─── Fees ─────────────────────────────────────────────────────────────────────
-var FeeStore = {
-    _cache: null,
-    _cacheTime: 0,
-    _TTL: 30 * 1000, // 30 seconds — short enough to reflect admin changes quickly
-
-    async getAll() {
-        const now = Date.now();
-        if (this._cache && (now - this._cacheTime) < this._TTL) return this._cache;
-        const res = await get('/fees');
-        if (res?.ok) {
-            this._cache = res.data;
-            this._cacheTime = now;
-            return res.data;
-        }
-        return { serviceFee: 25000, destinations: {} };
-    },
-
-    async setServiceFee(amount) {
-        this._cache = null;
-        this._cacheTime = 0;
-        return put('/fees/service', { amount: Number(amount) });
-    },
-
-    async setDestinationFee(country, amount) {
-        this._cache = null;
-        this._cacheTime = 0;
-        return put(`/fees/${encodeURIComponent(country)}`, { amount: Number(amount) });
-    },
-
-    async resetDestinationFee(country) {
-        this._cache = null;
-        this._cacheTime = 0;
-        return del(`/fees/${encodeURIComponent(country)}`);
-    },
-    async toggleCountry(country) {
-        this._cacheTime = 0;
-        return patch(`/fees/${encodeURIComponent(country)}/toggle`);
-    },
-};
-
-// ─── Payments ─────────────────────────────────────────────────────────────────
-var PaymentStore = {
-    async initiate(type, ref, amount, email, metadata) {
-        const body = { type, amount: Number(amount), email, metadata };
-        if (ref) body.ref = ref; // omit if null/undefined — backend zod rejects null
-        return post('/payments/initiate', body);
-    },
-
-    async verify(reference) {
-        return get(`/payments/${reference}/verify`);
-    },
-
-    async list() {
-        const res = await get('/payments');
-        return res?.ok ? res.data.payments : [];
-    },
-};
-
-// ─── Insurance ────────────────────────────────────────────────────────────────
-var InsuranceStore = {
-    async getAll() {
-        const res = await get('/insurance');
-        return res?.ok ? res.data.policies : [];
-    },
-};
-
-// ─── Admin ────────────────────────────────────────────────────────────────────
-var AdminStore = {
-    async getByRef(ref) {
-        const res = await get(`/admin/applications/${ref}`);
-        return res?.ok ? res.data.application : null;
-    },
-
-    async getUsers() {
-        const res = await get('/admin/users?limit=100');
-        return res?.ok ? res.data.users : [];
-    },
-
-    async updateRole(id, role) {
-        return patch(`/admin/users/${id}/role`, { role: role.toUpperCase() });
-    },
-
-    async deleteUser(id) {
-        return del(`/admin/users/${id}`);
-    },
-
-    async getDocuments(ref) {
-        const path = ref ? `/admin/documents?ref=${ref}` : '/admin/documents';
-        const res = await get(path);
-        return res?.ok ? res.data.documents : [];
-    },
-};
-
-// ─── Logout helper ────────────────────────────────────────────────────────────
-async function doLogout() {
-    await Auth.logout();
-    window.location.href = 'index.html';
+    if (list) list.innerHTML = (data.docs || []).map(r => `<li>${r}</li>`).join("");
+    result?.classList.add("visible");
+    result?.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
 
-// ─── PricingStore ─────────────────────────────────────────────────────────────
-var PricingStore = {
-    async get() {
-        const res = await get('/pricing');
-        return res?.ok ? res.data.pricing : null;
-    },
-    async update(data) {
-        return patch('/pricing', data);
-    },
-};
+// Quick search bar (top of page) — syncs chosen destination into the checker widget
+function quickSearch() {
+    const dest = getSelectValue("s-to");
+    if (!dest) { showToast("Please select a destination.", "error"); return; }
+
+    // Always store in sessionStorage so apply.html can read it
+    try { sessionStorage.setItem("jkf_hero_dest", dest); } catch (e) { }
+
+    // If we are on the index page, also scroll to the checker and populate it
+    const checkerSection = document.getElementById("visa");
+    if (checkerSection) {
+        checkerSection.scrollIntoView({ behavior: "smooth" });
+        setTimeout(() => {
+            const cToWrapper = document.querySelector('[data-select-id="c-to"]');
+            if (cToWrapper) {
+                const opt = cToWrapper.querySelector(`[data-value="${dest}"]`);
+                if (opt) { opt.click(); showRequirements(); return; }
+            }
+            const cTo = document.getElementById("c-to");
+            if (cTo) { cTo.value = dest; cTo.dispatchEvent(new Event("change", { bubbles: true })); }
+            showRequirements();
+        }, 500);
+    } else {
+        window.location.href = `index.html?dest=${encodeURIComponent(dest)}`;
+    }
+}
+
+// Navigate to apply.html with destination pre-filled (via URL param + sessionStorage)
+function applyWithDest(dest) {
+    const d = dest || getSelectValue("s-to") || getSelectValue("c-to") || "";
+    try { if (d) sessionStorage.setItem("jkf_hero_dest", d); } catch (e) { }
+    window.location.href = d ? `apply.html?dest=${encodeURIComponent(d)}` : "apply.html";
+}
+
+// Destination card click — scroll to checker and pre-fill
+function selectDest(country) {
+    const checker = document.getElementById("visa");
+    if (checker) {
+        checker.scrollIntoView({ behavior: "smooth" });
+        setTimeout(() => {
+            const wrapper = document.querySelector('[data-select-id="c-to"]');
+            if (wrapper) {
+                const opt = wrapper.querySelector(`[data-value="${country}"]`);
+                if (opt) { opt.click(); showRequirements(); return; }
+            }
+            const select = document.getElementById("c-to");
+            if (select) {
+                select.value = country;
+                select.dispatchEvent(new Event("change", { bubbles: true }));
+            }
+            showRequirements();
+        }, 600);
+    }
+}
+
+// ============================================================
+// NAV SCROLL EFFECT
+// ============================================================
+
+window.addEventListener("scroll", () => {
+    const nav = document.querySelector("nav");
+    if (!nav) return;
+    nav.style.boxShadow = window.scrollY > 20 ? "0 2px 20px rgba(14,14,184,0.08)" : "none";
+});
+
+// ============================================================
+// INIT (single DOMContentLoaded)
+// ============================================================
+
+document.addEventListener("DOMContentLoaded", async () => {
+    // Always build dropdowns immediately — don't wait for auth
+    makeSearchableSelect("c-to", "— Select Destination —");
+    makeSearchableSelect("s-to", "Select Destination");
+    makeSearchableSelect("c-from", "— Select Nationality —", nationalityList);
+    makeSearchableSelect("s-from", "— Nationality —", nationalityList);
+
+
+    // Fetch live pricing config and apply to UI
+    PricingStore.get().then(p => {
+        if (!p) return;
+        window._livePricing = p;
+        applyConsultPricing(p);
+        applyInsPricing(p);
+    }).catch(() => { });
+
+    // Re-fetch pricing when user returns to tab (picks up admin changes)
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible' && typeof PricingStore !== 'undefined') {
+            PricingStore.get().then(p => {
+                if (!p) return;
+                window._livePricing = p;
+                if (typeof applyConsultPricing === 'function') applyConsultPricing(p);
+                if (typeof applyInsPricing === 'function') applyInsPricing(p);
+            }).catch(() => { });
+        }
+    });
+
+    // Auth init in background — updates nav when ready
+    Auth.init().then(() => updateNav()).catch(() => updateNav());
+
+    // Wire auth buttons
+
+    // Wire insurance modal
+    document.getElementById("btn-insurance-modal")?.addEventListener("click", handleInsuranceModal);
+
+    // Wire tracker
+    document.getElementById("btn-track")?.addEventListener("click", handleTrackModal);
+    document.getElementById("track-ref")?.addEventListener("keydown", e => {
+        if (e.key === "Enter") handleTrackModal();
+    });
+
+    // Wire visa checker button
+    document.getElementById("btn-check-req")?.addEventListener("click", showRequirements);
+
+    // Wire quick search button
+    document.getElementById("btn-quick-search")?.addEventListener("click", quickSearch);
+
+    // ESC closes modal
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+});
+
+/* =========================================================
+Return Redirect Helper
+========================================================= */
+(function () {
+    function getQS() {
+        try { return new URLSearchParams(window.location.search); } catch { return null; }
+    }
+    window.JKF_afterLoginRedirect = function () {
+        const qs = getQS();
+        if (!qs) return false;
+        const ret = qs.get("return");
+        if (ret) { window.location.href = decodeURIComponent(ret); return true; }
+        return false;
+    };
+})();
