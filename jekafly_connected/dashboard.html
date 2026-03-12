@@ -331,13 +331,89 @@
                     </div>
                     <div class="profile-card">
                         <h3>Change Password</h3>
-                        <div class="form-row">
-                            <div class="form-group"><label>Current Password</label><input type="password"
-                                    id="p-old-pass" placeholder="••••••••" /></div>
-                            <div class="form-group"><label>New Password</label><input type="password" id="p-new-pass"
-                                    placeholder="Min. 8 characters" /></div>
+
+                        <!-- Step 1: Request OTP -->
+                        <div id="pwd-step-1">
+                            <p style="font-size:0.85rem;color:#6b7280;margin-bottom:14px;">We'll send a 6-digit OTP to
+                                your email to verify this change.</p>
+                            <button class="btn-save" id="btn-send-otp" onclick="requestPwdOtp()">Send OTP to My
+                                Email</button>
                         </div>
-                        <button class="btn-save" onclick="changePassword()">Update Password</button>
+
+                        <!-- Step 2: Enter OTP + new passwords -->
+                        <div id="pwd-step-2" style="display:none;">
+                            <p style="font-size:0.82rem;color:#16a34a;margin-bottom:14px;font-weight:600;">✅ OTP sent!
+                                Check your email.</p>
+
+                            <div class="form-group" style="margin-bottom:12px;">
+                                <label>OTP Code</label>
+                                <div style="display:flex;gap:8px;">
+                                    <input type="text" id="p-otp" placeholder="6-digit code" maxlength="6"
+                                        style="letter-spacing:.2em;font-size:1.1rem;font-weight:700;text-align:center;flex:1;" />
+                                    <button onclick="requestPwdOtp()"
+                                        style="background:none;border:1.5px solid #e0e4ef;border-radius:8px;padding:0 12px;font-size:0.78rem;font-weight:600;color:#0D1560;cursor:pointer;white-space:nowrap;"
+                                        id="btn-resend-otp">Resend</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom:12px;">
+                                <label>Current Password</label>
+                                <div style="position:relative;">
+                                    <input type="password" id="p-old-pass" placeholder="••••••••"
+                                        style="width:100%;padding-right:42px;" />
+                                    <button type="button" onclick="togglePwd('p-old-pass','eye-old')"
+                                        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;"
+                                        id="eye-old">👁</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom:6px;">
+                                <label>New Password</label>
+                                <div style="position:relative;">
+                                    <input type="password" id="p-new-pass" placeholder="Min. 8 characters"
+                                        oninput="checkStrength(this.value)" style="width:100%;padding-right:42px;" />
+                                    <button type="button" onclick="togglePwd('p-new-pass','eye-new')"
+                                        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;"
+                                        id="eye-new">👁</button>
+                                </div>
+                            </div>
+
+                            <!-- Strength indicator -->
+                            <div style="margin-bottom:14px;">
+                                <div style="display:flex;gap:4px;margin-bottom:4px;">
+                                    <div id="str-bar-1"
+                                        style="height:4px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .3s;">
+                                    </div>
+                                    <div id="str-bar-2"
+                                        style="height:4px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .3s;">
+                                    </div>
+                                    <div id="str-bar-3"
+                                        style="height:4px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .3s;">
+                                    </div>
+                                    <div id="str-bar-4"
+                                        style="height:4px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .3s;">
+                                    </div>
+                                </div>
+                                <div id="str-label" style="font-size:0.75rem;color:#9ca3af;"></div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom:14px;">
+                                <label>Confirm New Password</label>
+                                <div style="position:relative;">
+                                    <input type="password" id="p-confirm-pass" placeholder="Re-enter new password"
+                                        style="width:100%;padding-right:42px;" />
+                                    <button type="button" onclick="togglePwd('p-confirm-pass','eye-confirm')"
+                                        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;"
+                                        id="eye-confirm">👁</button>
+                                </div>
+                            </div>
+
+                            <div style="display:flex;gap:10px;">
+                                <button class="btn-save" onclick="changePassword()">Update Password</button>
+                                <button onclick="resetPwdForm()"
+                                    style="background:none;border:1.5px solid #e0e4ef;border-radius:8px;padding:8px 16px;font-size:0.85rem;font-weight:600;color:#6b7280;cursor:pointer;">Cancel</button>
+                            </div>
+                        </div>
                     </div>
                     <div class="profile-card profile-card-danger">
                         <h3 class="danger-heading">Danger Zone</h3>
@@ -997,18 +1073,64 @@
             showToast('Profile updated successfully! ✅');
         }
 
+        function togglePwd(inputId, btnId) {
+            const inp = document.getElementById(inputId);
+            const btn = document.getElementById(btnId);
+            if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
+            else { inp.type = 'password'; btn.textContent = '👁'; }
+        }
+
+        function checkStrength(val) {
+            let score = 0;
+            if (val.length >= 8) score++;
+            if (val.length >= 12) score++;
+            if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+            // Cap at 4
+            score = Math.min(score, 4);
+            const colors = ['', '#ef4444', '#f97316', '#eab308', '#16a34a'];
+            const labels = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('str-bar-' + i).style.background = i <= score ? colors[score] : '#e5e7eb';
+            }
+            document.getElementById('str-label').textContent = val.length > 0 ? labels[score] || '' : '';
+            document.getElementById('str-label').style.color = colors[score] || '#9ca3af';
+        }
+
+        function resetPwdForm() {
+            document.getElementById('pwd-step-1').style.display = 'block';
+            document.getElementById('pwd-step-2').style.display = 'none';
+            ['p-old-pass', 'p-new-pass', 'p-confirm-pass', 'p-otp'].forEach(id => {
+                const el = document.getElementById(id); if (el) el.value = '';
+            });
+            checkStrength('');
+        }
+
+        async function requestPwdOtp() {
+            const btn = document.getElementById('btn-send-otp') || document.getElementById('btn-resend-otp');
+            if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+            const res = await Auth.requestPasswordOtp();
+            if (btn) { btn.disabled = false; btn.textContent = btn.id === 'btn-send-otp' ? 'Send OTP to My Email' : 'Resend'; }
+            if (!res?.ok) { showToast(res?.error || 'Failed to send OTP.', 'error'); return; }
+            document.getElementById('pwd-step-1').style.display = 'none';
+            document.getElementById('pwd-step-2').style.display = 'block';
+            showToast('OTP sent to your email 📧');
+        }
+
         async function changePassword() {
+            const otp = document.getElementById('p-otp').value.trim();
             const oldPass = document.getElementById('p-old-pass').value;
             const newPass = document.getElementById('p-new-pass').value;
-            if (!oldPass || !newPass) { showToast('Please fill in both password fields.', 'error'); return; }
-            if (oldPass !== currentUser.password) { showToast('Current password is incorrect.', 'error'); return; }
+            const confirmPass = document.getElementById('p-confirm-pass').value;
+            if (!otp || otp.length !== 6) { showToast('Please enter the 6-digit OTP.', 'error'); return; }
+            if (!oldPass) { showToast('Please enter your current password.', 'error'); return; }
             if (newPass.length < 8) { showToast('New password must be at least 8 characters.', 'error'); return; }
-            const res = await Auth.changePassword(cur, newPass);
+            if (newPass !== confirmPass) { showToast('New passwords do not match.', 'error'); return; }
+            const res = await Auth.changePassword(oldPass, newPass, otp);
             if (!res?.ok) { showToast(res?.error || 'Password update failed.', 'error'); return; }
-            showToast('Password updated. Please log in again.');
-            setTimeout(() => doLogout(), 1500);
-            document.getElementById('p-old-pass').value = ''; document.getElementById('p-new-pass').value = '';
-            showToast('Password updated successfully! 🔒');
+            showToast('Password updated successfully! 🔒 Logging you out...');
+            setTimeout(() => doLogout(), 1800);
         }
 
         async function doLogout() { await Auth.logout(); showToast('Logged out successfully.'); setTimeout(() => window.location.href = 'index.html', 800); }

@@ -95,8 +95,12 @@ var Auth = {
     return res;
   },
 
-  async changePassword(currentPassword, newPassword) {
-    return post('/auth/change-password', { currentPassword, newPassword });
+  async requestPasswordOtp() {
+    return post('/auth/request-password-otp', {});
+  },
+
+  async changePassword(currentPassword, newPassword, otp) {
+    return post('/auth/change-password', { currentPassword, newPassword, otp });
   },
 
   // Restore access token on page load by calling /auth/me
