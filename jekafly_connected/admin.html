@@ -984,6 +984,7 @@
                 docList.innerHTML = '<em style="color:#9BA5C0;">No documents uploaded yet.</em>';
             } else {
                 _currentAppDocs = docs;
+                docs.forEach(d => { _docNameMap[d.id] = d.name || 'document'; });
                 zipBtn.style.display = 'inline-block';
                 docList.innerHTML = docs.map(d => `
                     <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#F7F8FC;border-radius:8px;margin-bottom:6px;">
@@ -993,7 +994,7 @@
                             <div style="font-size:0.75rem;color:#9BA5C0;">${(d.size / 1024).toFixed(1)} KB · ${new Date(d.uploadedAt).toLocaleDateString('en-NG')}</div>
                         </div>
                         <div style="display:flex;gap:6px;">
-                            <button onclick=\"adminViewDoc('${d.id}', '\${escHtml(d.name)}')\"
+                            <button onclick=\"adminViewDoc('${d.id}')\"
                                style="padding:5px 10px;background:#0E0EB8;color:#fff;border-radius:6px;font-size:0.78rem;font-weight:600;border:none;cursor:pointer;white-space:nowrap;">
                                 👁 View
                             </button>
@@ -1231,6 +1232,7 @@
 
         // ── Document helpers ─────────────────────────────────────────────────────────
         const _docUrlMap = {};
+        const _docNameMap = {};
         let _currentAppDocs = []; // docs loaded for the open application
 
         async function adminGetDocUrl(id) {
@@ -1243,14 +1245,15 @@
 
         let _adminPreviewUrl = null, _adminPreviewName = '';
 
-        async function adminViewDoc(id, name) {
+        async function adminViewDoc(id) {
+            const name = _docNameMap[id] || 'document';
             const modal = document.getElementById('admin-preview-modal');
             const body = document.getElementById('admin-preview-body');
             const label = document.getElementById('admin-preview-name');
             modal.style.display = 'flex';
             body.innerHTML = '<div style="color:#9BA5C0;padding:40px;">Loading...</div>';
-            label.textContent = name || 'Document';
-            _adminPreviewName = name || 'document';
+            label.textContent = name;
+            _adminPreviewName = name;
 
             const url = await adminGetDocUrl(id);
             if (!url) {
@@ -1262,9 +1265,9 @@
             // Detect type from name
             const ext = (name || '').split('.').pop().toLowerCase();
             if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
-                body.innerHTML = `<img src="${url}" style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:8px;display:block;" />`;
+                body.style.alignItems = 'center'; body.innerHTML = `<img src="${url}" style="max-width:100%;height:auto;display:block;padding:20px;box-sizing:border-box;" />`;
             } else {
-                body.innerHTML = `<iframe src="${url}" style="width:100%;height:100%;border:none;display:block;" allowfullscreen></iframe>`;
+                body.style.alignItems = 'flex-start'; body.innerHTML = `<iframe src="${url}" style="width:100%;height:100%;min-height:calc(90vh - 56px);border:none;display:block;" allowfullscreen></iframe>`;
             }
         }
 
@@ -1438,15 +1441,70 @@
     </script>
 
     <!-- ── Document Preview Modal ──────────────────────────────────────── -->
-    <div id="admin-preview-modal" onclick="closeAdminPreview(event)"
-        style="display:none;position:fixed;inset:0;background:rgba(10,31,68,0.7);z-index:9999;align-items:center;justify-content:center;padding:20px;">
-        <div
-            style="background:#fff;border-radius:16px;width:100%;max-width:860px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
-            <div
-                style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #eef0f6;flex-shrink:0;">
-                <div style="font-weight:700;color:#0a1f44;font-size:0.95rem;" id="admin-preview-name">Document</div>
-                <div style="display:flex;gap:8px;align-items:center;">
-                    <button id="admin-preview-dl" onclick="adminPreviewDownload()"
+    <style>
+        #admin-preview-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 31, 68, 0.75);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        #admin-preview-box {
+            background: #fff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 900px;
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.35);
+        }
+
+        #admin-preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-bottom: 1px solid #eef0f6;
+            flex-shrink: 0;
+            height: 56px;
+        }
+
+        #admin-preview-body {
+            flex: 1;
+            overflow: auto;
+            background: #f0f2f7;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        #admin-preview-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        #admin-preview-body img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
+    </style>
+    <div id="admin-preview-modal" onclick="closeAdminPreview(event)">
+        <div id="admin-preview-box">
+            <div id="admin-preview-header">
+                <div style="font-weight:700;color:#0a1f44;font-size:0.95rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;margin-right:12px;"
+                    id="admin-preview-name">Document</div>
+                <div style="display:flex;gap:8px;flex-shrink:0;">
+                    <button onclick="adminPreviewDownload()"
                         style="background:#16a34a;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:0.82rem;font-weight:600;cursor:pointer;">⬇
                         Download</button>
                     <button onclick="closeAdminPreviewDirect()"
@@ -1454,9 +1512,8 @@
                         Close</button>
                 </div>
             </div>
-            <div id="admin-preview-body"
-                style="flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;background:#f8f9fb;height:calc(90vh - 60px);max-height:calc(90vh - 60px);">
-                <div style="color:#9BA5C0;">Loading...</div>
+            <div id="admin-preview-body">
+                <div style="color:#9BA5C0;padding:40px;">Loading...</div>
             </div>
         </div>
     </div>
