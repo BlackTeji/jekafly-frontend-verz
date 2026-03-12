@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/payment.css">
     <link rel="stylesheet" href="assets/css/hero-animation.css">
+    <script src="https://js.paystack.co/v1/inline.js"></script>
 </head>
 
 <body>
@@ -321,13 +322,51 @@
                     { destination: pendingPayment.destination, plan: pendingPayment.plan }
                 );
 
-                if (res?.ok && res.data?.authorizationUrl) {
-                    // Redirect to Paystack payment page
-                    localStorage.removeItem('jkf_pending_payment');
-                    window.location.href = res.data.authorizationUrl;
-                } else {
-                    throw new Error(res?.error || 'Payment initiation failed.');
-                }
+                if (!res?.ok) throw new Error(res?.error || 'Payment initiation failed.');
+
+                const { accessCode, reference, publicKey } = res.data;
+
+                // Hide processing, launch Paystack inline popup
+                document.getElementById('pay-processing').classList.remove('show');
+
+                const handler = PaystackPop.setup({
+                    key: publicKey,
+                    email: pendingPayment.email || user.email,
+                    amount: amountKobo,
+                    access_code: accessCode,
+                    ref: reference,
+                    onClose: function () {
+                        // User closed popup without paying
+                        document.getElementById('pay-form-view').style.display = 'block';
+                        showToast('Payment cancelled.', 'error');
+                    },
+                    callback: async function (response) {
+                        // Payment done — verify on backend
+                        document.getElementById('pay-form-view').style.display = 'none';
+                        document.getElementById('pay-processing').classList.add('show');
+                        localStorage.removeItem('jkf_pending_payment');
+                        const verify = await PaymentStore.verify(response.reference || reference);
+                        document.getElementById('pay-processing').classList.remove('show');
+
+                        if (verify?.ok && verify.data?.status === 'success') {
+                            const receipt = verify.data;
+                            const now = new Date().toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
+                            document.getElementById('receipt-box').innerHTML = `
+    <div class="receipt-row"><span class="rl">Transaction ID</span><span class="rv receipt-tx">${response.reference || reference}</span></div>
+    <div class="receipt-row"><span class="rl">Date & Time</span><span class="rv">${now}</span></div>
+    ${receipt.ref ? `<div class="receipt-row"><span class="rl">Application Ref</span><span class="rv receipt-tx">${receipt.ref}</span></div>` : ''}
+    <div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv receipt-amount">₦${(receipt.amount || 0).toLocaleString()}</span></div>
+    <div class="receipt-row"><span class="rl">Status</span><span class="rv receipt-status-ok">✅ Confirmed</span></div>`;
+                            document.getElementById('pay-success-overlay').classList.add('show');
+                            document.body.classList.add('modal-open');
+                        } else {
+                            document.getElementById('pay-form-view').style.display = 'block';
+                            showToast('Payment could not be verified. Contact support.', 'error');
+                        }
+                    }
+                });
+                handler.openIframe();
+
             } catch (err) {
                 document.getElementById('pay-processing').classList.remove('show');
                 document.getElementById('pay-form-view').style.display = 'block';
