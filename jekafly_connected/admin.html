@@ -993,7 +993,7 @@
                             <div style="font-size:0.75rem;color:#9BA5C0;">${(d.size / 1024).toFixed(1)} KB · ${new Date(d.uploadedAt).toLocaleDateString('en-NG')}</div>
                         </div>
                         <div style="display:flex;gap:6px;">
-                            <button onclick="adminViewDoc('${d.id}')"
+                            <button onclick=\"adminViewDoc('${d.id}', '\${escHtml(d.name)}')\"
                                style="padding:5px 10px;background:#0E0EB8;color:#fff;border-radius:6px;font-size:0.78rem;font-weight:600;border:none;cursor:pointer;white-space:nowrap;">
                                 👁 View
                             </button>
@@ -1241,11 +1241,48 @@
             return _docUrlMap[id] || null;
         }
 
-        async function adminViewDoc(id) {
-            showToast('Opening document...');
+        let _adminPreviewUrl = null, _adminPreviewName = '';
+
+        async function adminViewDoc(id, name) {
+            const modal = document.getElementById('admin-preview-modal');
+            const body = document.getElementById('admin-preview-body');
+            const label = document.getElementById('admin-preview-name');
+            modal.style.display = 'flex';
+            body.innerHTML = '<div style="color:#9BA5C0;padding:40px;">Loading...</div>';
+            label.textContent = name || 'Document';
+            _adminPreviewName = name || 'document';
+
             const url = await adminGetDocUrl(id);
-            if (!url) { showToast('Could not load document.', 'error'); return; }
-            window.open(url, '_blank');
+            if (!url) {
+                body.innerHTML = '<div style="color:#e8613a;padding:40px;">Could not load document.</div>';
+                return;
+            }
+            _adminPreviewUrl = url;
+
+            // Detect type from name
+            const ext = (name || '').split('.').pop().toLowerCase();
+            if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
+                body.innerHTML = `<img src="${url}" style="max-width:100%;max-height:75vh;object-fit:contain;border-radius:8px;" />`;
+            } else {
+                body.innerHTML = `<iframe src="${url}" style="width:100%;height:75vh;border:none;" allowfullscreen></iframe>`;
+            }
+        }
+
+        function adminPreviewDownload() {
+            if (!_adminPreviewUrl) return;
+            const a = document.createElement('a');
+            a.href = _adminPreviewUrl;
+            a.download = _adminPreviewName;
+            a.click();
+        }
+
+        function closeAdminPreview(e) {
+            if (e.target === document.getElementById('admin-preview-modal')) closeAdminPreviewDirect();
+        }
+        function closeAdminPreviewDirect() {
+            document.getElementById('admin-preview-modal').style.display = 'none';
+            document.getElementById('admin-preview-body').innerHTML = '';
+            _adminPreviewUrl = null;
         }
 
         async function adminDownloadDoc(id, name) {
@@ -1399,6 +1436,30 @@
             if (nav) nav.style.boxShadow = scrollY > 20 ? '0 2px 20px rgba(14,14,184,.08)' : 'none';
         });
     </script>
+
+    <!-- ── Document Preview Modal ──────────────────────────────────────── -->
+    <div id="admin-preview-modal" onclick="closeAdminPreview(event)"
+        style="display:none;position:fixed;inset:0;background:rgba(10,31,68,0.7);z-index:9999;align-items:center;justify-content:center;padding:20px;">
+        <div
+            style="background:#fff;border-radius:16px;width:100%;max-width:860px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);">
+            <div
+                style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid #eef0f6;flex-shrink:0;">
+                <div style="font-weight:700;color:#0a1f44;font-size:0.95rem;" id="admin-preview-name">Document</div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <button id="admin-preview-dl" onclick="adminPreviewDownload()"
+                        style="background:#16a34a;color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:0.82rem;font-weight:600;cursor:pointer;">⬇
+                        Download</button>
+                    <button onclick="closeAdminPreviewDirect()"
+                        style="background:#f4f6fb;border:none;border-radius:8px;padding:7px 14px;font-size:0.82rem;font-weight:600;cursor:pointer;color:#0a1f44;">✕
+                        Close</button>
+                </div>
+            </div>
+            <div id="admin-preview-body"
+                style="flex:1;overflow:auto;display:flex;align-items:center;justify-content:center;background:#f8f9fb;min-height:400px;">
+                <div style="color:#9BA5C0;">Loading...</div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
