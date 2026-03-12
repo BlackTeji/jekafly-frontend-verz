@@ -1006,6 +1006,7 @@
                     passportIssueDate: draft?.personal?.passportIssueDate || '',
                     passportExpiry: draft?.personal?.passportExpiry || '',
                     travellers: travellers,
+                    fee: window._computedTotal || (feeMap[appData.destination] || 120000) + JEKAFLY_SERVICE_FEE,
                 };
                 const result = await AppStore.create(appData);
                 if (result?.ref) {
