@@ -305,6 +305,30 @@
             return true;
         }
 
+        async function handlePaystackCallback(ref) {
+            document.getElementById('pay-form-view').style.display = 'none';
+            document.getElementById('pay-processing').classList.add('show');
+            localStorage.removeItem('jkf_pending_payment');
+            const verify = await PaymentStore.verify(ref);
+            document.getElementById('pay-processing').classList.remove('show');
+
+            if (verify?.ok && verify.data?.status === 'success') {
+                const receipt = verify.data;
+                const now = new Date().toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
+                document.getElementById('receipt-box').innerHTML = `
+    <div class="receipt-row"><span class="rl">Transaction ID</span><span class="rv receipt-tx">${ref}</span></div>
+    <div class="receipt-row"><span class="rl">Date & Time</span><span class="rv">${now}</span></div>
+    ${receipt.ref ? `<div class="receipt-row"><span class="rl">Application Ref</span><span class="rv receipt-tx">${receipt.ref}</span></div>` : ''}
+    <div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv receipt-amount">₦${(receipt.amount || 0).toLocaleString()}</span></div>
+    <div class="receipt-row"><span class="rl">Status</span><span class="rv receipt-status-ok">✅ Confirmed</span></div>`;
+                document.getElementById('pay-success-overlay').classList.add('show');
+                document.body.classList.add('modal-open');
+            } else {
+                document.getElementById('pay-form-view').style.display = 'block';
+                showToast('Payment could not be verified. Contact support.', 'error');
+            }
+        }
+
         async function processPayment() {
             if (!validateCardForm()) return;
 
@@ -336,33 +360,11 @@
                     access_code: accessCode,
                     ref: reference,
                     onClose: function () {
-                        // User closed popup without paying
                         document.getElementById('pay-form-view').style.display = 'block';
                         showToast('Payment cancelled.', 'error');
                     },
-                    callback: async function (response) {
-                        // Payment done — verify on backend
-                        document.getElementById('pay-form-view').style.display = 'none';
-                        document.getElementById('pay-processing').classList.add('show');
-                        localStorage.removeItem('jkf_pending_payment');
-                        const verify = await PaymentStore.verify(response.reference || reference);
-                        document.getElementById('pay-processing').classList.remove('show');
-
-                        if (verify?.ok && verify.data?.status === 'success') {
-                            const receipt = verify.data;
-                            const now = new Date().toLocaleString('en-NG', { dateStyle: 'medium', timeStyle: 'short' });
-                            document.getElementById('receipt-box').innerHTML = `
-    <div class="receipt-row"><span class="rl">Transaction ID</span><span class="rv receipt-tx">${response.reference || reference}</span></div>
-    <div class="receipt-row"><span class="rl">Date & Time</span><span class="rv">${now}</span></div>
-    ${receipt.ref ? `<div class="receipt-row"><span class="rl">Application Ref</span><span class="rv receipt-tx">${receipt.ref}</span></div>` : ''}
-    <div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv receipt-amount">₦${(receipt.amount || 0).toLocaleString()}</span></div>
-    <div class="receipt-row"><span class="rl">Status</span><span class="rv receipt-status-ok">✅ Confirmed</span></div>`;
-                            document.getElementById('pay-success-overlay').classList.add('show');
-                            document.body.classList.add('modal-open');
-                        } else {
-                            document.getElementById('pay-form-view').style.display = 'block';
-                            showToast('Payment could not be verified. Contact support.', 'error');
-                        }
+                    callback: function (response) {
+                        handlePaystackCallback(response.reference || reference);
                     }
                 });
                 handler.openIframe();
