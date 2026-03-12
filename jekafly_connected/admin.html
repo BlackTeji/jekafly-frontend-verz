@@ -230,6 +230,8 @@
             position: relative;
         }
 
+        .rev-card-left {}
+
         .rev-card-eyebrow {
             font-size: 0.68rem;
             font-weight: 700;
@@ -889,6 +891,36 @@
                     </div>
                 </div>
 
+                <!-- Delete User Confirmation Modal -->
+                <div id="delete-user-overlay"
+                    style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,31,68,0.7);align-items:center;justify-content:center;padding:24px;">
+                    <div
+                        style="background:#fff;border-radius:20px;padding:36px 32px;max-width:420px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.2);animation:popIn .3s cubic-bezier(.34,1.56,.64,1);">
+                        <div
+                            style="width:56px;height:56px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 16px;">
+                            🗑️</div>
+                        <h3
+                            style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#0a1f44;text-align:center;margin-bottom:8px;">
+                            Delete User Account?</h3>
+                        <p style="font-size:0.85rem;color:#6b7280;text-align:center;line-height:1.6;margin-bottom:8px;">
+                            This will <strong>anonymise</strong> <span id="del-user-name"
+                                style="color:#0a1f44;font-weight:700;"></span>'s personal data and archive their
+                            applications. This cannot be undone.
+                        </p>
+                        <div
+                            style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:10px 14px;font-size:0.8rem;color:#991b1b;margin-bottom:20px;text-align:center;">
+                            ⚠️ Their name, email and phone will be permanently wiped.
+                        </div>
+                        <div style="display:flex;gap:10px;">
+                            <button onclick="confirmDeleteUser()"
+                                style="flex:1;background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.9rem;font-weight:700;cursor:pointer;"
+                                id="btn-confirm-del-user">Delete Account</button>
+                            <button onclick="closeDeleteUserModal()"
+                                style="flex:1;background:none;border:1.5px solid #e0e4ef;border-radius:10px;padding:12px;font-size:0.9rem;font-weight:600;color:#6b7280;cursor:pointer;">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- ── FEES ──────────────────────────────── -->
                 <div id="tab-fees" style="display:none">
                     <div class="admin-title">Manage Fees</div>
@@ -1220,22 +1252,52 @@
             renderFiltered();
         }
 
+        let _pendingDeleteUserId = null;
+
         async function loadUsers() {
             const users = await AdminStore.getUsers();
             document.getElementById('user-count-sub').textContent = users.length + ' registered users on Jekafly.';
+            const currentUser = Auth.getCurrent();
             document.getElementById('users-table').innerHTML = `<table>
-        <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Joined</th><th>Apps</th></tr></thead>
+        <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Joined</th><th>Apps</th><th></th></tr></thead>
         <tbody>${users.map(u => {
                 const n = u.applicationCount || 0;
+                const isSelf = u.id === currentUser?.id;
                 return `<tr>
-                <td><span class="cell-mono" style="font-size:.72rem">${u.id}</span></td>
-                <td><strong>${u.name}</strong></td><td>${u.email}</td><td>${u.phone || '—'}</td>
-                <td><span class="status-pill ${u.role === 'admin' ? 'status-embassy' : 'status-received'}">${u.role || 'user'}</span></td>
+                <td><strong>${escHtml(u.name)}</strong></td>
+                <td>${escHtml(u.email)}</td>
+                <td>${u.phone ? escHtml(u.phone) : '—'}</td>
+                <td><span class="status-pill ${u.role === 'ADMIN' ? 'status-embassy' : 'status-received'}">${u.role?.toLowerCase() || 'user'}</span></td>
                 <td class="cell-date">${new Date(u.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
                 <td><strong>${n}</strong></td>
+                <td>${isSelf ? '' : `<button onclick="openDeleteUserModal('${u.id}','${escHtml(u.name).replace(/'/g, '\'')}')" style="background:#fef2f2;border:1.5px solid #fecaca;color:#dc2626;border-radius:7px;padding:4px 10px;font-size:0.75rem;font-weight:700;cursor:pointer;" title="Delete user">🗑 Delete</button>`}</td>
             </tr>`;
             }).join('')}</tbody>
     </table>`;
+        }
+
+        function openDeleteUserModal(id, name) {
+            _pendingDeleteUserId = id;
+            document.getElementById('del-user-name').textContent = name;
+            const ov = document.getElementById('delete-user-overlay');
+            ov.style.display = 'flex';
+        }
+
+        function closeDeleteUserModal() {
+            _pendingDeleteUserId = null;
+            document.getElementById('delete-user-overlay').style.display = 'none';
+        }
+
+        async function confirmDeleteUser() {
+            if (!_pendingDeleteUserId) return;
+            const btn = document.getElementById('btn-confirm-del-user');
+            btn.disabled = true; btn.textContent = 'Deleting...';
+            const res = await AdminStore.deleteUser(_pendingDeleteUserId);
+            btn.disabled = false; btn.textContent = 'Delete Account';
+            if (!res?.ok) { showToast(res?.error || 'Delete failed.', 'error'); return; }
+            closeDeleteUserModal();
+            showToast('User deleted and data archived. ✓');
+            loadUsers();
         }
 
         function doLogout() { Auth.logout(); showToast('Logged out.'); setTimeout(() => location.href = 'index.html', 700); }

@@ -417,8 +417,61 @@
                     </div>
                     <div class="profile-card profile-card-danger">
                         <h3 class="danger-heading">Danger Zone</h3>
-                        <p class="danger-sub">Logging out will end your current session.</p>
-                        <button onclick="doLogout()" class="btn-danger">Logout of Jekafly</button>
+
+                        <div style="margin-bottom:18px;">
+                            <p class="danger-sub" style="margin-bottom:10px;">Logging out will end your current session.
+                            </p>
+                            <button onclick="doLogout()" class="btn-danger">Logout of Jekafly</button>
+                        </div>
+
+                        <div style="border-top:1px solid #fecaca;padding-top:18px;">
+                            <p style="font-size:0.85rem;font-weight:700;color:#991b1b;margin-bottom:4px;">Delete Account
+                            </p>
+                            <p class="danger-sub" style="margin-bottom:12px;">Permanently delete your account and wipe
+                                your personal data. Your application history will be archived for compliance.</p>
+                            <button onclick="openDeleteAccountModal()" class="btn-danger"
+                                style="background:transparent;border:2px solid #dc2626;color:#dc2626;">🗑 Delete My
+                                Account</button>
+                        </div>
+                    </div>
+
+                    <!-- Delete Account Modal -->
+                    <div id="delete-account-overlay"
+                        style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(10,31,68,0.75);align-items:center;justify-content:center;padding:24px;">
+                        <div
+                            style="background:#fff;border-radius:20px;padding:36px 32px;max-width:420px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.22);animation:popIn .35s cubic-bezier(.34,1.56,.64,1);">
+                            <div
+                                style="width:60px;height:60px;background:#fef2f2;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.6rem;margin:0 auto 16px;">
+                                ⚠️</div>
+                            <h3
+                                style="font-size:1.2rem;font-weight:800;color:#0a1f44;text-align:center;margin-bottom:8px;">
+                                Delete Your Account?</h3>
+                            <p
+                                style="font-size:0.85rem;color:#6b7280;text-align:center;line-height:1.6;margin-bottom:16px;">
+                                This will permanently erase your name, email, and phone number. Your application records
+                                will be archived. <strong>This cannot be undone.</strong>
+                            </p>
+                            <div style="margin-bottom:16px;">
+                                <label
+                                    style="font-size:0.82rem;font-weight:600;color:#374151;display:block;margin-bottom:6px;">Confirm
+                                    your password to continue</label>
+                                <div style="position:relative;">
+                                    <input type="password" id="del-account-pass" placeholder="Your current password"
+                                        style="width:100%;padding:11px 42px 11px 14px;border:1.5px solid #e0e4ef;border-radius:10px;font-size:0.9rem;" />
+                                    <button type="button" onclick="togglePwd('del-account-pass','eye-del')"
+                                        style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;"
+                                        id="eye-del">👁</button>
+                                </div>
+                            </div>
+                            <div style="display:flex;gap:10px;">
+                                <button onclick="confirmDeleteAccount()" id="btn-confirm-del-account"
+                                    style="flex:1;background:linear-gradient(135deg,#dc2626,#b91c1c);color:#fff;border:none;border-radius:10px;padding:13px;font-size:0.9rem;font-weight:700;cursor:pointer;">
+                                    Yes, Delete My Account
+                                </button>
+                                <button onclick="document.getElementById('delete-account-overlay').style.display='none'"
+                                    style="flex:1;background:none;border:1.5px solid #e0e4ef;border-radius:10px;padding:12px;font-size:0.9rem;font-weight:600;color:#6b7280;cursor:pointer;">Cancel</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1134,6 +1187,23 @@
         }
 
         async function doLogout() { await Auth.logout(); showToast('Logged out successfully.'); setTimeout(() => window.location.href = 'index.html', 800); }
+
+        function openDeleteAccountModal() {
+            document.getElementById('del-account-pass').value = '';
+            document.getElementById('delete-account-overlay').style.display = 'flex';
+        }
+
+        async function confirmDeleteAccount() {
+            const pass = document.getElementById('del-account-pass').value;
+            if (!pass) { showToast('Please enter your password.', 'error'); return; }
+            const btn = document.getElementById('btn-confirm-del-account');
+            btn.disabled = true; btn.textContent = 'Deleting...';
+            const res = await Auth.deleteAccount(pass);
+            btn.disabled = false; btn.textContent = 'Yes, Delete My Account';
+            if (!res?.ok) { showToast(res?.error || 'Delete failed. Check your password.', 'error'); return; }
+            showToast('Account deleted. Goodbye 👋');
+            setTimeout(() => window.location.href = 'index.html', 1800);
+        }
 
         // ══════════════════════════════════════════════════════════════
         // MY DOCUMENTS TAB
