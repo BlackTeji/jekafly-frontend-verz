@@ -230,6 +230,8 @@
             position: relative;
         }
 
+        .rev-card-left {}
+
         .rev-card-eyebrow {
             font-size: 0.68rem;
             font-weight: 700;
@@ -1260,15 +1262,15 @@
         <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Joined</th><th>Apps</th><th></th></tr></thead>
         <tbody>${users.map(u => {
                 const n = u.applicationCount || 0;
-                const isSelf = u.id === currentUser?.id;
+                const isAdmin = u.role === 'ADMIN';
                 return `<tr>
                 <td><strong>${escHtml(u.name)}</strong></td>
                 <td>${escHtml(u.email)}</td>
                 <td>${u.phone ? escHtml(u.phone) : '—'}</td>
-                <td><span class="status-pill ${u.role === 'ADMIN' ? 'status-embassy' : 'status-received'}">${u.role?.toLowerCase() || 'user'}</span></td>
+                <td><span class="status-pill ${isAdmin ? 'status-embassy' : 'status-received'}">${u.role?.toLowerCase() || 'user'}</span></td>
                 <td class="cell-date">${new Date(u.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
                 <td><strong>${n}</strong></td>
-                <td>${isSelf ? '' : `<button onclick="openDeleteUserModal('${u.id}','${escHtml(u.name).replace(/'/g, '\'')}')" style="background:#fef2f2;border:1.5px solid #fecaca;color:#dc2626;border-radius:7px;padding:4px 10px;font-size:0.75rem;font-weight:700;cursor:pointer;" title="Delete user">🗑 Delete</button>`}</td>
+                <td>${isAdmin ? '<span style="font-size:0.72rem;color:#9ca3af;">Protected</span>' : `<button onclick="openDeleteUserModal('${u.id}','${escHtml(u.name).replace(/'/g, '\'')}')" style="background:#fef2f2;border:1.5px solid #fecaca;color:#dc2626;border-radius:7px;padding:4px 10px;font-size:0.75rem;font-weight:700;cursor:pointer;" title="Delete user">🗑 Delete</button>`}</td>
             </tr>`;
             }).join('')}</tbody>
     </table>`;
