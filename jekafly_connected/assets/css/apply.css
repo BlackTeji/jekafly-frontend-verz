@@ -448,15 +448,7 @@
     margin-top: 4px;
 }
 
-@media(max-width:600px) {
-    .form-row {
-        grid-template-columns: 1fr;
-    }
 
-    .review-grid {
-        grid-template-columns: 1fr;
-    }
-}
 
 /* ── APPLY V2 POLISH ──────────────────────────────────────── */
 .apply-page {
@@ -881,4 +873,144 @@
 
 .visa-preview-notice strong {
     color: #92400E;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   APPLY — PREMIUM MOBILE EXPERIENCE
+   ═══════════════════════════════════════════════════════════ */
+
+@media (max-width: 640px) {
+
+    .apply-page {
+        padding: 24px 4% 48px;
+    }
+
+    .apply-header h1 {
+        font-size: 1.55rem;
+    }
+
+    .apply-header p {
+        font-size: 0.85rem;
+    }
+
+    /* ── Stepper: compact progress bar on mobile ────────────── */
+    .stepper {
+        gap: 0;
+        margin-bottom: 28px;
+        background: white;
+        border: 1.5px solid var(--border);
+        border-radius: 16px;
+        padding: 14px 12px;
+        box-shadow: 0 2px 8px rgba(13, 21, 96, 0.05);
+    }
+
+    .step-item {
+        flex: 1;
+    }
+
+    .step-circle {
+        width: 32px;
+        height: 32px;
+        font-size: 0.78rem;
+        border-width: 2px;
+    }
+
+    .step-label {
+        font-size: 0.6rem;
+        margin-top: 5px;
+        line-height: 1.2;
+    }
+
+    .step-item::after {
+        top: 16px;
+    }
+
+    /* ── Form card ──────────────────────────────────────────── */
+    .form-card {
+        padding: 22px 18px;
+        border-radius: 18px;
+        margin-bottom: 12px;
+    }
+
+    .form-card h2 {
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+    }
+
+    .form-card .sub {
+        font-size: 0.82rem;
+        margin-bottom: 20px;
+    }
+
+    /* ── Form rows always stack on mobile ───────────────────── */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* ── All inputs: prevent iOS zoom, bigger touch targets ──── */
+    .form-group input,
+    .form-group select,
+    .form-group textarea,
+    .cs-trigger,
+    .date-display {
+        font-size: 16px !important;
+        min-height: 50px;
+    }
+
+    .form-group label {
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+
+    /* ── Navigation buttons ─────────────────────────────────── */
+    .step-nav {
+        flex-direction: column-reverse;
+        gap: 10px;
+        margin-top: 28px;
+    }
+
+    .btn-next,
+    .btn-back {
+        width: 100%;
+        padding: 15px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+        text-align: center;
+        justify-content: center;
+    }
+
+    /* ── Document checklist ─────────────────────────────────── */
+    .doc-item {
+        padding: 12px 14px;
+        border-radius: 12px;
+    }
+
+    /* ── Fee summary ────────────────────────────────────────── */
+    .fee-breakdown-box {
+        padding: 16px;
+        border-radius: 14px;
+    }
+
+    /* ── Draft banner ───────────────────────────────────────── */
+    .draft-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    /* ── Prefill notice ─────────────────────────────────────── */
+    #prefill-notice {
+        font-size: 0.8rem;
+        padding: 10px 12px;
+        border-radius: 10px;
+    }
+
+    /* ── Visa preview panel ─────────────────────────────────── */
+    .preview-meta-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
 }

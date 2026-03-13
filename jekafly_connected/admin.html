@@ -230,7 +230,6 @@
             position: relative;
         }
 
-
         .rev-card-eyebrow {
             font-size: 0.68rem;
             font-weight: 700;
@@ -735,21 +734,200 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
+
+        /* ── Admin mobile bottom tab bar ─────────────────────── */
+        .admin-mobile-tabbar {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+
+            .admin-page {
+                margin-top: 68px;
+            }
+
+            .admin-wrap {
+                grid-template-columns: 1fr;
+                padding-bottom: 72px;
+            }
+
+            /* Hide sidebar — replaced by bottom tab bar */
+            .admin-sidebar {
+                display: none;
+            }
+
+            .admin-main {
+                padding: 20px 14px 24px;
+            }
+
+            .admin-title {
+                font-size: 1.3rem;
+            }
+
+            .admin-sub {
+                font-size: 0.82rem;
+            }
+
+            /* Stats: 2-col */
+            .admin-stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .astat {
+                padding: 16px 14px;
+                border-radius: 14px;
+            }
+
+            .astat-val {
+                font-size: 1.6rem;
+            }
+
+            .astat-label {
+                font-size: 0.72rem;
+            }
+
+            /* Table: horizontal scroll */
+            .atbl-wrap {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                border-radius: 14px;
+            }
+
+            .atbl {
+                font-size: 0.75rem;
+                min-width: 520px;
+            }
+
+            .atbl th,
+            .atbl td {
+                padding: 10px 10px;
+                white-space: nowrap;
+            }
+
+            /* Cards */
+            .acard {
+                border-radius: 16px;
+                margin-bottom: 14px;
+            }
+
+            .acard-header {
+                padding: 14px 16px;
+            }
+
+            .acard-header h3 {
+                font-size: 0.95rem;
+            }
+
+            /* Revenue chart */
+            .rev-chart-wrap {
+                padding: 16px 14px;
+                border-radius: 18px;
+            }
+
+            /* Detail grid */
+            .detail-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            /* Application detail panel */
+            .app-detail {
+                padding: 16px;
+                border-radius: 16px;
+            }
+
+            /* Bottom tab bar */
+            .admin-mobile-tabbar {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 64px;
+                background: rgba(255, 255, 255, 0.97);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border-top: 1.5px solid #E5E9F5;
+                z-index: 900;
+                box-shadow: 0 -4px 20px rgba(10, 31, 68, 0.08);
+                padding: 0 1%;
+            }
+
+            .admin-tab-btn {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                background: none;
+                border: none;
+                cursor: pointer;
+                padding: 6px 2px;
+                border-radius: 10px;
+                font-family: 'Plus Jakarta Sans', sans-serif;
+                color: #9BA5C0;
+                transition: color .15s;
+                position: relative;
+            }
+
+            .admin-tab-btn.active {
+                color: #0D1560;
+            }
+
+            .admin-tab-btn.active::after {
+                content: '';
+                position: absolute;
+                top: 4px;
+                width: 18px;
+                height: 3px;
+                background: #E31E24;
+                border-radius: 2px;
+            }
+
+            .admin-tab-btn .tab-icon {
+                font-size: 1.15rem;
+                line-height: 1;
+            }
+
+            .admin-tab-btn .tab-label {
+                font-size: 0.58rem;
+                font-weight: 600;
+                letter-spacing: .02em;
+            }
+
+            /* Prevent iOS zoom on inputs */
+            .admin-main input,
+            .admin-main select,
+            .admin-main textarea {
+                font-size: 16px !important;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <nav>
+    <nav id="main-nav">
         <a href="index.html" class="nav-logo">
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
         </a>
         <div class="nav-links">
             <a href="index.html">← Back to Site</a>
-            <a href="dashboard.html?from=admin">User Dashboard</a>
+            <a href="dashboard.html">User Dashboard</a>
         </div>
         <div class="nav-cta" id="nav-cta-area"></div>
+        <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
+            <span class="nav-burger" id="nav-burger">☰</span>
+        </button>
     </nav>
+    <div class="nav-mobile-drawer" id="nav-mobile-drawer">
+        <a href="index.html" onclick="closeNavMenu()">← Back to Site</a>
+        <a href="dashboard.html" onclick="closeNavMenu()">User Dashboard</a>
+        <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
+    </div>
+    <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
 
     <div class="admin-page">
         <div class="admin-wrap">
@@ -1101,8 +1279,14 @@
         function adminTab(tab, el) {
             ['overview', 'applications', 'users', 'fees', 'reviews'].filter(t => document.getElementById('tab-' + t)).forEach(t =>
                 document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none');
+            // Sync sidebar
             document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
-            if (el) el.classList.add('active');
+            if (el && el.classList.contains('admin-nav-item')) el.classList.add('active');
+            // Sync mobile bottom tab bar
+            document.querySelectorAll('.admin-tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tab);
+            });
+            if (window.innerWidth <= 640) window.scrollTo({ top: 68, behavior: 'smooth' });
             if (tab === 'applications') loadApps();
             if (tab === 'users') loadUsers();
             if (tab === 'reviews') loadReviews();
@@ -1850,6 +2034,25 @@
             </div>
         </div>
     </div>
+
+    <!-- Admin mobile bottom tab bar -->
+    <nav class="admin-mobile-tabbar" id="admin-tabbar">
+        <button class="admin-tab-btn active" onclick="adminTab('overview',this)" data-tab="overview">
+            <span class="tab-icon">📊</span><span class="tab-label">Overview</span>
+        </button>
+        <button class="admin-tab-btn" onclick="adminTab('applications',this)" data-tab="applications">
+            <span class="tab-icon">📋</span><span class="tab-label">Apps</span>
+        </button>
+        <button class="admin-tab-btn" onclick="adminTab('users',this)" data-tab="users">
+            <span class="tab-icon">👥</span><span class="tab-label">Users</span>
+        </button>
+        <button class="admin-tab-btn" onclick="adminTab('fees',this)" data-tab="fees">
+            <span class="tab-icon">💰</span><span class="tab-label">Fees</span>
+        </button>
+        <button class="admin-tab-btn" onclick="adminTab('reviews',this)" data-tab="reviews">
+            <span class="tab-icon">⭐</span><span class="tab-label">Reviews</span>
+        </button>
+    </nav>
 </body>
 
 </html>

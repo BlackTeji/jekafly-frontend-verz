@@ -635,19 +635,56 @@
             }
 
             .pay-page {
-                padding: 80px 16px 48px;
+                padding: 80px 14px 48px;
             }
 
             .pay-layout {
                 grid-template-columns: 1fr;
+                gap: 16px;
             }
 
             .pay-panel {
                 position: static;
+                border-radius: 20px;
+                padding: 24px 18px;
+            }
+
+            .pay-left {
+                border-radius: 20px;
+                padding: 24px 18px;
             }
 
             .page-title {
-                font-size: 1.7rem;
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+
+            .dest-card-inner {
+                padding: 20px;
+            }
+
+            .pay-total-amount {
+                font-size: 2.2rem;
+            }
+
+            .btn-pay {
+                padding: 16px;
+                font-size: 1rem;
+                border-radius: 14px;
+            }
+
+            .fee-line {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+
+            /* Prevent iOS input zoom */
+            input,
+            select,
+            textarea {
+                font-size: 16px !important;
             }
         }
     </style>
@@ -655,11 +692,20 @@
 
 <body>
 
-    <nav>
+    <nav id="main-nav">
         <a href="index.html" class="nav-logo"><img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" /></a>
         <div class="nav-links"><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a></div>
-        <div id="nav-user-area" class="nav-user"></div>
+        <div class="nav-cta" id="nav-cta-area"></div>
+        <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
+            <span class="nav-burger" id="nav-burger">☰</span>
+        </button>
     </nav>
+    <div class="nav-mobile-drawer" id="nav-mobile-drawer">
+        <a href="index.html" onclick="closeNavMenu()">Home</a>
+        <a href="dashboard.html" onclick="closeNavMenu()">My Dashboard</a>
+        <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
+    </div>
+    <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
 
     <div class="pay-page">
         <div id="pay-root"></div>

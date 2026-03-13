@@ -23,14 +23,27 @@
 
 <body>
 
-    <nav>
+    <nav id="main-nav">
         <a href="index.html" class="nav-logo">
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
         </a>
-        <div class="nav-links"><a href="index.html">Home</a><a href="index.html#visa">Visa Check</a><a
-                href="apply.html">Apply</a></div>
+        <div class="nav-links">
+            <a href="index.html" onclick="closeNavMenu()">Home</a>
+            <a href="index.html#visa" onclick="closeNavMenu()">Visa Check</a>
+            <a href="apply.html" onclick="closeNavMenu()">Apply</a>
+        </div>
         <div class="nav-cta" id="nav-cta-area"></div>
+        <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
+            <span class="nav-burger" id="nav-burger">☰</span>
+        </button>
     </nav>
+    <div class="nav-mobile-drawer" id="nav-mobile-drawer">
+        <a href="index.html" onclick="closeNavMenu()">Home</a>
+        <a href="index.html#visa" onclick="closeNavMenu()">Visa Check</a>
+        <a href="apply.html" onclick="closeNavMenu()">Apply</a>
+        <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
+    </div>
+    <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
 
     <div class="dash-page">
         <div class="dash-wrap">
@@ -562,8 +575,15 @@
             ['applications', 'documents', 'insurance', 'track', 'profile', 'mydocs'].forEach(t => {
                 document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
             });
+            // Sync sidebar nav items
             document.querySelectorAll('.dash-nav-item').forEach(i => i.classList.remove('active'));
-            if (el) el.classList.add('active');
+            if (el && el.classList.contains('dash-nav-item')) el.classList.add('active');
+            // Sync mobile bottom tab bar
+            document.querySelectorAll('.dash-tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.tab === tab);
+            });
+            // Scroll to top of content on mobile
+            if (window.innerWidth <= 640) window.scrollTo({ top: 68, behavior: 'smooth' });
             if (tab === 'track') loadQuickRefs();
             if (tab === 'insurance') loadInsurance();
             if (tab === 'documents') { loadConsultHistory(); }
@@ -1632,6 +1652,31 @@
             }
         });
     </script>
+
+
+    <!-- ── Mobile Bottom Tab Bar ─────────────────────────── -->
+    <nav class="dash-mobile-tabbar" id="dash-tabbar">
+        <button class="dash-tab-btn active" onclick="showTab('applications',this)" data-tab="applications">
+            <span class="tab-icon">📋</span>
+            <span class="tab-label">Applications</span>
+        </button>
+        <button class="dash-tab-btn" onclick="showTab('track',this)" data-tab="track">
+            <span class="tab-icon">🔍</span>
+            <span class="tab-label">Track</span>
+        </button>
+        <button class="dash-tab-btn" onclick="showTab('mydocs',this)" data-tab="mydocs">
+            <span class="tab-icon">📁</span>
+            <span class="tab-label">Docs</span>
+        </button>
+        <button class="dash-tab-btn" onclick="showTab('insurance',this)" data-tab="insurance">
+            <span class="tab-icon">🛡️</span>
+            <span class="tab-label">Insurance</span>
+        </button>
+        <button class="dash-tab-btn" onclick="showTab('profile',this)" data-tab="profile">
+            <span class="tab-icon">👤</span>
+            <span class="tab-label">Profile</span>
+        </button>
+    </nav>
 
 </body>
 

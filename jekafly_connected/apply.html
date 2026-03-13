@@ -22,17 +22,27 @@
 
 <body>
 
-    <nav>
-       <a href="index.html" class="nav-logo">
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
         </a>
         <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="index.html#visa">Visa Check</a>
-            <a href="dashboard.html">My Applications</a>
+            <a href="index.html" onclick="closeNavMenu()">Home</a>
+            <a href="index.html#visa" onclick="closeNavMenu()">Visa Check</a>
+            <a href="dashboard.html" onclick="closeNavMenu()">My Applications</a>
         </div>
         <div class="nav-cta" id="nav-cta-area"></div>
+        <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
+            <span class="nav-burger" id="nav-burger">☰</span>
+        </button>
     </nav>
+    <div class="nav-mobile-drawer" id="nav-mobile-drawer">
+        <a href="index.html" onclick="closeNavMenu()">Home</a>
+        <a href="index.html#visa" onclick="closeNavMenu()">Visa Check</a>
+        <a href="dashboard.html" onclick="closeNavMenu()">My Applications</a>
+        <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
+    </div>
+    <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
 
     <div class="apply-page">
         <div class="apply-wrap">
@@ -315,7 +325,8 @@
                 <div class="form-nav">
                     <button class="btn-back" onclick="goStep(3)">← Back</button>
                     <button class="btn-save" onclick="saveDraft(true)">Save Draft</button>
-                    <button id="btn-submit-app" class="btn-next btn-submit-success" onclick="submitApplication()">Submit & Pay →</button>
+                    <button id="btn-submit-app" class="btn-next btn-submit-success" onclick="submitApplication()">Submit
+                        & Pay →</button>
                 </div>
                 <div class="submit-note">🔒 You'll be asked to <strong>login</strong> before payment so you can track
                     and resume anytime.</div>
@@ -845,7 +856,7 @@
                 const checked = document.querySelectorAll('.doc-item.checked').length;
                 if (checked === 0) showToast?.('No documents confirmed — you can upload after payment.', 'success');
                 else showToast?.('Great! We\'ll review your confirmed documents after payment.', 'success');
-        return true;
+                return true;
             }
             return true;
         }
@@ -871,7 +882,7 @@
         </div>`).join('');
         }
 
-       async function toggleDoc(i) {
+        function toggleDoc(i) {
             const item = document.getElementById('doc-' + i);
             const cb = document.getElementById('cb-' + i);
             const ds = document.getElementById('ds-' + i);
@@ -978,20 +989,20 @@
         function saveApplicantProfile(appData) {
             const draft = readDraft();
             const profile = {
-                firstName:         draft?.personal?.firstName  || '',
-                lastName:          draft?.personal?.lastName   || '',
-                dob:               draft?.personal?.dob        || '',
-                gender:            draft?.personal?.gender     || '',
-                email:             appData.email               || '',
-                phone:             appData.phone               || '',
-                nationality:       appData.nationality         || '',
-                passportNumber:    appData.passportNumber      || '',
-                passportIssueDate: appData.passportIssueDate   || '',
-                passportExpiry:    appData.passportExpiry      || '',
-                address:           draft?.personal?.address    || '',
-                savedAt:           new Date().toISOString(),
+                firstName: draft?.personal?.firstName || '',
+                lastName: draft?.personal?.lastName || '',
+                dob: draft?.personal?.dob || '',
+                gender: draft?.personal?.gender || '',
+                email: appData.email || '',
+                phone: appData.phone || '',
+                nationality: appData.nationality || '',
+                passportNumber: appData.passportNumber || '',
+                passportIssueDate: appData.passportIssueDate || '',
+                passportExpiry: appData.passportExpiry || '',
+                address: draft?.personal?.address || '',
+                savedAt: new Date().toISOString(),
             };
-            try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch {}
+            try { localStorage.setItem(PROFILE_KEY, JSON.stringify(profile)); } catch { }
         }
 
         function prefillFromSavedProfile() {
@@ -1000,7 +1011,7 @@
             if (draft?.personal?.firstName) return;
 
             let profile;
-            try { profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null'); } catch {}
+            try { profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null'); } catch { }
             if (!profile) {
                 // Fall back to basic account info
                 const u = Auth.getCurrent();
@@ -1014,15 +1025,15 @@
             }
 
             // Prefill all personal fields from saved profile
-            setVal('a-fname',          profile.firstName);
-            setVal('a-lname',          profile.lastName);
-            setVal('a-dob',            profile.dob);
-            setVal('a-email',          profile.email);
-            setVal('a-phone',          profile.phone);
-            setVal('a-passport',       profile.passportNumber);
+            setVal('a-fname', profile.firstName);
+            setVal('a-lname', profile.lastName);
+            setVal('a-dob', profile.dob);
+            setVal('a-email', profile.email);
+            setVal('a-phone', profile.phone);
+            setVal('a-passport', profile.passportNumber);
             setVal('a-passport-issue', profile.passportIssueDate);
             setVal('a-passport-expiry', profile.passportExpiry);
-            setVal('a-address',        profile.address);
+            setVal('a-address', profile.address);
 
             // Selects need the searchable-select helper
             if (profile.nationality) {

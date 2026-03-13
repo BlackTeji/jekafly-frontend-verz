@@ -43,22 +43,39 @@ INDEX.HTML — FULLY EDITED
     <!-- =============================
     NAV
     ============================= -->
-    <nav>
+    <nav id="main-nav">
         <a href="index.html" class="nav-logo">
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
         </a>
-        <div class="nav-links">
-            <a href="#services">Services</a>
-            <a href="#visa">Visa Check</a>
-            <a href="#insurance">Insurance</a>
-            <a href="#track">Track</a>
-            <a href="#destinations">Destinations</a>
+        <div class="nav-links" id="nav-links">
+            <a href="#services" onclick="closeNavMenu()">Services</a>
+            <a href="#visa" onclick="closeNavMenu()">Visa Check</a>
+            <a href="#insurance" onclick="closeNavMenu()">Insurance</a>
+            <a href="#track" onclick="closeNavMenu()">Track</a>
+            <a href="#destinations" onclick="closeNavMenu()">Destinations</a>
         </div>
-        <div class="nav-cta">
+        <div class="nav-cta" id="nav-cta-area">
             <button class="btn-outline" onclick="openModal('login')">Login</button>
             <button class="btn-primary" onclick="openModal('register')">Get Started</button>
         </div>
+        <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
+            <span class="nav-burger" id="nav-burger">☰</span>
+        </button>
     </nav>
+    <!-- Mobile nav drawer -->
+    <div class="nav-mobile-drawer" id="nav-mobile-drawer">
+        <a href="#services" onclick="closeNavMenu()">Services</a>
+        <a href="#visa" onclick="closeNavMenu()">Visa Check</a>
+        <a href="#insurance" onclick="closeNavMenu()">Insurance</a>
+        <a href="#track" onclick="closeNavMenu()">Track</a>
+        <a href="#destinations" onclick="closeNavMenu()">Destinations</a>
+        <div class="nav-mobile-cta" id="nav-mobile-cta">
+            <button class="btn-outline" style="width:100%" onclick="openModal('login');closeNavMenu()">Login</button>
+            <button class="btn-primary" style="width:100%" onclick="openModal('register');closeNavMenu()">Get
+                Started</button>
+        </div>
+    </div>
+    <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
 
     <!-- =============================
     HERO
@@ -611,6 +628,7 @@ INDEX.HTML — FULLY EDITED
     ============================= -->
     <div class="modal-overlay" id="modal" onclick="closeModalIfBg(event)">
         <div class="modal">
+            <div class="modal-drag-handle"></div>
             <button class="modal-close" onclick="closeModal()">✕</button>
 
             <!-- =============================
@@ -862,8 +880,8 @@ INDEX.HTML — FULLY EDITED
         const heroSlides = [
             { bg: 0, line1: 'Visa Applications,', line2: 'Simplified.' },
             { bg: 1, line1: 'Travel the World,', line2: 'Stress-Free.' },
-            { bg: 2, line1: 'Your Passport to', line2: 'Every Destination.' },
-            { bg: 3, line1: 'Expert Help,', line2: '48-Hour Processing.' },
+            { bg: 2, line1: 'Your Passport to', line2: 'Every Place.' },
+            { bg: 3, line1: 'Expert Help,', line2: 'Move Faster.' },
         ];
         let heroIdx = 0;
         let heroTimer;
@@ -1142,6 +1160,7 @@ INDEX.HTML — FULLY EDITED
             }
         }
     </script>
+
 </body>
 
 </html>

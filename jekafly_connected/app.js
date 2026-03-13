@@ -1,20 +1,88 @@
+// ── Mobile nav (shared across all pages) ────────────────────
+function toggleNavMenu() {
+    const drawer = document.getElementById('nav-mobile-drawer');
+    const overlay = document.getElementById('nav-mobile-overlay');
+    const burger = document.getElementById('nav-burger');
+    if (!drawer) return;
+    const open = !drawer.classList.contains('open');
+    drawer.classList.toggle('open', open);
+    if (overlay) overlay.classList.toggle('open', open);
+    if (burger) burger.textContent = open ? '✕' : '☰';
+    document.body.style.overflow = open ? 'hidden' : '';
+}
+function closeNavMenu() {
+    const drawer = document.getElementById('nav-mobile-drawer');
+    const overlay = document.getElementById('nav-mobile-overlay');
+    const burger = document.getElementById('nav-burger');
+    if (!drawer) return;
+    drawer.classList.remove('open');
+    if (overlay) overlay.classList.remove('open');
+    if (burger) burger.textContent = '☰';
+    document.body.style.overflow = '';
+}
+(function initMobileNav() {
+    let lastY = 0;
+    window.addEventListener('scroll', () => {
+        if (Math.abs(window.scrollY - lastY) > 10) { closeNavMenu(); lastY = window.scrollY; }
+    }, { passive: true });
+})();
+
+
 function updateNav() {
     const user = Auth.getCurrent();
     const ctaEl = document.querySelector('.nav-cta');
-    if (!ctaEl) return;
+    const mCta = document.getElementById('nav-mobile-cta');
+
+    let desktopHtml = '', mobileHtml = '';
 
     if (user) {
         const first = (user.name || 'User').split(' ')[0];
-        ctaEl.innerHTML = `
-      <span style="font-size:0.85rem;color:var(--text-light)">Hi, <strong>${first}</strong></span>
-      <a href="dashboard.html" class="btn-outline" style="text-decoration:none;">My Dashboard</a>
-      ${user.role === 'admin' ? '<a href="admin.html" class="btn-outline" style="text-decoration:none;border-color:var(--red);color:var(--red)">Admin</a>' : ''}
-      <button class="btn-primary" onclick="handleLogout()">Logout</button>`;
+        const isAdmin = user.role === 'ADMIN' || user.role === 'admin';
+
+        desktopHtml = `
+          <span style="font-size:0.85rem;color:var(--text-light)">Hi, <strong>${first}</strong></span>
+          <a href="dashboard.html" class="btn-outline" style="text-decoration:none;">My Dashboard</a>
+          ${isAdmin ? '<a href="admin.html" class="btn-outline" style="text-decoration:none;border-color:var(--red);color:var(--red)">Admin</a>' : ''}
+          <button class="btn-primary" onclick="handleLogout()">Logout</button>`;
+
+        // Mobile: user section with greeting + action buttons
+        mobileHtml = `
+          <div class="nav-mobile-user">
+            <div class="nav-mobile-user-greeting">Signed in as <strong>${user.name || first}</strong></div>
+            <a href="dashboard.html" onclick="closeNavMenu()"
+               style="background:var(--blue);color:white;border:none;margin-bottom:8px;">
+              📋 My Dashboard
+            </a>
+            ${isAdmin ? `<a href="admin.html" onclick="closeNavMenu()"
+               style="background:var(--red);color:white;border:none;margin-bottom:8px;">
+              ⚡ Admin Panel
+            </a>` : ''}
+            <button onclick="handleLogout();closeNavMenu()"
+              style="background:none;border:1.5px solid var(--border);color:var(--text-light);">
+              🚪 Logout
+            </button>
+          </div>`;
     } else {
-        ctaEl.innerHTML = `
-      <button class="btn-outline" onclick="openModal('login')">Login</button>
-      <button class="btn-primary" onclick="openModal('register')">Get Started</button>`;
+        desktopHtml = `
+          <button class="btn-outline" onclick="openModal('login')">Login</button>
+          <button class="btn-primary" onclick="openModal('register')">Get Started</button>`;
+
+        mobileHtml = `
+          <div class="nav-mobile-user">
+            <button class="btn-primary"
+              onclick="openModal('login');closeNavMenu()"
+              style="border:none;margin-bottom:8px;">
+              Login
+            </button>
+            <button onclick="openModal('register');closeNavMenu()"
+              style="background:none;border:1.5px solid var(--blue);color:var(--blue);">
+              Get Started
+            </button>
+          </div>`;
     }
+
+    if (ctaEl) ctaEl.innerHTML = desktopHtml;
+    if (mCta) mCta.innerHTML = mobileHtml;
 }
 
 async function handleLogout() {
@@ -1701,4 +1769,4 @@ Return Redirect Helper
         if (ret) { window.location.href = decodeURIComponent(ret); return true; }
         return false;
     };
-})();
+})();// cache bust Thu Mar 12 17:48:34 UTC 2026
