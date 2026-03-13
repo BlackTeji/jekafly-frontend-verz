@@ -504,13 +504,15 @@ INDEX.HTML — FULLY EDITED
     <!-- =============================
     TESTIMONIALS
     ============================= -->
-    <section class="testimonials">
+    <section class="testimonials" id="reviews-section">
         <div class="section-header">
             <div class="section-tag">Reviews</div>
             <h2 class="section-title">What Our Customers Say</h2>
-            <p class="section-sub">Thousands of Nigerians have simplified their journey with Jekafly.</p>
+            <p class="section-sub" id="reviews-sub">Thousands of Nigerians have simplified their journey with Jekafly.
+            </p>
         </div>
-        <div class="testi-grid">
+        <div class="testi-grid" id="testi-grid">
+            <!-- Static fallbacks shown until live reviews load -->
             <div class="testi-card">
                 <div class="testi-stars">★★★★★</div>
                 <div class="testi-text">"I applied for my UK visa through Jekafly and got approved in 5 days. The
@@ -518,7 +520,7 @@ INDEX.HTML — FULLY EDITED
                 <div class="testi-author">
                     <div class="testi-avatar">AO</div>
                     <div>
-                        <div class="testi-name">Adaeze Okonkwo</div>
+                        <div class="testi-name">Adaeze O.</div>
                         <div class="testi-meta">UK Visitor Visa · Lagos</div>
                     </div>
                 </div>
@@ -530,7 +532,7 @@ INDEX.HTML — FULLY EDITED
                 <div class="testi-author">
                     <div class="testi-avatar">BT</div>
                     <div>
-                        <div class="testi-name">Babatunde Tunde</div>
+                        <div class="testi-name">Babatunde T.</div>
                         <div class="testi-meta">Schengen Visa · Abuja</div>
                     </div>
                 </div>
@@ -542,7 +544,7 @@ INDEX.HTML — FULLY EDITED
                 <div class="testi-author">
                     <div class="testi-avatar">FI</div>
                     <div>
-                        <div class="testi-name">Fatima Ibrahim</div>
+                        <div class="testi-name">Fatima I.</div>
                         <div class="testi-meta">UAE Visa + Insurance · Kano</div>
                     </div>
                 </div>
@@ -825,6 +827,36 @@ INDEX.HTML — FULLY EDITED
 
     <script src="api.js"></script>
     <script src="app.js"></script>
+    <script>
+        // Load live approved reviews
+        (async () => {
+            try {
+                const res = await fetch('https://jekafly-api-production.up.railway.app/api/v1/reviews');
+                const data = await res.json();
+                const reviews = data?.data?.reviews || [];
+                if (reviews.length < 3) return; // keep static fallbacks if not enough live reviews
+                const stars = r => '★'.repeat(r) + '☆'.repeat(5 - r);
+                const initials = name => name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+                const grid = document.getElementById('testi-grid');
+                if (!grid) return;
+                grid.innerHTML = reviews.slice(0, 6).map(r => `
+                <div class="testi-card">
+                    <div class="testi-stars" style="color:#f59e0b">${stars(r.rating)}</div>
+                    <div class="testi-text">"${r.text.replace(/"/g, '&quot;')}"</div>
+                    <div class="testi-author">
+                        <div class="testi-avatar">${initials(r.name || 'JK')}</div>
+                        <div>
+                            <div class="testi-name">${r.name || 'Jekafly Customer'}</div>
+                            <div class="testi-meta">${r.destination} Visa</div>
+                        </div>
+                    </div>
+                </div>`).join('');
+                const avg = (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1);
+                document.getElementById('reviews-sub').textContent =
+                    `${reviews.length} verified review${reviews.length !== 1 ? 's' : ''} · ${avg} average rating`;
+            } catch { }
+        })();
+    </script>
     <script>
         // ── Hero slideshow + rotating headlines ──────────────────────
         const heroSlides = [

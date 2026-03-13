@@ -230,6 +230,7 @@
             position: relative;
         }
 
+
         .rev-card-eyebrow {
             font-size: 0.68rem;
             font-weight: 700;
@@ -767,6 +768,7 @@
                     Applications</div>
                 <div class="admin-nav-item" onclick="adminTab('users',this)"><span class="ni">👥</span>Users</div>
                 <div class="admin-nav-item" onclick="adminTab('fees',this)"><span class="ni">💰</span>Manage Fees</div>
+                <div class="admin-nav-item" onclick="adminTab('reviews',this)"><span class="ni">⭐</span>Reviews</div>
                 <div class="admin-nav-section">Quick Links</div>
                 <div class="admin-nav-item" onclick="location.href='index.html'"><span class="ni">🌐</span>View Website
                 </div>
@@ -1041,6 +1043,31 @@
                     </div>
                 </div>
 
+
+                <!-- ── REVIEWS ──────────────────────────── -->
+                <div id="tab-reviews" style="display:none">
+                    <div class="admin-title">Customer Reviews</div>
+                    <p class="admin-sub">Approve reviews to show them on the homepage. Submitted via post-delivery
+                        survey emails.</p>
+                    <div class="acard">
+                        <div class="acard-header">
+                            <h3>Pending Approval</h3>
+                            <span id="reviews-pending-count" style="font-size:0.82rem;color:#6b7280;"></span>
+                        </div>
+                        <div id="reviews-pending-list">
+                            <div class="atbl-empty">Loading...</div>
+                        </div>
+                    </div>
+                    <div class="acard" style="margin-top:20px;">
+                        <div class="acard-header">
+                            <h3>Approved & Live</h3>
+                        </div>
+                        <div id="reviews-approved-list">
+                            <div class="atbl-empty">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
@@ -1072,12 +1099,13 @@
         });
 
         function adminTab(tab, el) {
-            ['overview', 'applications', 'users', 'fees'].filter(t => document.getElementById('tab-' + t)).forEach(t =>
+            ['overview', 'applications', 'users', 'fees', 'reviews'].filter(t => document.getElementById('tab-' + t)).forEach(t =>
                 document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none');
             document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
             if (el) el.classList.add('active');
             if (tab === 'applications') loadApps();
             if (tab === 'users') loadUsers();
+            if (tab === 'reviews') loadReviews();
             if (tab === 'fees') loadFeesTab();
         }
 
@@ -1296,6 +1324,56 @@
             closeDeleteUserModal();
             showToast('User deleted and data archived. ✓');
             loadUsers();
+        }
+
+        async function loadReviews() {
+            const res = await get('/reviews/admin');
+            const reviews = res?.ok ? res.data.reviews : [];
+            const pending = reviews.filter(r => !r.approved && r.surveyUsed);
+            const approved = reviews.filter(r => r.approved);
+
+            document.getElementById('reviews-pending-count').textContent =
+                pending.length ? `${pending.length} awaiting approval` : 'None pending';
+
+            const renderCard = (r, isPending) => `
+                <div style="padding:16px 20px;border-bottom:1px solid #f4f6fb;display:flex;gap:14px;align-items:flex-start;">
+                    <div style="font-size:1.3rem;color:#f59e0b;white-space:nowrap;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-weight:700;font-size:0.9rem;color:#0a1f44;margin-bottom:2px;">${escHtml(r.name)} <span style="font-weight:400;color:#6b7280;font-size:0.8rem;">· ${escHtml(r.destination)} Visa</span></div>
+                        <div style="font-size:0.85rem;color:#374151;line-height:1.55;margin-bottom:6px;">"${escHtml(r.text)}"</div>
+                        <div style="font-size:0.75rem;color:#9ca3af;">${new Date(r.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })} · Ref: ${escHtml(r.applicationRef)}</div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+                        ${isPending
+                    ? `<button onclick="reviewAction('${r.id}',true)" style="background:#f0fdf4;border:1.5px solid #bbf7d0;color:#16a34a;border-radius:7px;padding:5px 12px;font-size:0.78rem;font-weight:700;cursor:pointer;">✓ Approve</button>`
+                    : `<button onclick="reviewAction('${r.id}',false)" style="background:#fef2f2;border:1.5px solid #fecaca;color:#dc2626;border-radius:7px;padding:5px 12px;font-size:0.78rem;font-weight:700;cursor:pointer;">✕ Unpublish</button>`
+                }
+                        <button onclick="deleteReview('${r.id}')" style="background:none;border:1.5px solid #e0e4ef;color:#9ca3af;border-radius:7px;padding:5px 12px;font-size:0.78rem;cursor:pointer;">🗑</button>
+                    </div>
+                </div>`;
+
+            document.getElementById('reviews-pending-list').innerHTML = pending.length
+                ? pending.map(r => renderCard(r, true)).join('')
+                : '<div class="atbl-empty">No reviews awaiting approval.</div>';
+
+            document.getElementById('reviews-approved-list').innerHTML = approved.length
+                ? approved.map(r => renderCard(r, false)).join('')
+                : '<div class="atbl-empty">No approved reviews yet.</div>';
+        }
+
+        async function reviewAction(id, approve) {
+            const res = await patch(`/reviews/admin/${id}`, { approved: approve });
+            if (!res?.ok) { showToast(res?.error || 'Failed.', 'error'); return; }
+            showToast(approve ? '✓ Review approved and live.' : 'Review unpublished.');
+            loadReviews();
+        }
+
+        async function deleteReview(id) {
+            if (!confirm('Permanently delete this review?')) return;
+            const res = await del(`/reviews/admin/${id}`);
+            if (!res?.ok) { showToast(res?.error || 'Failed.', 'error'); return; }
+            showToast('Review deleted.');
+            loadReviews();
         }
 
         function doLogout() { Auth.logout(); showToast('Logged out.'); setTimeout(() => location.href = 'index.html', 700); }

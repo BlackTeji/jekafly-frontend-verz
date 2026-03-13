@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rate Your Experience — Jekafly</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f7f8fc;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 44px 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 12px 48px rgba(10, 31, 68, 0.10);
+            border: 1.5px solid #e8ecf4;
+        }
+
+        .logo {
+            height: 32px;
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: #e8613a;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #0a1f44;
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .sub {
+            font-size: 0.88rem;
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .dest-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eff6ff;
+            border: 1.5px solid #bfdbfe;
+            color: #1d4ed8;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 28px;
+        }
+
+        /* Stars */
+        .stars-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .stars {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .star {
+            font-size: 2.2rem;
+            cursor: pointer;
+            transition: transform .15s;
+            filter: grayscale(1) opacity(.35);
+            user-select: none;
+        }
+
+        .star.active {
+            filter: none;
+            transform: scale(1.1);
+        }
+
+        .star:hover {
+            transform: scale(1.15);
+        }
+
+        .star-hint {
+            font-size: 0.78rem;
+            color: #9ca3af;
+            margin-top: -16px;
+            margin-bottom: 20px;
+            min-height: 18px;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #e0e4ef;
+            border-radius: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.9rem;
+            color: #0a1f44;
+            transition: border-color .2s;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #0a1f44;
+        }
+
+        textarea {
+            min-height: 110px;
+        }
+
+        .char-count {
+            font-size: 0.72rem;
+            color: #9ca3af;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #e8613a, #c04e2a);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            padding: 16px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform .15s, box-shadow .15s, opacity .15s;
+            box-shadow: 0 6px 24px rgba(232, 97, 58, 0.35);
+        }
+
+        .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 32px rgba(232, 97, 58, 0.45);
+        }
+
+        .btn-submit:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        /* States */
+        .state {
+            display: none;
+            text-align: center;
+        }
+
+        .state.show {
+            display: block;
+        }
+
+        .state-icon {
+            font-size: 3.5rem;
+            margin-bottom: 16px;
+        }
+
+        .state h2 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #0a1f44;
+            margin-bottom: 8px;
+        }
+
+        .state p {
+            font-size: 0.88rem;
+            color: #6b7280;
+            line-height: 1.7;
+        }
+
+        .btn-home {
+            margin-top: 20px;
+            display: inline-block;
+            background: #0a1f44;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        @media (max-width: 560px) {
+            .card {
+                padding: 32px 24px;
+            }
+
+            h1 {
+                font-size: 1.35rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" class="logo" />
+
+        <!-- Loading -->
+        <div id="state-loading" class="state show">
+            <div class="state-icon">⏳</div>
+            <h2>Loading your survey...</h2>
+        </div>
+
+        <!-- Already used -->
+        <div id="state-used" class="state">
+            <div class="state-icon">✅</div>
+            <h2>Already submitted</h2>
+            <p>You've already shared your feedback for this application. Thank you!</p>
+            <a href="index.html" class="btn-home">Back to Jekafly</a>
+        </div>
+
+        <!-- Invalid -->
+        <div id="state-invalid" class="state">
+            <div class="state-icon">🔗</div>
+            <h2>Invalid link</h2>
+            <p>This survey link is not valid or has expired. Please check your email for the correct link.</p>
+            <a href="index.html" class="btn-home">Back to Jekafly</a>
+        </div>
+
+        <!-- Success -->
+        <div id="state-success" class="state">
+            <div class="state-icon">🎉</div>
+            <h2>Thank you!</h2>
+            <p>Your review has been submitted. Once approved by our team it will appear on the Jekafly website to help
+                other travellers.</p>
+            <a href="index.html" class="btn-home">Back to Jekafly</a>
+        </div>
+
+        <!-- Form -->
+        <div id="state-form" class="state">
+            <div class="eyebrow">Quick Survey</div>
+            <h1>How was your experience?</h1>
+            <p class="sub" id="survey-sub">We'd love to hear about your visa journey with Jekafly.</p>
+            <div class="dest-badge" id="dest-badge">✈️ Loading...</div>
+
+            <div class="stars-label">Overall Rating</div>
+            <div class="stars" id="stars">
+                <span class="star" data-val="1">★</span>
+                <span class="star" data-val="2">★</span>
+                <span class="star" data-val="3">★</span>
+                <span class="star" data-val="4">★</span>
+                <span class="star" data-val="5">★</span>
+            </div>
+            <div class="star-hint" id="star-hint">Click to rate</div>
+
+            <div class="form-group">
+                <label>Your Name <span style="color:#9ca3af;font-weight:400;">(shown on review)</span></label>
+                <input type="text" id="review-name" placeholder="e.g. Adaeze O." maxlength="80" />
+            </div>
+
+            <div class="form-group">
+                <label>Your Review</label>
+                <textarea id="review-text"
+                    placeholder="Tell us about your experience — what went well, how fast it was, anything you'd like others to know..."
+                    maxlength="600"
+                    oninput="document.getElementById('char-count').textContent = this.value.length + '/600'"></textarea>
+                <div class="char-count" id="char-count">0/600</div>
+            </div>
+
+            <button class="btn-submit" id="btn-submit" onclick="submitReview()">Submit My Review →</button>
+        </div>
+    </div>
+
+    <script>
+        const API = 'https://jekafly-api-production.up.railway.app/api/v1';
+        let selectedRating = 0;
+        let surveyToken = null;
+
+        const hints = ['', 'Poor — Not what I expected', 'Fair — Some issues', 'Good — Happy overall', 'Great — Highly satisfied', 'Excellent — Absolutely loved it!'];
+
+        // Star interaction
+        document.getElementById('stars').addEventListener('mouseover', e => {
+            if (!e.target.dataset.val) return;
+            highlightStars(+e.target.dataset.val);
+            document.getElementById('star-hint').textContent = hints[+e.target.dataset.val];
+        });
+        document.getElementById('stars').addEventListener('mouseleave', () => {
+            highlightStars(selectedRating);
+            document.getElementById('star-hint').textContent = selectedRating ? hints[selectedRating] : 'Click to rate';
+        });
+        document.getElementById('stars').addEventListener('click', e => {
+            if (!e.target.dataset.val) return;
+            selectedRating = +e.target.dataset.val;
+            highlightStars(selectedRating);
+            document.getElementById('star-hint').textContent = hints[selectedRating];
+        });
+
+        function highlightStars(n) {
+            document.querySelectorAll('.star').forEach(s => {
+                s.classList.toggle('active', +s.dataset.val <= n);
+            });
+        }
+
+        function showState(id) {
+            document.querySelectorAll('.state').forEach(s => s.classList.remove('show'));
+            document.getElementById(id).classList.add('show');
+        }
+
+        async function loadSurvey() {
+            const params = new URLSearchParams(window.location.search);
+            surveyToken = params.get('token');
+            if (!surveyToken) { showState('state-invalid'); return; }
+
+            try {
+                const res = await fetch(`${API}/reviews/survey/${surveyToken}`);
+                const data = await res.json();
+                if (!res.ok) {
+                    showState(res.status === 410 ? 'state-used' : 'state-invalid');
+                    return;
+                }
+                document.getElementById('dest-badge').textContent = '✈️ ' + data.data.destination + ' Visa';
+                document.getElementById('survey-sub').textContent = `Hi ${data.data.name}, share your experience and help other travellers.`;
+                document.getElementById('review-name').value = data.data.name || '';
+                showState('state-form');
+            } catch {
+                showState('state-invalid');
+            }
+        }
+
+        async function submitReview() {
+            if (!selectedRating) { alert('Please select a star rating.'); return; }
+            const name = document.getElementById('review-name').value.trim();
+            const text = document.getElementById('review-text').value.trim();
+            if (!name) { alert('Please enter your name.'); return; }
+            if (text.length < 10) { alert('Please write at least 10 characters in your review.'); return; }
+
+            const btn = document.getElementById('btn-submit');
+            btn.disabled = true; btn.textContent = 'Submitting...';
+
+            try {
+                const res = await fetch(`${API}/reviews/survey/${surveyToken}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ rating: selectedRating, text, name }),
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    showState('state-success');
+                } else {
+                    btn.disabled = false; btn.textContent = 'Submit My Review →';
+                    alert(data.error || 'Submission failed. Please try again.');
+                }
+            } catch {
+                btn.disabled = false; btn.textContent = 'Submit My Review →';
+                alert('Network error. Please try again.');
+            }
+        }
+
+        loadSurvey();
+    </script>
+</body>
+
+</html>
