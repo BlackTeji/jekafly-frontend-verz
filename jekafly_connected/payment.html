@@ -7,694 +7,20 @@
     <title>Payment — Jekafly</title>
     <link
         href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap"
-        rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/payment.css" />
+    rel="stylesheet" />
     <script src="https://js.paystack.co/v1/inline.js"></script>
-    <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
 
-        :root {
-            --brand: #e8613a;
-            --brand-dark: #c04e2a;
-            --navy: #0a1f44;
-            --navy-mid: #1a3560;
-            --ink: #1c1c2e;
-            --muted: #6b7280;
-            --border: #e8ecf4;
-            --surface: #f7f8fc;
-            --white: #ffffff;
-            --green: #16a34a;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--surface);
-            min-height: 100vh;
-            color: var(--ink);
-        }
-
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            height: 62px;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(16px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .nav-logo img {
-            height: 34px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--muted);
-            font-size: .875rem;
-            font-weight: 500;
-            transition: color .2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--brand);
-        }
-
-        .nav-user {
-            font-size: .82rem;
-            color: var(--muted);
-        }
-
-        .nav-user strong {
-            color: var(--navy);
-        }
-
-        .pay-page {
-            min-height: 100vh;
-            padding: 90px 20px 60px;
-            display: flex;
-            align-items: flex-start;
-            justify-content: center;
-        }
-
-        .pay-layout {
-            width: 100%;
-            max-width: 1020px;
-            display: grid;
-            grid-template-columns: 1fr 420px;
-            gap: 28px;
-            align-items: start;
-        }
-
-        .summary-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .page-eyebrow {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: .72rem;
-            font-weight: 700;
-            letter-spacing: .1em;
-            text-transform: uppercase;
-            color: var(--brand);
-            margin-bottom: 4px;
-        }
-
-        .page-eyebrow::before {
-            content: '';
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: var(--brand);
-            border-radius: 2px;
-        }
-
-        .page-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2.2rem;
-            line-height: 1.15;
-            color: var(--navy);
-            margin-bottom: 6px;
-        }
-
-        .page-sub {
-            font-size: .9rem;
-            color: var(--muted);
-            line-height: 1.6;
-        }
-
-        .dest-card {
-            background: var(--navy);
-            border-radius: 20px;
-            padding: 28px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .dest-card::before {
-            content: '';
-            position: absolute;
-            top: -40px;
-            right: -40px;
-            width: 200px;
-            height: 200px;
-            background: radial-gradient(circle, rgba(232, 97, 58, .25) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .dest-card-top {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .dest-flag-box {
-            width: 56px;
-            height: 56px;
-            background: rgba(255, 255, 255, .1);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            flex-shrink: 0;
-        }
-
-        .dest-card-info {
-            flex: 1;
-        }
-
-        .dest-card-name {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 4px;
-        }
-
-        .dest-card-ref {
-            font-size: .75rem;
-            color: rgba(255, 255, 255, .5);
-            font-family: monospace;
-            letter-spacing: .05em;
-        }
-
-        .dest-card-amount {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2rem;
-            color: #fff;
-            text-align: right;
-        }
-
-        .dest-card-amount small {
-            display: block;
-            font-family: 'DM Sans', sans-serif;
-            font-size: .7rem;
-            color: rgba(255, 255, 255, .5);
-            font-weight: 400;
-            margin-bottom: 2px;
-        }
-
-        .line-items {
-            background: var(--white);
-            border-radius: 16px;
-            border: 1.5px solid var(--border);
-            overflow: hidden;
-        }
-
-        .line-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 20px;
-            border-bottom: 1px solid var(--border);
-            font-size: .875rem;
-        }
-
-        .line-item:last-child {
-            border-bottom: none;
-        }
-
-        .line-item .li-label {
-            color: var(--muted);
-        }
-
-        .line-item .li-val {
-            font-weight: 600;
-            color: var(--ink);
-        }
-
-        .line-item .li-val.ref-val {
-            font-family: monospace;
-            font-size: .78rem;
-            background: var(--surface);
-            padding: 3px 9px;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--navy);
-        }
-
-        .line-item.total-line {
-            background: var(--surface);
-            border-top: 2px solid var(--border);
-            padding: 16px 20px;
-        }
-
-        .line-item.total-line .li-label {
-            font-weight: 700;
-            font-size: .95rem;
-            color: var(--ink);
-        }
-
-        .line-item.total-line .li-val {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.4rem;
-            color: var(--brand);
-        }
-
-        .included-strip {
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-            background: #f0fdf4;
-            border: 1.5px solid #bbf7d0;
-            border-radius: 12px;
-            padding: 14px 16px;
-            font-size: .82rem;
-            color: #065f46;
-            line-height: 1.55;
-        }
-
-        .pay-panel {
-            position: sticky;
-            top: 82px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .pay-box {
-            background: var(--white);
-            border-radius: 20px;
-            border: 1.5px solid var(--border);
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(10, 31, 68, .08);
-        }
-
-        .pay-box-header {
-            padding: 20px 24px 0;
-        }
-
-        .pay-box-title {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 4px;
-        }
-
-        .pay-box-sub {
-            font-size: .8rem;
-            color: var(--muted);
-        }
-
-        .pay-total-display {
-            padding: 16px 24px;
-            display: flex;
-            align-items: baseline;
-            gap: 4px;
-        }
-
-        .pay-total-currency {
-            font-size: 1rem;
-            color: var(--muted);
-            font-weight: 600;
-        }
-
-        .pay-total-amount {
-            font-family: 'DM Serif Display', serif;
-            font-size: 2.4rem;
-            color: var(--navy);
-            line-height: 1;
-        }
-
-        .pay-divider {
-            height: 1px;
-            background: var(--border);
-            margin: 0 24px;
-        }
-
-        .pay-cta-wrap {
-            padding: 20px 24px;
-        }
-
-        .btn-pay {
-            width: 100%;
-            background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
-            color: #fff;
-            border: none;
-            border-radius: 14px;
-            padding: 18px 24px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: transform .15s, box-shadow .15s, opacity .15s;
-            box-shadow: 0 6px 24px rgba(232, 97, 58, .4);
-        }
-
-        .btn-pay:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 36px rgba(232, 97, 58, .5);
-        }
-
-        .btn-pay:active:not(:disabled) {
-            transform: translateY(0);
-        }
-
-        .btn-pay:disabled {
-            opacity: .6;
-            cursor: not-allowed;
-        }
-
-        .btn-pay-sub {
-            font-weight: 400;
-            font-size: .82rem;
-            opacity: .8;
-        }
-
-        .trust-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            padding: 0 24px 20px;
-        }
-
-        .trust-badge {
-            font-size: .72rem;
-            color: var(--muted);
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 4px 10px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .pay-processing {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 48px 24px;
-            text-align: center;
-            gap: 14px;
-        }
-
-        .pay-processing.show {
-            display: flex;
-        }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--brand);
-            border-radius: 50%;
-            animation: spin .75s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .processing-title {
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--navy);
-        }
-
-        .processing-sub {
-            font-size: .82rem;
-            color: var(--muted);
-        }
-
-        .pay-empty {
-            text-align: center;
-            padding: 64px 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .pay-empty-icon {
-            font-size: 3rem;
-        }
-
-        .pay-empty h2 {
-            font-size: 1.25rem;
-            font-weight: 700;
-        }
-
-        .pay-empty p {
-            font-size: .875rem;
-            color: var(--muted);
-        }
-
-        .btn-start {
-            margin-top: 8px;
-            background: var(--brand);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 12px 24px;
-            font-size: .9rem;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-        }
-
-        .success-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: rgba(10, 31, 68, .75);
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-        }
-
-        .success-overlay.show {
-            display: flex;
-        }
-
-        .success-modal {
-            background: var(--white);
-            border-radius: 24px;
-            padding: 44px 36px;
-            max-width: 460px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 28px 72px rgba(0, 0, 0, .25);
-            animation: popIn .38s cubic-bezier(.34, 1.56, .64, 1);
-        }
-
-        @keyframes popIn {
-            from {
-                transform: scale(.85);
-                opacity: 0;
-            }
-
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .success-icon-wrap {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 20px;
-            background: #f0fdf4;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem;
-        }
-
-        .success-modal h2 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.7rem;
-            color: var(--navy);
-            margin-bottom: 8px;
-        }
-
-        .success-modal p {
-            font-size: .875rem;
-            color: var(--muted);
-            line-height: 1.65;
-            margin-bottom: 24px;
-        }
-
-        .receipt {
-            background: var(--surface);
-            border-radius: 14px;
-            border: 1.5px solid var(--border);
-            overflow: hidden;
-            margin-bottom: 24px;
-            text-align: left;
-        }
-
-        .receipt-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 11px 16px;
-            border-bottom: 1px solid var(--border);
-            font-size: .82rem;
-        }
-
-        .receipt-row:last-child {
-            border-bottom: none;
-        }
-
-        .receipt-row .rl {
-            color: var(--muted);
-        }
-
-        .receipt-row .rv {
-            font-weight: 600;
-            color: var(--ink);
-        }
-
-        .receipt-row .rv.amount {
-            color: var(--green);
-            font-size: 1rem;
-        }
-
-        .receipt-row .rv.tx {
-            font-family: monospace;
-            font-size: .73rem;
-            color: var(--muted);
-            word-break: break-all;
-        }
-
-        .success-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .btn-dashboard {
-            background: var(--navy);
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            padding: 14px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: .9rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .btn-dashboard:hover {
-            background: var(--navy-mid);
-        }
-
-        .btn-home {
-            background: none;
-            border: 1.5px solid var(--border);
-            border-radius: 12px;
-            padding: 13px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: .875rem;
-            font-weight: 500;
-            color: var(--muted);
-            cursor: pointer;
-        }
-
-        .btn-home:hover {
-            border-color: #d1d5db;
-            color: var(--ink);
-        }
-
-        @media (max-width: 760px) {
-            nav {
-                padding: 0 18px;
-            }
-
-            .pay-page {
-                padding: 80px 14px 48px;
-            }
-
-            .pay-layout {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-
-            .pay-panel {
-                position: static;
-                border-radius: 20px;
-                padding: 24px 18px;
-            }
-
-            .pay-left {
-                border-radius: 20px;
-                padding: 24px 18px;
-            }
-
-            .page-title {
-                font-size: 1.5rem;
-                margin-bottom: 20px;
-            }
-
-            .dest-card-inner {
-                padding: 20px;
-            }
-
-            .pay-total-amount {
-                font-size: 2.2rem;
-            }
-
-            .btn-pay {
-                padding: 16px;
-                font-size: 1rem;
-                border-radius: 14px;
-            }
-
-            .fee-line {
-                font-size: 0.85rem;
-            }
-        }
-
-        @media (max-width: 640px) {
-
-            /* Prevent iOS input zoom */
-            input,
-            select,
-            textarea {
-                font-size: 16px !important;
-            }
-        }
-    </style>
 </head>
 
 <body>
 
     <nav id="main-nav">
         <a href="index.html" class="nav-logo"><img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" /></a>
-        <div class="nav-links"><a href="index.html">Home</a><a href="dashboard.html">Dashboard</a></div>
+        <div class="nav-links"><a href="index.html">Home</a><a href="dashboard.html">My Dashboard</a></div>
         <div class="nav-cta" id="nav-cta-area"></div>
         <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
             <span class="nav-burger" id="nav-burger">☰</span>
@@ -725,17 +51,17 @@
         </div>
     </div>
 
-    <script src="api.js"></script>
-    <script src="app.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
     <script>
         let pendingPayment = null;
 
         document.addEventListener('DOMContentLoaded', async () => {
+            PricingStore.get().then(pr => { if (pr) window._livePricing = pr; }).catch(() => { });
             await Auth.init();
             const user = Auth.getCurrent();
             if (!user) { window.location.href = 'index.html'; return; }
-            document.getElementById('nav-user-area').innerHTML =
-                '<span class="nav-user">Hi, <strong>' + user.name.split(' ')[0] + '</strong></span>';
+            updateNav();
             try { pendingPayment = JSON.parse(localStorage.getItem('jkf_pending_payment')); } catch { }
             const urlParams = new URLSearchParams(window.location.search);
             const returnRef = urlParams.get('ref') || urlParams.get('reference') || urlParams.get('trxref');
@@ -771,7 +97,8 @@
             } else {
                 flag = '&#128737;'; destName = p.plan || 'Insurance';
                 destRef = (p.dest || '') + (p.travellers ? ' &middot; ' + p.travellers + ' traveller(s)' : '');
-                const svc = Math.round((p.amount || 0) * 0.05);
+                const _procPct = (window._livePricing?.processingFeePercent ?? 5) / 100;
+                const svc = Math.round((p.amount || 0) * _procPct);
                 total = (p.amount || 0) + svc;
                 rows.push({ l: 'Insurance Plan', v: p.plan || '&mdash;' });
                 rows.push({ l: 'Destination', v: p.dest || '&mdash;' });
@@ -816,7 +143,7 @@
 
         function renderProcessing() {
             document.getElementById('pay-root').innerHTML =
-                '<div class="pay-box" style="max-width:440px;width:100%;"><div class="pay-processing show"><div class="spinner"></div><div class="processing-title">Verifying payment...</div><div class="processing-sub">Please wait.</div></div></div>';
+                '<div class="pay-box w-full max-w-440"><div class="pay-processing show"><div class="spinner"></div><div class="processing-title">Verifying payment...</div><div class="processing-sub">Please wait.</div></div></div>';
         }
 
         function copyRef(el) {
@@ -841,7 +168,7 @@
                     '<div class="receipt-row"><span class="rl">Date &amp; Time</span><span class="rv">' + now + '</span></div>' +
                     (r.ref ? '<div class="receipt-row"><span class="rl">Application Ref</span><span class="rv tx">' + r.ref + '</span></div>' : '') +
                     '<div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv amount">&#8358;' + (r.amount || 0).toLocaleString() + '</span></div>' +
-                    '<div class="receipt-row"><span class="rl">Status</span><span class="rv" style="color:#16a34a;font-weight:700;">&#9989; Confirmed</span></div>';
+                    '<div class="receipt-row"><span class="rl">Status</span><span class="rv text-green fw-700">&#9989; Confirmed</span></div>';
                 document.getElementById('pay-success-overlay').classList.add('show');
             } else {
                 document.getElementById('pay-form-view').style.display = 'block';
@@ -861,7 +188,7 @@
                     (pendingPayment.type || 'visa').toUpperCase(),
                     pendingPayment.ref || null, amountKobo,
                     pendingPayment.email || user.email,
-                    { destination: pendingPayment.destination, plan: pendingPayment.plan }
+                    { destination: pendingPayment.destination || pendingPayment.dest, plan: pendingPayment.plan, date: pendingPayment.date, travelDate: pendingPayment.date, travellers: pendingPayment.travellers }
                 );
                 if (!res?.ok) throw new Error(res?.error || 'Payment initiation failed.');
                 const { accessCode, reference, publicKey } = res.data;
@@ -898,7 +225,7 @@
                     '<div class="receipt-row"><span class="rl">Date &amp; Time</span><span class="rv">' + now + '</span></div>' +
                     (r.ref ? '<div class="receipt-row"><span class="rl">Application Ref</span><span class="rv tx">' + r.ref + '</span></div>' : '') +
                     '<div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv amount">&#8358;' + (r.amount || 0).toLocaleString() + '</span></div>' +
-                    '<div class="receipt-row"><span class="rl">Status</span><span class="rv" style="color:#16a34a;font-weight:700;">&#9989; Confirmed</span></div>';
+                    '<div class="receipt-row"><span class="rl">Status</span><span class="rv text-green fw-700">&#9989; Confirmed</span></div>';
                 document.getElementById('pay-success-overlay').classList.add('show');
             } else {
                 showToast('Payment could not be verified. Please contact support.', 'error');
@@ -908,6 +235,22 @@
         window.addEventListener('scroll', () => {
             document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20);
         });
+        // Payment page: nav CTA only needs greeting + logout, Dashboard is in nav-links
+        function updateNav() {
+            const user = Auth?.getCurrent ? Auth.getCurrent() : null;
+            const ctaEl = document.querySelector('.nav-cta');
+            const mCta = document.getElementById('nav-mobile-cta');
+            if (!ctaEl) return;
+            if (user) {
+                const first = (user.name || 'User').split(' ')[0];
+                ctaEl.innerHTML = `<span class="nav-user-hi">Hi, <strong>${first}</strong></span>
+                    <button class="btn-primary" onclick="handleLogout()">Logout</button>`;
+                if (mCta) mCta.innerHTML = `<button class="btn-primary" onclick="handleLogout();closeNavMenu()">Logout</button>`;
+            } else {
+                ctaEl.innerHTML = `<button class="btn-outline" onclick="window.location.href='index.html'">Login</button>`;
+            }
+        }
+
     </script>
 </body>
 

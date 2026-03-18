@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found — Jekafly</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/utilities.css" />
+    <link rel="stylesheet" href="assets/css/404.css" />
+</head>
+
+<body>
+
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">
+            <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="apply.html">Apply</a>
+            <a href="dashboard.html">Dashboard</a>
+        </div>
+        <div class="nav-cta" id="nav-cta-area"></div>
+        <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
+            <span class="nav-burger" id="nav-burger">☰</span>
+        </button>
+    </nav>
+    <div class="nav-mobile-drawer" id="nav-mobile-drawer">
+        <a href="index.html" onclick="closeNavMenu()">Home</a>
+        <a href="apply.html" onclick="closeNavMenu()">Apply</a>
+        <a href="dashboard.html" onclick="closeNavMenu()">Dashboard</a>
+        <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
+    </div>
+    <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
+
+    <div class="notfound-page">
+        <div class="notfound-plane">✈️</div>
+        <div class="notfound-code">404</div>
+        <h1 class="notfound-title">This page took a wrong turn</h1>
+        <p class="notfound-sub">The page you're looking for doesn't exist or may have moved. Let's get you back on
+            track.</p>
+        <div class="notfound-actions">
+            <a href="index.html" class="btn-home">Back to Home</a>
+            <a href="dashboard.html" class="btn-back">My Dashboard</a>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
+
+</body>
+
+</html>

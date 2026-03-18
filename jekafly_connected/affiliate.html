@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <title>Become an Affiliate — Jekafly</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/utilities.css" />
+    <link rel="stylesheet" href="assets/css/affiliate.css" />
+</head>
+
+<body>
+
+    <nav id="main-nav">
+        <a href="index.html" class="nav-logo">
+            <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" />
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="index.html#services">Services</a>
+            <a href="index.html#visa">Visa Application</a>
+        </div>
+        <div class="nav-cta" id="nav-cta-area"></div>
+        <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
+            <span class="nav-burger" id="nav-burger">&#9776;</span>
+        </button>
+    </nav>
+    <div class="nav-mobile-drawer" id="nav-mobile-drawer">
+        <a href="index.html" onclick="closeNavMenu()">Home</a>
+        <a href="index.html#services" onclick="closeNavMenu()">Services</a>
+        <a href="index.html#visa" onclick="closeNavMenu()">Visa Application</a>
+        <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
+    </div>
+    <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
+
+    <!-- HERO -->
+    <section class="aff-hero">
+        <div class="aff-hero-inner">
+            <div class="aff-hero-badge"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path d="M9 11l3 3L22 4" />
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+                </svg> Partner Programme</div>
+            <h1><em>Earn</em> While You Help<br>People Travel</h1>
+            <p>Join the Jekafly Affiliate Programme. Refer clients, earn commission on every successful visa
+                application, and build a steady income stream.</p>
+            <div class="aff-hero-cta">
+                <a href="#apply" class="btn-aff-primary">Apply to Join &rarr;</a>
+                <a href="#how-it-works" class="btn-aff-secondary">How it works</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS STRIP -->
+    <div class="aff-stats-strip">
+        <div class="aff-stats-inner">
+            <div class="aff-stat">
+                <div class="aff-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M8 14h8M8 10h8M12 6v12" />
+                    </svg></div><strong>&#8358;50k+</strong><span>Avg monthly earnings</span>
+            </div>
+            <div class="aff-stat">
+                <div class="aff-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+                        <polyline points="17 6 23 6 23 12" />
+                    </svg></div><strong>Up to 15%</strong><span>Commission per referral</span>
+            </div>
+            <div class="aff-stat">
+                <div class="aff-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg></div><strong>30 days</strong><span>Cookie duration</span>
+            </div>
+            <div class="aff-stat">
+                <div class="aff-stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="3" y="10" width="18" height="11" rx="1" />
+                        <path d="M3 10l9-7 9 7" />
+                        <line x1="7" y1="21" x2="7" y2="10" />
+                        <line x1="12" y1="21" x2="12" y2="10" />
+                        <line x1="17" y1="21" x2="17" y2="10" />
+                    </svg></div><strong>Weekly</strong><span>Payout schedule</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- AFFILIATE STATUS PANEL (for logged-in approved affiliates) -->
+    <div class="container" id="aff-status-wrap" style="padding-top:40px;"></div>
+
+    <!-- HOW IT WORKS -->
+    <section class="aff-section" id="how-it-works">
+        <div class="container">
+            <div class="aff-section-header">
+                <div class="aff-overline">Process</div>
+                <h2 class="aff-section-title">How It Works</h2>
+                <p class="aff-section-sub">Four simple steps to start earning with Jekafly</p>
+            </div>
+            <div class="aff-steps">
+                <div class="aff-step">
+                    <div class="aff-step-num">1</div>
+                    <h3>Apply to Join</h3>
+                    <p>Fill out the form below. Our team reviews applications within 48 hours and approves qualified
+                        partners.</p>
+                </div>
+                <div class="aff-step">
+                    <div class="aff-step-num">2</div>
+                    <h3>Get Your Link</h3>
+                    <p>Once approved you receive a unique referral code and link to share with your audience.</p>
+                </div>
+                <div class="aff-step">
+                    <div class="aff-step-num">3</div>
+                    <h3>Refer Clients</h3>
+                    <p>Share your link on social media, WhatsApp, or your website. Every referred client is tracked.</p>
+                </div>
+                <div class="aff-step">
+                    <div class="aff-step-num">4</div>
+                    <h3>Get Paid</h3>
+                    <p>Earn commission on every completed application. Payouts every week straight to your bank account.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMISSIONS -->
+    <section class="aff-section aff-tiers-section">
+        <div class="container">
+            <div class="aff-section-header">
+                <div class="aff-overline">Earnings</div>
+                <h2 class="aff-section-title">Commission Tiers</h2>
+                <p class="aff-section-sub">The more you refer, the more you earn</p>
+            </div>
+            <div class="aff-tiers">
+                <div class="aff-tier">
+                    <div class="aff-tier-name">Starter</div>
+                    <div class="aff-tier-rate">8%</div>
+                    <div class="aff-tier-desc">0&ndash;5 referrals/month<br>Great way to get started</div>
+                </div>
+                <div class="aff-tier aff-tier-featured">
+                    <div class="aff-tier-badge">MOST POPULAR</div>
+                    <div class="aff-tier-name">Growth</div>
+                    <div class="aff-tier-rate">12%</div>
+                    <div class="aff-tier-desc">6&ndash;15 referrals/month<br>Best for active promoters</div>
+                </div>
+                <div class="aff-tier">
+                    <div class="aff-tier-name">Elite</div>
+                    <div class="aff-tier-rate">15%</div>
+                    <div class="aff-tier-desc">16+ referrals/month<br>Top earner programme</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PERKS -->
+    <section class="aff-section">
+        <div class="container">
+            <div class="aff-section-header">
+                <div class="aff-overline">Benefits</div>
+                <h2 class="aff-section-title">Why Partner With Us</h2>
+                <p class="aff-section-sub">Everything you need to succeed as a Jekafly affiliate</p>
+            </div>
+            <div class="aff-perks">
+                <div class="aff-perk">
+                    <div class="aff-perk-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10" />
+                            <line x1="12" y1="20" x2="12" y2="4" />
+                            <line x1="6" y1="20" x2="6" y2="14" />
+                        </svg></div>
+                    <div>
+                        <h4>Real-time Dashboard</h4>
+                        <p>Track every click, conversion, and commission live &mdash; no delays.</p>
+                    </div>
+                </div>
+                <div class="aff-perk">
+                    <div class="aff-perk-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="6" width="20" height="12" rx="2" />
+                            <circle cx="12" cy="12" r="3" />
+                            <path d="M2 10h2M20 10h2M2 14h2M20 14h2" />
+                        </svg></div>
+                    <div>
+                        <h4>Weekly Bank Payouts</h4>
+                        <p>Earnings paid directly to your Nigerian bank account every week.</p>
+                    </div>
+                </div>
+                <div class="aff-perk">
+                    <div class="aff-perk-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                            <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" />
+                        </svg></div>
+                    <div>
+                        <h4>Marketing Materials</h4>
+                        <p>Ready-made banners, social posts, and copy to start promoting immediately.</p>
+                    </div>
+                </div>
+                <div class="aff-perk">
+                    <div class="aff-perk-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+                            <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+                        </svg></div>
+                    <div>
+                        <h4>30-Day Cookie</h4>
+                        <p>Get credit even if a client applies days after clicking your link.</p>
+                    </div>
+                </div>
+                <div class="aff-perk">
+                    <div class="aff-perk-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                            <circle cx="9" cy="7" r="4" />
+                            <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                            <path d="M16 3.13a4 4 0 010 7.75" />
+                        </svg></div>
+                    <div>
+                        <h4>Dedicated Support</h4>
+                        <p>A personal affiliate manager to help you maximise your earnings.</p>
+                    </div>
+                </div>
+                <div class="aff-perk">
+                    <div class="aff-perk-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="6" />
+                            <path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" />
+                        </svg></div>
+                    <div>
+                        <h4>Tiered Commissions</h4>
+                        <p>Your rate grows automatically as your referral volume increases.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- APPLICATION FORM -->
+    <section class="aff-section aff-form-section" id="apply">
+        <div class="container">
+            <div class="aff-section-header">
+                <div class="aff-overline">Join Today</div>
+                <h2 class="aff-section-title">Apply to Become an Affiliate</h2>
+                <p class="aff-section-sub">Tell us about yourself. We review every application and respond within 48
+                    hours.</p>
+            </div>
+            <div class="aff-form-card" id="aff-form-card">
+                <div class="aff-form-top-bar"></div>
+
+                <!-- Success -->
+                <div class="aff-success hidden" id="aff-success">
+                    <div class="aff-success-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                            <polyline points="22 4 12 14.01 9 11.01" />
+                        </svg></div>
+                    <h3>Application Submitted!</h3>
+                    <p>Our team will review your application and get back to you within 48 hours. Keep an eye on your
+                        email.</p>
+                </div>
+
+                <!-- Already applied / pending -->
+                <div class="aff-success hidden" id="aff-already">
+                    <div class="aff-success-icon aff-icon-pending"><svg xmlns="http://www.w3.org/2000/svg" width="32"
+                            height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="8" x2="12" y2="12" />
+                            <line x1="12" y1="16" x2="12.01" y2="16" />
+                        </svg></div>
+                    <h3 id="aff-already-title">Application Under Review</h3>
+                    <p id="aff-already-body">You have already applied. Our team is reviewing your application. You will
+                        receive an email once a decision is made.</p>
+                </div>
+
+                <!-- Form -->
+                <form id="aff-form" onsubmit="submitAffiliateApp(event)">
+                    <div class="aff-form-title">Your Application</div>
+                    <div class="aff-form-sub">All fields are required unless marked optional.</div>
+                    <div class="aff-form-grid">
+                        <div class="aff-field"><label>Full Name</label><input type="text" id="aff-name"
+                                placeholder="As on your ID" required /></div>
+                        <div class="aff-field"><label>Email Address</label><input type="email" id="aff-email"
+                                placeholder="you@example.com" required /></div>
+                        <div class="aff-field"><label>Phone Number</label><input type="tel" id="aff-phone"
+                                placeholder="+234 xxx xxx xxxx" required /></div>
+                        <div class="aff-field"><label>State / Location</label><input type="text" id="aff-location"
+                                placeholder="e.g. Lagos, Abuja" required /></div>
+                        <div class="aff-field">
+                            <label>Primary Channel</label>
+                            <select id="aff-channel" required>
+                                <option value="">Select how you will promote</option>
+                                <option value="social_media">Social Media (Instagram, TikTok, X)</option>
+                                <option value="whatsapp">WhatsApp Groups / Broadcast</option>
+                                <option value="blog_website">Blog or Website</option>
+                                <option value="youtube">YouTube</option>
+                                <option value="travel_agent">Travel Agent / Agency</option>
+                                <option value="word_of_mouth">Word of Mouth</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="aff-field">
+                            <label>Audience Size</label>
+                            <select id="aff-audience" required>
+                                <option value="">Select range</option>
+                                <option value="under_1k">Under 1,000</option>
+                                <option value="1k_5k">1,000 &ndash; 5,000</option>
+                                <option value="5k_20k">5,000 &ndash; 20,000</option>
+                                <option value="20k_100k">20,000 &ndash; 100,000</option>
+                                <option value="100k_plus">100,000+</option>
+                            </select>
+                        </div>
+                        <div class="aff-field aff-field-full">
+                            <label>Social Media / Website URL <span class="aff-optional">(optional)</span></label>
+                            <input type="url" id="aff-url" placeholder="https://instagram.com/yourhandle" />
+                            <div class="aff-hint">Link to your main profile or website.</div>
+                        </div>
+                        <div class="aff-form-divider aff-field-full"><span>Bank Details for Payouts</span></div>
+                        <div class="aff-field aff-field-full">
+                            <label>Bank Account Number</label>
+                            <input type="text" id="aff-bank-acct" placeholder="10-digit NUBAN" maxlength="10"
+                                required />
+                        </div>
+                        <div class="aff-field">
+                            <label>Bank Name</label>
+                            <select id="aff-bank-name" required>
+                                <option value="">Select your bank</option>
+                                <option>Access Bank</option>
+                                <option>First Bank</option>
+                                <option>GTBank</option>
+                                <option>Zenith Bank</option>
+                                <option>UBA</option>
+                                <option>Fidelity Bank</option>
+                                <option>Stanbic IBTC</option>
+                                <option>Sterling Bank</option>
+                                <option>Union Bank</option>
+                                <option>Polaris Bank</option>
+                                <option>Ecobank</option>
+                                <option>Opay</option>
+                                <option>Palmpay</option>
+                                <option>Kuda Bank</option>
+                                <option>Moniepoint</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="aff-field">
+                            <label>Account Name</label>
+                            <input type="text" id="aff-bank-acct-name" placeholder="Name on bank account" required />
+                        </div>
+                        <div class="aff-form-divider aff-field-full"><span>About You</span></div>
+                        <div class="aff-field aff-field-full">
+                            <label>Why do you want to join? <span class="aff-optional">(optional)</span></label>
+                            <textarea id="aff-why"
+                                placeholder="Tell us about your audience and why you would be a great Jekafly affiliate..."></textarea>
+                        </div>
+                    </div>
+                    <div class="aff-terms-row">
+                        <input type="checkbox" id="aff-terms" required />
+                        <label for="aff-terms">I agree to the Jekafly Affiliate Programme terms. Commission is earned
+                            only on completed, paid applications. Jekafly reserves the right to approve or reject
+                            applications.</label>
+                    </div>
+                    <button type="submit" class="btn-aff-submit" id="aff-submit-btn">Submit Application &rarr;</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="aff-section aff-faq-section" id="faq">
+        <div class="container">
+            <div class="aff-section-header">
+                <div class="aff-overline">FAQ</div>
+                <h2 class="aff-section-title">Frequently Asked Questions</h2>
+                <p class="aff-section-sub">Everything you need to know</p>
+            </div>
+            <div class="aff-faq-list">
+                <div class="aff-faq-item">
+                    <div class="aff-faq-q" onclick="toggleFaq(this)">How long does approval take? <span
+                            class="aff-faq-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg></span></div>
+                    <div class="aff-faq-a">We review applications within 48 hours on business days. Once approved you
+                        will receive an email with your referral link and dashboard access.</div>
+                </div>
+                <div class="aff-faq-item">
+                    <div class="aff-faq-q" onclick="toggleFaq(this)">When and how do I get paid? <span
+                            class="aff-faq-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg></span></div>
+                    <div class="aff-faq-a">Earnings are paid weekly to the Nigerian bank account you provide. There is
+                        no minimum threshold &mdash; every naira earned goes to you.</div>
+                </div>
+                <div class="aff-faq-item">
+                    <div class="aff-faq-q" onclick="toggleFaq(this)">What counts as a conversion? <span
+                            class="aff-faq-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg></span></div>
+                    <div class="aff-faq-a">A conversion is when a referred client completes and pays for a visa
+                        application. You earn commission on the application fee paid.</div>
+                </div>
+                <div class="aff-faq-item">
+                    <div class="aff-faq-q" onclick="toggleFaq(this)">Can I apply without a large following? <span
+                            class="aff-faq-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg></span></div>
+                    <div class="aff-faq-a">Yes! Travel agents, school counsellors, relocation consultants, and anyone
+                        with an engaged network can earn with us regardless of follower count.</div>
+                </div>
+                <div class="aff-faq-item">
+                    <div class="aff-faq-q" onclick="toggleFaq(this)">How does the referral link work? <span
+                            class="aff-faq-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9" />
+                            </svg></span></div>
+                    <div class="aff-faq-a">You get a unique link like jekafly.com/?ref=YOURCODE. When someone clicks it,
+                        a 30-day cookie is set. If they complete an application within 30 days, you earn the commission.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER CTA -->
+    <section class="aff-footer-cta">
+        <h2>Ready to Start Earning?</h2>
+        <p>Join hundreds of Nigerians already earning with Jekafly.</p>
+        <a href="#apply" class="btn-aff-primary">Apply Now &mdash; It is Free</a>
+    </section>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await Auth.init();
+            updateNav();
+            checkAffiliateStatus();
+        });
+
+        async function checkAffiliateStatus() {
+            const user = Auth.getCurrent();
+            if (!user) return;
+            try {
+                const data = await AffiliateStore.getMe();
+                if (!data) return;
+                const aff = data.affiliate || data;
+                const status = aff.status;
+                if (status === 'PENDING') {
+                    showAlready('Application Under Review', 'You have already applied. Our team is reviewing your application. You will hear back within 48 hours.');
+                } else if (status === 'APPROVED') {
+                    const stats = data.stats || {};
+                    document.getElementById('aff-status-wrap').innerHTML = buildStatusPanel(aff, stats);
+                    showAlready('You are an Approved Affiliate!', 'Your dashboard is above. Share your referral link to start earning.');
+                } else if (status === 'REJECTED') {
+                    showAlready('Application Not Approved', 'Unfortunately your application was not approved. You are welcome to reapply with updated information.');
+                }
+            } catch (e) { }
+        }
+
+        function showAlready(title, body) {
+            document.getElementById('aff-form').classList.add('hidden');
+            const el = document.getElementById('aff-already');
+            el.classList.remove('hidden');
+            document.getElementById('aff-already-title').textContent = title;
+            document.getElementById('aff-already-body').textContent = body;
+        }
+
+        function buildStatusPanel(aff, stats) {
+            const refCode = aff.referralCode || aff.code || '';
+            const refLink = window.location.origin + '/apply.html?ref=' + refCode;
+            const clicks = stats.clicks || 0;
+            const conversions = stats.conversions || 0;
+            const earned = stats.totalEarned || 0;
+            const pending = stats.pendingPayout || 0;
+            return '<div class="aff-status-panel">' +
+                '<div class="aff-status-header">' +
+                '<div><div class="aff-status-title">Your Affiliate Dashboard</div><div class="aff-status-sub">Welcome back, ' + escHtml(aff.name || 'Partner') + '!</div></div>' +
+                '<span class="aff-badge aff-badge-approved">&#10003; Approved</span>' +
+                '</div>' +
+                '<div class="aff-stats-row">' +
+                '<div class="aff-stat-mini"><strong>' + clicks + '</strong><span>Link Clicks</span></div>' +
+                '<div class="aff-stat-mini"><strong>' + conversions + '</strong><span>Conversions</span></div>' +
+                '<div class="aff-stat-mini"><strong>&#8358;' + Number(earned).toLocaleString() + '</strong><span>Total Earned</span></div>' +
+                '<div class="aff-stat-mini"><strong>&#8358;' + Number(pending).toLocaleString() + '</strong><span>Pending Payout</span></div>' +
+                '</div>' +
+                '<div class="aff-ref-box">' +
+                '<span class="aff-ref-label">Your referral link:</span>' +
+                '<span class="aff-ref-code">' + refLink + '</span>' +
+                '<button class="btn-copy-ref" onclick="copyRefLink(\'' + refLink + '\')"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"13\" height=\"13\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"9\" y=\"9\" width=\"13\" height=\"13\" rx=\"2\"/><path d=\"M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1\"/></svg> Copy</button>' +
+                '</div>' +
+                '</div>';
+        }
+
+        function copyRefLink(link) {
+            navigator.clipboard.writeText(link).then(() => showToast('Referral link copied!'));
+        }
+
+        async function submitAffiliateApp(e) {
+            e.preventDefault();
+            const btn = document.getElementById('aff-submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Submitting...';
+            const bankAcct = document.getElementById('aff-bank-acct').value.trim();
+            if (bankAcct.length !== 10 || !/^\d+$/.test(bankAcct)) {
+                showToast('Please enter a valid 10-digit bank account number.', 'error');
+                btn.disabled = false; btn.textContent = 'Submit Application \u2192'; return;
+            }
+            const data = {
+                name: document.getElementById('aff-name').value.trim(),
+                email: document.getElementById('aff-email').value.trim(),
+                phone: document.getElementById('aff-phone').value.trim(),
+                location: document.getElementById('aff-location').value.trim(),
+                channel: document.getElementById('aff-channel').value,
+                audienceSize: document.getElementById('aff-audience').value,
+                profileUrl: document.getElementById('aff-url').value.trim() || null,
+                bankAccount: bankAcct,
+                bankName: document.getElementById('aff-bank-name').value,
+                accountName: document.getElementById('aff-bank-acct-name').value.trim(),
+                motivation: document.getElementById('aff-why').value.trim() || null,
+            };
+            const res = await AffiliateStore.apply(data);
+            if (res && res.ok) {
+                document.getElementById('aff-form').classList.add('hidden');
+                document.getElementById('aff-success').classList.remove('hidden');
+                document.getElementById('aff-form-card').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                showToast((res && res.error) || 'Submission failed. Please try again.', 'error');
+                btn.disabled = false; btn.textContent = 'Submit Application \u2192';
+            }
+        }
+
+        function toggleFaq(el) { el.closest('.aff-faq-item').classList.toggle('open'); }
+        function escHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+        window.addEventListener('scroll', () => { document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20); });
+    </script>
+</body>
+
+</html>

@@ -1164,3 +1164,314 @@ tr:hover td {
         letter-spacing: .02em;
     }
 }
+
+.consult-pkg:hover {
+    border-color: #0E0EB8 !important;
+    box-shadow: 0 4px 20px rgba(14, 14, 184, 0.12);
+}
+
+.consult-pkg.selected {
+    border-color: #0E0EB8 !important;
+    background: #F0F4FF;
+    box-shadow: 0 4px 20px rgba(14, 14, 184, 0.15);
+}
+
+/* ── Doc slot number badge — done state ───────────────────── */
+.dreq-num-done {
+    background: #f0fdf4;
+    color: #16a34a;
+}
+
+/* ── My Documents app list card hover ─────────────────────── */
+.ins-item--link {
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s;
+}
+
+.ins-item--link:hover {
+    border-color: #e8613a;
+    box-shadow: 0 2px 12px rgba(232, 97, 58, 0.1);
+}
+
+/* ── Document slot Replace button ─────────────────────────── */
+.btn-replace {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background: none;
+    border: 1px solid #9BA5C0;
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #6B7494;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: border-color .15s, color .15s;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.btn-replace:hover {
+    border-color: #0D1560;
+    color: #0D1560;
+}
+
+.btn-replace input[type="file"] {
+    display: none;
+}
+
+/* ── Doc slot status labels ────────────────────────────────── */
+.status-uploaded {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #16a34a;
+}
+
+.status-required {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: #9BA5C0;
+}
+
+/* ── My Docs preview modal overlay ────────────────────────── */
+.mydocs-preview-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 13, 50, 0.82);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.mydocs-preview-overlay.hidden {
+    display: none !important;
+}
+
+/* ── Premium Danger Zone ───────────────────────────────────── */
+.danger-zone-card {
+    background: #fff;
+    border: 1.5px solid #fecaca;
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 24px;
+}
+
+.danger-zone-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #fee2e2;
+}
+
+.danger-zone-icon {
+    font-size: 1.4rem;
+    width: 40px;
+    height: 40px;
+    background: #fef2f2;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.danger-zone-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #dc2626;
+    margin-bottom: 3px;
+}
+
+.danger-zone-sub {
+    font-size: 0.82rem;
+    color: #9BA5C0;
+    line-height: 1.5;
+}
+
+.danger-zone-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 6px 0;
+}
+
+.danger-row-label {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #1A2040;
+    margin-bottom: 3px;
+}
+
+.danger-row-desc {
+    font-size: 0.8rem;
+    color: #9BA5C0;
+    line-height: 1.5;
+    max-width: 480px;
+}
+
+.danger-zone-divider {
+    height: 1px;
+    background: #f5f5f5;
+    margin: 18px 0;
+}
+
+.btn-danger-ghost {
+    padding: 9px 22px;
+    background: none;
+    border: 1.5px solid #E31E24;
+    border-radius: 9px;
+    color: #E31E24;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background .15s, color .15s;
+}
+
+.btn-danger-ghost:hover {
+    background: #fef2f2;
+}
+
+.btn-danger-solid {
+    padding: 9px 22px;
+    background: #dc2626;
+    border: none;
+    border-radius: 9px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background .15s;
+}
+
+.btn-danger-solid:hover {
+    background: #b91c1c;
+}
+
+/* ── Booking Cards (Flight & Hotel) ────────────────────────── */
+.booking-card {
+    background: #fff;
+    border: 1.5px solid #E5E9F5;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+    transition: box-shadow .15s;
+}
+
+.booking-card:hover {
+    box-shadow: 0 4px 20px rgba(13, 21, 96, 0.07);
+}
+
+.booking-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #F0F2F8;
+}
+
+.booking-card-icon {
+    font-size: 1.5rem;
+    width: 44px;
+    height: 44px;
+    background: #F0F3FF;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.booking-card-title {
+    font-weight: 700;
+    font-size: 1rem;
+    color: #0D1560;
+    margin-bottom: 3px;
+}
+
+.booking-card-ref {
+    font-size: 0.75rem;
+    color: #9BA5C0;
+    font-family: monospace;
+}
+
+.booking-status-pill {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.booking-status-pending,
+.booking-status-pending\ review {
+    background: #FFF7ED;
+    color: #C2621C;
+}
+
+.booking-status-confirmed {
+    background: #F0FDF4;
+    color: #16A34A;
+}
+
+.booking-status-processing {
+    background: #EFF6FF;
+    color: #1D4ED8;
+}
+
+.booking-status-cancelled {
+    background: #FEF2F2;
+    color: #DC2626;
+}
+
+.booking-card-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+}
+
+.booking-detail {
+    background: #F7F8FD;
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.booking-detail span {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #9BA5C0;
+    margin-bottom: 3px;
+}
+
+.booking-detail strong {
+    font-size: 0.88rem;
+    color: #0D1560;
+    font-weight: 700;
+}
+
+.booking-notes {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #FAFBFF;
+    border-left: 3px solid #C7D0F0;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.82rem;
+    color: #6B7494;
+    font-style: italic;
+}

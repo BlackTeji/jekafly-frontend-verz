@@ -1,15 +1,16 @@
-<!-- =============================
-INDEX.HTML — FULLY EDITED
-============================= -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <title>Jekafly Visa — Your Journey Simplified</title>
     <script>
-        // Unregister any stale service workers that may be serving old cached scripts
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
             caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
@@ -21,21 +22,6 @@ INDEX.HTML — FULLY EDITED
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/hero-animation.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
-
-    <style>
-        .consult-modal-pkg {
-            transition: border-color .15s, background .15s;
-        }
-
-        .consult-modal-pkg:hover {
-            border-color: #0E0EB8 !important;
-        }
-
-        .consult-modal-pkg.selected {
-            border-color: #0E0EB8 !important;
-            background: #F0F4FF !important;
-        }
-    </style>
 </head>
 
 <body>
@@ -49,10 +35,11 @@ INDEX.HTML — FULLY EDITED
         </a>
         <div class="nav-links" id="nav-links">
             <a href="#services" onclick="closeNavMenu()">Services</a>
-            <a href="#visa" onclick="closeNavMenu()">Visa Check</a>
+            <a href="#visa" onclick="closeNavMenu()">Visa Application</a>
             <a href="#insurance" onclick="closeNavMenu()">Insurance</a>
-            <a href="#track" onclick="closeNavMenu()">Track</a>
+            <a href="#track" onclick="closeNavMenu()">Track Visa</a>
             <a href="#destinations" onclick="closeNavMenu()">Destinations</a>
+            <a href="affiliate.html" class="nav-affiliate-link">🤝 Become an Affiliate</a>
         </div>
         <div class="nav-cta" id="nav-cta-area">
             <button class="btn-outline" onclick="openModal('login')">Login</button>
@@ -62,16 +49,17 @@ INDEX.HTML — FULLY EDITED
             <span class="nav-burger" id="nav-burger">☰</span>
         </button>
     </nav>
-    <!-- Mobile nav drawer -->
+
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
         <a href="#services" onclick="closeNavMenu()">Services</a>
-        <a href="#visa" onclick="closeNavMenu()">Visa Check</a>
+        <a href="#visa" onclick="closeNavMenu()">Visa Application</a>
         <a href="#insurance" onclick="closeNavMenu()">Insurance</a>
-        <a href="#track" onclick="closeNavMenu()">Track</a>
+        <a href="#track" onclick="closeNavMenu()">Track Visa</a>
         <a href="#destinations" onclick="closeNavMenu()">Destinations</a>
+        <a href="affiliate.html" onclick="closeNavMenu()" class="nav-affiliate-link">🤝 Become an Affiliate</a>
         <div class="nav-mobile-cta" id="nav-mobile-cta">
-            <button class="btn-outline" style="width:100%" onclick="openModal('login');closeNavMenu()">Login</button>
-            <button class="btn-primary" style="width:100%" onclick="openModal('register');closeNavMenu()">Get
+            <button class="btn-outline" onclick="openModal('login');closeNavMenu()">Login</button>
+            <button class="btn-primary" onclick="openModal('register');closeNavMenu()">Get
                 Started</button>
         </div>
     </div>
@@ -82,7 +70,7 @@ INDEX.HTML — FULLY EDITED
     ============================= -->
     <section class="hero" id="hero-section">
 
-        <!-- Background slides -->
+
         <div class="hero-slides" id="hero-slides">
             <div class="hero-slide active"
                 style="background-image:url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=1600&q=80')">
@@ -98,7 +86,7 @@ INDEX.HTML — FULLY EDITED
             </div>
         </div>
 
-        <!-- Slide dots -->
+
         <div class="hero-dots" id="hero-dots">
             <div class="hero-dot active" onclick="goToSlide(0)"></div>
             <div class="hero-dot" onclick="goToSlide(1)"></div>
@@ -107,7 +95,7 @@ INDEX.HTML — FULLY EDITED
         </div>
 
         <div class="hero-content">
-            <div class="hero-badge"><span></span> Live Applications Processing</div>
+
 
             <div class="hero-headline-wrap">
                 <div class="hero-headline animate" id="hero-headline">
@@ -116,12 +104,12 @@ INDEX.HTML — FULLY EDITED
                 </div>
             </div>
 
-            <p id="hero-sub">Apply for visas to 195+ countries with a 95% success rate. Document prep, travel insurance,
-                and real-time tracking — all in one place.</p>
+            <p id="hero-sub">Expert visa guidance, document preparation, travel insurance, and real-time tracking — all
+                handled for you.</p>
             <div class="hero-stats">
-                <div class="hero-stat"><strong>95%</strong><span>Success Rate</span></div>
-                <div class="hero-stat"><strong>195+</strong><span>Countries</span></div>
-                <div class="hero-stat"><strong>48hrs</strong><span>Avg. Processing</span></div>
+                <div class="hero-stat"><strong>Expert</strong><span>Visa Guidance</span></div>
+                <div class="hero-stat"><strong>Global</strong><span>Coverage</span></div>
+                <div class="hero-stat"><strong>Fast</strong><span>Processing</span></div>
             </div>
             <div class="hero-actions">
                 <button class="btn-hero btn-hero-primary"
@@ -133,15 +121,17 @@ INDEX.HTML — FULLY EDITED
             </div>
         </div>
         <div class="hero-right">
-            <div class="hero-card">
-                <div class="hero-card-title">Latest Application</div>
-                <div class="hero-card-value"><span class="status-dot"></span> Approved ✓</div>
-                <div class="hero-card-sub">Schengen Visa · Lagos → Paris</div>
-            </div>
-            <div class="hero-card">
-                <div class="hero-card-title">Processing Time</div>
-                <div class="hero-card-value">36 Hours</div>
-                <div class="hero-card-sub">UK Tourist Visa</div>
+            <div class="hero-card hero-review-card" id="hero-review-card">
+                <div class="hero-review-label">What our customers say</div>
+                <div class="hero-review-stars" id="hero-review-stars">★★★★★</div>
+                <div class="hero-review-text" id="hero-review-text">"Jekafly made the whole process seamless."</div>
+                <div class="hero-review-author" id="hero-review-author">— Happy Traveller</div>
+                <div class="hero-review-dots" id="hero-review-dots">
+                    <span class="hero-rdot active"></span>
+                    <span class="hero-rdot"></span>
+                    <span class="hero-rdot"></span>
+                    <span class="hero-rdot"></span>
+                </div>
             </div>
         </div>
     </section>
@@ -282,7 +272,7 @@ INDEX.HTML — FULLY EDITED
     </section>
 
     <!-- =============================
-    VISA CHECKER
+    VISA APPLICATION
     ============================= -->
     <section class="visa-checker" id="visa">
         <div class="checker-wrap">
@@ -334,19 +324,22 @@ INDEX.HTML — FULLY EDITED
                     exactly what embassies want.</p>
                 <ul class="info-list">
                     <li>
-                        <div class="icon">✅</div>
-                        <div><strong>95% Approval Rate</strong><br><span class="info-sub">Higher
-                                than industry average through expert document review</span></div>
+                        <div class="icon">🏆</div>
+                        <div><strong>Nigeria's Most Trusted Visa Service</strong><br><span class="info-sub">Jekafly is
+                                the go-to platform for Nigerians seeking seamless, stress-free visa approvals</span>
+                        </div>
                     </li>
                     <li>
-                        <div class="icon">⚡</div>
-                        <div><strong>48-Hour Turnaround</strong><br><span class="info-sub">Fastest
-                                processing times available for urgent travel needs</span></div>
+                        <div class="icon">🎯</div>
+                        <div><strong>Dedicated Visa Experts, Not Algorithms</strong><br><span class="info-sub">Real
+                                professionals review every application — giving you an edge no automated platform can
+                                match</span></div>
                     </li>
                     <li>
                         <div class="icon">🔒</div>
-                        <div><strong>Secure & Encrypted</strong><br><span class="info-sub">Your
-                                documents and data are protected with bank-grade security</span></div>
+                        <div><strong>End-to-End Support, Every Step</strong><br><span class="info-sub">From document
+                                prep to embassy submission, Jekafly handles it all so nothing falls through the
+                                cracks</span></div>
                     </li>
                     <li>
                         <div class="icon">📱</div>
@@ -529,7 +522,7 @@ INDEX.HTML — FULLY EDITED
             </p>
         </div>
         <div class="testi-grid" id="testi-grid">
-            <!-- Static fallbacks shown until live reviews load -->
+
             <div class="testi-card">
                 <div class="testi-stars">★★★★★</div>
                 <div class="testi-text">"I applied for my UK visa through Jekafly and got approved in 5 days. The
@@ -575,7 +568,7 @@ INDEX.HTML — FULLY EDITED
     <div class="cta-banner">
         <div>
             <h2>Ready to Travel? Start Your Visa Application Today.</h2>
-            <p>Join 50,000+ travellers who simplified their journey with Jekafly.</p>
+            <p>Join travellers who have simplified their journey with Jekafly.</p>
         </div>
         <div class="cta-actions">
             <button class="btn-hero btn-hero-primary" onclick="applyWithDest(getSelectValue('s-to'))">Apply Now
@@ -601,9 +594,9 @@ INDEX.HTML — FULLY EDITED
                 </div>
             </div>
             <div class="footer-col">
-                <h4>Services</h4><a href="apply.html">Visa Application</a><a href="#insurance">Travel Insurance</a><a
-                    href="apply.html">Document Support</a><a href="#">Flight Booking</a><a href="#">Hotel
-                    Reservations</a>
+                <h4>Quick Links</h4><a href="apply.html">Visa Application</a><a href="#insurance">Travel Insurance</a><a
+                    href="#track">Track Visa</a><a href="apply.html">Document Support</a><a href="#">Flight
+                    Booking</a><a href="#">Hotel Reservations</a>
             </div>
             <div class="footer-col">
                 <h4>Destinations</h4><a href="#" onclick="selectDest('United Kingdom')">United Kingdom</a><a href="#"
@@ -611,10 +604,7 @@ INDEX.HTML — FULLY EDITED
                     onclick="selectDest('France')">Schengen Zone</a><a href="#" onclick="selectDest('UAE')">UAE /
                     Dubai</a><a href="#" onclick="selectDest('Canada')">Canada</a>
             </div>
-            <div class="footer-col">
-                <h4>Company</h4><a href="dashboard.html">My Dashboard</a><a href="#track">Track Application</a><a
-                    href="#">Blog & Travel Tips</a><a href="#">Contact Us</a><a href="admin.html">Admin Panel</a>
-            </div>
+
         </div>
         <div class="footer-bottom">
             <p>© 2024 Jekafly Technologies Limited. All rights reserved. Registered in Nigeria.</p>
@@ -736,59 +726,54 @@ INDEX.HTML — FULLY EDITED
             CONSULTATION MODAL
             ============================= -->
             <div id="modal-consultation" class="modal-section-hidden">
-                <button class="modal-close" onclick="closeModal()"
-                    style="position:absolute;top:14px;right:16px;">✕</button>
+                <button class="modal-close modal-close-pos" onclick="closeModal()">✕</button>
 
-                <!-- Step 1: Pick package -->
+
                 <div id="consult-modal-step-1">
-                    <h3 style="margin-bottom:4px;">Book a Travel Consultation</h3>
+                    <h3>Book a Travel Consultation</h3>
                     <p class="modal-sub">One-on-one session with a Jekafly visa expert.</p>
 
-                    <div style="display:flex;flex-direction:column;gap:10px;margin:18px 0;">
-                        <div class="consult-modal-pkg" id="mpkg-standard" onclick="selectModalPkg('standard',15000)"
-                            style="border:2px solid #E5E9F5;border-radius:12px;padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+                    <div class="ins-options-list">
+                        <div class="consult-modal-pkg ins-option" id="mpkg-standard"
+                            onclick="selectModalPkg('standard',15000)">
                             <div>
-                                <div style="font-weight:700;font-size:0.95rem;color:#0D1560;">💬 Standard</div>
-                                <div style="font-size:0.8rem;color:#6B7280;">30-min video call</div>
+                                <div class="ins-option-name">💬 Standard</div>
+                                <div class="ins-option-desc">30-min video call</div>
                             </div>
-                            <div style="font-weight:800;font-size:1.1rem;color:#0E0EB8;" data-pkg-price>₦15,000</div>
+                            <div class="ins-option-price" data-pkg-price>₦15,000</div>
                         </div>
-                        <div class="consult-modal-pkg" id="mpkg-priority" onclick="selectModalPkg('priority',25000)"
-                            style="border:2px solid #0E0EB8;border-radius:12px;padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#F0F4FF;">
+                        <div class="consult-modal-pkg ins-option ins-option--selected" id="mpkg-priority"
+                            onclick="selectModalPkg('priority',25000)">
                             <div>
-                                <div style="font-weight:700;font-size:0.95rem;color:#0D1560;">⚡ Priority <span
-                                        style="background:#0E0EB8;color:#fff;font-size:0.68rem;padding:2px 8px;border-radius:20px;margin-left:6px;">POPULAR</span>
+                                <div class="ins-option-name">⚡ Priority <span class="ins-option-badge">POPULAR</span>
                                 </div>
-                                <div style="font-size:0.8rem;color:#6B7280;">30-min call + document review</div>
+                                <div class="ins-option-desc">30-min call + document review</div>
                             </div>
-                            <div style="font-weight:800;font-size:1.1rem;color:#0E0EB8;" data-pkg-price>₦25,000</div>
+                            <div class="ins-option-price" data-pkg-price>₦25,000</div>
                         </div>
-                        <div class="consult-modal-pkg" id="mpkg-vip" onclick="selectModalPkg('vip',50000)"
-                            style="border:2px solid #E5E9F5;border-radius:12px;padding:14px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+                        <div class="consult-modal-pkg ins-option" id="mpkg-vip" onclick="selectModalPkg('vip',50000)">
                             <div>
-                                <div style="font-weight:700;font-size:0.95rem;color:#0D1560;">👑 VIP</div>
-                                <div style="font-size:0.8rem;color:#6B7280;">60-min dedicated session</div>
+                                <div class="ins-option-name">👑 VIP</div>
+                                <div class="ins-option-desc">60-min dedicated session</div>
                             </div>
-                            <div style="font-weight:800;font-size:1.1rem;color:#0E0EB8;">₦50,000</div>
+                            <div class="ins-option-price">₦50,000</div>
                         </div>
                     </div>
 
-                    <div id="consult-modal-pkg-error"
-                        style="display:none;color:#DC2626;font-size:0.82rem;margin-bottom:8px;">Please select a package.
+                    <div id="consult-modal-pkg-error" class="inline-error">Please select a package.
                     </div>
-                    <div id="consult-pay-error" style="display:none;color:#DC2626;font-size:0.82rem;margin-bottom:8px;">
+                    <div id="consult-pay-error" class="inline-error">
                     </div>
                     <button class="btn-check btn-check-mt" onclick="consultModalNext()">Continue →</button>
                 </div>
 
-                <!-- Step 2: Login / Register (shown if not logged in) -->
-                <div id="consult-modal-step-2" style="display:none;">
-                    <button onclick="consultModalBack()"
-                        style="background:none;border:none;cursor:pointer;color:#6B7280;font-size:0.85rem;margin-bottom:12px;">←
+
+                <div id="consult-modal-step-2">
+                    <button onclick="consultModalBack()" class="btn-back-link">←
                         Back</button>
-                    <h3 style="margin-bottom:4px;">Create an account or log in</h3>
+                    <h3>Create an account or log in</h3>
                     <p class="modal-sub">We need an account to send your booking confirmation.</p>
-                    <div class="tab-bar" style="margin-bottom:16px;">
+                    <div class="tab-bar">
                         <button class="tab active" id="consult-tab-login"
                             onclick="switchConsultTab('login')">Login</button>
                         <button class="tab" id="consult-tab-register"
@@ -804,12 +789,11 @@ INDEX.HTML — FULLY EDITED
                             <label>Password</label>
                             <input id="consult-login-pass" type="password" placeholder="••••••••" />
                         </div>
-                        <div id="consult-login-error"
-                            style="display:none;color:#DC2626;font-size:0.82rem;margin-bottom:8px;"></div>
+                        <div id="consult-login-error" class="inline-error"></div>
                         <button class="btn-check btn-check-mt" onclick="consultModalLogin()">Login & Pay →</button>
                     </form>
 
-                    <form id="consult-register-form" style="display:none;">
+                    <form id="consult-register-form">
                         <div class="form-group">
                             <label>Full Name</label>
                             <input id="consult-reg-name" type="text" placeholder="John Doe" />
@@ -826,8 +810,7 @@ INDEX.HTML — FULLY EDITED
                             <label>Password</label>
                             <input id="consult-reg-pass" type="password" placeholder="Min. 8 characters" />
                         </div>
-                        <div id="consult-reg-error"
-                            style="display:none;color:#DC2626;font-size:0.82rem;margin-bottom:8px;"></div>
+                        <div id="consult-reg-error" class="inline-error"></div>
                         <button class="btn-check btn-check-mt" onclick="consultModalRegister()">Create Account & Pay
                             →</button>
                     </form>
@@ -839,14 +822,13 @@ INDEX.HTML — FULLY EDITED
     <!-- =============================
     SCRIPTS
     ============================= -->
-    <!-- WhatsApp Float -->
+
     <a href="https://wa.me/2348000000000" target="_blank" rel="noopener" class="wa-float"
         title="Chat with us on WhatsApp">💬</a>
 
-    <script src="api.js"></script>
-    <script src="app.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
     <script>
-        // Load live approved reviews
         (async () => {
             try {
                 const res = await fetch('https://jekafly-api-production.up.railway.app/api/v1/reviews');
@@ -859,7 +841,7 @@ INDEX.HTML — FULLY EDITED
                 if (!grid) return;
                 grid.innerHTML = reviews.slice(0, 6).map(r => `
                 <div class="testi-card">
-                    <div class="testi-stars" style="color:#f59e0b">${stars(r.rating)}</div>
+                    <div class="testi-stars">${stars(r.rating)}</div>
                     <div class="testi-text">"${r.text.replace(/"/g, '&quot;')}"</div>
                     <div class="testi-author">
                         <div class="testi-avatar">${initials(r.name || 'JK')}</div>
@@ -874,6 +856,55 @@ INDEX.HTML — FULLY EDITED
                     `${reviews.length} verified review${reviews.length !== 1 ? 's' : ''} · ${avg} average rating`;
             } catch { }
         })();
+
+        // ── Hero review card cycle ─────────────────────────────────
+        (function () {
+            const fallbacks = [
+                { stars: 5, text: 'Jekafly made the whole process seamless.', name: 'Adaeze O.' },
+                { stars: 5, text: 'Got my UK visa approved in record time!', name: 'Emeka T.' },
+                { stars: 5, text: 'Professional, fast, and totally stress-free.', name: 'Funmi A.' },
+                { stars: 5, text: 'Documents were sorted within hours. Amazing!', name: 'Blessing N.' },
+            ];
+            let pool = [...fallbacks];
+            let idx = 0;
+            const card = document.getElementById('hero-review-card');
+            const stars = document.getElementById('hero-review-stars');
+            const text = document.getElementById('hero-review-text');
+            const auth = document.getElementById('hero-review-author');
+            if (!card) return;
+
+            // Try loading live reviews after 1s
+            setTimeout(() => {
+                fetch('https://jekafly-api-production.up.railway.app/api/v1/reviews')
+                    .then(r => r.json())
+                    .then(d => {
+                        const live = (d?.data?.reviews || []).filter(r => r.approved && r.text && r.rating >= 4);
+                        if (live.length >= 2) pool = live;
+                    }).catch(() => { });
+            }, 1000);
+
+            function updateDots(i) {
+                const dots = document.querySelectorAll('.hero-rdot');
+                dots.forEach((d, di) => d.classList.toggle('active', di === i % dots.length));
+            }
+
+            function show(i) {
+                card.classList.add('hero-review-exit');
+                setTimeout(() => {
+                    const r = pool[i % pool.length];
+                    stars.textContent = '★'.repeat(r.stars || r.rating || 5) + '☆'.repeat(5 - (r.stars || r.rating || 5));
+                    text.textContent = '“' + (r.text || '') + '”';
+                    auth.textContent = '— ' + (r.name || 'Verified Customer');
+                    card.classList.remove('hero-review-exit');
+                    card.classList.add('hero-review-enter');
+                    setTimeout(() => card.classList.remove('hero-review-enter'), 500);
+                    updateDots(i);
+                }, 380);
+            }
+
+            show(0);
+            setInterval(() => { idx = (idx + 1) % pool.length; show(idx); }, 10000);
+        }());
     </script>
     <script>
         // ── Hero slideshow + rotating headlines ──────────────────────
@@ -895,7 +926,6 @@ INDEX.HTML — FULLY EDITED
             slides[heroIdx].classList.add('active');
             dots[heroIdx].classList.add('active');
 
-            // Animate headline
             const headline = document.getElementById('hero-headline');
             if (headline) {
                 headline.classList.remove('animate');
@@ -1028,12 +1058,10 @@ INDEX.HTML — FULLY EDITED
         };
         let _cModalPkg = 'priority'; // default selected
 
-        // Called by app.js once live pricing is fetched
         function applyConsultPricing(p) {
             CONSULT_PACKAGES.standard.amount = p.consultStandard;
             CONSULT_PACKAGES.priority.amount = p.consultPriority;
             CONSULT_PACKAGES.vip.amount = p.consultVip;
-            // Update displayed prices in the modal
             const fmt = v => '₦' + Number(v).toLocaleString();
             const standardEl = document.querySelector('#mpkg-standard [data-pkg-price]');
             const priorityEl = document.querySelector('#mpkg-priority [data-pkg-price]');
@@ -1041,7 +1069,6 @@ INDEX.HTML — FULLY EDITED
             if (standardEl) standardEl.textContent = fmt(p.consultStandard);
             if (priorityEl) priorityEl.textContent = fmt(p.consultPriority);
             if (vipEl) vipEl.textContent = fmt(p.consultVip);
-            // Update onclick amounts
             document.getElementById('mpkg-standard')?.setAttribute('onclick', `selectModalPkg('standard',${p.consultStandard})`);
             document.getElementById('mpkg-priority')?.setAttribute('onclick', `selectModalPkg('priority',${p.consultPriority})`);
             document.getElementById('mpkg-vip')?.setAttribute('onclick', `selectModalPkg('vip',${p.consultVip})`);
@@ -1049,7 +1076,6 @@ INDEX.HTML — FULLY EDITED
 
         function applyInsPricing(p) {
             const fmt = v => '₦' + Number(v).toLocaleString();
-            // Update ins-plan-price spans in both section display + modal
             const prices = document.querySelectorAll('[data-ins-price]');
             prices.forEach(el => {
                 const plan = el.getAttribute('data-ins-price');
@@ -1057,7 +1083,6 @@ INDEX.HTML — FULLY EDITED
                 if (plan === 'standard') el.textContent = `${fmt(p.insuranceStandard)}/person`;
                 if (plan === 'premium') el.textContent = `${fmt(p.insurancePremium)}/person`;
             });
-            // Also update the section preview cards (From ₦...)
             const previews = document.querySelectorAll('[data-ins-preview]');
             previews.forEach(el => {
                 const plan = el.getAttribute('data-ins-preview');
@@ -1086,7 +1111,6 @@ INDEX.HTML — FULLY EDITED
             }
             const user = typeof Auth !== 'undefined' ? Auth.getCurrent() : null;
             if (user) {
-                // Already logged in — go straight to payment
                 consultPay(user.email);
             } else {
                 document.getElementById('consult-modal-step-1').style.display = 'none';
@@ -1153,7 +1177,6 @@ INDEX.HTML — FULLY EDITED
                     throw new Error(res?.error || 'Payment initiation failed');
                 }
             } catch (e) {
-                // Show error near the pay button
                 const errEl = document.getElementById('consult-pay-error');
                 if (errEl) { errEl.textContent = e.message; errEl.style.display = 'block'; }
                 else alert(e.message);

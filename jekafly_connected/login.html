@@ -4,27 +4,43 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <title>Login or Create Account — Jekafly</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="assets/css/login.css" />
 </head>
 
 <body>
 
-    <nav>
+    <nav id="main-nav">
         <a href="index.html" class="nav-logo">
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" />
         </a>
         <div class="nav-links">
             <a href="index.html">Home</a>
-            <a href="index.html#visa">Visa Check</a>
+            <a href="index.html#visa">Visa Application</a>
             <a href="apply.html">Apply</a>
         </div>
         <div class="nav-cta" id="nav-cta-area"></div>
+        <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
+            <span class="nav-burger" id="nav-burger">☰</span>
+        </button>
     </nav>
+    <div class="nav-mobile-drawer" id="nav-mobile-drawer">
+        <a href="index.html" onclick="closeNavMenu()">Home</a>
+        <a href="index.html#visa" onclick="closeNavMenu()">Visa Application</a>
+        <a href="apply.html" onclick="closeNavMenu()">Apply</a>
+        <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
+    </div>
+    <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
 
     <div class="login-page">
         <div class="login-wrap">
@@ -74,9 +90,7 @@
                         <input type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password" />
                     </div>
                     <button class="btn-auth" id="btn-login" type="button">Login to Jekafly →</button>
-                    <div class="demo-hint">
-                        Demo: <strong>admin@jekafly.com</strong> / <strong>admin1234</strong>
-                    </div>
+
                 </div>
 
                 <div class="tab-content" id="tab-register">
@@ -107,10 +121,9 @@
         </div>
     </div>
 
-    <script src="api.js"></script>
-    <script src="app.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
     <script>
-        // Login / Register — uses real API
         document.addEventListener('DOMContentLoaded', async () => {
             await Auth.init();
             const user = Auth.getCurrent();
@@ -118,6 +131,7 @@
                 window.location.href = user.role === 'ADMIN' ? 'admin.html' : 'dashboard.html';
                 return;
             }
+            updateNav();
 
             const params = new URLSearchParams(window.location.search);
             const returnUrl = params.get('return') || 'dashboard.html';

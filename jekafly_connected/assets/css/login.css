@@ -232,3 +232,13 @@
         padding: 36px 28px;
     }
 }
+
+@media (max-width: 640px) {
+    .login-page {
+        padding: 24px 4% 48px;
+    }
+
+    .login-form-panel {
+        padding: 28px 20px;
+    }
+}

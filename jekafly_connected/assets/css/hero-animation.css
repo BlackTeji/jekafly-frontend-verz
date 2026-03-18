@@ -2,7 +2,6 @@
    JEKAFLY — ANIMATED HERO
    ============================================================ */
 
-/* Hero slides */
 .hero-slides {
     position: absolute;
     inset: 0;
@@ -26,7 +25,6 @@
     transform: scale(1);
 }
 
-/* Dark overlay on each slide */
 .hero-slide::after {
     content: '';
     position: absolute;
@@ -37,14 +35,12 @@
             rgba(13, 21, 96, 0.55) 100%);
 }
 
-/* The existing .hero gradient orbs stay as pseudo-elements on .hero itself */
 .hero {
     background: var(--blue) !important;
 }
 
 /* ── TYPEWRITER headline ────────────────────────────────────── */
 .hero-headline-wrap {
-    /* Reserve space for 2 lines at max font size — prevents layout shift */
     min-height: 9rem;
     display: flex;
     align-items: flex-start;
@@ -76,7 +72,6 @@
     position: relative;
 }
 
-/* Fade-in each headline phrase */
 @keyframes fadeSlideUp {
     from {
         opacity: 0;
@@ -355,7 +350,6 @@ h4 {
 }
 
 /* ── Enhanced native select (non-searchable, e.g. purpose/gender) ── */
-/* Only applies to visible native selects, NOT the hidden ones inside .cs-wrapper */
 .form-group select:not(.cs-wrapper select) {
     appearance: none;
     -webkit-appearance: none;
@@ -371,7 +365,6 @@ h4 {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%230D1560' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
-/* Ensure hidden native selects inside cs-wrapper show NO arrow */
 .cs-wrapper select {
     display: none !important;
 }

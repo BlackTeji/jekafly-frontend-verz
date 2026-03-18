@@ -10,6 +10,11 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <title>Apply for Visa — Jekafly</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
@@ -28,7 +33,7 @@
         </a>
         <div class="nav-links">
             <a href="index.html" onclick="closeNavMenu()">Home</a>
-            <a href="index.html#visa" onclick="closeNavMenu()">Visa Check</a>
+            <a href="index.html#visa" onclick="closeNavMenu()">Visa Application</a>
             <a href="dashboard.html" onclick="closeNavMenu()">My Applications</a>
         </div>
         <div class="nav-cta" id="nav-cta-area"></div>
@@ -38,7 +43,7 @@
     </nav>
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
         <a href="index.html" onclick="closeNavMenu()">Home</a>
-        <a href="index.html#visa" onclick="closeNavMenu()">Visa Check</a>
+        <a href="index.html#visa" onclick="closeNavMenu()">Visa Application</a>
         <a href="dashboard.html" onclick="closeNavMenu()">My Applications</a>
         <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
     </div>
@@ -54,7 +59,7 @@
                     to pay.</p>
             </div>
 
-            <!-- Draft banner -->
+
             <div class="draft-banner" id="draft-banner">
                 <div class="left">
                     <div class="title">Resume saved application</div>
@@ -136,7 +141,7 @@
                     </div>
                 </div>
 
-                <!-- Better date UX -->
+
                 <div class="form-row">
                     <div class="form-group">
                         <label>Intended Travel Date</label>
@@ -167,7 +172,7 @@
                     </div>
                 </div>
 
-                <!-- Visa requirements preview -->
+
                 <div class="visa-preview-panel" id="visa-req-preview">
                     <p class="visa-preview-empty">Select a destination to see requirements</p>
                 </div>
@@ -248,7 +253,7 @@
                 <div class="form-group"><label>Residential Address</label><input type="text" id="a-address"
                         placeholder="House number, Street, City, State" /></div>
 
-                <!-- Additional Travellers -->
+
                 <div class="travellers-section">
                     <div class="travellers-header">
                         <div>
@@ -310,7 +315,7 @@
 
                 <div class="review-grid" id="review-grid"></div>
 
-                <!-- Fee breakdown -->
+
                 <div class="fee-breakdown" id="fee-breakdown"></div>
 
                 <div class="terms-wrap">
@@ -351,8 +356,8 @@
         </div>
     </div>
 
-    <!-- Document preview modal — outside step wrappers so it always shows -->
-    <div id="doc-preview-modal" class="doc-preview-modal" style="display:none" onclick="closePreview(event)">
+
+    <div id="doc-preview-modal" class="doc-preview-modal" onclick="closePreview(event)">
         <div class="doc-preview-inner">
             <button class="doc-preview-close"
                 onclick="document.getElementById('doc-preview-modal').style.display='none'">✕</button>
@@ -360,8 +365,8 @@
         </div>
     </div>
 
-    <script src="api.js"></script>
-    <script src="app.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
     <script>
         let currentStep = 1;
         let travellers = [];
@@ -382,24 +387,15 @@
         document.addEventListener('DOMContentLoaded', async () => {
             FeeStore._cache = null; // Always fetch fresh fees
             const user = Auth?.getCurrent ? Auth.getCurrent() : null;
-            const navCta = document.getElementById('nav-cta-area');
-            if (user) {
-                navCta.innerHTML = `<span class="nav-user-hi">Hi, <strong>${(user.name || 'User').split(' ')[0]}</strong></span><a href="dashboard.html" class="btn-outline btn-outline-link">Dashboard</a>`;
-            } else {
-                navCta.innerHTML = `<button class="btn-outline" onclick="goToLoginClaim()">Login</button><button class="btn-primary" onclick="goToLoginClaim()">Continue</button>`;
-            }
 
-            // Searchable destination select
+
             makeSearchableSelect('a-destination', '— Select Destination —');
 
-            // Prefill personal details from previous application if logged in
             if (user) prefillFromSavedProfile();
 
-            // Pre-fill destination from URL param ?dest= OR sessionStorage (set by hero checker / Apply Now)
             const urlDest = new URLSearchParams(window.location.search).get('dest') ||
                 (() => { try { return sessionStorage.getItem('jkf_hero_dest'); } catch (e) { return ''; } })();
             if (urlDest) {
-                // Clear it so it doesn't re-apply on refresh
                 try { sessionStorage.removeItem('jkf_hero_dest'); } catch (e) { }
                 setTimeout(() => {
                     const w = document.querySelector('[data-select-id="a-destination"]');
@@ -408,11 +404,9 @@
                         if (opt) {
                             opt.click(); // triggers change event → renderVisaPreview
                         } else {
-                            // Fallback: set wrapper data-value and native select
                             const nat = document.getElementById('a-destination');
                             if (nat) { nat.value = urlDest; nat.dispatchEvent(new Event('change', { bubbles: true })); }
                             w.dataset.value = urlDest;
-                            // Update trigger label
                             const valueEl = w.querySelector('.cs-value');
                             if (valueEl) valueEl.textContent = urlDest;
                             w.classList.add('has-value');
@@ -425,26 +419,20 @@
                 }, 150);
             }
 
-            // Date display helpers
             setupDateDisplay('a-travel-date', 'travel-date-display');
             setupDateDisplay('a-return-date', 'return-date-display');
             setupDateDisplay('a-dob', 'dob-display');
             setupDateDisplay('a-passport-issue', 'passport-issue-display');
             setupDateDisplay('a-passport-expiry', 'passport-expiry-display');
 
-            // Min travel date = tomorrow
             const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
             document.getElementById('a-travel-date').min = tomorrow.toISOString().split('T')[0];
 
-            // Trip duration hint
             ['a-travel-date', 'a-return-date'].forEach(id => {
                 document.getElementById(id)?.addEventListener('change', updateTripDuration);
             });
 
-            // Live visa preview when destination changes
-            // Listen on native select (fired by makeSearchableSelect on option click)
             document.getElementById('a-destination')?.addEventListener('change', renderVisaPreview);
-            // Also fire once on load in case a draft is restored
             renderVisaPreview();
 
             claimIfNeeded();
@@ -453,14 +441,7 @@
             updateNav();
         });
 
-        function updateNav() {
-            const user = Auth?.getCurrent ? Auth.getCurrent() : null;
-            const navCta = document.getElementById('nav-cta-area');
-            if (!navCta) return;
-            if (user) {
-                navCta.innerHTML = `<span class="nav-user-hi">Hi, <strong>${(user.name || 'User').split(' ')[0]}</strong></span><a href="dashboard.html" class="btn-outline btn-outline-link">Dashboard</a>`;
-            }
-        }
+
 
         function setupDateDisplay(inputId, displayId) {
             const input = document.getElementById(inputId);
@@ -578,9 +559,9 @@
             const content = document.getElementById('doc-preview-content');
             const modal = document.getElementById('doc-preview-modal');
             if (f.type.includes('pdf')) {
-                content.innerHTML = `<iframe src="${f.dataUrl}" style="width:100%;height:70vh;border:none;border-radius:8px;"></iframe>`;
+                content.innerHTML = `<iframe src="${f.dataUrl}" class="doc-iframe"></iframe>`;
             } else {
-                content.innerHTML = `<img src="${f.dataUrl}" style="max-width:100%;max-height:70vh;border-radius:8px;display:block;margin:auto;" alt="${escapeHtml(f.name)}" />`;
+                content.innerHTML = `<img src="${f.dataUrl}" class="doc-img" alt="${escapeHtml(f.name)}" />`;
             }
             modal.style.display = 'flex';
         }
@@ -597,7 +578,6 @@
         }
 
         // ── VISA PREVIEW ─────────────────────────────────────────────
-        // Parse processing time string like "10–15 business days" → returns days as number
         function parseProcessingDays(str) {
             if (!str || str === 'N/A' || str === 'On arrival' || str.toLowerCase().includes('arrival')) return 2;
             const match = str.match(/(\d+)/);
@@ -607,20 +587,18 @@
 
         function updateTravelDateMin(processingStr) {
             const processingDays = parseProcessingDays(processingStr);
-            // Add buffer: processing days + 7 days for safety
             const minDate = new Date();
             minDate.setDate(minDate.getDate() + processingDays + 7);
             const minStr = minDate.toISOString().split('T')[0];
             const travelInput = document.getElementById('a-travel-date');
             if (travelInput) {
                 travelInput.min = minStr;
-                // Show hint about minimum date
                 const hint = document.getElementById('travel-date-hint');
                 if (!hint) {
                     const wrap = travelInput.closest('.date-input-wrap') || travelInput.parentNode;
                     const h = document.createElement('div');
                     h.id = 'travel-date-hint';
-                    h.style.cssText = 'font-size:0.78rem;color:#0D1560;margin-top:4px;opacity:0.7;';
+                    h.className = 'travel-date-hint-text';
                     h.textContent = `📅 Earliest recommended: ${minDate.toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' })} (based on ${processingDays}-day processing)`;
                     wrap.after(h);
                 } else {
@@ -630,7 +608,6 @@
         }
 
         async function renderVisaPreview() {
-            // Read from wrapper data-value (set by makeSearchableSelect) or native select
             const wrapper = document.querySelector('[data-select-id="a-destination"]');
             const dest = (wrapper && wrapper.dataset.value) || document.getElementById('a-destination')?.value || '';
             const data = dest && typeof visaRequirements !== 'undefined' ? visaRequirements[dest] : null;
@@ -639,7 +616,6 @@
             if (!data) {
                 preview.classList.remove('has-data');
                 preview.innerHTML = '<p class="visa-preview-empty">Select a destination above to see requirements preview.</p>';
-                // Re-enable next button when nothing selected
                 ['btn-step1-next', 'btn-submit-app'].forEach(id => {
                     const btn = document.getElementById(id);
                     if (!btn) return;
@@ -653,21 +629,18 @@
             }
             preview.classList.add('has-data');
 
-            // Update minimum travel date based on processing time
             updateTravelDateMin(data.processing || '');
 
             let typeClass = 'visa-badge-required';
             if ((data.type || '').toLowerCase().includes('visa-free')) typeClass = 'visa-badge-free';
             else if ((data.type || '').toLowerCase().includes('arrival') || (data.type || '').toLowerCase().includes('evisa')) typeClass = 'visa-badge-on-arrival';
 
-            // Read admin-configured fees from API
             const _feeData = await FeeStore.getAll();
             const _svcFee = _feeData.serviceFee || JEKAFLY_SERVICE_FEE;
             const _destFee = _feeData.destinations[dest] != null ? _feeData.destinations[dest] : (feeMap[dest] || 120000);
             const _enabled = !_feeData.enabledCountries || _feeData.enabledCountries.includes(dest);
             const docs = data.docs || [];
 
-            // Disable step-1 next and final submit if country is closed
             const _disabledMsg = 'Visa processing is not available for this destination';
             ['btn-step1-next', 'btn-submit-app'].forEach(id => {
                 const btn = document.getElementById(id);
@@ -680,11 +653,11 @@
             });
 
             preview.innerHTML = `
-        ${!_enabled ? `<div style="background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start;">
-            <span style="font-size:1.2rem;">⚠️</span>
+        ${!_enabled ? `<div class="prefill-notice">
+            <span class="prefill-notice-icon">⚠️</span>
             <div>
-                <div style="font-weight:700;color:#92400E;font-size:0.9rem;">Not currently available</div>
-                <div style="color:#78350F;font-size:0.82rem;margin-top:2px;">Visa processing for <strong>${dest}</strong> is not open at this time. Please check back later or contact us.</div>
+                <div class="prefill-notice-title">Not currently available</div>
+                <div class="prefill-notice-sub">Visa processing for <strong>${dest}</strong> is not open at this time. Please check back later or contact us.</div>
             </div>
         </div>` : ''}
         <div class="visa-preview-header">
@@ -789,7 +762,6 @@
             setVal('a-notes', draft.personal?.notes);
             if (draft.travellers) { travellers = draft.travellers; renderTravellers(); }
 
-            // Update searchable select display
             const dest = draft.trip?.destination;
             if (dest) {
                 const wrapper = document.querySelector('[data-select-id="a-destination"]');
@@ -894,7 +866,7 @@
         }
 
         // ── REVIEW & FEE BREAKDOWN ───────────────────────────────────
-       async function buildReview() {
+        async function buildReview() {
             const dest = val('a-destination'), fname = val('a-fname'), lname = val('a-lname'),
                 email = val('a-email'), phone = val('a-phone'), passport = val('a-passport'),
                 dob = val('a-dob'), purpose = val('a-purpose'), travelDate = val('a-travel-date'),
@@ -918,7 +890,6 @@
 
             const grid = document.getElementById('review-grid');
             if (grid) grid.innerHTML = fields.map(f => `<div class="review-item"><div class="review-label">${f.label}</div><div class="review-value">${escapeHtml(f.value)}</div></div>`).join('');
-            // Show draft ref as copyable box above grid
             const draftId = getDraftId();
             let refBox = document.getElementById('review-ref-box');
             if (!refBox) {
@@ -932,7 +903,6 @@
         <div class="review-ref-code" id="review-ref-code">${escapeHtml(draftId)}</div>
         <button class="review-ref-copy" onclick="copyDraftRef()" id="review-ref-copy-btn" title="Copy reference">📋 Copy</button>`;
 
-            // Fee breakdown — read admin-configurable fees from API
             const adminFees = await FeeStore.getAll();
             const adminServiceFee = adminFees.serviceFee || JEKAFLY_SERVICE_FEE;
             const destFee = adminFees.destinations[dest] != null ? adminFees.destinations[dest] : (feeMap[dest] || 120000);
@@ -955,7 +925,6 @@
             <div class="fee-line fee-total"><span>Total Due</span><span>₦${total.toLocaleString()}</span></div>
         </div>`;
 
-            // Store fee breakdown in sessionStorage for payment.html
             window._computedTotal = total;
             localStorage.setItem('jkf_pending_payment', JSON.stringify({ _feeBreakdown: { visaFee, extraTravellers, extraFee, subtotal, serviceFee, total } }));
         }
@@ -967,7 +936,6 @@
                 const btn = document.getElementById('review-ref-copy-btn');
                 if (btn) { btn.textContent = '✅ Copied!'; setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000); }
             }).catch(() => {
-                // Fallback for older browsers
                 const ta = document.createElement('textarea');
                 ta.value = ref; ta.style.position = 'fixed'; ta.style.opacity = '0';
                 document.body.appendChild(ta); ta.select();
@@ -1006,14 +974,12 @@
         }
 
         function prefillFromSavedProfile() {
-            // Don't overwrite if a draft is already loaded
             const draft = readDraft();
             if (draft?.personal?.firstName) return;
 
             let profile;
             try { profile = JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null'); } catch { }
             if (!profile) {
-                // Fall back to basic account info
                 const u = Auth.getCurrent();
                 if (!u) return;
                 const parts = (u.name || '').split(' ');
@@ -1024,7 +990,6 @@
                 return;
             }
 
-            // Prefill all personal fields from saved profile
             setVal('a-fname', profile.firstName);
             setVal('a-lname', profile.lastName);
             setVal('a-dob', profile.dob);
@@ -1035,7 +1000,6 @@
             setVal('a-passport-expiry', profile.passportExpiry);
             setVal('a-address', profile.address);
 
-            // Selects need the searchable-select helper
             if (profile.nationality) {
                 setTimeout(() => {
                     const w = document.querySelector('[data-select-id="a-nationality"]');
@@ -1052,7 +1016,6 @@
                 setVal('a-gender', profile.gender);
             }
 
-            // Show a subtle notice
             const banner = document.getElementById('draft-banner');
             if (banner && banner.style.display === 'none') {
                 const notice = document.getElementById('prefill-notice');
@@ -1061,7 +1024,6 @@
         }
 
         async function submitApplication() {
-            // Guard: check if destination is enabled for visa processing
             const dest = (document.querySelector('[data-select-id="a-destination"]')?.dataset.value)
                 || document.getElementById('a-destination')?.value || '';
             if (dest) {

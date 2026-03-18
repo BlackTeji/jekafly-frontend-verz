@@ -449,7 +449,6 @@
 }
 
 
-
 /* ── APPLY V2 POLISH ──────────────────────────────────────── */
 .apply-page {
     margin-top: 68px;
@@ -743,12 +742,13 @@
 }
 
 /* ── Document preview modal ─────────────────────────────── */
+/* Document preview modal — hidden by default; JS sets display:flex to show */
 .doc-preview-modal {
+    display: none;
     position: fixed;
     inset: 0;
     background: rgba(10, 13, 50, 0.75);
     z-index: 9999;
-    display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
@@ -1013,4 +1013,11 @@
         grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
+}
+
+.travel-date-hint-text {
+    font-size: 0.78rem;
+    color: #0D1560;
+    margin-top: 4px;
+    opacity: 0.7;
 }
