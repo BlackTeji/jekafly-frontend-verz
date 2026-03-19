@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/hero-animation.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
+    <link rel="stylesheet" href="mobile.css">
 </head>
 
 <body>
@@ -560,6 +561,8 @@
                 </div>
             </div>
         </div>
+        <button class="testi-show-more" id="testi-show-more" onclick="showMoreReviews()" style="display:none">Show more
+            reviews ↓</button>
     </section>
 
     <!-- =============================
@@ -1184,6 +1187,113 @@
         }
     </script>
 
+    <script src="mobile.js" defer></script>
+    <script>
+        // ── Mobile interactions (only on ≤768px) ──────────────────
+
+        function isMob() { return window.innerWidth <= 768; }
+
+        // Service flip cards
+        function initFlipCards() {
+            if (!isMob()) return;
+            document.querySelectorAll('.service-card').forEach(card => {
+                // Wrap existing content into front/back if not already done
+                if (card.querySelector('.service-card-inner')) return;
+                const icon = card.querySelector('.service-icon-bg') ? card.querySelector('.service-icon-bg').outerHTML : '';
+                const title = card.querySelector('.service-title') ? card.querySelector('.service-title').outerHTML : '';
+                const desc = card.querySelector('.service-desc') ? card.querySelector('.service-desc').outerHTML : '';
+                const onclick = card.getAttribute('onclick') || '';
+                card.removeAttribute('onclick');
+                card.innerHTML = `
+          <div class="service-card-inner">
+            <div class="service-card-front">${icon}${title}</div>
+            <div class="service-card-back">${title}${desc}<div class="service-arrow">→</div></div>
+          </div>`;
+                card.addEventListener('click', function (e) {
+                    if (this.classList.contains('flipped')) {
+                        // Second tap — execute original action
+                        this.classList.remove('flipped');
+                        if (onclick) { try { eval(onclick); } catch (err) { } }
+                    } else {
+                        // First tap — flip to reveal
+                        document.querySelectorAll('.service-card.flipped').forEach(c => c.classList.remove('flipped'));
+                        this.classList.add('flipped');
+                    }
+                });
+            });
+        }
+
+        // How It Works accordion
+        function initStepAccordion() {
+            if (!isMob()) return;
+            document.querySelectorAll('.step').forEach(step => {
+                if (step.querySelector('.step-header')) return;
+                const num = step.querySelector('.step-num') ? step.querySelector('.step-num').outerHTML : '';
+                const h4 = step.querySelector('h4') ? step.querySelector('h4').textContent : '';
+                const p = step.querySelector('p') ? step.querySelector('p').outerHTML : '';
+                step.innerHTML = `
+          <div class="step-header">${num}<h4>${h4}</h4><span class="step-chevron">▼</span></div>
+          <div class="step-body">${p}</div>`;
+                step.querySelector('.step-header').addEventListener('click', function () {
+                    const isOpen = step.classList.contains('open');
+                    document.querySelectorAll('.step.open').forEach(s => s.classList.remove('open'));
+                    if (!isOpen) step.classList.add('open');
+                });
+            });
+            // Open first step by default
+            const first = document.querySelector('.step');
+            if (first) first.classList.add('open');
+        }
+
+        // Why Jekafly accordion
+        function initInfoList() {
+            if (!isMob()) return;
+            document.querySelectorAll('.info-list li').forEach(li => {
+                if (li.querySelector('.info-list-header')) return;
+                const icon = li.querySelector('.icon') ? li.querySelector('.icon').outerHTML : '';
+                const strong = li.querySelector('strong') ? li.querySelector('strong').textContent : '';
+                const sub = li.querySelector('.info-sub') ? li.querySelector('.info-sub').outerHTML : '';
+                li.innerHTML = `
+          <div class="info-list-header">${icon}<span class="info-list-title">${strong}</span><span class="info-list-chevron">▼</span></div>
+          ${sub}`;
+                li.querySelector('.info-list-header').addEventListener('click', function () {
+                    const isOpen = li.classList.contains('open');
+                    document.querySelectorAll('.info-list li.open').forEach(el => el.classList.remove('open'));
+                    if (!isOpen) li.classList.add('open');
+                });
+            });
+        }
+
+        // Show more reviews
+        function showMoreReviews() {
+            document.querySelectorAll('.testi-card').forEach(c => c.classList.add('visible'));
+            document.getElementById('testi-show-more').style.display = 'none';
+        }
+
+        function initTestimonials() {
+            if (!isMob()) return;
+            const btn = document.getElementById('testi-show-more');
+            const cards = document.querySelectorAll('.testi-card');
+            if (cards.length > 1 && btn) btn.style.display = 'block';
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (isMob()) {
+                initFlipCards();
+                initStepAccordion();
+                initInfoList();
+                initTestimonials();
+            }
+        });
+
+        window.addEventListener('resize', function () {
+            if (isMob()) {
+                initFlipCards();
+                initStepAccordion();
+                initInfoList();
+            }
+        });
+    </script>
 </body>
 
 </html>

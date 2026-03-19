@@ -613,6 +613,31 @@
         function escHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
         window.addEventListener('scroll', () => { document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20); });
 
+        // ── Affiliate perks flip cards (mobile only) ──────────
+        function initAffPerkFlips() {
+            if (window.innerWidth > 768) return;
+            document.querySelectorAll('.aff-perk').forEach(perk => {
+                if (perk.querySelector('.aff-perk-inner')) return;
+                const iconEl = perk.querySelector('.aff-perk-icon');
+                const icon = iconEl ? iconEl.outerHTML : '';
+                const h4 = perk.querySelector('h4') ? perk.querySelector('h4').textContent : '';
+                const p = perk.querySelector('p') ? perk.querySelector('p').textContent : '';
+                perk.innerHTML = `
+              <div class="aff-perk-inner">
+                <div class="aff-perk-front">${icon}<h4>${h4}</h4></div>
+                <div class="aff-perk-back"><p>${p}</p></div>
+              </div>`;
+                perk.addEventListener('click', function () {
+                    const isFlipped = this.classList.contains('flipped');
+                    document.querySelectorAll('.aff-perk.flipped').forEach(p => p.classList.remove('flipped'));
+                    if (!isFlipped) this.classList.add('flipped');
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', initAffPerkFlips);
+        window.addEventListener('resize', initAffPerkFlips);
+
         // ── Mobile Step Wizard ────────────────────────────────
         let _affStep = 1;
         const AFF_TOTAL_STEPS = 4;
