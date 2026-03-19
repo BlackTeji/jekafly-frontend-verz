@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="assets/css/affiliate.css" />
+    <link rel="stylesheet" href="mobile.css">
 </head>
 
 <body>
@@ -301,90 +302,136 @@
                 <form id="aff-form" onsubmit="submitAffiliateApp(event)">
                     <div class="aff-form-title">Your Application</div>
                     <div class="aff-form-sub">All fields are required unless marked optional.</div>
+
+                    <!-- Mobile step progress indicator -->
+                    <div class="aff-mob-steps" id="aff-mob-steps">
+                        <div class="aff-mob-step-item active" data-step="1"><span>1</span><small>You</small></div>
+                        <div class="aff-mob-step-line"></div>
+                        <div class="aff-mob-step-item" data-step="2"><span>2</span><small>Channel</small></div>
+                        <div class="aff-mob-step-line"></div>
+                        <div class="aff-mob-step-item" data-step="3"><span>3</span><small>Bank</small></div>
+                        <div class="aff-mob-step-line"></div>
+                        <div class="aff-mob-step-item" data-step="4"><span>4</span><small>Submit</small></div>
+                    </div>
+
                     <div class="aff-form-grid">
-                        <div class="aff-field"><label>Full Name</label><input type="text" id="aff-name"
-                                placeholder="As on your ID" required /></div>
-                        <div class="aff-field"><label>Email Address</label><input type="email" id="aff-email"
-                                placeholder="you@example.com" required /></div>
-                        <div class="aff-field"><label>Phone Number</label><input type="tel" id="aff-phone"
-                                placeholder="+234 xxx xxx xxxx" required /></div>
-                        <div class="aff-field"><label>State / Location</label><input type="text" id="aff-location"
-                                placeholder="e.g. Lagos, Abuja" required /></div>
-                        <div class="aff-field">
-                            <label>Primary Channel</label>
-                            <select id="aff-channel" required>
-                                <option value="">Select how you will promote</option>
-                                <option value="social_media">Social Media (Instagram, TikTok, X)</option>
-                                <option value="whatsapp">WhatsApp Groups / Broadcast</option>
-                                <option value="blog_website">Blog or Website</option>
-                                <option value="youtube">YouTube</option>
-                                <option value="travel_agent">Travel Agent / Agency</option>
-                                <option value="word_of_mouth">Word of Mouth</option>
-                                <option value="other">Other</option>
-                            </select>
+
+                        <!-- STEP 1: Personal Info -->
+                        <div class="aff-form-step" data-step="1">
+                            <div class="aff-step-heading">Personal Information</div>
+                            <div class="aff-field"><label>Full Name</label><input type="text" id="aff-name"
+                                    placeholder="As on your ID" required /></div>
+                            <div class="aff-field"><label>Email Address</label><input type="email" id="aff-email"
+                                    placeholder="you@example.com" required /></div>
+                            <div class="aff-field"><label>Phone Number</label><input type="tel" id="aff-phone"
+                                    placeholder="+234 xxx xxx xxxx" required /></div>
+                            <div class="aff-field"><label>State / Location</label><input type="text" id="aff-location"
+                                    placeholder="e.g. Lagos, Abuja" required /></div>
                         </div>
-                        <div class="aff-field">
-                            <label>Audience Size</label>
-                            <select id="aff-audience" required>
-                                <option value="">Select range</option>
-                                <option value="under_1k">Under 1,000</option>
-                                <option value="1k_5k">1,000 &ndash; 5,000</option>
-                                <option value="5k_20k">5,000 &ndash; 20,000</option>
-                                <option value="20k_100k">20,000 &ndash; 100,000</option>
-                                <option value="100k_plus">100,000+</option>
-                            </select>
+
+                        <!-- STEP 2: Channel -->
+                        <div class="aff-form-step" data-step="2">
+                            <div class="aff-step-heading">Your Channel</div>
+                            <div class="aff-field">
+                                <label>Primary Channel</label>
+                                <select id="aff-channel" required>
+                                    <option value="">Select how you will promote</option>
+                                    <option value="social_media">Social Media (Instagram, TikTok, X)</option>
+                                    <option value="whatsapp">WhatsApp Groups / Broadcast</option>
+                                    <option value="blog_website">Blog or Website</option>
+                                    <option value="youtube">YouTube</option>
+                                    <option value="travel_agent">Travel Agent / Agency</option>
+                                    <option value="word_of_mouth">Word of Mouth</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="aff-field">
+                                <label>Audience Size</label>
+                                <select id="aff-audience" required>
+                                    <option value="">Select range</option>
+                                    <option value="under_1k">Under 1,000</option>
+                                    <option value="1k_5k">1,000 &ndash; 5,000</option>
+                                    <option value="5k_20k">5,000 &ndash; 20,000</option>
+                                    <option value="20k_100k">20,000 &ndash; 100,000</option>
+                                    <option value="100k_plus">100,000+</option>
+                                </select>
+                            </div>
+                            <div class="aff-field aff-field-full">
+                                <label>Social Media / Website URL <span class="aff-optional">(optional)</span></label>
+                                <input type="url" id="aff-url" placeholder="https://instagram.com/yourhandle" />
+                                <div class="aff-hint">Link to your main profile or website.</div>
+                            </div>
                         </div>
-                        <div class="aff-field aff-field-full">
-                            <label>Social Media / Website URL <span class="aff-optional">(optional)</span></label>
-                            <input type="url" id="aff-url" placeholder="https://instagram.com/yourhandle" />
-                            <div class="aff-hint">Link to your main profile or website.</div>
+
+                        <!-- STEP 3: Bank Details -->
+                        <div class="aff-form-step" data-step="3">
+                            <div class="aff-step-heading">Bank Details for Payouts</div>
+                            <div class="aff-field aff-field-full">
+                                <label>Bank Account Number</label>
+                                <input type="text" id="aff-bank-acct" placeholder="10-digit NUBAN" maxlength="10"
+                                    required />
+                            </div>
+                            <div class="aff-field">
+                                <label>Bank Name</label>
+                                <select id="aff-bank-name" required>
+                                    <option value="">Select your bank</option>
+                                    <option>Access Bank</option>
+                                    <option>First Bank</option>
+                                    <option>GTBank</option>
+                                    <option>Zenith Bank</option>
+                                    <option>UBA</option>
+                                    <option>Fidelity Bank</option>
+                                    <option>Stanbic IBTC</option>
+                                    <option>Sterling Bank</option>
+                                    <option>Union Bank</option>
+                                    <option>Polaris Bank</option>
+                                    <option>Ecobank</option>
+                                    <option>Opay</option>
+                                    <option>Palmpay</option>
+                                    <option>Kuda Bank</option>
+                                    <option>Moniepoint</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="aff-field">
+                                <label>Account Name</label>
+                                <input type="text" id="aff-bank-acct-name" placeholder="Name on bank account"
+                                    required />
+                            </div>
                         </div>
-                        <div class="aff-form-divider aff-field-full"><span>Bank Details for Payouts</span></div>
-                        <div class="aff-field aff-field-full">
-                            <label>Bank Account Number</label>
-                            <input type="text" id="aff-bank-acct" placeholder="10-digit NUBAN" maxlength="10"
-                                required />
+
+                        <!-- STEP 4: About + Submit -->
+                        <div class="aff-form-step" data-step="4">
+                            <div class="aff-step-heading">Almost Done!</div>
+                            <div class="aff-field aff-field-full">
+                                <label>Why do you want to join? <span class="aff-optional">(optional)</span></label>
+                                <textarea id="aff-why"
+                                    placeholder="Tell us about your audience and why you would be a great Jekafly affiliate..."></textarea>
+                            </div>
+                            <div class="aff-terms-row">
+                                <input type="checkbox" id="aff-terms" required />
+                                <label for="aff-terms">I agree to the Jekafly Affiliate Programme terms. Commission is
+                                    earned only on completed, paid applications. Jekafly reserves the right to approve
+                                    or reject applications.</label>
+                            </div>
                         </div>
-                        <div class="aff-field">
-                            <label>Bank Name</label>
-                            <select id="aff-bank-name" required>
-                                <option value="">Select your bank</option>
-                                <option>Access Bank</option>
-                                <option>First Bank</option>
-                                <option>GTBank</option>
-                                <option>Zenith Bank</option>
-                                <option>UBA</option>
-                                <option>Fidelity Bank</option>
-                                <option>Stanbic IBTC</option>
-                                <option>Sterling Bank</option>
-                                <option>Union Bank</option>
-                                <option>Polaris Bank</option>
-                                <option>Ecobank</option>
-                                <option>Opay</option>
-                                <option>Palmpay</option>
-                                <option>Kuda Bank</option>
-                                <option>Moniepoint</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        <div class="aff-field">
-                            <label>Account Name</label>
-                            <input type="text" id="aff-bank-acct-name" placeholder="Name on bank account" required />
-                        </div>
-                        <div class="aff-form-divider aff-field-full"><span>About You</span></div>
-                        <div class="aff-field aff-field-full">
-                            <label>Why do you want to join? <span class="aff-optional">(optional)</span></label>
-                            <textarea id="aff-why"
-                                placeholder="Tell us about your audience and why you would be a great Jekafly affiliate..."></textarea>
-                        </div>
+
                     </div>
-                    <div class="aff-terms-row">
-                        <input type="checkbox" id="aff-terms" required />
-                        <label for="aff-terms">I agree to the Jekafly Affiliate Programme terms. Commission is earned
-                            only on completed, paid applications. Jekafly reserves the right to approve or reject
-                            applications.</label>
+
+                    <!-- Mobile step nav buttons -->
+                    <div class="aff-mob-nav" id="aff-mob-nav">
+                        <button type="button" class="btn-aff-back" id="aff-btn-back" onclick="affStepBack()">←
+                            Back</button>
+                        <button type="button" class="btn-aff-next" id="aff-btn-next" onclick="affStepNext()">Next
+                            →</button>
+                        <button type="submit" class="btn-aff-submit aff-mob-submit" id="aff-submit-btn"
+                            style="display:none">Submit Application →</button>
                     </div>
-                    <button type="submit" class="btn-aff-submit" id="aff-submit-btn">Submit Application &rarr;</button>
+
+                    <!-- Desktop submit -->
+                    <button type="submit" class="btn-aff-submit aff-desktop-submit" id="aff-submit-btn-desktop">Submit
+                        Application &rarr;</button>
+
                 </form>
             </div>
         </div>
@@ -565,7 +612,84 @@
         function toggleFaq(el) { el.closest('.aff-faq-item').classList.toggle('open'); }
         function escHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
         window.addEventListener('scroll', () => { document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20); });
+
+        // ── Mobile Step Wizard ────────────────────────────────
+        let _affStep = 1;
+        const AFF_TOTAL_STEPS = 4;
+
+        function affIsMobile() { return window.innerWidth <= 768; }
+
+        function affInitSteps() {
+            if (!affIsMobile()) return;
+            affShowStep(_affStep);
+        }
+
+        function affShowStep(step) {
+            if (!affIsMobile()) return;
+            _affStep = step;
+
+            // Show/hide step panels
+            document.querySelectorAll('.aff-form-step').forEach(el => {
+                el.style.display = parseInt(el.dataset.step) === step ? 'block' : 'none';
+            });
+
+            // Update progress dots
+            document.querySelectorAll('.aff-mob-step-item').forEach(el => {
+                const s = parseInt(el.dataset.step);
+                el.classList.toggle('active', s === step);
+                el.classList.toggle('done', s < step);
+            });
+            document.querySelectorAll('.aff-mob-step-line').forEach((el, i) => {
+                el.classList.toggle('done', i + 1 < step);
+            });
+
+            // Show/hide buttons
+            const back = document.getElementById('aff-btn-back');
+            const next = document.getElementById('aff-btn-next');
+            const submit = document.getElementById('aff-submit-btn');
+            if (back) back.style.display = step === 1 ? 'none' : 'block';
+            if (next) next.style.display = step < AFF_TOTAL_STEPS ? 'block' : 'none';
+            if (submit) submit.style.display = step === AFF_TOTAL_STEPS ? 'block' : 'none';
+        }
+
+        function affStepNext() {
+            if (!affIsMobile()) return;
+            // Validate current step's required fields
+            const currentPanel = document.querySelector(`.aff-form-step[data-step="${_affStep}"]`);
+            const required = currentPanel.querySelectorAll('[required]');
+            for (const field of required) {
+                if (!field.value.trim()) {
+                    field.focus();
+                    showToast('Please fill in all required fields.', 'error');
+                    return;
+                }
+            }
+            if (_affStep < AFF_TOTAL_STEPS) {
+                affShowStep(_affStep + 1);
+                document.getElementById('aff-form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function affStepBack() {
+            if (_affStep > 1) {
+                affShowStep(_affStep - 1);
+                document.getElementById('aff-form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            affInitSteps();
+        });
+        window.addEventListener('resize', () => {
+            if (affIsMobile()) {
+                affShowStep(_affStep);
+            } else {
+                // On desktop — show all steps
+                document.querySelectorAll('.aff-form-step').forEach(el => el.style.display = '');
+            }
+        });
     </script>
+    <script src="mobile.js" defer></script>
 </body>
 
 </html>

@@ -1475,3 +1475,89 @@ tr:hover td {
     color: #6B7494;
     font-style: italic;
 }
+
+/* ── Application pagination ──────────────────────────────── */
+.dash-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dash-page-info {
+    font-size: 0.82rem;
+    color: var(--text-light);
+}
+
+.dash-page-btns {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.dash-page-btn {
+    padding: 6px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.dash-page-btn:hover:not(.disabled):not(.active) {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+.dash-page-btn.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: white;
+}
+
+.dash-page-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.dash-page-ellipsis {
+    padding: 6px 4px;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .dash-pagination {
+        padding: 14px var(--mob-pad, 16px);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .dash-page-info {
+        font-size: 0.8rem;
+    }
+
+    .dash-page-btns {
+        width: 100%;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .dash-page-btn {
+        min-width: 40px;
+        min-height: 40px;
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        border-radius: 10px;
+    }
+}

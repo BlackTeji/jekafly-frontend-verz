@@ -24,6 +24,22 @@
     overflow: hidden;
 }
 
+@media (max-width: 768px) {
+    .login-wrap {
+        display: block;
+        grid-template-columns: unset;
+        max-width: 100%;
+    }
+
+    .login-aside {
+        display: none !important;
+    }
+
+    .login-form-panel {
+        padding: 32px 18px 40px;
+    }
+}
+
 /* ── Left panel ────────────────────────────────────────────── */
 .login-aside {
     background: var(--blue);
@@ -216,29 +232,4 @@
 
 .back-link:hover {
     color: var(--blue);
-}
-
-/* ── Responsive ────────────────────────────────────────────── */
-@media (max-width: 720px) {
-    .login-wrap {
-        grid-template-columns: 1fr;
-    }
-
-    .login-aside {
-        display: none;
-    }
-
-    .login-form-panel {
-        padding: 36px 28px;
-    }
-}
-
-@media (max-width: 640px) {
-    .login-page {
-        padding: 24px 4% 48px;
-    }
-
-    .login-form-panel {
-        padding: 28px 20px;
-    }
 }

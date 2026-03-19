@@ -617,6 +617,7 @@ nav {
     color: var(--ink);
 }
 
+/* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 760px) {
     nav {
         padding: 0 18px;
@@ -663,15 +664,5 @@ nav {
 
     .fee-line {
         font-size: 0.85rem;
-    }
-}
-
-@media (max-width: 640px) {
-
-    /* Prevent iOS input zoom */
-    input,
-    select,
-    textarea {
-        font-size: 16px !important;
     }
 }

@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="assets/css/admin.css" />
+    <link rel="stylesheet" href="mobile.css">
 
 </head>
 
@@ -63,7 +64,8 @@
                 <div class="admin-nav-section">Manage</div>
                 <div class="admin-nav-item" onclick="adminTab('applications',this)" data-roles="super,applications">
                     <span class="ni">📋</span>All
-                    Applications</div>
+                    Applications
+                </div>
                 <div class="admin-nav-item" onclick="adminTab('users',this)" data-roles="super,applications"><span
                         class="ni">👥</span>Users</div>
                 <div class="admin-nav-item" onclick="adminTab('fees',this)" data-roles="super,finance"><span
@@ -71,7 +73,8 @@
                 <div class="admin-nav-item" onclick="adminTab('reviews',this)" data-roles="super,applications"><span
                         class="ni">⭐</span>Reviews</div>
                 <div class="admin-nav-item" onclick="adminTab('consultations',this)" data-roles="super,consultations">
-                    <span class="ni">🗓️</span>Consultations</div>
+                    <span class="ni">🗓️</span>Consultations
+                </div>
                 <div class="admin-nav-item" onclick="adminTab('affiliates',this)" data-roles="super,affiliates"><span
                         class="ni">🤝</span>Affiliates</div>
                 <div class="admin-nav-section">Quick Links</div>
@@ -491,7 +494,7 @@
             document.querySelectorAll('.admin-tab-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.tab === tab);
             });
-            if (window.innerWidth <= 640) window.scrollTo({ top: 68, behavior: 'smooth' });
+            if (window.innerWidth <= 768) window.scrollTo({ top: 60, behavior: 'smooth' });
             if (tab === 'applications') loadApps();
             if (tab === 'users') loadUsers();
             if (tab === 'reviews') loadReviews();
@@ -806,6 +809,20 @@
 
         function renderTable(apps, actions) {
             if (!apps.length) return '<div class="atbl-empty">No applications found.</div>';
+            if (window.innerWidth <= 768) {
+                return apps.map(a => `
+                <div class="app-mob-card" onclick="${actions ? `viewApp('${a.ref}')` : ''}">
+                    <div class="app-mob-card-top">
+                        <span class="app-mob-dest">${a.destination}</span>
+                        <span class="status-pill ${SC[a.status]}">${SL[a.status] || a.status}</span>
+                    </div>
+                    <div class="app-mob-ref">${a.ref}</div>
+                    <div class="app-mob-card-bottom">
+                        <span class="app-mob-date">${a.applicantName} · ${new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</span>
+                        ${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}
+                    </div>
+                </div>`).join('');
+            }
             return `<table>
         <thead><tr><th>Reference</th><th>Applicant</th><th>Destination</th><th>Date</th><th>Status</th><th>Payment</th>${actions ? '<th></th>' : ''}</tr></thead>
         <tbody>${apps.map(a => `

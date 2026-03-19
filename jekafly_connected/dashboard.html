@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="assets/css/apply.css" />
     <link rel="stylesheet" href="assets/css/dashboard.css" />
     <link rel="stylesheet" href="assets/css/hero-animation.css" />
+    <link rel="stylesheet" href="mobile.css">
 </head>
 
 <body>
@@ -641,32 +642,99 @@
         }
 
         // ── APPLICATIONS ─────────────────────────────────────────────
+        let _allApps = [];
+        let _appsPage = 1;
+        const DASH_PER_PAGE = 5;
+
         async function loadApplications() {
-            const apps = await AppStore.getByUser();
-            const approved = apps.filter(a => ['approved', 'delivered'].includes(a.status)).length;
-            const pending = apps.filter(a => ['received', 'processing', 'embassy'].includes(a.status)).length;
-            const unpaid = apps.filter(a => !a.paid).length;
+            _allApps = await AppStore.getByUser();
+            const approved = _allApps.filter(a => ['approved', 'delivered'].includes(a.status)).length;
+            const pending = _allApps.filter(a => ['received', 'processing', 'embassy'].includes(a.status)).length;
+            const unpaid = _allApps.filter(a => !a.paid).length;
             document.getElementById('dash-stats').innerHTML = `
-        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value">${apps.length}</div><div class="stat-label">Total</div></div>
+        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value">${_allApps.length}</div><div class="stat-label">Total</div></div>
         <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value">${pending}</div><div class="stat-label">In Progress</div></div>
         <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value">${approved}</div><div class="stat-label">Approved</div></div>
         <div class="stat-card"><div class="stat-icon">💳</div><div class="stat-value">${unpaid}</div><div class="stat-label">Unpaid</div></div>`;
 
-            if (apps.length === 0) {
+            if (_allApps.length === 0) {
                 document.getElementById('applications-table').innerHTML = `<div class="empty-state"><div class="icon">✈️</div><h3>No applications yet</h3><p>Start your first visa application and we'll guide you through.</p><button class="btn-save" onclick="window.location.href='apply.html'">Apply for a Visa →</button></div>`;
                 return;
             }
-            document.getElementById('applications-table').innerHTML = `
-        <table><thead><tr><th>Reference</th><th>Destination</th><th>Purpose</th><th>Travel Date</th><th>Status</th><th>Payment</th><th>Action</th></tr></thead>
-        <tbody>${apps.map(a => `<tr>
-            <td><span class="cell-ref">${a.ref}</span></td>
-            <td><strong>${a.destination}</strong></td>
-            <td>${a.purpose || '—'}</td>
-            <td>${a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td>
-            <td><span class="status-pill ${statusColors[a.status] || 'status-received'}">${statusLabels[a.status] || a.status}</span></td>
-            <td>${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}</td>
-            <td><button onclick="viewApp('${a.ref}')" class="btn-table-view">View →</button></td>
-        </tr>`).join('')}</tbody></table>`;
+            _appsPage = 1;
+            renderAppsPage();
+        }
+
+        function renderAppsPage() {
+            const total = _allApps.length;
+            const totalPages = Math.ceil(total / DASH_PER_PAGE);
+            const start = (_appsPage - 1) * DASH_PER_PAGE;
+            const paged = _allApps.slice(start, start + DASH_PER_PAGE);
+
+            let html = '';
+
+            if (window.innerWidth <= 768) {
+                html = paged.map(a => `
+                    <div class="app-mob-card" onclick="viewApp('${a.ref}')">
+                        <div class="app-mob-card-top">
+                            <span class="app-mob-dest">${a.destination}</span>
+                            <span class="status-pill ${statusColors[a.status] || 'status-received'}">${statusLabels[a.status] || a.status}</span>
+                        </div>
+                        <div class="app-mob-ref">${a.ref}</div>
+                        <div class="app-mob-card-bottom">
+                            <span class="app-mob-date">${a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</span>
+                            ${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}
+                        </div>
+                    </div>`).join('');
+            } else {
+                html = `<table><thead><tr><th>Reference</th><th>Destination</th><th>Purpose</th><th>Travel Date</th><th>Status</th><th>Payment</th><th>Action</th></tr></thead>
+                <tbody>${paged.map(a => `<tr>
+                    <td><span class="cell-ref">${a.ref}</span></td>
+                    <td><strong>${a.destination}</strong></td>
+                    <td>${a.purpose || '—'}</td>
+                    <td>${a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td>
+                    <td><span class="status-pill ${statusColors[a.status] || 'status-received'}">${statusLabels[a.status] || a.status}</span></td>
+                    <td>${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}</td>
+                    <td><button onclick="viewApp('${a.ref}')" class="btn-table-view">View →</button></td>
+                </tr>`).join('')}</tbody></table>`;
+            }
+
+            // Pagination bar
+            if (totalPages > 1) {
+                const from = start + 1;
+                const to = Math.min(start + DASH_PER_PAGE, total);
+
+                // Smart page numbers with ellipsis
+                const delta = window.innerWidth <= 768 ? 1 : 2;
+                let pages = new Set([1, totalPages]);
+                for (let i = Math.max(2, _appsPage - delta); i <= Math.min(totalPages - 1, _appsPage + delta); i++) pages.add(i);
+                let prev = 0;
+                let pageBtns = '';
+                [...pages].sort((a, b) => a - b).forEach(p => {
+                    if (prev && p - prev > 1) pageBtns += `<span class="dash-page-ellipsis">…</span>`;
+                    pageBtns += `<button class="dash-page-btn ${p === _appsPage ? 'active' : ''}" onclick="dashGoPage(${p})">${p}</button>`;
+                    prev = p;
+                });
+
+                html += `<div class="dash-pagination">
+                    <span class="dash-page-info">Showing ${from}–${to} of ${total}</span>
+                    <div class="dash-page-btns">
+                        <button class="dash-page-btn ${_appsPage === 1 ? 'disabled' : ''}" onclick="dashGoPage(${_appsPage - 1})" ${_appsPage === 1 ? 'disabled' : ''}>← Prev</button>
+                        ${pageBtns}
+                        <button class="dash-page-btn ${_appsPage === totalPages ? 'disabled' : ''}" onclick="dashGoPage(${_appsPage + 1})" ${_appsPage === totalPages ? 'disabled' : ''}>Next →</button>
+                    </div>
+                </div>`;
+            }
+
+            document.getElementById('applications-table').innerHTML = html;
+        }
+
+        function dashGoPage(p) {
+            const totalPages = Math.ceil(_allApps.length / DASH_PER_PAGE);
+            if (p < 1 || p > totalPages) return;
+            _appsPage = p;
+            renderAppsPage();
+            document.getElementById('applications-table').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
         async function viewApp(ref) {
@@ -2012,22 +2080,70 @@
         </button>
         <button class="dash-tab-btn" onclick="showTab('track',this)" data-tab="track">
             <span class="tab-icon">🔍</span>
-            <span class="tab-label">Track Visa</span>
+            <span class="tab-label">Track</span>
         </button>
         <button class="dash-tab-btn" onclick="showTab('mydocs',this)" data-tab="mydocs">
             <span class="tab-icon">📁</span>
             <span class="tab-label">Docs</span>
         </button>
-        <button class="dash-tab-btn" onclick="showTab('insurance',this)" data-tab="insurance">
-            <span class="tab-icon">🛡️</span>
-            <span class="tab-label">Insurance</span>
-        </button>
         <button class="dash-tab-btn" onclick="showTab('profile',this)" data-tab="profile">
             <span class="tab-icon">👤</span>
             <span class="tab-label">Profile</span>
         </button>
+        <button class="dash-tab-btn" onclick="toggleMoreDrawer()" id="more-tab-btn">
+            <span class="tab-icon">☰</span>
+            <span class="tab-label">More</span>
+        </button>
     </nav>
 
+    <!-- ── More Drawer ────────────────────────────────────── -->
+    <div class="dash-more-overlay" id="dash-more-overlay" onclick="closeMoreDrawer()"></div>
+    <div class="dash-more-drawer" id="dash-more-drawer">
+        <div class="dash-more-handle"></div>
+        <div class="dash-more-grid">
+            <button class="dash-more-item" onclick="showTabFromMore('insurance')">
+                <span class="dash-more-icon">🛡️</span>
+                <span class="dash-more-label">My Insurance</span>
+            </button>
+            <button class="dash-more-item" onclick="showTabFromMore('documents')">
+                <span class="dash-more-icon">🗓️</span>
+                <span class="dash-more-label">Consultation</span>
+            </button>
+            <button class="dash-more-item" onclick="showTabFromMore('flights')">
+                <span class="dash-more-icon">✈️</span>
+                <span class="dash-more-label">Flights</span>
+            </button>
+            <button class="dash-more-item" onclick="showTabFromMore('hotels')">
+                <span class="dash-more-icon">🏨</span>
+                <span class="dash-more-label">Hotels</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function toggleMoreDrawer() {
+            const drawer = document.getElementById('dash-more-drawer');
+            const overlay = document.getElementById('dash-more-overlay');
+            const open = drawer.classList.contains('open');
+            if (open) { closeMoreDrawer(); } else {
+                drawer.classList.add('open');
+                overlay.classList.add('open');
+                document.getElementById('more-tab-btn').classList.add('active');
+            }
+        }
+        function closeMoreDrawer() {
+            document.getElementById('dash-more-drawer').classList.remove('open');
+            document.getElementById('dash-more-overlay').classList.remove('open');
+            document.getElementById('more-tab-btn').classList.remove('active');
+        }
+        function showTabFromMore(tab) {
+            closeMoreDrawer();
+            const navItem = document.querySelector(`.dash-nav-item[onclick*="${tab}"]`);
+            showTab(tab, navItem);
+        }
+    </script>
+
+    <script src="mobile.js" defer></script>
 </body>
 
 </html>
