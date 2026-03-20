@@ -177,7 +177,7 @@ async function handleLogin() {
 
     setTimeout(() => {
         window.location.href = res.user.role === 'ADMIN' ? 'admin.html' : 'dashboard.html';
-    }, 1200);
+    }, 900);
 }
 
 async function handleRegister() {

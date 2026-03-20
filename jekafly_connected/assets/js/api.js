@@ -25,9 +25,12 @@ async function apiFetch(method, path, body, isFormData = false) {
             return apiFetch(method, path, body, isFormData);
         }
         const stored = localStorage.getItem('jkf_user');
-        if (!stored && !window.location.pathname.includes('index')) {
+        if (!stored) {
             _accessToken = null;
-            window.location.href = 'index.html';
+            // Only redirect to index from authenticated pages
+            if (!window.location.pathname.match(/index\.html|\/$/)) {
+                window.location.href = 'index.html';
+            }
         }
         return null;
     }
@@ -105,16 +108,39 @@ var Auth = {
         if (Auth._initPromise) return Auth._initPromise;
         Auth._initPromise = (async () => {
             try {
-                const res = await fetch(API_BASE + '/auth/refresh', {
-                    method: 'POST', credentials: 'include',
-                });
+                // Try refresh — retry once after 800ms for mobile cookie timing
+                const tryRefresh = async () => {
+                    const res = await fetch(API_BASE + '/auth/refresh', {
+                        method: 'POST', credentials: 'include',
+                    });
+                    return res;
+                };
+
+                let res = await tryRefresh();
+
+                // First attempt failed — wait and retry (mobile cookies can be slow)
+                if (!res.ok) {
+                    await new Promise(r => setTimeout(r, 800));
+                    res = await tryRefresh();
+                }
+
                 if (res.ok) {
                     const data = await res.json();
                     _accessToken = data.data.accessToken;
                     return user;
                 }
-                if (res.status === 401) localStorage.removeItem('jkf_user');
-                return null;
+
+                // Both attempts failed — session is genuinely expired
+                if (res.status === 401) {
+                    localStorage.removeItem('jkf_user');
+                    return null;
+                }
+
+                // Non-401 error (network, server down) — keep user logged in
+                return user;
+            } catch {
+                // Network error — keep user logged in optimistically
+                return user;
             } finally {
                 Auth._initPromise = null;
             }
