@@ -747,6 +747,109 @@
             });
         }
     </script>
+
+    <!-- ── Login modal for affiliate page ── -->
+    <div class="modal-overlay" id="modal" onclick="closeModalIfBg(event)"
+        style="display:none;position:fixed;inset:0;background:rgba(10,12,30,0.55);z-index:2000;align-items:flex-end;justify-content:center;backdrop-filter:blur(6px);">
+        <div class="modal"
+            style="background:white;width:100%;max-width:100%;border-radius:20px 20px 0 0;padding:24px 20px 40px;max-height:92svh;overflow-y:auto;">
+            <div class="modal-drag-handle"
+                style="width:40px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 20px;"></div>
+            <button onclick="closeModal()"
+                style="position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;font-size:0.88rem;">✕</button>
+            <div id="modal-auth">
+                <h3 id="aff-modal-title" style="font-size:1.15rem;font-weight:700;margin-bottom:4px;">Welcome Back</h3>
+                <p id="aff-modal-sub" style="font-size:0.85rem;color:#6b7280;margin-bottom:20px;">Sign in to your
+                    Jekafly account</p>
+                <div class="tab-bar" style="display:flex;gap:8px;margin-bottom:20px;">
+                    <button class="tab active" id="aff-tab-login" onclick="affSwitchTab('login')"
+                        style="flex:1;padding:10px;border:none;border-radius:10px;font-weight:600;cursor:pointer;background:#f0f4ff;color:#0d1560;">Login</button>
+                    <button class="tab" id="aff-tab-register" onclick="affSwitchTab('register')"
+                        style="flex:1;padding:10px;border:none;border-radius:10px;font-weight:600;cursor:pointer;background:#f3f4f6;color:#6b7280;">Register</button>
+                </div>
+                <div id="aff-login-form">
+                    <div class="form-group"><label>Email</label><input id="aff-login-email" type="email"
+                            placeholder="you@example.com" /></div>
+                    <div class="form-group"><label>Password</label><input id="aff-login-pass" type="password"
+                            placeholder="••••••••" /></div>
+                    <div id="aff-login-err" class="inline-error"></div>
+                    <button class="btn-check btn-check-mt" onclick="affDoLogin()">Login →</button>
+                </div>
+                <div id="aff-register-form" style="display:none">
+                    <div class="form-group"><label>Full Name</label><input id="aff-reg-name" type="text"
+                            placeholder="John Doe" /></div>
+                    <div class="form-group"><label>Email</label><input id="aff-reg-email" type="email"
+                            placeholder="you@example.com" /></div>
+                    <div class="form-group"><label>Phone</label><input id="aff-reg-phone" type="tel"
+                            placeholder="+234 xxx xxx xxxx" /></div>
+                    <div class="form-group"><label>Password</label><input id="aff-reg-pass" type="password"
+                            placeholder="Min. 8 characters" /></div>
+                    <div id="aff-reg-err" class="inline-error"></div>
+                    <button class="btn-check btn-check-mt" onclick="affDoRegister()">Create Account →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(type) {
+            const overlay = document.getElementById('modal');
+            if (!overlay) return;
+            overlay.style.display = 'flex';
+            affSwitchTab(type === 'register' ? 'register' : 'login');
+        }
+        function closeModal() {
+            const overlay = document.getElementById('modal');
+            if (overlay) overlay.style.display = 'none';
+        }
+        function closeModalIfBg(e) {
+            if (e.target === document.getElementById('modal')) closeModal();
+        }
+        function affSwitchTab(tab) {
+            document.getElementById('aff-login-form').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('aff-register-form').style.display = tab === 'register' ? 'block' : 'none';
+            document.getElementById('aff-tab-login').classList.toggle('active', tab === 'login');
+            document.getElementById('aff-tab-register').classList.toggle('active', tab === 'register');
+            document.getElementById('aff-tab-login').style.background = tab === 'login' ? '#f0f4ff' : '#f3f4f6';
+            document.getElementById('aff-tab-login').style.color = tab === 'login' ? '#0d1560' : '#6b7280';
+            document.getElementById('aff-tab-register').style.background = tab === 'register' ? '#f0f4ff' : '#f3f4f6';
+            document.getElementById('aff-tab-register').style.color = tab === 'register' ? '#0d1560' : '#6b7280';
+            const title = document.getElementById('aff-modal-title');
+            const sub = document.getElementById('aff-modal-sub');
+            if (title) title.textContent = tab === 'login' ? 'Welcome Back' : 'Create Account';
+            if (sub) sub.textContent = tab === 'login' ? 'Sign in to your Jekafly account' : 'Join thousands of travellers using Jekafly';
+        }
+        async function affDoLogin() {
+            const email = document.getElementById('aff-login-email').value.trim();
+            const pass = document.getElementById('aff-login-pass').value;
+            const err = document.getElementById('aff-login-err');
+            err.style.display = 'none';
+            if (!email || !pass) { err.textContent = 'Please fill in all fields.'; err.style.display = 'block'; return; }
+            try {
+                const res = await Auth.login(email, pass);
+                if (!res.ok) throw new Error(res.error || 'Login failed');
+                closeModal();
+                updateNav();
+                checkAffiliateStatus();
+            } catch (e) { err.textContent = e.message; err.style.display = 'block'; }
+        }
+        async function affDoRegister() {
+            const name = document.getElementById('aff-reg-name').value.trim();
+            const email = document.getElementById('aff-reg-email').value.trim();
+            const phone = document.getElementById('aff-reg-phone').value.trim();
+            const pass = document.getElementById('aff-reg-pass').value;
+            const err = document.getElementById('aff-reg-err');
+            err.style.display = 'none';
+            if (!name || !email || !pass) { err.textContent = 'Please fill in all required fields.'; err.style.display = 'block'; return; }
+            try {
+                const res = await Auth.register(name, email, pass, phone);
+                if (!res.ok) throw new Error(res.error || 'Registration failed');
+                closeModal();
+                updateNav();
+                checkAffiliateStatus();
+            } catch (e) { err.textContent = e.message; err.style.display = 'block'; }
+        }
+    </script>
 </body>
 
 </html>

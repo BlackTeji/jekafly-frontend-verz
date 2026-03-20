@@ -64,9 +64,9 @@ function updateNav() {
           <button class="btn-primary" onclick="openModal('register')">Get Started</button>`;
 
         mobileHtml = `
-          <div class="nav-mobile-cta" style="display:flex;flex-direction:row;gap:10px;">
-            <button class="btn-primary" style="flex:1;" onclick="openModal('login');closeNavMenu()">Login</button>
-            <button class="btn-outline" style="flex:1;" onclick="openModal('register');closeNavMenu()">Get Started</button>
+          <div class="nav-mobile-cta" style="display:flex;flex-direction:row;gap:10px;width:100%;">
+            <button class="btn-primary" style="flex:1;min-width:0;width:100%;box-sizing:border-box;" onclick="openModal('login');closeNavMenu()">Login</button>
+            <button class="btn-outline" style="flex:1;min-width:0;width:100%;box-sizing:border-box;" onclick="openModal('register');closeNavMenu()">Get Started</button>
           </div>`;
     }
 
@@ -146,6 +146,10 @@ function switchTab(tab) {
     });
     document.getElementById("tab-login")?.classList.toggle("active", tab === "login");
     document.getElementById("tab-register")?.classList.toggle("active", tab === "register");
+    const title = document.getElementById("modal-title");
+    const sub = document.querySelector("#modal-auth .modal-sub");
+    if (title) title.textContent = tab === "login" ? "Welcome Back" : "Create Account";
+    if (sub) sub.textContent = tab === "login" ? "Sign in to your Jekafly account" : "Join thousands of travellers using Jekafly";
 }
 
 
