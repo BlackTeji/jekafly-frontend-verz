@@ -849,10 +849,20 @@
                 const avg = (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1);
                 document.getElementById('reviews-sub').textContent =
                     `${reviews.length} verified review${reviews.length !== 1 ? 's' : ''} · ${avg} average rating`;
-                if (typeof initTestiCarousel === 'function') {
-                    const g = document.getElementById('testi-grid');
-                    if (g) g._carouselRunning = false;
-                    setTimeout(initTestiCarousel, 100);
+                if (window.innerWidth <= 768 && typeof initTestiCarousel === 'function') {
+                    const old = document.querySelector('.testi-marquee-wrap');
+                    if (old) old.parentNode.removeChild(old);
+                    const style = document.getElementById('testi-marquee-style');
+                    if (style) style.parentNode.removeChild(style);
+                    const section = document.getElementById('reviews-section');
+                    if (section) {
+                        const newGrid = document.createElement('div');
+                        newGrid.id = 'testi-grid';
+                        newGrid.className = 'testi-grid';
+                        newGrid.innerHTML = grid.innerHTML;
+                        section.appendChild(newGrid);
+                    }
+                    setTimeout(initTestiCarousel, 150);
                 }
             } catch { }
         })();
@@ -1088,29 +1098,55 @@
                 if (window.innerWidth > 768) return;
                 const grid = document.getElementById('testi-grid');
                 if (!grid) return;
-                const cards = grid.querySelectorAll('.testi-card');
+                const cards = Array.from(grid.querySelectorAll('.testi-card'));
                 if (cards.length < 2) return;
+
                 cards.forEach(c => {
                     c.style.opacity = '1';
                     c.style.transform = 'none';
                     c.classList.remove('mob-fade');
                     c.classList.add('mob-visible');
                 });
-                if (grid._carouselRunning) return;
-                grid._carouselRunning = true;
-                let pos = 0, dir = 1;
-                function tick() {
-                    if (!grid._carouselRunning) return;
-                    const max = grid.scrollWidth - grid.clientWidth;
-                    if (max > 2) {
-                        pos += dir * 0.7;
-                        if (pos >= max) dir = -1;
-                        if (pos <= 0) dir = 1;
-                        grid.scrollLeft = pos;
+
+                grid.style.animation = 'none';
+                grid.style.transform = 'none';
+
+                const wrap = document.createElement('div');
+                wrap.className = 'testi-marquee-wrap';
+                wrap.style.cssText = 'overflow:hidden;width:100%;';
+
+                const inner = document.createElement('div');
+                inner.className = 'testi-marquee-inner';
+                const cardW = Math.round(window.innerWidth * 0.82) + 14;
+                const totalW = cardW * cards.length;
+                inner.style.cssText = `display:flex;gap:14px;width:${totalW * 2}px;animation:testi-scroll ${cards.length * 4}s linear infinite;`;
+
+                cards.forEach(c => inner.appendChild(c));
+                const clones = cards.map(c => { const cl = c.cloneNode(true); return cl; });
+                clones.forEach(c => inner.appendChild(c));
+
+                grid.style.display = 'block';
+                grid.style.overflow = 'visible';
+                wrap.appendChild(inner);
+                grid.parentNode.insertBefore(wrap, grid);
+                grid.parentNode.removeChild(grid);
+
+                if (!document.getElementById('testi-marquee-style')) {
+                    const style = document.createElement('style');
+                    style.id = 'testi-marquee-style';
+                    style.textContent = `
+                    @keyframes testi-scroll {
+                        0%   { transform: translateX(0); }
+                        100% { transform: translateX(-${totalW}px); }
                     }
-                    requestAnimationFrame(tick);
+                    .testi-marquee-inner:hover { animation-play-state: paused; }
+                    .testi-marquee-inner .testi-card {
+                        flex: 0 0 82vw;
+                        min-width: 0;
+                    }
+                `;
+                    document.head.appendChild(style);
                 }
-                requestAnimationFrame(tick);
             }
 
             /* ── SCROLL FADE-IN — target everything ──────────────── */
