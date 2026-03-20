@@ -852,6 +852,14 @@
                 if (window.innerWidth <= 768 && typeof initTestiCarousel === 'function') {
                     const kf = document.getElementById('testi-kf');
                     if (kf) kf.remove();
+                    const wrapper = document.getElementById('testi-wrapper');
+                    if (wrapper) {
+                        wrapper.parentNode.insertBefore(grid, wrapper);
+                        wrapper.remove();
+                    }
+                    const clones = grid.querySelectorAll('[aria-hidden="true"]');
+                    clones.forEach(c => c.remove());
+                    grid.style.cssText = '';
                     setTimeout(initTestiCarousel, 100);
                 }
             } catch { }
@@ -1050,145 +1058,150 @@
     </script>
 
     <script>
-    (function () {
-        if (window.innerWidth > 768) return;
+        (function () {
+            if (window.innerWidth > 768) return;
 
-        /* ── ACCORDION: Why Jekafly Visa ──────────────────────── */
-        function initInfoList() {
-            const items = document.querySelectorAll('.info-list li');
-            items.forEach(li => {
-                const icon   = li.querySelector('.icon') ? li.querySelector('.icon').outerHTML : '';
-                const strong = li.querySelector('strong') ? li.querySelector('strong').textContent : '';
-                const sub    = li.querySelector('.info-sub') ? li.querySelector('.info-sub').outerHTML : '';
-                li.innerHTML = `
+            /* ── ACCORDION: Why Jekafly Visa ──────────────────────── */
+            function initInfoList() {
+                const items = document.querySelectorAll('.info-list li');
+                items.forEach(li => {
+                    const icon = li.querySelector('.icon') ? li.querySelector('.icon').outerHTML : '';
+                    const strong = li.querySelector('strong') ? li.querySelector('strong').textContent : '';
+                    const sub = li.querySelector('.info-sub') ? li.querySelector('.info-sub').outerHTML : '';
+                    li.innerHTML = `
                     <div class="info-list-header">${icon}<span class="info-list-title">${strong}</span><span class="info-list-chevron">▼</span></div>
                     ${sub}`;
-                li.querySelector('.info-list-header').addEventListener('click', function () {
-                    const isOpen = li.classList.contains('open');
-                    document.querySelectorAll('.info-list li.open').forEach(el => el.classList.remove('open'));
-                    if (!isOpen) li.classList.add('open');
+                    li.querySelector('.info-list-header').addEventListener('click', function () {
+                        const isOpen = li.classList.contains('open');
+                        document.querySelectorAll('.info-list li.open').forEach(el => el.classList.remove('open'));
+                        if (!isOpen) li.classList.add('open');
+                    });
                 });
-            });
-        }
+            }
 
-        /* ── ACCORDION: Insurance plans ──────────────────────── */
-        function initInsurancePlans() {
-            const plans = document.querySelectorAll('.ins-plan');
-            plans.forEach(plan => {
-                plan.addEventListener('click', function () {
-                    const isOpen = plan.classList.contains('mob-open');
-                    plans.forEach(p => p.classList.remove('mob-open'));
-                    if (!isOpen) plan.classList.add('mob-open');
+            /* ── ACCORDION: Insurance plans ──────────────────────── */
+            function initInsurancePlans() {
+                const plans = document.querySelectorAll('.ins-plan');
+                plans.forEach(plan => {
+                    plan.addEventListener('click', function () {
+                        const isOpen = plan.classList.contains('mob-open');
+                        plans.forEach(p => p.classList.remove('mob-open'));
+                        if (!isOpen) plan.classList.add('mob-open');
+                    });
                 });
-            });
-        }
+            }
 
-        /* ── TESTIMONIALS: CSS infinite marquee ──────────────── */
-        function initTestiCarousel() {
-            if (window.innerWidth > 768) return;
-            const grid = document.getElementById('testi-grid');
-            if (!grid) return;
-            const cards = Array.from(grid.querySelectorAll('.testi-card'));
-            if (cards.length < 2) return;
+            /* ── TESTIMONIALS: CSS infinite marquee ──────────────── */
+            function initTestiCarousel() {
+                if (window.innerWidth > 768) return;
+                const grid = document.getElementById('testi-grid');
+                if (!grid) return;
+                const cards = Array.from(grid.querySelectorAll('.testi-card'));
+                if (cards.length < 2) return;
 
-            cards.forEach(c => {
-                c.style.cssText = 'opacity:1;transform:none;flex:0 0 82vw;min-width:0;';
-                c.classList.remove('mob-fade');
-            });
+                cards.forEach(c => {
+                    c.style.cssText = 'opacity:1;transform:none;flex:0 0 82vw;min-width:0;';
+                    c.classList.remove('mob-fade');
+                });
 
-            const clones = cards.map(c => {
-                const cl = c.cloneNode(true);
-                cl.setAttribute('aria-hidden', 'true');
-                return cl;
-            });
-            clones.forEach(c => grid.appendChild(c));
+                const clones = cards.map(c => {
+                    const cl = c.cloneNode(true);
+                    cl.setAttribute('aria-hidden', 'true');
+                    return cl;
+                });
+                clones.forEach(c => grid.appendChild(c));
 
-            const speed = cards.length * 12;
-            grid.style.cssText = `
+                const speed = cards.length * 12;
+
+                // Wrap in a clipping container
+                const wrapper = document.createElement('div');
+                wrapper.id = 'testi-wrapper';
+                wrapper.style.cssText = 'overflow:hidden;width:100%;margin-top:20px;';
+                grid.parentNode.insertBefore(wrapper, grid);
+                wrapper.appendChild(grid);
+
+                grid.style.cssText = `
                 display:flex;
                 flex-direction:row;
-                overflow:hidden;
                 gap:14px;
-                margin-top:20px;
-                animation:testi-marquee ${speed}s linear infinite;
                 width:max-content;
+                animation:testi-marquee ${speed}s linear infinite;
             `;
 
-            const section = grid.parentNode;
-            section.style.overflow = 'hidden';
+                function pauseCarousel() { grid.style.animationPlayState = 'paused'; }
+                function resumeCarousel() {
+                    setTimeout(() => { grid.style.animationPlayState = 'running'; }, 1800);
+                }
+                grid.addEventListener('touchstart', pauseCarousel, { passive: true });
+                grid.addEventListener('touchend', resumeCarousel, { passive: true });
 
-            grid.addEventListener('touchstart', () => grid.classList.add('paused'), { passive: true });
-            grid.addEventListener('touchend', () => setTimeout(() => grid.classList.remove('paused'), 1500), { passive: true });
-
-            if (!document.getElementById('testi-kf')) {
-                const s = document.createElement('style');
-                s.id = 'testi-kf';
-                s.textContent = `
+                if (!document.getElementById('testi-kf')) {
+                    const s = document.createElement('style');
+                    s.id = 'testi-kf';
+                    s.textContent = `
                     @keyframes testi-marquee {
                         0%   { transform: translateX(0); }
                         100% { transform: translateX(-50%); }
                     }
-                    #testi-grid:hover,
-                    #testi-grid.paused { animation-play-state: paused; }
                 `;
-                document.head.appendChild(s);
+                    document.head.appendChild(s);
+                }
             }
-        }
 
-        /* ── SCROLL FADE-IN — target everything ──────────────── */
-        function initScrollFade() {
-            const selectors = [
-                '.service-card',
-                '.step',
-                '.dest-card',
-                '.ins-plan',
-                '.ins-features .ins-feature',
-                '.section-header',
-                '.section-title',
-                '.checker-form',
-                '.checker-info',
-                '.track-wrap',
-                '.cta-banner',
-                '.info-list li',
-                '.hero-content',
-                '.search-section',
-                '.destinations',
-                '.insurance',
-                '.tracking',
-                '.how',
-                '.services',
-                '.visa-checker'
-            ];
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) {
-                        e.target.classList.add('mob-visible');
-                        observer.unobserve(e.target);
-                    }
+            /* ── SCROLL FADE-IN — target everything ──────────────── */
+            function initScrollFade() {
+                const selectors = [
+                    '.service-card',
+                    '.step',
+                    '.dest-card',
+                    '.ins-plan',
+                    '.ins-features .ins-feature',
+                    '.section-header',
+                    '.section-title',
+                    '.checker-form',
+                    '.checker-info',
+                    '.track-wrap',
+                    '.cta-banner',
+                    '.info-list li',
+                    '.hero-content',
+                    '.search-section',
+                    '.destinations',
+                    '.insurance',
+                    '.tracking',
+                    '.how',
+                    '.services',
+                    '.visa-checker'
+                ];
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) {
+                            e.target.classList.add('mob-visible');
+                            observer.unobserve(e.target);
+                        }
+                    });
+                }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+                selectors.forEach(sel => {
+                    document.querySelectorAll(sel).forEach((el, i) => {
+                        el.classList.add('mob-fade');
+                        if (i > 0) el.style.transitionDelay = (i * 0.07) + 's';
+                        observer.observe(el);
+                    });
                 });
-            }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
-            selectors.forEach(sel => {
-                document.querySelectorAll(sel).forEach((el, i) => {
-                    el.classList.add('mob-fade');
-                    if (i > 0) el.style.transitionDelay = (i * 0.07) + 's';
-                    observer.observe(el);
-                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                initInfoList();
+                initInsurancePlans();
+                initScrollFade();
+                setTimeout(initTestiCarousel, 300);
+                const insDate = document.getElementById('ins-date');
+                if (insDate) {
+                    const today = new Date().toISOString().split('T')[0];
+                    insDate.min = today;
+                    insDate.value = today;
+                }
             });
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            initInfoList();
-            initInsurancePlans();
-            initScrollFade();
-            setTimeout(initTestiCarousel, 300);
-            const insDate = document.getElementById('ins-date');
-            if (insDate) {
-                const today = new Date().toISOString().split('T')[0];
-                insDate.min = today;
-                insDate.value = today;
-            }
-        });
-    }());
+        }());
     </script>
 
     <script>
@@ -1241,8 +1254,8 @@
 
         function selectModalPkg(pkg, amount) {
             _cModalPkg = pkg;
-            document.querySelectorAll('.consult-modal-pkg').forEach(el => el.classList.remove('selected'));
-            document.getElementById('mpkg-' + pkg)?.classList.add('selected');
+            document.querySelectorAll('.consult-modal-pkg').forEach(el => el.classList.remove('ins-option--selected'));
+            document.getElementById('mpkg-' + pkg)?.classList.add('ins-option--selected');
             document.getElementById('consult-modal-pkg-error').style.display = 'none';
         }
 
