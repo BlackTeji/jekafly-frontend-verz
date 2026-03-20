@@ -231,99 +231,98 @@
     .insurance,
     .tracking,
     .testimonials {
-        padding: 36px var(--mob-pad);
+        padding: 28px var(--mob-pad);
     }
 
     .section-header {
-        margin-bottom: 22px;
+        margin-bottom: 16px;
+    }
+
+    .section-tag {
+        display: none;
     }
 
     .section-title {
-        font-size: 1.55rem;
-        letter-spacing: -0.03em;
-        line-height: 1.15;
+        font-size: 1.25rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+        margin: 0;
     }
 
     .section-sub {
-        font-size: 0.87rem;
-        line-height: 1.65;
-        margin-top: 6px;
+        font-size: 0.83rem;
+        line-height: 1.6;
+        margin-top: 4px;
+        color: var(--text-light);
     }
 
-    /* ── SERVICES — 2-col flip cards ─────────────────────────── */
-    .services-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-    }
-
-    .service-card {
-        padding: 0;
-        display: block;
-        border-radius: 18px;
-        border: none;
-        background: none;
-        overflow: visible;
-        cursor: pointer;
-        perspective: 600px;
-    }
-
-    .service-card:hover {
-        transform: none;
-    }
-
-    /* Flip wrapper */
-    .service-card-inner {
-        position: relative;
-        width: 100%;
-        padding-bottom: 100%;
-        transform-style: preserve-3d;
-        transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-        border-radius: 18px;
-    }
-
-    .service-card.flipped .service-card-inner {
-        transform: rotateY(180deg);
-    }
-
-    .service-card-front,
-    .service-card-back {
-        position: absolute;
-        inset: 0;
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        border-radius: 18px;
+    /* App-style section header with right link */
+    .section-header-row {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: center;
-        padding: 16px 12px;
-        text-align: center;
+        justify-content: space-between;
     }
 
-    .service-card-front {
-        background: white;
-        border: 1.5px solid var(--border);
-    }
-
-    .service-card-back {
-        background: var(--blue);
-        transform: rotateY(180deg);
-        border: none;
-    }
-
-    .service-card-front .service-icon-bg {
-        width: 48px;
-        height: 48px;
-        border-radius: 14px;
-        margin-bottom: 10px;
+    .section-view-more {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--red);
+        text-decoration: none;
+        white-space: nowrap;
         flex-shrink: 0;
     }
 
-    .service-card-front .service-icon {
-        font-size: 1.4rem;
+    /* ── SERVICES — 2×2 icon grid ───────────────────────────── */
+    .services-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
     }
 
-    .service-card-front .service-title {
+    .service-card {
+        padding: 20px 14px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        border-radius: 18px;
+        border: 1.5px solid var(--border);
+        background: white;
+        cursor: pointer;
+        transition: background 0.15s;
+        gap: 0;
+    }
+
+    .service-card:hover,
+    .service-card:active {
+        transform: none;
+        background: var(--off-white);
+    }
+
+    /* Remove flip card wrappers if previously applied */
+    .service-card-inner,
+    .service-card-front,
+    .service-card-back {
+        display: contents;
+    }
+
+    .service-icon-bg {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        flex-shrink: 0;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .service-icon {
+        font-size: 1.5rem;
+    }
+
+    .service-title {
         font-size: 0.82rem;
         font-weight: 700;
         color: var(--text);
@@ -331,128 +330,204 @@
         margin: 0;
     }
 
-    .service-card-back .service-desc {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.88);
-        line-height: 1.5;
-        margin-bottom: 10px;
+    .service-desc {
+        display: none;
     }
 
-    .service-card-back .service-arrow {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 32px;
-        height: 32px;
-        background: rgba(255, 255, 255, 0.15);
-        border-radius: 50%;
-        color: white;
-        font-size: 1rem;
+    .service-arrow {
+        display: none;
     }
 
-    .service-card-back .service-title {
-        font-size: 0.78rem;
-        font-weight: 700;
-        color: white;
-        margin-bottom: 8px;
-    }
-
-    /* ── HOW IT WORKS — compact stepper ──────────────────────── */
+    /* ── HOW IT WORKS — fan-out scroll animation ─────────────── */
     .how {
-        border-radius: 0;
+        padding: 0 !important;
     }
 
-    .steps {
-        grid-template-columns: 1fr;
-        gap: 0;
-        margin-top: 20px;
-    }
-
-    .steps::before {
+    .steps-desktop {
         display: none;
     }
 
-    .step {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        text-align: left;
-        padding: 0;
-        border-bottom: none;
-        cursor: pointer;
-        position: relative;
-    }
-
-    .step:not(:last-child) {
-        margin-bottom: 8px;
-    }
-
-    .step-header {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        width: 100%;
-        padding: 14px 16px;
-        background: var(--off-white);
-        border-radius: 14px;
-        border: 1.5px solid transparent;
-        transition: border-color 0.2s, background 0.2s;
-    }
-
-    .step.open .step-header {
-        border-color: var(--blue);
-        background: white;
-        border-radius: 14px 14px 0 0;
-    }
-
-    .step-num {
-        margin: 0;
-        flex-shrink: 0;
-        width: 36px;
-        height: 36px;
-        font-size: 0.82rem;
-        border-width: 2px;
-        box-shadow: none;
-    }
-
-    .step h4 {
-        font-size: 0.92rem;
-        margin: 0;
-        flex: 1;
-    }
-
-    .step-chevron {
-        font-size: 0.7rem;
-        color: var(--text-light);
-        transition: transform 0.25s;
-        margin-left: auto;
-        flex-shrink: 0;
-    }
-
-    .step.open .step-chevron {
-        transform: rotate(180deg);
-        color: var(--blue);
-    }
-
-    .step-body {
-        display: none;
-        padding: 12px 16px 16px;
-        background: white;
-        border: 1.5px solid var(--blue);
-        border-top: none;
-        border-radius: 0 0 14px 14px;
-        margin-top: -1px;
-    }
-
-    .step.open .step-body {
+    .steps-mobile {
         display: block;
     }
 
-    .step p {
+    .fan-scene {
+        height: 280vh;
+        position: relative;
+    }
+
+    .fan-sticky {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .fan-label {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 1;
+        width: 240px;
+    }
+
+    .fan-label h2 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: var(--blue);
+        letter-spacing: -0.03em;
+        line-height: 1.15;
+        margin-bottom: 6px;
+    }
+
+    .fan-label p {
         font-size: 0.82rem;
-        line-height: 1.65;
         color: var(--text-light);
-        margin: 0;
+        font-weight: 500;
+        line-height: 1.5;
+    }
+
+    .fan-stack {
+        position: relative;
+        width: calc(100vw - 36px);
+        max-width: 340px;
+        height: 140px;
+        z-index: 2;
+    }
+
+    .fan-card {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        background: white;
+        border-radius: 20px;
+        padding: 20px 18px;
+        border: 1.5px solid var(--border);
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        will-change: transform;
+    }
+
+    .fan-card:nth-child(1) {
+        z-index: 4;
+    }
+
+    .fan-card:nth-child(2) {
+        z-index: 3;
+    }
+
+    .fan-card:nth-child(3) {
+        z-index: 2;
+    }
+
+    .fan-card:nth-child(4) {
+        z-index: 1;
+    }
+
+    .fan-num {
+        width: 38px;
+        min-width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+    .fan-num-1 {
+        background: var(--blue);
+        color: white;
+    }
+
+    .fan-num-2 {
+        background: var(--red);
+        color: white;
+    }
+
+    .fan-num-3 {
+        background: var(--blue-soft, #eef0fb);
+        color: var(--blue);
+    }
+
+    .fan-num-4 {
+        background: #fde8e8;
+        color: var(--red);
+    }
+
+    .fan-title {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+        letter-spacing: -0.01em;
+    }
+
+    .fan-desc {
+        font-size: 0.78rem;
+        color: var(--text-light);
+        line-height: 1.55;
+    }
+
+    .fan-scroll-hint {
+        position: absolute;
+        bottom: 36px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        transition: opacity 0.3s;
+    }
+
+    .fan-scroll-hint span {
+        font-size: 0.65rem;
+        color: var(--text-light);
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .fan-arrow {
+        width: 26px;
+        height: 26px;
+        border: 1.5px solid var(--border);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fanBounce 1.5s infinite;
+    }
+
+    .fan-arrow::after {
+        content: '';
+        width: 6px;
+        height: 6px;
+        border-right: 1.5px solid var(--text-light);
+        border-bottom: 1.5px solid var(--text-light);
+        transform: rotate(45deg) translateY(-2px);
+    }
+
+    @keyframes fanBounce {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(4px);
+        }
     }
 
     /* ── VISA CHECKER ────────────────────────────────────────── */
@@ -573,15 +648,56 @@
         display: block;
     }
 
-    /* ── DESTINATIONS ────────────────────────────────────────── */
+    /* ── DESTINATIONS — horizontal scroll row ───────────────── */
+    .destinations .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    .destinations .section-header h2 {
+        font-size: 1.25rem;
+        letter-spacing: -0.02em;
+        margin: 0;
+    }
+
+    .destinations .section-header p,
+    .destinations .section-tag {
+        display: none;
+    }
+
+    .dest-view-more {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--red);
+        text-decoration: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
     .dest-grid {
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
         gap: 10px;
-        margin-top: 24px;
+        padding-bottom: 8px;
+        /* hide scrollbar */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        margin: 0 calc(-1 * var(--mob-pad));
+        padding-left: var(--mob-pad);
+        padding-right: var(--mob-pad);
+    }
+
+    .dest-grid::-webkit-scrollbar {
+        display: none;
     }
 
     .dest-card {
-        height: 148px;
+        flex: 0 0 160px;
+        height: 200px;
         border-radius: 16px;
         transition: none;
     }
@@ -591,12 +707,12 @@
     }
 
     .dest-name {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         letter-spacing: -0.01em;
     }
 
     .dest-tag {
-        font-size: 0.67rem;
+        font-size: 0.65rem;
     }
 
     .dest-badge {
@@ -1329,15 +1445,16 @@
     }
 
     .dash-title {
-        font-size: 1.45rem;
-        margin-bottom: 4px;
+        font-size: 1.35rem;
+        margin-bottom: 2px;
         letter-spacing: -0.02em;
     }
 
     .dash-subtitle {
-        font-size: 0.86rem;
-        margin-bottom: 20px;
-        line-height: 1.6;
+        font-size: 0.82rem;
+        margin-bottom: 16px;
+        line-height: 1.5;
+        color: var(--text-light);
     }
 
     /* Stat cards 2-column grid */
@@ -1366,27 +1483,42 @@
         font-size: 0.72rem;
     }
 
-    /* Table card */
+    /* Table card — clean borderless on mobile */
     .table-card {
-        border-radius: 18px;
+        border-radius: 0;
         margin-bottom: 16px;
         overflow: hidden;
+        background: transparent;
+        border: none;
+        box-shadow: none;
     }
 
     .table-header {
-        padding: 14px var(--mob-pad);
-        flex-wrap: wrap;
-        gap: 10px;
+        padding: 0 0 14px 0;
+        flex-wrap: nowrap;
+        gap: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: transparent;
+        border: none;
     }
 
     .table-header h3 {
-        font-size: 0.95rem;
+        font-size: 1.1rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--text);
     }
 
     .table-header .btn-sm {
-        padding: 8px 14px;
-        font-size: 0.78rem;
-        border-radius: 8px;
+        padding: 7px 14px;
+        font-size: 0.8rem;
+        border-radius: 20px;
+        font-weight: 600;
+        background: var(--blue);
+        color: white;
+        border: none;
     }
 
     /* ── Application pagination ──────────────────────────────── */
@@ -1409,57 +1541,102 @@
         text-align: center;
     }
 
-    /* ── Applications mobile cards ───────────────────────────── */
+    /* ── Applications mobile cards — date badge style ────────── */
     .app-mob-card {
         background: white;
-        border-bottom: 1px solid var(--border);
-        padding: 16px var(--mob-pad);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 14px 16px;
         cursor: pointer;
-        transition: background 0.15s;
+        transition: box-shadow 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 10px;
+        box-shadow: 0 1px 6px rgba(13, 21, 96, 0.05);
     }
 
     .app-mob-card:last-child {
-        border-bottom: none;
+        margin-bottom: 0;
     }
 
     .app-mob-card:active {
+        box-shadow: none;
         background: var(--off-white);
     }
 
-    /* Row 1: Destination (left) + Status pill (right) */
+    .app-mob-date-badge {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        min-width: 52px;
+        height: 58px;
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        flex-shrink: 0;
+        box-shadow: 0 1px 4px rgba(13, 21, 96, 0.07);
+    }
+
+    .app-mob-date-month {
+        font-size: 0.6rem;
+        font-weight: 700;
+        color: var(--red);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        line-height: 1;
+        margin-bottom: 3px;
+    }
+
+    .app-mob-date-day {
+        font-size: 1.3rem;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1;
+        letter-spacing: -0.02em;
+    }
+
+    .app-mob-card-content {
+        flex: 1;
+        min-width: 0;
+    }
+
     .app-mob-card-top {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 4px;
+        gap: 8px;
+        margin-bottom: 3px;
     }
 
     .app-mob-dest {
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-weight: 700;
         color: var(--text);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    /* Row 2: Reference */
     .app-mob-ref {
-        font-size: 0.72rem;
+        font-size: 0.68rem;
         color: var(--text-light);
         font-family: monospace;
-        letter-spacing: 0.03em;
-        margin-bottom: 10px;
+        letter-spacing: 0.02em;
+        margin-bottom: 6px;
     }
 
-    /* Row 3: Date (left) + Paid (right) */
     .app-mob-card-bottom {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 12px;
+        gap: 8px;
     }
 
     .app-mob-date {
-        font-size: 0.82rem;
+        font-size: 0.76rem;
         color: var(--text-light);
     }
 

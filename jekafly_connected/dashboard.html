@@ -644,7 +644,7 @@
         // ── APPLICATIONS ─────────────────────────────────────────────
         let _allApps = [];
         let _appsPage = 1;
-        const DASH_PER_PAGE = 5;
+        const DASH_PER_PAGE = 10;
 
         async function loadApplications() {
             _allApps = await AppStore.getByUser();
@@ -676,14 +676,17 @@
             if (window.innerWidth <= 768) {
                 html = paged.map(a => `
                     <div class="app-mob-card" onclick="viewApp('${a.ref}')">
-                        <div class="app-mob-card-top">
-                            <span class="app-mob-dest">${a.destination}</span>
-                            <span class="status-pill ${statusColors[a.status] || 'status-received'}">${statusLabels[a.status] || a.status}</span>
-                        </div>
-                        <div class="app-mob-ref">${a.ref}</div>
-                        <div class="app-mob-card-bottom">
-                            <span class="app-mob-date">${a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</span>
-                            ${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}
+                        ${(() => { const d = a.travelDate ? new Date(a.travelDate) : null; return d ? `<div class="app-mob-date-badge"><span class="app-mob-date-month">${d.toLocaleString('en', { month: 'short' })}</span><span class="app-mob-date-day">${d.getDate()}</span></div>` : '<div class="app-mob-date-badge"><span class="app-mob-date-day">—</span></div>'; })()}
+                        <div class="app-mob-card-content">
+                            <div class="app-mob-card-top">
+                                <span class="app-mob-dest">${a.destination}</span>
+                                <span class="status-pill ${statusColors[a.status] || 'status-received'}">${statusLabels[a.status] || a.status}</span>
+                            </div>
+                            <div class="app-mob-ref">${a.ref}</div>
+                            <div class="app-mob-card-bottom">
+                                <span class="app-mob-date">${a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</span>
+                                ${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}
+                            </div>
                         </div>
                     </div>`).join('');
             } else {

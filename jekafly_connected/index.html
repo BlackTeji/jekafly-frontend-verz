@@ -176,9 +176,10 @@
     ============================= -->
     <section class="services" id="services">
         <div class="section-header">
-            <div class="section-tag">Our Services</div>
-            <h2 class="section-title">Everything You Need to Travel</h2>
-            <p class="section-sub">From visa applications to travel insurance — your end-to-end travel companion.</p>
+            <div class="section-header-row">
+                <h2 class="section-title">Our Services</h2>
+                <a href="dashboard.html" class="section-view-more">View all</a>
+            </div>
         </div>
         <div class="services-grid">
             <div class="service-card" onclick="window.location.href='apply.html'">
@@ -242,32 +243,81 @@
     HOW IT WORKS
     ============================= -->
     <section class="how">
-        <div class="section-header">
-            <div class="section-tag">How It Works</div>
-            <h2 class="section-title">Apply in 4 Simple Steps</h2>
-            <p class="section-sub">From choosing your destination to receiving your visa, we make the process seamless.
-            </p>
+        <!-- Desktop: standard steps layout -->
+        <div class="steps-desktop">
+            <div class="section-header">
+                <div class="section-tag">How It Works</div>
+                <h2 class="section-title">Apply in 4 Simple Steps</h2>
+                <p class="section-sub">From choosing your destination to receiving your visa, we make the process
+                    seamless.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-num">1</div>
+                    <h4>Choose Destination</h4>
+                    <p>Select where you're going and your travel purpose. We'll show you exactly what you need.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">2</div>
+                    <h4>Upload Documents</h4>
+                    <p>Upload your documents securely. Our experts review them and guide you if anything is missing.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">3</div>
+                    <h4>Pay &amp; Submit</h4>
+                    <p>Pay the visa fee and service charge. We handle your application submission to the embassy.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">4</div>
+                    <h4>Get Your Visa</h4>
+                    <p>Track your application live. Receive your approved visa directly to your email.</p>
+                </div>
+            </div>
         </div>
-        <div class="steps">
-            <div class="step">
-                <div class="step-num">1</div>
-                <h4>Choose Destination</h4>
-                <p>Select where you're going and your travel purpose. We'll show you exactly what you need.</p>
-            </div>
-            <div class="step">
-                <div class="step-num">2</div>
-                <h4>Upload Documents</h4>
-                <p>Upload your documents securely. Our experts review them and guide you if anything is missing.</p>
-            </div>
-            <div class="step">
-                <div class="step-num">3</div>
-                <h4>Pay & Submit</h4>
-                <p>Pay the visa fee and service charge. We handle your application submission to the embassy.</p>
-            </div>
-            <div class="step">
-                <div class="step-num">4</div>
-                <h4>Get Your Visa</h4>
-                <p>Track your application live. Receive your approved visa directly to your email.</p>
+
+        <!-- Mobile: fan-out scroll animation -->
+        <div class="steps-mobile" id="steps-mobile">
+            <div class="fan-scene" id="fan-scene">
+                <div class="fan-sticky" id="fan-sticky">
+                    <div class="fan-label" id="fan-label">
+                        <h2>Apply in 4<br>simple steps</h2>
+                        <p>From destination to visa &mdash; we guide you every step.</p>
+                    </div>
+                    <div class="fan-stack" id="fan-stack">
+                        <div class="fan-card" id="fan-card-1">
+                            <div class="fan-num fan-num-1">1</div>
+                            <div class="fan-text">
+                                <div class="fan-title">Choose Destination</div>
+                                <div class="fan-desc">Select where you're going and your travel purpose.</div>
+                            </div>
+                        </div>
+                        <div class="fan-card" id="fan-card-2">
+                            <div class="fan-num fan-num-2">2</div>
+                            <div class="fan-text">
+                                <div class="fan-title">Upload Documents</div>
+                                <div class="fan-desc">Upload securely. Experts review and flag missing items.</div>
+                            </div>
+                        </div>
+                        <div class="fan-card" id="fan-card-3">
+                            <div class="fan-num fan-num-3">3</div>
+                            <div class="fan-text">
+                                <div class="fan-title">Pay &amp; Submit</div>
+                                <div class="fan-desc">Pay the fee and we handle embassy submission for you.</div>
+                            </div>
+                        </div>
+                        <div class="fan-card" id="fan-card-4">
+                            <div class="fan-num fan-num-4">4</div>
+                            <div class="fan-text">
+                                <div class="fan-title">Get Your Visa</div>
+                                <div class="fan-desc">Track live. Receive your approved visa by email.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="fan-scroll-hint" id="fan-scroll-hint">
+                        <span>Scroll</span>
+                        <div class="fan-arrow"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -357,9 +407,11 @@
     ============================= -->
     <section class="destinations" id="destinations">
         <div class="section-header">
-            <div class="section-tag">Popular Destinations</div>
-            <h2 class="section-title">Where Will You Go?</h2>
-            <p class="section-sub">We process visas for 195+ countries. Here are the most popular ones.</p>
+            <div class="section-header-row">
+                <h2 class="section-title">Popular Destinations</h2>
+                <a href="#visa" class="section-view-more">View more</a>
+            </div>
+            <p class="section-sub">195+ countries. Here are the most popular.</p>
         </div>
         <div class="dest-grid">
             <div class="dest-card" onclick="selectDest('United Kingdom')"
@@ -1193,56 +1245,52 @@
 
         function isMob() { return window.innerWidth <= 768; }
 
-        // Service flip cards
-        function initFlipCards() {
+        // How It Works — fan-out scroll animation (mobile only)
+        function initFanOut() {
             if (!isMob()) return;
-            document.querySelectorAll('.service-card').forEach(card => {
-                // Wrap existing content into front/back if not already done
-                if (card.querySelector('.service-card-inner')) return;
-                const icon = card.querySelector('.service-icon-bg') ? card.querySelector('.service-icon-bg').outerHTML : '';
-                const title = card.querySelector('.service-title') ? card.querySelector('.service-title').outerHTML : '';
-                const desc = card.querySelector('.service-desc') ? card.querySelector('.service-desc').outerHTML : '';
-                const onclick = card.getAttribute('onclick') || '';
-                card.removeAttribute('onclick');
-                card.innerHTML = `
-          <div class="service-card-inner">
-            <div class="service-card-front">${icon}${title}</div>
-            <div class="service-card-back">${title}${desc}<div class="service-arrow">→</div></div>
-          </div>`;
-                card.addEventListener('click', function (e) {
-                    if (this.classList.contains('flipped')) {
-                        // Second tap — execute original action
-                        this.classList.remove('flipped');
-                        if (onclick) { try { eval(onclick); } catch (err) { } }
-                    } else {
-                        // First tap — flip to reveal
-                        document.querySelectorAll('.service-card.flipped').forEach(c => c.classList.remove('flipped'));
-                        this.classList.add('flipped');
-                    }
-                });
-            });
-        }
+            const scene = document.getElementById('fan-scene');
+            const label = document.getElementById('fan-label');
+            const hint = document.getElementById('fan-scroll-hint');
+            if (!scene) return;
 
-        // How It Works accordion
-        function initStepAccordion() {
-            if (!isMob()) return;
-            document.querySelectorAll('.step').forEach(step => {
-                if (step.querySelector('.step-header')) return;
-                const num = step.querySelector('.step-num') ? step.querySelector('.step-num').outerHTML : '';
-                const h4 = step.querySelector('h4') ? step.querySelector('h4').textContent : '';
-                const p = step.querySelector('p') ? step.querySelector('p').outerHTML : '';
-                step.innerHTML = `
-          <div class="step-header">${num}<h4>${h4}</h4><span class="step-chevron">▼</span></div>
-          <div class="step-body">${p}</div>`;
-                step.querySelector('.step-header').addEventListener('click', function () {
-                    const isOpen = step.classList.contains('open');
-                    document.querySelectorAll('.step.open').forEach(s => s.classList.remove('open'));
-                    if (!isOpen) step.classList.add('open');
+            const cards = [
+                document.getElementById('fan-card-1'),
+                document.getElementById('fan-card-2'),
+                document.getElementById('fan-card-3'),
+                document.getElementById('fan-card-4'),
+            ];
+
+            const finalY = [-230, -76, 76, 230];
+
+            function easeInOut(t) {
+                return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            }
+
+            function onScroll() {
+                const rect = scene.getBoundingClientRect();
+                const sceneH = scene.offsetHeight - window.innerHeight;
+                const scrolled = -rect.top;
+                const p = Math.max(0, Math.min(1, scrolled / sceneH));
+                const ep = easeInOut(p);
+                const spreadP = Math.min(1, ep / 0.65);
+
+                cards.forEach((card, i) => {
+                    if (!card) return;
+                    const ty = finalY[i] * spreadP;
+                    const scale = i === 0 || i === 3 ? 1 : 1 - 0.02 * spreadP;
+                    card.style.transform = `translateY(${ty}px) scale(${scale})`;
+                    card.style.boxShadow = `0 ${spreadP * 10}px ${spreadP * 24}px rgba(13,21,96,${0.07 * spreadP})`;
                 });
-            });
-            // Open first step by default
-            const first = document.querySelector('.step');
-            if (first) first.classList.add('open');
+
+                const labelP = Math.max(0, Math.min(1, (ep - 0.25) / 0.4));
+                label.style.opacity = labelP;
+                label.style.transform = `translate(-50%, calc(-50% + ${(1 - labelP) * 14}px))`;
+
+                if (hint) hint.style.opacity = Math.max(0, 1 - ep * 5);
+            }
+
+            window.addEventListener('scroll', onScroll, { passive: true });
+            onScroll();
         }
 
         // Why Jekafly accordion
@@ -1279,8 +1327,7 @@
 
         document.addEventListener('DOMContentLoaded', function () {
             if (isMob()) {
-                initFlipCards();
-                initStepAccordion();
+                initFanOut();
                 initInfoList();
                 initTestimonials();
             }
@@ -1288,8 +1335,6 @@
 
         window.addEventListener('resize', function () {
             if (isMob()) {
-                initFlipCards();
-                initStepAccordion();
                 initInfoList();
             }
         });
