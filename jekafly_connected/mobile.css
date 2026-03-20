@@ -117,6 +117,9 @@
         border-bottom: none;
         border-radius: 0 0 var(--mob-radius-lg) var(--mob-radius-lg);
         box-shadow: 0 24px 48px rgba(13, 21, 96, 0.13);
+        background: rgba(255, 255, 255, 0.72) !important;
+        backdrop-filter: blur(28px) !important;
+        -webkit-backdrop-filter: blur(28px) !important;
     }
 
     .nav-mobile-drawer>a {
@@ -142,17 +145,17 @@
     .hero {
         margin-top: 60px;
         padding: 0 var(--mob-pad);
-        height: 320px;
-        min-height: 320px;
-        max-height: 320px;
+        height: 360px;
+        min-height: 360px;
+        max-height: 360px;
         align-items: center;
         justify-content: flex-start;
         overflow: hidden;
     }
 
-    /* Move dots lower to match extra height */
+    /* Dots sit well below the buttons */
     .hero-dots {
-        bottom: 16px;
+        bottom: 20px;
     }
 
     .hero-content {
@@ -181,6 +184,7 @@
     .hero h1,
     .hero .hero-headline {
         font-size: 1.3rem;
+        font-weight: 600;
         line-height: 1.12;
         letter-spacing: -0.03em;
         margin-bottom: 10px;
@@ -269,9 +273,9 @@
     .search-field select,
     .search-field input {
         font-size: 16px !important;
-        min-height: 50px;
-        border-radius: 12px;
-        padding: 13px 16px;
+        min-height: 44px;
+        border-radius: 10px;
+        padding: 9px 13px;
         background: var(--off-white);
     }
 
@@ -298,7 +302,7 @@
     .insurance,
     .tracking,
     .testimonials {
-        padding: 24px var(--mob-pad);
+        padding: 40px var(--mob-pad);
     }
 
     .section-header {
@@ -311,7 +315,7 @@
 
     .section-title {
         font-size: 1.1rem;
-        font-weight: 800;
+        font-weight: 600;
         letter-spacing: -0.02em;
         line-height: 1.2;
         margin: 0;
@@ -383,12 +387,12 @@
     }
 
     .service-icon {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
     }
 
     .service-title {
-        font-size: 0.82rem;
-        font-weight: 700;
+        font-size: 0.76rem;
+        font-weight: 600;
         color: var(--text);
         line-height: 1.3;
         margin: 0;
@@ -416,10 +420,20 @@
         grid-template-columns: 1fr;
         gap: 0;
         margin-top: 20px;
+        position: relative;
     }
 
+    /* Vertical connecting line down the left (step-num column) */
     .steps::before {
-        display: none;
+        content: '';
+        position: absolute;
+        top: 56px;
+        bottom: 18px;
+        left: 20px;
+        width: 2px;
+        background: linear-gradient(to bottom, var(--blue), rgba(13, 21, 96, 0.08));
+        border-radius: 2px;
+        display: block;
     }
 
     .step {
@@ -482,13 +496,21 @@
         display: none;
     }
 
+    .form-group label {
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+
     .form-group select,
     .form-group input,
     .form-group textarea {
         font-size: 16px !important;
-        min-height: 50px;
-        border-radius: 12px;
-        padding: 13px 16px;
+        min-height: 44px;
+        border-radius: 10px;
+        padding: 9px 13px;
     }
 
     .btn-check {
@@ -579,10 +601,13 @@
 
     /* ── DESTINATIONS — horizontal scroll row ───────────────── */
     .destinations .section-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        display: block;
         margin-bottom: 16px;
+    }
+
+    .dest-view-more,
+    .destinations .section-view-more {
+        display: none;
     }
 
     .destinations .section-header h2 {
@@ -699,8 +724,15 @@
         display: none;
     }
 
+    .ins-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+    }
+
     .insurance-content h3 {
-        font-size: 1.2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
     }
 
     .insurance-content>p {
@@ -709,7 +741,7 @@
 
     /* ── TRACKING ────────────────────────────────────────────── */
     .track-wrap {
-        text-align: left;
+        text-align: center;
     }
 
     .track-wrap .section-sub {
@@ -1983,15 +2015,17 @@
 
     /* Affiliate sections tighter */
     .aff-section {
-        padding: 36px var(--mob-pad) !important;
+        padding: 40px var(--mob-pad) !important;
     }
 
     .aff-section-title {
         font-size: 1.2rem !important;
+        font-weight: 600 !important;
     }
 
     .aff-section-sub {
         font-size: 0.87rem !important;
+        display: none;
     }
 
     /* Commission tiers — single col already, just tighten */
@@ -2086,6 +2120,132 @@
         color: rgba(255, 255, 255, 0.85);
         line-height: 1.5;
         margin: 0;
+    }
+
+    /* ── APPLY PAGE ──────────────────────────────────────────── */
+    .apply-header h1 {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .form-card h2 {
+        font-size: 1.05rem;
+        font-weight: 600;
+    }
+
+    .success-card h2 {
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    .fee-amount {
+        font-size: 1.1rem;
+    }
+
+    /* ── PAYMENT PAGE ────────────────────────────────────────── */
+    .page-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .dest-card-amount {
+        font-size: 1.3rem;
+    }
+
+    .pay-total-amount {
+        font-size: 1.6rem;
+        font-weight: 600;
+    }
+
+    .line-item.total-line .li-val {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    /* ── SURVEY PAGE ─────────────────────────────────────────── */
+    h1 {
+        font-weight: 600;
+    }
+
+    .state h2 {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .star {
+        font-size: 2rem;
+    }
+
+    /* ── LOGIN PAGE ──────────────────────────────────────────── */
+    .aside-heading {
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+
+    .login-heading {
+        font-size: 1.15rem;
+        font-weight: 600;
+    }
+
+    /* ── DASHBOARD ───────────────────────────────────────────── */
+    .dash-title {
+        font-weight: 600;
+    }
+
+    .stat-value {
+        font-weight: 700;
+    }
+
+    /* ── ADMIN ───────────────────────────────────────────────── */
+    .admin-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    /* ── GLOBAL: reduce all 800-weight headings site-wide ────── */
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-weight: 600;
+    }
+
+    /* Restore specific elements that should stay bold */
+    .stat-value,
+    .astat-val,
+    .app-mob-date-day,
+    .fan-center-label h2 {
+        font-weight: 700;
+    }
+
+    /* ── NAV drawer glass feel — ensure it overrides =*/
+    #nav-mobile-drawer {
+        background: rgba(248, 249, 255, 0.78) !important;
+        backdrop-filter: blur(28px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+    }
+
+    /* ── Section spacing — add bottom margin between sections ── */
+    .services,
+    .how,
+    .visa-checker,
+    .destinations,
+    .insurance,
+    .tracking,
+    .testimonials,
+    .search-section,
+    .aff-section {
+        margin-bottom: 8px;
+    }
+
+    /* Divider line between sections */
+    .services+.how,
+    .how+.visa-checker,
+    .visa-checker+.destinations,
+    .destinations+.insurance,
+    .insurance+.tracking,
+    .tracking+.testimonials {
+        border-top: 1px solid var(--border);
     }
 
 }
