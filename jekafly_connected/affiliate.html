@@ -420,12 +420,25 @@
 
 
                     <div class="aff-mob-nav" id="aff-mob-nav">
-                        <button type="button" class="btn-aff-back" id="aff-btn-back" onclick="affStepBack()">←
-                            Back</button>
-                        <button type="button" class="btn-aff-next" id="aff-btn-next" onclick="affStepNext()">Next
-                            →</button>
+                        <button type="button" class="btn-aff-back" id="aff-btn-back" onclick="affStepBack()"><svg
+                                width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12" />
+                                <polyline points="12 19 5 12 12 5" />
+                            </svg> Back</button>
+                        <button type="button" class="btn-aff-next" id="aff-btn-next" onclick="affStepNext()">Next <svg
+                                width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg></button>
                         <button type="submit" class="btn-aff-submit aff-mob-submit" id="aff-submit-btn"
-                            style="display:none">Submit Application →</button>
+                            style="display:none">Submit Application <svg width="14" height="14" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg></button>
                     </div>
 
 
@@ -756,7 +769,12 @@
             <div class="modal-drag-handle"
                 style="width:40px;height:4px;background:#e5e7eb;border-radius:2px;margin:0 auto 20px;"></div>
             <button onclick="closeModal()"
-                style="position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;font-size:0.88rem;">✕</button>
+                style="position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:50%;background:#f3f4f6;border:none;cursor:pointer;font-size:0.88rem;"><svg
+                    width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg></button>
             <div id="modal-auth">
                 <h3 id="aff-modal-title" style="font-size:1.15rem;font-weight:700;margin-bottom:4px;">Welcome Back</h3>
                 <p id="aff-modal-sub" style="font-size:0.85rem;color:#6b7280;margin-bottom:20px;">Sign in to your
@@ -773,7 +791,12 @@
                     <div class="form-group"><label>Password</label><input id="aff-login-pass" type="password"
                             placeholder="••••••••" /></div>
                     <div id="aff-login-err" class="inline-error"></div>
-                    <button class="btn-check btn-check-mt" onclick="affDoLogin()">Login →</button>
+                    <button class="btn-check btn-check-mt" onclick="affDoLogin()">Login <svg width="14" height="14"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg></button>
                 </div>
                 <div id="aff-register-form" style="display:none">
                     <div class="form-group"><label>Full Name</label><input id="aff-reg-name" type="text"
@@ -785,7 +808,12 @@
                     <div class="form-group"><label>Password</label><input id="aff-reg-pass" type="password"
                             placeholder="Min. 8 characters" /></div>
                     <div id="aff-reg-err" class="inline-error"></div>
-                    <button class="btn-check btn-check-mt" onclick="affDoRegister()">Create Account →</button>
+                    <button class="btn-check btn-check-mt" onclick="affDoRegister()">Create Account <svg width="14"
+                            height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg></button>
                 </div>
             </div>
         </div>

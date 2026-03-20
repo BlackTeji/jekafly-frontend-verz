@@ -40,7 +40,12 @@
         </div>
         <div class="nav-cta" id="nav-cta-area"></div>
         <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
-            <span class="nav-burger" id="nav-burger">☰</span>
+            <span class="nav-burger" id="nav-burger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                </svg></span>
         </button>
     </nav>
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
@@ -62,41 +67,126 @@
                     <div class="dash-email" id="user-email">...</div>
                 </div>
                 <div class="dash-nav-section">Menu</div>
-                <div class="dash-nav-item active" onclick="showTab('applications',this)"><span class="icon">📋</span>My
+                <div class="dash-nav-item active" onclick="showTab('applications',this)"><span class="icon"><svg
+                            width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                            <rect x="9" y="3" width="6" height="4" rx="1" />
+                            <line x1="9" y1="12" x2="15" y2="12" />
+                            <line x1="9" y1="16" x2="13" y2="16" />
+                        </svg></span>My
                     Applications</div>
-                <div class="dash-nav-item" onclick="showTab('mydocs',this)"><span class="icon">📁</span>My Documents
+                <div class="dash-nav-item" onclick="showTab('mydocs',this)"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                        </svg></span>My Documents
                 </div>
-                <div class="dash-nav-item" onclick="showTab('documents',this)"><span class="icon">🗓️</span>Travel
+                <div class="dash-nav-item" onclick="showTab('documents',this)"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 2v4" />
+                            <path d="M16 2v4" />
+                            <rect width="18" height="18" x="3" y="4" rx="2" />
+                            <path d="M3 10h18" />
+                            <path d="M8 14h.01" />
+                            <path d="M12 14h.01" />
+                            <path d="M16 14h.01" />
+                            <path d="M8 18h.01" />
+                            <path d="M12 18h.01" />
+                            <path d="M16 18h.01" />
+                        </svg></span>Travel
                     Consultation
                 </div>
-                <div class="dash-nav-item" onclick="showTab('insurance',this)"><span class="icon">🛡️</span>My Insurance
+                <div class="dash-nav-item" onclick="showTab('insurance',this)"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                        </svg></span>My Insurance
                 </div>
-                <div class="dash-nav-item" onclick="showTab('track',this)"><span class="icon">🔍</span>Track Visa
+                <div class="dash-nav-item" onclick="showTab('track',this)"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8" />
+                            <path d="m21 21-4.3-4.3" />
+                        </svg></span>Track Visa
                 </div>
-                <div class="dash-nav-item" onclick="showTab('profile',this)"><span class="icon">👤</span>My Profile
+                <div class="dash-nav-item" onclick="showTab('profile',this)"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="5" />
+                            <path d="M3 21a9 9 0 0 1 18 0" />
+                        </svg></span>My Profile
                 </div>
                 <div class="dash-nav-section">Bookings</div>
-                <div class="dash-nav-item" onclick="showTab('flights',this)"><span class="icon">✈️</span>My Flight
+                <div class="dash-nav-item" onclick="showTab('flights',this)"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z" />
+                        </svg></span>My Flight
                     Bookings</div>
-                <div class="dash-nav-item" onclick="showTab('hotels',this)"><span class="icon">🏨</span>My Hotel
+                <div class="dash-nav-item" onclick="showTab('hotels',this)"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z" />
+                            <path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16" />
+                            <line x1="6" x2="18" y1="12" y2="12" />
+                            <line x1="6" x2="18" y1="20" y2="20" />
+                            <line x1="9" x2="9" y1="8" y2="12" />
+                            <line x1="15" x2="15" y1="8" y2="12" />
+                        </svg></span>My Hotel
                     Bookings</div>
                 <div class="dash-nav-section">Actions</div>
-                <div class="dash-nav-item" onclick="window.location.href='apply.html'"><span class="icon">➕</span>New
+                <div class="dash-nav-item" onclick="window.location.href='apply.html'"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                            <path d="M5 12h14" />
+                            <path d="M12 5v14" />
+                        </svg></span>New
                     Application</div>
-                <div class="dash-nav-item" onclick="window.location.href='index.html#insurance'"><span
-                        class="icon">🛡️</span>Get Insurance</div>
-                <div class="dash-nav-item" onclick="window.location.href='index.html#visa'"><span
-                        class="icon">🌍</span>Visa Applicationer</div>
+                <div class="dash-nav-item" onclick="window.location.href='index.html#insurance'"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                        </svg></span>Get Insurance</div>
+                <div class="dash-nav-item" onclick="window.location.href='index.html#visa'"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                            <path d="M2 12h20" />
+                        </svg></span>Visa Applicationer</div>
                 <div class="dash-nav-section">Account</div>
-                <div class="dash-nav-item" onclick="doLogout()"><span class="icon">🚪</span>Logout</div>
+                <div class="dash-nav-item" onclick="doLogout()"><span class="icon"><svg width="18" height="18"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+                            <polyline points="16 17 21 12 16 7" />
+                            <line x1="21" y1="12" x2="9" y2="12" />
+                        </svg></span>Logout</div>
             </div>
 
 
             <div class="dash-main">
 
                 <div id="admin-back-bar" class="admin-return-banner hidden">
-                    <span class="admin-return-text">👀 Viewing as user — you came from Admin</span>
-                    <a href="admin.html" class="btn-return-admin">←
+                    <span class="admin-return-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                            <circle cx="12" cy="12" r="3" />
+                        </svg> Viewing as user — you came from Admin</span>
+                    <a href="admin.html" class="btn-return-admin"><svg width="14" height="14" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12" />
+                            <polyline points="12 19 5 12 12 5" />
+                        </svg>
                         Back to Admin</a>
                 </div>
 
@@ -109,7 +199,12 @@
                     <div class="detail-panel" id="detail-panel">
                         <h3>
                             <span id="detail-title">Application Details</span>
-                            <button class="close-panel" onclick="closeDetail()">✕</button>
+                            <button class="close-panel" onclick="closeDetail()"><svg width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                    stroke-linecap="round">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg></button>
                         </h3>
                         <div class="detail-grid" id="detail-grid"></div>
                         <div>
@@ -119,10 +214,19 @@
                         <div class="dash-app-actions">
 
                             <button class="btn-save" id="detail-pay-btn" onclick="goToPayment()">Complete Payment
-                                →</button>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                    <polyline points="12 5 19 12 12 19" />
+                                </svg></button>
                             <button class="btn-save" id="detail-upload-btn" onclick="goToMyDocsForApp()">Upload
                                 Documents
-                                📎</button>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                                </svg></button>
                         </div>
                     </div>
 
@@ -154,26 +258,48 @@
 
                     <div id="mydocs-step-2" class="hidden">
                         <div class="flex-row flex-gap-12 mb-18">
-                            <button onclick="resetMyDocs()" class="btn-secondary-sm">←
+                            <button onclick="resetMyDocs()" class="btn-secondary-sm"><svg width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="19" y1="12" x2="5" y2="12" />
+                                    <polyline points="12 19 5 12 12 5" />
+                                </svg>
                                 Back</button>
                             <div id="mydocs-app-label" class="consult-card-name"></div>
                         </div>
 
                         <div class="dash-section-card mb-18 hidden" id="mydocs-uploaded-panel">
-                            <div class="tab-section-title">📂 Uploaded
+                            <div class="tab-section-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z" />
+                                    <polyline points="12 13 15 16 18 13" />
+                                    <line x1="15" y1="16" x2="15" y2="10" />
+                                </svg> Uploaded
                                 Documents</div>
                             <div id="mydocs-uploaded-list"></div>
                         </div>
 
                         <div class="dash-section-card" id="mydocs-required-panel">
-                            <div class="tab-section-title mb-4">📋 Required
+                            <div class="tab-section-title mb-4"><svg width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                                    <rect x="9" y="3" width="6" height="4" rx="1" />
+                                    <line x1="9" y1="12" x2="15" y2="12" />
+                                    <line x1="9" y1="16" x2="13" y2="16" />
+                                </svg> Required
                                 Documents</div>
                             <div class="fs-sm text-muted mb-16">Upload each document one by
                                 one. You can preview before submitting.</div>
                             <div id="mydocs-slot-list"></div>
                             <div id="mydocs-slot-footer" class="mt-16 hidden">
                                 <button id="mydocs-submit-btn" onclick="submitMyDocs()" class="btn-next">Submit
-                                    →</button>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                        <polyline points="12 5 19 12 12 19" />
+                                    </svg></button>
                             </div>
                         </div>
                     </div>
@@ -193,16 +319,36 @@
                                 video or phone session with a certified visa consultant.</p>
                             <div class="grid-2col-sm">
                                 <div class="check-item">
-                                    <span>✅</span>Personalised visa strategy
+                                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                            <path d="m9 11 3 3L22 4" />
+                                        </svg></span>Personalised visa strategy
                                 </div>
                                 <div class="check-item">
-                                    <span>✅</span>Document checklist review
+                                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                            <path d="m9 11 3 3L22 4" />
+                                        </svg></span>Document checklist review
                                 </div>
                                 <div class="check-item">
-                                    <span>✅</span>Application form guidance
+                                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                            <path d="m9 11 3 3L22 4" />
+                                        </svg></span>Application form guidance
                                 </div>
                                 <div class="check-item">
-                                    <span>✅</span>Follow-up email summary
+                                    <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                            <path d="m9 11 3 3L22 4" />
+                                        </svg></span>Follow-up email summary
                                 </div>
                             </div>
                         </div>
@@ -210,7 +356,11 @@
                         <div class="consult-grid">
 
                             <div class="consult-pkg consult-card" id="pkg-standard" onclick="selectPackage('standard')">
-                                <div class="consult-card-icon">💬</div>
+                                <div class="consult-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                        height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                                    </svg></div>
                                 <div class="consult-card-name">Standard</div>
                                 <div class="consult-card-desc">30-min video call</div>
                                 <div class="consult-card-price">₦15,000</div>
@@ -220,7 +370,12 @@
                             <div class="consult-pkg consult-card" id="pkg-priority" onclick="selectPackage('priority')">
                                 <div class="consult-card-badge">
                                     POPULAR</div>
-                                <div class="consult-card-icon">⚡</div>
+                                <div class="consult-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                        height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
+                                    </svg></div>
                                 <div class="consult-card-name">Priority</div>
                                 <div class="consult-card-desc">30-min call + doc review
                                 </div>
@@ -230,7 +385,13 @@
                             </div>
 
                             <div class="consult-pkg consult-card" id="pkg-vip" onclick="selectPackage('vip')">
-                                <div class="consult-card-icon">👑</div>
+                                <div class="consult-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                        height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" />
+                                        <path d="M5 21h14" />
+                                    </svg></div>
                                 <div class="consult-card-name">VIP</div>
                                 <div class="consult-card-desc">60-min dedicated session
                                 </div>
@@ -244,14 +405,23 @@
                         <div id="consult-pkg-error" class="inline-error">Please select a
                             package to continue.</div>
                         <button class="btn-next" onclick="startConsultPayment()">Pay & Book
-                            Appointment →</button>
+                            Appointment <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg></button>
                     </div>
 
 
                     <div id="consult-step-2" class="hidden">
                         <div class="dash-section-card app-select-banner mb-18">
                             <div class="flex-row flex-gap-12">
-                                <div class="ins-item-icon">✅</div>
+                                <div class="ins-item-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                        height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg></div>
                                 <div>
                                     <div class="consult-card-name">Payment confirmed!</div>
                                     <div class="fs-sm text-light" id="consult-paid-msg">Your
@@ -287,8 +457,18 @@
                     <div id="insurance-content"></div>
 
                     <div id="ins-purchase-section">
-                        <button class="btn-next" onclick="toggleInsPurchase()" id="ins-purchase-toggle">🛡️ Get Travel
-                            Insurance →</button>
+                        <button class="btn-next" onclick="toggleInsPurchase()" id="ins-purchase-toggle"><svg
+                                xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                            </svg> Get Travel
+                            Insurance <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg></button>
 
                         <div id="ins-purchase-form" class="dash-section-card mt-16 hidden">
                             <div class="tab-section-title mb-16">Get Travel Insurance</div>
@@ -317,7 +497,14 @@
                             <div class="consult-grid">
                                 <div class="consult-pkg consult-card" id="dash-ins-basic"
                                     onclick="selectDashIns('basic',this)">
-                                    <div class="consult-card-icon">🩺</div>
+                                    <div class="consult-card-icon"><svg width="18" height="18" viewBox="0 0 24 24"
+                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round">
+                                            <path
+                                                d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6 6 6 0 006-6V4a2 2 0 00-2-2h-1a.2.2 0 10.3.3" />
+                                            <path d="M8 15v1a6 6 0 006 6v0a6 6 0 006-6v-4" />
+                                            <circle cx="20" cy="10" r="2" />
+                                        </svg></div>
                                     <div class="consult-card-name">Basic</div>
                                     <div class="consult-card-desc">Medical + Baggage</div>
                                     <div class="consult-card-price" id="dash-ins-price-basic">₦25,000</div>
@@ -326,7 +513,12 @@
                                 <div class="consult-pkg consult-card selected" id="dash-ins-standard"
                                     onclick="selectDashIns('standard',this)">
                                     <div class="consult-card-badge">POPULAR</div>
-                                    <div class="consult-card-icon">🛡️</div>
+                                    <div class="consult-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                            height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                                        </svg></div>
                                     <div class="consult-card-name">Standard</div>
                                     <div class="consult-card-desc">Medical + Cancellation + Baggage</div>
                                     <div class="consult-card-price" id="dash-ins-price-standard">₦45,000</div>
@@ -343,7 +535,11 @@
                             </div>
                             <div class="mt-16">
                                 <button class="btn-next w-full" onclick="startDashInsPayment()">Proceed to Payment
-                                    →</button>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                        <polyline points="12 5 19 12 12 19" />
+                                    </svg></button>
                             </div>
                         </div>
                     </div>
@@ -357,7 +553,12 @@
                         <div class="dash-track-wrap">
                             <input type="text" id="dash-track-ref" placeholder="e.g. JKF-2024-000001"
                                 class="dash-track-input" />
-                            <button onclick="dashTrack()" class="btn-dash-track">Track →</button>
+                            <button onclick="dashTrack()" class="btn-dash-track">Track <svg width="14" height="14"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                    <polyline points="12 5 19 12 12 19" />
+                                </svg></button>
                         </div>
                         <div id="dash-track-result"></div>
                         <div class="dash-quick-refs">
@@ -396,7 +597,12 @@
                         </div>
 
                         <div id="pwd-step-2" class="hidden">
-                            <p class="inline-success">✅ OTP sent!
+                            <p class="inline-success"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <path d="m9 11 3 3L22 4" />
+                                </svg> OTP sent!
                                 Check your email.</p>
 
                             <div class="form-group">
@@ -415,7 +621,13 @@
                                     <input type="password" id="p-old-pass" placeholder="••••••••"
                                         class="w-full pr-42" />
                                     <button type="button" onclick="togglePwd('p-old-pass','eye-old')" class="pw-toggle"
-                                        id="eye-old">👁</button>
+                                        id="eye-old"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg></button>
                                 </div>
                             </div>
 
@@ -425,7 +637,13 @@
                                     <input type="password" id="p-new-pass" placeholder="Min. 8 characters"
                                         oninput="checkStrength(this.value)" class="w-full pr-42" />
                                     <button type="button" onclick="togglePwd('p-new-pass','eye-new')" class="pw-toggle"
-                                        id="eye-new">👁</button>
+                                        id="eye-new"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg></button>
                                 </div>
                             </div>
 
@@ -449,7 +667,13 @@
                                     <input type="password" id="p-confirm-pass" placeholder="Re-enter new password"
                                         class="w-full pr-42" />
                                     <button type="button" onclick="togglePwd('p-confirm-pass','eye-confirm')"
-                                        class="pw-toggle" id="eye-confirm">👁</button>
+                                        class="pw-toggle" id="eye-confirm"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg></button>
                                 </div>
                             </div>
 
@@ -461,7 +685,14 @@
                     </div>
                     <div class="danger-zone-card">
                         <div class="danger-zone-header">
-                            <div class="danger-zone-icon">⚠️</div>
+                            <div class="danger-zone-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.75"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                                    <path d="M12 9v4" />
+                                    <path d="M12 17h.01" />
+                                </svg></div>
                             <div>
                                 <div class="danger-zone-title">Danger Zone</div>
                                 <div class="danger-zone-sub">These actions are irreversible. Please proceed with
@@ -492,7 +723,15 @@
                     <div id="delete-account-overlay" class="delete-modal-overlay">
                         <div class="delete-modal-box">
                             <div class="delete-modal-icon">
-                                ⚠️</div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                    fill="none" stroke="#d97706" stroke-width="1.75" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path
+                                        d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                                    <path d="M12 9v4" />
+                                    <path d="M12 17h.01" />
+                                </svg>
+                            </div>
                             <h3 class="delete-modal-title">
                                 Delete Your Account?</h3>
                             <p class="delete-modal-body">
@@ -506,7 +745,13 @@
                                     <input type="password" id="del-account-pass" placeholder="Your current password"
                                         class="delete-modal-input" />
                                     <button type="button" onclick="togglePwd('del-account-pass','eye-del')"
-                                        class="pw-toggle" id="eye-del">👁</button>
+                                        class="pw-toggle" id="eye-del"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                            <path
+                                                d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+                                            <circle cx="12" cy="12" r="3" />
+                                        </svg></button>
                                 </div>
                             </div>
                             <div class="flex-gap-10">
@@ -541,7 +786,11 @@
 
     <div class="modal-overlay" id="doc-upload-modal" onclick="closeDocUpload(event)">
         <div class="modal doc-modal">
-            <button class="modal-close" onclick="closeDocUploadDirect()">✕</button>
+            <button class="modal-close" onclick="closeDocUploadDirect()"><svg width="14" height="14" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg></button>
             <h3 id="doc-modal-title">Upload Documents</h3>
             <p class="modal-sub" id="doc-modal-sub">Upload supporting documents for your application.</p>
 
@@ -553,7 +802,12 @@
 
             <div class="doc-dropzone">
                 <div class="doc-dropzone-inner">
-                    <div class="doc-dropzone-icon">📎</div>
+                    <div class="doc-dropzone-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                        </svg></div>
                     <div class="doc-dropzone-text">Drag & drop or <label class="doc-upload-browse-btn"
                             for="modal-file-input">browse files</label></div>
                     <div class="doc-dropzone-hint">PDF, JPG, PNG — max 10MB each</div>
@@ -562,7 +816,12 @@
                 </div>
             </div>
             <div id="modal-uploaded-list"></div>
-            <button class="btn-next btn-full-lg" onclick="submitModalDocuments()">Submit →</button>
+            <button class="btn-next btn-full-lg" onclick="submitModalDocuments()">Submit <svg width="14" height="14"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                </svg></button>
         </div>
     </div>
 
@@ -592,7 +851,7 @@
 
             const hour = new Date().getHours();
             const greet = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
-            document.getElementById('dash-greeting').textContent = greet + ', ' + currentUser.name.split(' ')[0] + ' 👋';
+            document.getElementById('dash-greeting').textContent = greet + ', ' + currentUser.name.split(' ')[0] + ' <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-4 0v5"/><path d="M14 10V4a2 2 0 00-4 0v6"/><path d="M10 10.5V6a2 2 0 00-4 0v8a6 6 0 006 6h.1a6 6 0 005.9-6V11a2 2 0 00-4 0"/></svg>';
 
             loadApplications();
             loadProfile();
@@ -637,13 +896,13 @@
             const pending = _allApps.filter(a => ['received', 'processing', 'embassy'].includes(a.status)).length;
             const unpaid = _allApps.filter(a => !a.paid).length;
             document.getElementById('dash-stats').innerHTML = `
-        <div class="stat-card"><div class="stat-icon">📋</div><div class="stat-value">${_allApps.length}</div><div class="stat-label">Total</div></div>
-        <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-value">${pending}</div><div class="stat-label">In Progress</div></div>
-        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-value">${approved}</div><div class="stat-label">Approved</div></div>
-        <div class="stat-card"><div class="stat-icon">💳</div><div class="stat-value">${unpaid}</div><div class="stat-label">Unpaid</div></div>`;
+        <div class="stat-card"><div class="stat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></div><div class="stat-value">${_allApps.length}</div><div class="stat-label">Total</div></div>
+        <div class="stat-card"><div class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14M5 21h14M6 3v4l6 5-6 5v4M18 3v4l-6 5 6 5v4"/></svg></div><div class="stat-value">${pending}</div><div class="stat-label">In Progress</div></div>
+        <div class="stat-card"><div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></div><div class="stat-value">${approved}</div><div class="stat-label">Approved</div></div>
+        <div class="stat-card"><div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="22" height="16" x="1" y="4" rx="2" ry="2"/><line x1="1" x2="23" y1="10" y2="10"/></svg></div><div class="stat-value">${unpaid}</div><div class="stat-label">Unpaid</div></div>`;
 
             if (_allApps.length === 0) {
-                document.getElementById('applications-table').innerHTML = `<div class="empty-state"><div class="icon">✈️</div><h3>No applications yet</h3><p>Start your first visa application and we'll guide you through.</p><button class="btn-save" onclick="window.location.href='apply.html'">Apply for a Visa →</button></div>`;
+                document.getElementById('applications-table').innerHTML = `<div class="empty-state"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z"/></svg></div><h3>No applications yet</h3><p>Start your first visa application and we'll guide you through.</p><button class="btn-save" onclick="window.location.href='apply.html'">Apply for a Visa <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></div>`;
                 return;
             }
             _appsPage = 1;
@@ -670,7 +929,7 @@
                             <div class="app-mob-ref">${a.ref}</div>
                             <div class="app-mob-card-bottom">
                                 <span class="app-mob-date">${a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</span>
-                                ${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}
+                                ${a.paid ? '<span class="paid-yes"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span>' : '<span class="paid-no"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Unpaid</span>'}
                             </div>
                         </div>
                     </div>`).join('');
@@ -682,8 +941,8 @@
                     <td>${a.purpose || '—'}</td>
                     <td>${a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td>
                     <td><span class="status-pill ${statusColors[a.status] || 'status-received'}">${statusLabels[a.status] || a.status}</span></td>
-                    <td>${a.paid ? '<span class="paid-yes">✅ Paid</span>' : '<span class="paid-no">⚠️ Unpaid</span>'}</td>
-                    <td><button onclick="viewApp('${a.ref}')" class="btn-table-view">View →</button></td>
+                    <td>${a.paid ? '<span class="paid-yes"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span>' : '<span class="paid-no"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Unpaid</span>'}</td>
+                    <td><button onclick="viewApp('${a.ref}')" class="btn-table-view">View <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button></td>
                 </tr>`).join('')}</tbody></table>`;
             }
 
@@ -707,9 +966,9 @@
                 html += `<div class="dash-pagination">
                     <span class="dash-page-info">Showing ${from}–${to} of ${total}</span>
                     <div class="dash-page-btns">
-                        <button class="dash-page-btn ${_appsPage === 1 ? 'disabled' : ''}" onclick="dashGoPage(${_appsPage - 1})" ${_appsPage === 1 ? 'disabled' : ''}>← Prev</button>
+                        <button class="dash-page-btn ${_appsPage === 1 ? 'disabled' : ''}" onclick="dashGoPage(${_appsPage - 1})" ${_appsPage === 1 ? 'disabled' : ''}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Prev</button>
                         ${pageBtns}
-                        <button class="dash-page-btn ${_appsPage === totalPages ? 'disabled' : ''}" onclick="dashGoPage(${_appsPage + 1})" ${_appsPage === totalPages ? 'disabled' : ''}>Next →</button>
+                        <button class="dash-page-btn ${_appsPage === totalPages ? 'disabled' : ''}" onclick="dashGoPage(${_appsPage + 1})" ${_appsPage === totalPages ? 'disabled' : ''}>Next <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
                     </div>
                 </div>`;
             }
@@ -740,7 +999,7 @@
                 { l: 'Email', v: app.email },
                 { l: 'Phone', v: app.phone || '—' },
                 { l: 'Status', v: `<span class="status-pill ${statusColors[app.status]}">${statusLabels[app.status] || app.status}</span>` },
-                { l: 'Amount Paid', v: app.paid ? '<span class="paid-yes">✅ ₦' + Number(app.fee || 0).toLocaleString() + '</span>' : '<span class="paid-no">⚠️ Unpaid</span>' },
+                { l: 'Amount Paid', v: app.paid ? '<span class="paid-yes"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> ₦' + Number(app.fee || 0).toLocaleString() + '</span>' : '<span class="paid-no"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Unpaid</span>' },
                 { l: 'Submitted', v: new Date(app.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }) },
             ].map(f => `<div class="detail-item"><div class="detail-label">${f.l}</div><div class="detail-value">${f.v}</div></div>`).join('');
 
@@ -784,7 +1043,7 @@
                 return;
             }
 
-            const flag = window.visaRequirements?.[selectedApp.destination]?.flag || '🌍';
+            const flag = window.visaRequirements?.[selectedApp.destination]?.flag || '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
             const reqs = window.visaRequirements?.[selectedApp.destination]?.docs || [];
             const processing = window.visaRequirements?.[selectedApp.destination]?.processing || '—';
 
@@ -801,11 +1060,11 @@
                 divider.style.display = 'flex';
                 document.getElementById('doc-modal-req-list').innerHTML = `
             <div class="doc-required-header">
-                <div class="doc-required-title">📋 ${reqs.length} documents required for your ${selectedApp.destination} visa</div>
+                <div class="doc-required-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg> ${reqs.length} documents required for your ${selectedApp.destination} visa</div>
                 <div class="doc-required-meta">Est. processing: <strong>${processing}</strong></div>
             </div>
             <div class="doc-required-disclaimer">
-                ⚠️ General requirements for Nigerian passport holders — Jekafly will confirm specifics for your case.
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> General requirements for Nigerian passport holders — Jekafly will confirm specifics for your case.
             </div>
             <div class="doc-required-list">
                 ${reqs.map((doc, i) => `
@@ -843,11 +1102,11 @@
             if (!list) return;
             list.innerHTML = modalUploads.length ? `<div class="uploaded-files">` + modalUploads.map((f, i) => `
         <div class="uploaded-file">
-            <span class="file-icon">${f.type.includes('pdf') ? '📄' : '🖼️'}</span>
+            <span class="file-icon">${f.type.includes('pdf') ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>'}</span>
             <span class="file-name">${escHtml(f.name)}</span>
             <span class="file-size">${(f.size / 1024).toFixed(0)} KB</span>
-            <button class="file-preview-btn" onclick="previewDashFile(${i},'modal')">👁 Preview</button>
-            <button class="file-remove" onclick="modalUploads.splice(${i},1);renderModalUploads()">✕</button>
+            <button class="file-preview-btn" onclick="previewDashFile(${i},'modal')"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> Preview</button>
+            <button class="file-remove" onclick="modalUploads.splice(${i},1);renderModalUploads()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>`).join('') + `</div>` : '';
         }
 
@@ -864,12 +1123,12 @@
                 }));
                 const uploaded = await DocStore.upload(fileObjects, selectedApp?.ref || null, null);
                 closeDocUploadDirect();
-                showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} uploaded successfully! 📎`);
+                showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} uploaded successfully! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>`);
                 loadVault();
             } catch (e) {
                 showToast('Upload failed. Please try again.', 'error');
             }
-            if (btn) { btn.disabled = false; btn.textContent = 'Submit →'; }
+            if (btn) { btn.disabled = false; btn.textContent = 'Submit <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>'; }
         }
 
         let docTabRef = null;
@@ -887,9 +1146,9 @@
             if (apps.length === 0) {
                 container.innerHTML = `
             <div class="doc-no-apps">
-                <div class="doc-no-apps-icon">📋</div>
+                <div class="doc-no-apps-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></div>
                 <div class="doc-no-apps-text">You don't have any applications yet.</div>
-                <a href="apply.html" class="doc-no-apps-link">Start a visa application →</a>
+                <a href="apply.html" class="doc-no-apps-link">Start a visa application <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
             </div>`;
                 return;
             }
@@ -902,7 +1161,7 @@
 
             container.innerHTML = apps.map(a => {
                 const vr = window.visaRequirements?.[a.destination];
-                const flag = vr?.flag || '🌍';
+                const flag = vr?.flag || '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
                 const docCount = vr?.docs?.length || 0;
                 const sl = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved', delivered: 'Delivered', rejected: 'Rejected' };
                 const sc = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
@@ -917,7 +1176,7 @@
             <div class="doc-app-card-right">
                 <div class="doc-app-card-count">${docCount}</div>
                 <div class="doc-app-card-count-label">docs required</div>
-                <div class="doc-app-card-arrow">→</div>
+                <div class="doc-app-card-arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
             </div>
         </div>`;
             }).join('');
@@ -944,7 +1203,7 @@
 
             const app = await AppStore.getByRef(ref);
             if (!app) return;
-            const flag = window.visaRequirements?.[app.destination]?.flag || '🌍';
+            const flag = window.visaRequirements?.[app.destination]?.flag || '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
             const reqs = window.visaRequirements?.[app.destination]?.docs || [];
             const processing = window.visaRequirements?.[app.destination]?.processing || '—';
 
@@ -954,11 +1213,11 @@
 
             document.getElementById('doc-required-panel').innerHTML = `
         <div class="doc-required-header">
-            <div class="doc-required-title">📋 Required documents for your ${app.destination} visa</div>
+            <div class="doc-required-title"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg> Required documents for your ${app.destination} visa</div>
             <div class="doc-required-meta">Processing time: <strong>${processing}</strong> · <strong>${reqs.length}</strong> documents needed</div>
         </div>
         <div class="doc-required-disclaimer">
-            ⚠️ General requirements for Nigerian passport holders — Jekafly will confirm specifics for your application.
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> General requirements for Nigerian passport holders — Jekafly will confirm specifics for your application.
         </div>
         <div class="doc-required-list" id="doc-slot-list">
             ${reqs.length > 0 ? reqs.map((doc, i) => `
@@ -969,7 +1228,7 @@
                     <div class="doc-required-file" id="dreq-file-${i}"></div>
                 </div>
                 <label class="doc-slot-upload-btn" for="dreq-input-${i}" id="dreq-btn-${i}" title="Upload file for this document">
-                    📎 Upload
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Upload
                 </label>
                 <input type="file" id="dreq-input-${i}" accept=".pdf,.jpg,.jpeg,.png"
                     onchange="handleSlotUpload(event, ${i})" />
@@ -1003,8 +1262,8 @@
                 if (row) row.classList.add('dreq-done');
                 if (fileEl) fileEl.innerHTML = `
             <span class="dreq-fname">${escHtml(file.name)}</span>
-            <button class="dreq-preview-btn" onclick="previewSlotFile(${slotIndex})">👁</button>
-            <button class="dreq-remove-btn" onclick="removeSlotFile(${slotIndex})">✕</button>`;
+            <button class="dreq-preview-btn" onclick="previewSlotFile(${slotIndex})"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
+            <button class="dreq-remove-btn" onclick="removeSlotFile(${slotIndex})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
                 if (btn) btn.textContent = 'Upload';
 
                 updateSlotFooter();
@@ -1020,7 +1279,7 @@
             const btn = document.getElementById(`dreq-btn-${slotIndex}`);
             if (row) row.classList.remove('dreq-done');
             if (fileEl) fileEl.innerHTML = '';
-            if (btn) btn.textContent = '📎 Upload';
+            if (btn) btn.textContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Upload';
             updateSlotFooter();
         }
 
@@ -1035,7 +1294,7 @@
                 modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
                 modal.innerHTML = `<div class="doc-modal-box">
             <button onclick="document.getElementById('dash-preview-modal').style.display='none'"
-                class="doc-modal-close">✕</button>
+                class="doc-modal-close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             <div id="dash-preview-content"></div></div>`;
                 document.body.appendChild(modal);
             }
@@ -1057,7 +1316,7 @@
             } else if (uploaded < total) {
                 footer.innerHTML = `<strong>${uploaded} of ${total}</strong> documents uploaded. Upload the remaining ${total - uploaded} to complete your application.`;
             } else {
-                footer.innerHTML = `✅ All ${total} documents uploaded. Click <strong>Submit Documents</strong> below.`;
+                footer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> All ${total} documents uploaded. Click <strong>Submit Documents</strong> below.`;
             }
         }
 
@@ -1080,10 +1339,10 @@
             if (!list) return;
             list.innerHTML = dashUploads.length ? `<div class="uploaded-files">` + dashUploads.map((f, i) => `
         <div class="uploaded-file">
-            <span class="file-icon">${f.type.includes('pdf') ? '📄' : '🖼️'}</span>
+            <span class="file-icon">${f.type.includes('pdf') ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>'}</span>
             <span class="file-name">${escHtml(f.name)}</span>
             <span class="file-size">${(f.size / 1024).toFixed(0)} KB</span>
-            <button class="file-remove" onclick="dashUploads.splice(${i},1);renderDashUploads()">✕</button>
+            <button class="file-remove" onclick="dashUploads.splice(${i},1);renderDashUploads()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>`).join('') + `</div>` : '';
         }
 
@@ -1100,7 +1359,7 @@
                 modal.onclick = e => { if (e.target === modal) modal.style.display = 'none'; };
                 modal.innerHTML = `<div class="doc-modal-box">
             <button onclick="document.getElementById('dash-preview-modal').style.display='none'"
-                class="doc-modal-close">✕</button>
+                class="doc-modal-close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
             <div id="dash-preview-content"></div>
         </div>`;
                 document.body.appendChild(modal);
@@ -1127,7 +1386,7 @@
 
             showToast('Uploading documents...');
             const uploaded = await DocStore.upload(filesToSave, docTabRef || null, null);
-            showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} saved to your vault! 📎`);
+            showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} saved to your vault! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>`);
             dashUploads = [];
             window._docSlots = [];
             renderDashUploads();
@@ -1142,12 +1401,12 @@
             const list = document.getElementById('vault-list');
             if (!list) return;
             if (vault.length === 0) {
-                list.innerHTML = '<div class="empty-state"><div class="icon">📂</div><h3>No documents yet</h3><p>Upload documents from the section above or from an application.</p></div>';
+                list.innerHTML = '<div class="empty-state"><div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/><polyline points="12 13 15 16 18 13"/><line x1="15" y1="16" x2="15" y2="10"/></svg></div><h3>No documents yet</h3><p>Upload documents from the section above or from an application.</p></div>';
                 return;
             }
             list.innerHTML = `<table><thead><tr><th>File</th><th>Application</th><th>Uploaded</th><th></th></tr></thead><tbody>` +
                 vault.map(f => `<tr>
-            <td><span class="file-icon-sm">${f.mimeType && f.mimeType.includes('pdf') ? '📄' : '🖼️'}</span> ${f.name}</td>
+            <td><span class="file-icon-sm">${f.mimeType && f.mimeType.includes('pdf') ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>'}</span> ${f.name}</td>
             <td>${f.ref || '<span class="text-muted">General</span>'}</td>
             <td>${new Date(f.uploadedAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
             <td><button class="btn-table-view" onclick="removeVaultFile('${f.id}')">Remove</button></td>
@@ -1166,7 +1425,7 @@
             const container = document.getElementById('insurance-content');
             if (!container) return;
             if (policies.length === 0) {
-                container.innerHTML = `<div class="empty-state"><div class="icon">🛡️</div><h3>No insurance policies yet</h3><p>Purchase travel insurance to see your active policies here.</p></div>`;
+                container.innerHTML = `<div class="empty-state"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div><h3>No insurance policies yet</h3><p>Purchase travel insurance to see your active policies here.</p></div>`;
                 return;
             }
             _insurancePolicies = policies;
@@ -1174,10 +1433,10 @@
             container.innerHTML = `<div class="ins-policies-grid">` + policies.map((p, _idx) => `
         <div class="ins-policy-card">
             <div class="ins-policy-header">
-                <div class="ins-policy-icon">🛡️</div>
+                <div class="ins-policy-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
                 <div>
                     <div class="ins-policy-plan">${p.plan}</div>
-                    <div class="ins-policy-status status-active">✅ Active</div>
+                    <div class="ins-policy-status status-active"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Active</div>
                 </div>
             </div>
             <div class="ins-policy-details">
@@ -1203,7 +1462,7 @@
             const btn = document.getElementById('ins-purchase-toggle');
             const open = form.classList.contains('hidden');
             form.classList.toggle('hidden', !open);
-            btn.textContent = open ? '✕ Cancel' : '🛡️ Get Travel Insurance →';
+            btn.textContent = open ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Cancel' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg> Get Travel Insurance <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
             if (open) {
 
                 PricingStore.get().then(p => {
@@ -1408,7 +1667,7 @@
                 ${steps.map((s, i) => `
                     <div class="track-step-mini">
                         ${i < steps.length - 1 ? `<div class="track-step-mini-connector track-connector-dynamic" data-done="${i < curIdx}"></div>` : ''}
-                        <div class="track-step-mini-dot track-dot-dynamic" data-done="${i < curIdx}" data-active="${i === curIdx}">${i < curIdx ? '✓' : i + 1}</div>
+                        <div class="track-step-mini-dot track-dot-dynamic" data-done="${i < curIdx}" data-active="${i === curIdx}">${i < curIdx ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>' : i + 1}</div>
                         <div class="track-step-mini-label track-label-dynamic" data-active="${i <= curIdx}">${labels[i]}</div>
                     </div>`).join('')}
             </div>
@@ -1433,14 +1692,14 @@
             const res = await Auth.updateMe(name, phone);
             if (res?.ok) { currentUser = Auth.getCurrent(); document.getElementById('user-name').textContent = name; showToast('Profile updated!'); }
             else { showToast(res?.error || 'Update failed.', 'error'); }
-            showToast('Profile updated successfully! ✅');
+            showToast('Profile updated successfully! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>');
         }
 
         function togglePwd(inputId, btnId) {
             const inp = document.getElementById(inputId);
             const btn = document.getElementById(btnId);
-            if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
-            else { inp.type = 'password'; btn.textContent = '👁'; }
+            if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>'; }
+            else { inp.type = 'password'; btn.textContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>'; }
         }
 
         function checkStrength(val) {
@@ -1477,7 +1736,7 @@
             if (!res?.ok) { showToast(res?.error || 'Failed to send OTP.', 'error'); return; }
             document.getElementById('pwd-step-1').classList.add('hidden');
             document.getElementById('pwd-step-2').classList.remove('hidden');
-            showToast('OTP sent to your email 📧');
+            showToast('OTP sent to your email <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>');
         }
 
         async function changePassword() {
@@ -1491,7 +1750,7 @@
             if (newPass !== confirmPass) { showToast('New passwords do not match.', 'error'); return; }
             const res = await Auth.changePassword(oldPass, newPass, otp);
             if (!res?.ok) { showToast(res?.error || 'Password update failed.', 'error'); return; }
-            showToast('Password updated successfully! 🔒 Logging you out...');
+            showToast('Password updated successfully! <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Logging you out...');
             setTimeout(() => doLogout(), 1800);
         }
 
@@ -1510,7 +1769,7 @@
             const res = await Auth.deleteAccount(pass);
             btn.disabled = false; btn.textContent = 'Yes, Delete My Account';
             if (!res?.ok) { showToast(res?.error || 'Delete failed. Check your password.', 'error'); return; }
-            showToast('Account deleted. Goodbye 👋');
+            showToast('Account deleted. Goodbye <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-4 0v5"/><path d="M14 10V4a2 2 0 00-4 0v6"/><path d="M10 10.5V6a2 2 0 00-4 0v8a6 6 0 006 6h.1a6 6 0 005.9-6V11a2 2 0 00-4 0"/></svg>');
             setTimeout(() => window.location.href = 'index.html', 1800);
         }
 
@@ -1528,17 +1787,17 @@
             const apps = await AppStore.getByUser();
             if (!apps || apps.length === 0) {
                 container.innerHTML = `<div class="empty-state">
-                    <div class="empty-icon">📋</div>
+                    <div class="empty-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></div>
                     <div>No applications yet.</div>
-                    <a href="apply.html" class="text-brand fw-600">Start a visa application →</a>
+                    <a href="apply.html" class="text-brand fw-600">Start a visa application <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
                 </div>`;
                 return;
             }
-            const sl = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved ✅', delivered: 'Delivered 🎉', rejected: 'Rejected ❌' };
+            const sl = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>', delivered: 'Delivered <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>', rejected: 'Rejected <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>' };
             const sc = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
             container.innerHTML = apps.map(a => {
                 const vr = window.visaRequirements?.[a.destination];
-                const flag = vr?.flag || '🌍';
+                const flag = vr?.flag || '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
                 const docCount = vr?.docs?.length || 0;
                 return `<div onclick="openMyDocsApp('${a.ref}')" class="ins-item ins-item--link">
                     <div class="ins-item-icon">${flag}</div>
@@ -1550,7 +1809,7 @@
                     <div class="text-right ml-auto">
                         <div class="ins-item-price">${docCount}</div>
                         <div class="fs-xs text-muted">docs needed</div>
-                        <div class="text-brand mt-4">→</div>
+                        <div class="text-brand mt-4"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
                     </div>
                 </div>`;
             }).join('');
@@ -1566,7 +1825,7 @@
             if (!app) return;
 
             const vr = window.visaRequirements?.[app.destination];
-            const flag = vr?.flag || '🌍';
+            const flag = vr?.flag || '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
             const reqs = vr?.docs || [];
             document.getElementById('mydocs-app-label').textContent = `${flag} ${app.destination} — ${app.ref}`;
 
@@ -1580,7 +1839,7 @@
                 slotList.innerHTML = `<div class="empty-state">No specific document list for this destination. Upload any relevant documents using the button below.</div>
                 <div class="mt-12">
                     <label class="btn-brand">
-                        📎 Upload Document <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleMyDocGeneral(event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Upload Document <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleMyDocGeneral(event)">
                     </label>
                 </div>`;
                 document.getElementById('mydocs-slot-footer').classList.add('hidden');
@@ -1597,22 +1856,22 @@
                 const alreadyUploaded = uploadedByIndex[i];
                 const borderColor = alreadyUploaded ? '#16a34a' : '#eef0f6';
                 const statusHtml = alreadyUploaded
-                    ? `<span class="status-uploaded">✓ Submitted</span>`
+                    ? `<span class="status-uploaded"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Submitted</span>`
                     : `<span class="status-required">Required</span>`;
                 const fileHtml = alreadyUploaded
                     ? `<span class="text-green fw-600">${escHtml(alreadyUploaded.originalName || alreadyUploaded.name || 'Document')}</span>
-                       <button onclick="previewMyDoc('${alreadyUploaded.id}')" class="btn-icon">👁 Preview</button>`
+                       <button onclick="previewMyDoc('${alreadyUploaded.id}')" class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> Preview</button>`
                     : '';
                 const btnHtml = alreadyUploaded
                     ? `<label id="mydocs-slot-btn-${i}" class="btn-replace">
                             Replace <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleMyDocSlot(event,${i})">
                        </label>`
                     : `<label id="mydocs-slot-btn-${i}" class="btn-secondary-sm">
-                            📎 Upload <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleMyDocSlot(event,${i})">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Upload <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleMyDocSlot(event,${i})">
                        </label>`;
                 return `
                 <div id="mydocs-slot-${i}" class="doc-required-item ${alreadyUploaded ? 'dreq-done' : ''}">
-                    <div class="doc-required-num ${alreadyUploaded ? 'dreq-num-done' : ''}">${alreadyUploaded ? '✓' : i + 1}</div>
+                    <div class="doc-required-num ${alreadyUploaded ? 'dreq-num-done' : ''}">${alreadyUploaded ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>' : i + 1}</div>
                     <div class="doc-required-body">
                         <div class="doc-required-text">${escHtml(doc)}</div>
                         <div id="mydocs-slot-file-${i}" class="doc-required-file">${fileHtml}</div>
@@ -1643,12 +1902,12 @@
             panel.classList.remove('hidden');
             list.innerHTML = docs.map(d => `
                 <div class="doc-slot">
-                    <span class="doc-slot-icon">${d.mimeType?.includes('pdf') ? '📄' : '🖼️'}</span>
+                    <span class="doc-slot-icon">${d.mimeType?.includes('pdf') ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>'}</span>
                     <div>
                         <div class="doc-slot-name">${escHtml(d.originalName || d.name || 'Document')}</div>
                         <div class="fs-xs text-muted">${d.createdAt ? new Date(d.createdAt).toLocaleDateString() : ''}</div>
                     </div>
-                    <button onclick="previewMyDoc('${d.id}')" class="btn-view-doc">👁 View</button>
+                    <button onclick="previewMyDoc('${d.id}')" class="btn-view-doc"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> View</button>
                 </div>`).join('');
         }
 
@@ -1664,8 +1923,8 @@
                 const btn = document.getElementById(`mydocs-slot-btn-${i}`);
                 if (row) row.style.borderColor = '#16a34a';
                 if (fileEl) fileEl.innerHTML = `<span class="text-green fw-600">${escHtml(file.name)}</span>
-                    <button onclick="previewMyDocSlot(${i})" class="btn-icon">👁 Preview</button>
-                    <button onclick="removeMyDocSlot(${i})" class="btn-icon btn-icon--danger">✕</button>`;
+                    <button onclick="previewMyDocSlot(${i})" class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> Preview</button>
+                    <button onclick="removeMyDocSlot(${i})" class="btn-icon btn-icon--danger"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
                 if (statusEl) statusEl.innerHTML = '';
                 if (btn) btn.innerHTML = `Replace <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleMyDocSlot(event,${i})">`;
                 if (btn) btn.className = 'btn-replace';
@@ -1683,7 +1942,7 @@
                 showToast('Uploading...');
                 const uploaded = await DocStore.upload([{ file, name: file.name }], myDocsRef, null);
                 if (uploaded.length > 0) {
-                    showToast('Document uploaded! ✅');
+                    showToast('Document uploaded! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>');
                     await openMyDocsApp(myDocsRef);
                 } else {
                     showToast('Upload failed. Please try again.', 'error');
@@ -1702,7 +1961,7 @@
             if (row) row.style.borderColor = '#eef0f6';
             if (fileEl) fileEl.innerHTML = '';
             if (statusEl) statusEl.innerHTML = `<span class="status-required">Required</span>`;
-            if (btn) btn.innerHTML = `📎 Upload <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleMyDocSlot(event,${i})">`;
+            if (btn) btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Upload <input type="file" accept=".pdf,.jpg,.jpeg,.png" onchange="handleMyDocSlot(event,${i})">`;
             updateMyDocsFooter();
         }
 
@@ -1715,7 +1974,7 @@
             if (filled > 0) {
                 footer.classList.remove('hidden');
                 const remaining = total - myDocsSubmittedCount;
-                btn.textContent = `Submit ${filled} of ${remaining} →`;
+                btn.textContent = `Submit ${filled} of ${remaining} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`;
             } else {
                 footer.classList.add('hidden');
             }
@@ -1742,7 +2001,7 @@
                 myDocsPreviewModal.innerHTML = `<div class="doc-modal-box">
                     <div class="flex-between mb-14">
                         <div id="mydocs-preview-name" class="modal-title"></div>
-                        <button onclick="myDocsPreviewModal.classList.add('hidden')" class="doc-modal-close">✕</button>
+                        <button onclick="myDocsPreviewModal.classList.add('hidden')" class="doc-modal-close"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
                     </div>
                     <div id="mydocs-preview-content"></div>
                 </div>`;
@@ -1775,7 +2034,7 @@
             try {
                 const uploaded = await DocStore.upload(toUpload, myDocsRef, null);
                 if (uploaded.length > 0) {
-                    showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} uploaded successfully! 📎`);
+                    showToast(`${uploaded.length} document${uploaded.length > 1 ? 's' : ''} uploaded successfully! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>`);
                     myDocSlots = myDocSlots.map(() => null);
                     document.querySelectorAll('[id^="mydocs-slot-"]').forEach(el => {
                         if (el.id.match(/^mydocs-slot-\d+$/)) el.style.borderColor = '#eef0f6';
@@ -1791,7 +2050,7 @@
                 showToast('Upload failed. Please try again.', 'error');
             }
             btn.disabled = false;
-            btn.textContent = 'Submit →';
+            btn.textContent = 'Submit <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
         }
 
         function goToMyDocsForApp() {
@@ -1823,7 +2082,7 @@
                 const bookings = res?.ok ? (res.data?.bookings || res.data || []) : [];
                 if (!bookings.length) {
                     container.innerHTML = `<div class="empty-state">
-                        <div class="icon">✈️</div>
+                        <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z"/></svg></div>
                         <h3>No flight bookings yet</h3>
                         <p>Your flight bookings will appear here once the booking system is live.</p>
                     </div>`;
@@ -1832,9 +2091,9 @@
                 container.innerHTML = bookings.map(b => `
                 <div class="booking-card">
                     <div class="booking-card-header">
-                        <div class="booking-card-icon">✈️</div>
+                        <div class="booking-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z"/></svg></div>
                         <div class="flex-1">
-                            <div class="booking-card-title">${escHtml(b.from || b.origin || '—')} → ${escHtml(b.to || b.destination || '—')}</div>
+                            <div class="booking-card-title">${escHtml(b.from || b.origin || '—')} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> ${escHtml(b.to || b.destination || '—')}</div>
                             <div class="booking-card-ref">Ref: ${escHtml(b.ref || b.id?.slice(0, 8) || '—')}</div>
                         </div>
                         <span class="booking-status-pill booking-status-${(b.status || 'pending').toLowerCase()}">${escHtml(b.status || 'Pending')}</span>
@@ -1851,7 +2110,7 @@
                 </div>`).join('');
             } catch (e) {
                 container.innerHTML = `<div class="empty-state">
-                    <div class="icon">✈️</div>
+                    <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z"/></svg></div>
                     <h3>No flight bookings yet</h3>
                     <p>Your flight bookings will appear here once the booking system is live.</p>
                 </div>`;
@@ -1869,7 +2128,7 @@
                 const bookings = res?.ok ? (res.data?.bookings || res.data || []) : [];
                 if (!bookings.length) {
                     container.innerHTML = `<div class="empty-state">
-                        <div class="icon">🏨</div>
+                        <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16"/><line x1="6" x2="18" y1="12" y2="12"/><line x1="6" x2="18" y1="20" y2="20"/><line x1="9" x2="9" y1="8" y2="12"/><line x1="15" x2="15" y1="8" y2="12"/></svg></div>
                         <h3>No hotel bookings yet</h3>
                         <p>Your hotel reservations will appear here once the booking system is live.</p>
                     </div>`;
@@ -1878,7 +2137,7 @@
                 container.innerHTML = bookings.map(b => `
                 <div class="booking-card">
                     <div class="booking-card-header">
-                        <div class="booking-card-icon">🏨</div>
+                        <div class="booking-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16"/><line x1="6" x2="18" y1="12" y2="12"/><line x1="6" x2="18" y1="20" y2="20"/><line x1="9" x2="9" y1="8" y2="12"/><line x1="15" x2="15" y1="8" y2="12"/></svg></div>
                         <div class="flex-1">
                             <div class="booking-card-title">${escHtml(b.hotelName || b.hotel || '—')}${b.city ? ' · ' + escHtml(b.city) : ''}</div>
                             <div class="booking-card-ref">Ref: ${escHtml(b.ref || b.id?.slice(0, 8) || '—')}</div>
@@ -1897,7 +2156,7 @@
                 </div>`).join('');
             } catch (e) {
                 container.innerHTML = `<div class="empty-state">
-                    <div class="icon">🏨</div>
+                    <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16"/><line x1="6" x2="18" y1="12" y2="12"/><line x1="6" x2="18" y1="20" y2="20"/><line x1="9" x2="9" y1="8" y2="12"/><line x1="15" x2="15" y1="8" y2="12"/></svg></div>
                     <h3>No hotel bookings yet</h3>
                     <p>Your hotel reservations will appear here once the booking system is live.</p>
                 </div>`;
@@ -2040,7 +2299,7 @@
                 <td class="td">${new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
                 <td class="td">${p.metadata?.packageName || 'Consultation'}</td>
                 <td class="td fw-600">₦${(p.amount || 0).toLocaleString()}</td>
-                <td class="td"><span class="badge-success">✅ Paid</span></td>
+                <td class="td"><span class="badge-success"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span></td>
             </tr>`).join('')}
             </tbody></table>`;
         }
@@ -2057,23 +2316,49 @@
     <!-- ── Mobile Bottom Tab Bar ─────────────────────────── -->
     <nav class="dash-mobile-tabbar" id="dash-tabbar">
         <button class="dash-tab-btn active" onclick="showTab('applications',this)" data-tab="applications">
-            <span class="tab-icon">📋</span>
+            <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                    <rect x="9" y="3" width="6" height="4" rx="1" />
+                    <line x1="9" y1="12" x2="15" y2="12" />
+                    <line x1="9" y1="16" x2="13" y2="16" />
+                </svg></span>
             <span class="tab-label">Applications</span>
         </button>
         <button class="dash-tab-btn" onclick="showTab('track',this)" data-tab="track">
-            <span class="tab-icon">🔍</span>
+            <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="m21 21-4.3-4.3" />
+                </svg></span>
             <span class="tab-label">Track</span>
         </button>
         <button class="dash-tab-btn" onclick="showTab('mydocs',this)" data-tab="mydocs">
-            <span class="tab-icon">📁</span>
+            <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <path
+                        d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
+                </svg></span>
             <span class="tab-label">Docs</span>
         </button>
         <button class="dash-tab-btn" onclick="showTab('profile',this)" data-tab="profile">
-            <span class="tab-icon">👤</span>
+            <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                    stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="5" />
+                    <path d="M3 21a9 9 0 0 1 18 0" />
+                </svg></span>
             <span class="tab-label">Profile</span>
         </button>
         <button class="dash-tab-btn" onclick="toggleMoreDrawer()" id="more-tab-btn">
-            <span class="tab-icon">☰</span>
+            <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round">
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                </svg></span>
             <span class="tab-label">More</span>
         </button>
     </nav>
@@ -2084,19 +2369,51 @@
         <div class="dash-more-handle"></div>
         <div class="dash-more-grid">
             <button class="dash-more-item" onclick="showTabFromMore('insurance')">
-                <span class="dash-more-icon">🛡️</span>
+                <span class="dash-more-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                    </svg></span>
                 <span class="dash-more-label">My Insurance</span>
             </button>
             <button class="dash-more-item" onclick="showTabFromMore('documents')">
-                <span class="dash-more-icon">🗓️</span>
+                <span class="dash-more-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M8 2v4" />
+                        <path d="M16 2v4" />
+                        <rect width="18" height="18" x="3" y="4" rx="2" />
+                        <path d="M3 10h18" />
+                        <path d="M8 14h.01" />
+                        <path d="M12 14h.01" />
+                        <path d="M16 14h.01" />
+                        <path d="M8 18h.01" />
+                        <path d="M12 18h.01" />
+                        <path d="M16 18h.01" />
+                    </svg></span>
                 <span class="dash-more-label">Consultation</span>
             </button>
             <button class="dash-more-item" onclick="showTabFromMore('flights')">
-                <span class="dash-more-icon">✈️</span>
+                <span class="dash-more-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z" />
+                    </svg></span>
                 <span class="dash-more-label">Flights</span>
             </button>
             <button class="dash-more-item" onclick="showTabFromMore('hotels')">
-                <span class="dash-more-icon">🏨</span>
+                <span class="dash-more-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z" />
+                        <path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16" />
+                        <line x1="6" x2="18" y1="12" y2="12" />
+                        <line x1="6" x2="18" y1="20" y2="20" />
+                        <line x1="9" x2="9" y1="8" y2="12" />
+                        <line x1="15" x2="15" y1="8" y2="12" />
+                    </svg></span>
                 <span class="dash-more-label">Hotels</span>
             </button>
         </div>
