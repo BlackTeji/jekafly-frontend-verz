@@ -64,13 +64,9 @@ function updateNav() {
           <button class="btn-primary" onclick="openModal('register')">Get Started</button>`;
 
         mobileHtml = `
-          <div class="nav-mobile-user">
-            <button class="btn-primary" onclick="openModal('login');closeNavMenu()">
-              Login
-            </button>
-            <button class="btn-outline" onclick="openModal('register');closeNavMenu()">
-              Get Started
-            </button>
+          <div class="nav-mobile-cta" style="display:flex;flex-direction:row;gap:10px;">
+            <button class="btn-primary" style="flex:1;" onclick="openModal('login');closeNavMenu()">Login</button>
+            <button class="btn-outline" style="flex:1;" onclick="openModal('register');closeNavMenu()">Get Started</button>
           </div>`;
     }
 
