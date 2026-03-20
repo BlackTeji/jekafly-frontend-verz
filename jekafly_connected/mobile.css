@@ -35,7 +35,6 @@
         transition: background 0.3s, box-shadow 0.3s;
     }
 
-    /* Frosted glass blur when scrolled past hero */
     nav.scrolled {
         background: rgba(255, 255, 255, 0.82);
         backdrop-filter: blur(20px);
@@ -71,7 +70,6 @@
         transform: translateY(0);
     }
 
-    /* Stagger delays for grid children */
     .mob-fade:nth-child(2) {
         transition-delay: 0.07s;
     }
@@ -159,17 +157,16 @@
 
     /* ── HERO ────────────────────────────────────────────────── */
     .hero {
-        margin-top: 10px;
+        margin-top: 60px;
         padding: 0 var(--mob-pad);
         height: 360px;
-        min-height: 500px;
+        min-height: 360px;
         max-height: 360px;
         align-items: center;
         justify-content: flex-start;
         overflow: hidden;
     }
 
-    /* Dots sit well below the buttons */
     .hero-dots {
         bottom: 20px;
     }
@@ -178,15 +175,29 @@
         width: 100%;
     }
 
-    /* Lock the headline wrap so text swaps never resize the hero */
     .hero-headline-wrap {
-        height: 80px;
+        height: 100px;
         overflow: hidden;
     }
 
     .hero-headline {
         display: flex;
         flex-direction: column;
+    }
+
+    .hero-line-1 {
+        font-size: 1.55rem;
+        font-weight: 600;
+        line-height: 1.2;
+        display: block;
+        white-space: nowrap;
+    }
+
+    .hero-line-2 {
+        font-size: 1.55rem;
+        font-weight: 600;
+        line-height: 1.2;
+        display: block;
     }
 
     .hero-right {
@@ -199,7 +210,7 @@
 
     .hero h1,
     .hero .hero-headline {
-        font-size: 2rem;
+        font-size: 1.3rem;
         font-weight: 600;
         line-height: 1.12;
         letter-spacing: -0.03em;
@@ -316,9 +327,12 @@
     .visa-checker,
     .destinations,
     .insurance,
-    .tracking,
     .testimonials {
         padding: 40px var(--mob-pad);
+    }
+
+    .tracking {
+        padding: 56px var(--mob-pad);
     }
 
     .section-header {
@@ -341,7 +355,6 @@
         display: none;
     }
 
-    /* App-style section header with right link */
     .section-header-row {
         display: flex;
         align-items: center;
@@ -384,7 +397,6 @@
         background: var(--off-white);
     }
 
-    /* Remove flip card wrappers if previously applied */
     .service-card-inner,
     .service-card-front,
     .service-card-back {
@@ -439,17 +451,22 @@
         position: relative;
     }
 
-    /* Vertical connecting line down the left (step-num column) */
     .steps::before {
         content: '';
         position: absolute;
-        top: 56px;
-        bottom: 18px;
-        left: 20px;
+        top: 58px;
+        bottom: 38px;
+        left: 19px;
         width: 2px;
-        background: linear-gradient(to bottom, var(--blue), rgba(13, 21, 96, 0.08));
+        background: linear-gradient(to bottom, var(--blue), rgba(13, 21, 96, 0.1));
         border-radius: 2px;
         display: block;
+        z-index: 0;
+    }
+
+    .step-num {
+        position: relative;
+        z-index: 1;
     }
 
     .step {
@@ -474,6 +491,9 @@
         font-size: 0.88rem;
         border-width: 2px;
         box-shadow: none;
+        position: relative;
+        z-index: 1;
+        background: white;
     }
 
     .step h4 {
@@ -808,7 +828,6 @@
         transform: none;
     }
 
-    /* Hide 2nd and 3rd cards initially */
     .testi-card:nth-child(n+2) {
         display: none;
     }
@@ -831,7 +850,6 @@
         display: none;
     }
 
-    /* Show more button */
     .testi-show-more {
         display: block;
         width: 100%;
@@ -1412,7 +1430,6 @@
         margin-top: 60px;
     }
 
-    /* Stack sidebar + main vertically, sidebar hidden */
     .dash-wrap {
         display: block;
         grid-template-columns: unset;
@@ -1446,7 +1463,6 @@
         color: var(--text-light);
     }
 
-    /* Stat cards 2-column grid */
     .dash-stats {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
@@ -1472,7 +1488,6 @@
         font-size: 0.72rem;
     }
 
-    /* Table card — clean borderless on mobile */
     .table-card {
         border-radius: 0;
         margin-bottom: 16px;
@@ -1629,7 +1644,6 @@
         color: var(--text-light);
     }
 
-    /* Other tables — horizontal scroll */
     #vault-list,
     #consult-history {
         overflow-x: auto;
@@ -1652,19 +1666,16 @@
         font-size: 0.82rem;
     }
 
-    /* Section cards used in tabs */
     .dash-section-card {
         padding: 18px var(--mob-pad);
         border-radius: 16px;
         margin-bottom: 14px;
     }
 
-    /* Bottom tab bar — already in dashboard.css but ensure z-index */
     .dash-mobile-tabbar {
         z-index: 950;
     }
 
-    /* Track section */
     .dash-track-wrap {
         flex-direction: column;
         gap: 10px;
@@ -1684,13 +1695,11 @@
         font-size: 0.95rem;
     }
 
-    /* Application row cards */
     .app-row-card {
         padding: 14px;
         border-radius: 14px;
     }
 
-    /* Detail panel */
     .detail-panel {
         border-radius: 18px;
         padding: 20px var(--mob-pad);
@@ -1702,7 +1711,6 @@
         gap: 8px;
     }
 
-    /* Consultation packages */
     .consult-grid {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -1713,7 +1721,6 @@
         border-radius: 16px;
     }
 
-    /* Profile cards */
     .profile-card {
         padding: 20px var(--mob-pad);
         border-radius: 18px;
@@ -1725,7 +1732,6 @@
         gap: 12px;
     }
 
-    /* Danger zone */
     .danger-zone-card {
         border-radius: 18px;
         padding: 20px var(--mob-pad);
@@ -1743,13 +1749,11 @@
         text-align: center;
     }
 
-    /* Insurance policies grid */
     .ins-policies-grid {
         grid-template-columns: 1fr;
         gap: 14px;
     }
 
-    /* Admin return banner */
     .admin-return-banner {
         border-radius: 12px;
         font-size: 0.84rem;
@@ -1759,7 +1763,6 @@
         gap: 8px;
     }
 
-    /* iOS zoom prevention for all dash inputs */
     .dash-main input,
     .dash-main select,
     .dash-main textarea {
@@ -1849,7 +1852,6 @@
 
     /* ── AFFILIATE STEP WIZARD ───────────────────────────────── */
 
-    /* Hide desktop submit, show mobile nav */
     .aff-desktop-submit {
         display: none !important;
     }
@@ -1860,7 +1862,6 @@
         margin-top: 24px;
     }
 
-    /* Progress indicator */
     .aff-mob-steps {
         display: flex;
         align-items: center;
@@ -1931,7 +1932,6 @@
         background: #16a34a;
     }
 
-    /* Step heading */
     .aff-step-heading {
         font-size: 1.1rem;
         font-weight: 700;
@@ -1940,12 +1940,10 @@
         letter-spacing: -0.01em;
     }
 
-    /* Step panels — shown/hidden by JS */
     .aff-form-step {
         display: none;
     }
 
-    /* Nav buttons */
     .btn-aff-back {
         flex: 1;
         padding: 14px;
@@ -1989,7 +1987,6 @@
         padding: 14px !important;
     }
 
-    /* Force form grid to single column on mobile */
     .aff-form-grid {
         grid-template-columns: 1fr !important;
     }
@@ -1999,7 +1996,6 @@
         grid-column: 1 !important;
     }
 
-    /* iOS zoom prevention */
     .aff-field input,
     .aff-field select,
     .aff-field textarea {
@@ -2008,9 +2004,9 @@
 
     /* ── AFFILIATE HERO ──────────────────────────────────────── */
     .aff-hero {
-        padding: 280px var(--mob-pad) 280px;
+        padding: 80px var(--mob-pad) 40px;
         min-height: 0 !important;
-        max-height: 480px;
+        max-height: 380px;
         overflow: hidden;
         background-attachment: scroll;
     }
@@ -2020,20 +2016,16 @@
         gap: 16px;
     }
 
-    /* Hide affiliate hero badge and sub text */
     .aff-hero-badge {
         display: none;
     }
 
     .aff-hero p {
-    display: block;
-    font-size: 0.85rem;
-    line-height: 1.8;
-    color: rgba(255, 255, 255, 0.8);
-}
+        display: none;
+    }
 
     .aff-hero h1 {
-        font-size: 2.2rem;
+        font-size: 1.4rem;
         font-weight: 600;
         line-height: 1.15;
         letter-spacing: -0.02em;
@@ -2053,7 +2045,6 @@
         font-size: 0.72rem;
     }
 
-    /* Affiliate sections tighter */
     .aff-section {
         padding: 40px var(--mob-pad) !important;
     }
@@ -2068,7 +2059,6 @@
         display: none;
     }
 
-    /* Commission tiers — single col already, just tighten */
     .aff-tiers {
         gap: 12px;
     }
@@ -2251,7 +2241,6 @@
         font-weight: 600;
     }
 
-    /* Restore specific elements that should stay bold */
     .stat-value,
     .astat-val,
     .app-mob-date-day,
@@ -2279,7 +2268,6 @@
         margin-bottom: 8px;
     }
 
-    /* Divider line between sections */
     .services+.how,
     .how+.visa-checker,
     .visa-checker+.destinations,

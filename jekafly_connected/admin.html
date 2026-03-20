@@ -51,7 +51,7 @@
     <div class="admin-page">
         <div class="admin-wrap">
 
-            <!-- SIDEBAR -->
+
             <aside class="admin-sidebar">
                 <div class="admin-logo">
                     <div class="al-title">⚙️ Admin</div>
@@ -83,7 +83,7 @@
                 <div class="admin-nav-item" onclick="doLogout()"><span class="ni">🚪</span>Logout</div>
             </aside>
 
-            <!-- MAIN CONTENT -->
+
             <main class="admin-main">
 
                 <!-- ── OVERVIEW ──────────────────────────── -->
@@ -127,7 +127,6 @@
                 <div id="tab-applications" style="display:none">
                     <div class="admin-title">All Applications</div>
                     <p class="admin-sub">View, filter, and update status for all visa applications.</p>
-
 
                     <div class="app-detail" id="admin-detail">
                         <h3>
@@ -197,7 +196,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div id="delete-user-overlay" class="delete-modal-overlay" style="display:none">
                     <div class="delete-modal-box">
@@ -326,7 +324,6 @@
                     </div>
                 </div>
 
-
                 <!-- ── REVIEWS ──────────────────────────── -->
                 <div id="tab-reviews" style="display:none">
                     <div class="admin-title">Customer Reviews</div>
@@ -372,10 +369,10 @@
                     <p class="admin-sub">Manage affiliate partners, approve applications, and process commission
                         payouts.</p>
 
-                    <!-- Stats row -->
+
                     <div class="admin-stats" id="aff-admin-stats"></div>
 
-                    <!-- Pending applications -->
+
                     <div class="acard mt-20">
                         <div class="acard-header">
                             <h3>Pending Applications</h3>
@@ -386,7 +383,7 @@
                         </div>
                     </div>
 
-                    <!-- Active affiliates -->
+
                     <div class="acard mt-20">
                         <div class="acard-header">
                             <h3>Active Affiliates</h3>
@@ -397,7 +394,7 @@
                         </div>
                     </div>
 
-                    <!-- Payout requests -->
+
                     <div class="acard mt-20">
                         <div class="acard-header">
                             <h3>Payout Requests</h3>
@@ -423,9 +420,9 @@
         const SL = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved', delivered: 'Delivered', rejected: 'Rejected' };
         const SC = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
 
-        // ── Role config ──────────────────────────────────────────
-        // adminRole is stored on the user object as e.g. "finance", "consultations",
-        // "affiliates", "applications", or "super" (default for existing admins).
+
+
+
         const ROLE_LABELS = {
             super: '👑 Super Admin',
             applications: '📋 Applications Admin',
@@ -434,7 +431,7 @@
             affiliates: '🤝 Affiliates Admin',
         };
 
-        // Which tabs each role can access (first = default landing tab)
+
         const ROLE_TABS = {
             super: ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'affiliates'],
             applications: ['overview', 'applications', 'users', 'reviews'],
@@ -451,21 +448,21 @@
             if (!admin) { location.href = 'index.html'; return; }
             if (admin.role !== 'ADMIN') { showToast('Access denied.', 'error'); setTimeout(() => location.href = 'index.html', 1200); return; }
 
-            // Determine role — falls back to 'super' so existing admin is unaffected
+
             _adminRole = (admin.adminRole || 'super').toLowerCase();
             if (!ROLE_TABS[_adminRole]) _adminRole = 'super';
 
-            // Show role badge
+
             const badgeEl = document.getElementById('admin-role-badge');
             if (badgeEl) badgeEl.textContent = ROLE_LABELS[_adminRole] || 'Admin';
 
-            // Hide nav items this role can't access
+
             document.querySelectorAll('.admin-nav-item[data-roles]').forEach(item => {
                 const allowed = item.dataset.roles.split(',');
                 if (!allowed.includes(_adminRole)) item.style.display = 'none';
             });
 
-            // Hide mobile tab bar buttons this role can't access
+
             document.querySelectorAll('.admin-tab-btn[data-roles]').forEach(btn => {
                 const allowed = btn.dataset.roles.split(',');
                 if (!allowed.includes(_adminRole)) btn.style.display = 'none';
@@ -481,7 +478,7 @@
         });
 
         function adminTab(tab, el) {
-            // Guard: block access to tabs this role can't reach
+
             if (_adminRole !== 'super' && !ROLE_TABS[_adminRole].includes(tab)) {
                 showToast('You don\'t have access to that section.', 'error');
                 return;
@@ -551,7 +548,7 @@
             const allPayouts = active.flatMap(a => (a.payouts || []).map(p => ({ ...p, affiliateName: a.name, affiliateEmail: a.email })));
             const pendingPayouts = allPayouts.filter(p => p.status === 'pending');
 
-            // Stats
+
             const totalEarned = active.reduce((s, a) => s + (a.totalEarned || 0), 0);
             const totalPaid = active.reduce((s, a) => s + (a.totalPaid || 0), 0);
             const totalReferrals = active.reduce((s, a) => s + (a.totalReferrals || 0), 0);
@@ -562,7 +559,7 @@
                 <div class="astat"><div class="astat-icon">💰</div><div class="astat-val">₦${totalEarned >= 1e6 ? (totalEarned / 1e6).toFixed(1) + 'M' : (totalEarned / 1e3).toFixed(0) + 'k'}</div><div class="astat-lbl">Total Earned</div></div>
                 <div class="astat"><div class="astat-icon">🏦</div><div class="astat-val">₦${totalPaid >= 1e6 ? (totalPaid / 1e6).toFixed(1) + 'M' : (totalPaid / 1e3).toFixed(0) + 'k'}</div><div class="astat-lbl">Total Paid Out</div></div>`;
 
-            // Pending table
+
             if (pendCnt) pendCnt.textContent = pending.length + ' awaiting review';
             if (!pendEl) return;
             if (!pending.length) {
@@ -605,7 +602,7 @@
                 </div>`).join('');
             }
 
-            // Active table
+
             if (activeCnt) activeCnt.textContent = active.length + ' affiliates';
             if (!activeEl) return;
             if (!active.length) {
@@ -627,7 +624,7 @@
                 }).join('')}</tbody></table>`;
             }
 
-            // Payout requests table
+
             if (payoutCnt) payoutCnt.textContent = pendingPayouts.length + ' pending';
             if (!payoutEl) return;
             if (!pendingPayouts.length) {
@@ -781,9 +778,9 @@
             const start = (page - 1) * APPS_PER_PAGE + 1;
             const end = Math.min(page * APPS_PER_PAGE, total);
             let btns = '';
-            // Prev
+
             btns += `<button class="page-btn ${page === 1 ? 'page-btn-disabled' : ''}" onclick="goPage(${page - 1})" ${page === 1 ? 'disabled' : ''}>← Prev</button>`;
-            // Page numbers (show up to 5 around current)
+
             const delta = 2;
             let pages = new Set([1, totalPages]);
             for (let i = Math.max(2, page - delta); i <= Math.min(totalPages - 1, page + delta); i++) pages.add(i);
@@ -793,7 +790,7 @@
                 btns += `<button class="page-btn ${p === page ? 'page-btn-active' : ''}" onclick="goPage(${p})">${p}</button>`;
                 prev = p;
             });
-            // Next
+
             btns += `<button class="page-btn ${page === totalPages ? 'page-btn-disabled' : ''}" onclick="goPage(${page + 1})" ${page === totalPages ? 'disabled' : ''}>Next →</button>`;
             return `<div class="pagination-bar">
                 <span class="pagination-info">Showing ${start}–${end} of ${total} applications</span>
@@ -1042,7 +1039,7 @@
 
         function doLogout() { Auth.logout(); showToast('Logged out.'); setTimeout(() => location.href = 'index.html', 700); }
 
-        // ── FEE MANAGEMENT ──────────────────────────────────────────
+
         const DEFAULT_FEES = {
             'United Kingdom': 185000, 'United States': 220000, 'Canada': 195000, 'Australia': 210000,
             'France': 160000, 'Germany': 160000, 'UAE': 95000, 'Japan': 175000, 'China': 180000,
@@ -1052,8 +1049,8 @@
             'Saudi Arabia': 90000, 'Ghana': 60000, 'Kenya': 65000, 'Egypt': 70000,
         };
 
-        // ── Fee management — all via FeeStore API ──────────────────────────────
-        let _cachedFees = null; // { serviceFee, destinations: { Country: amount } }
+
+        let _cachedFees = null;
 
         async function loadFeesTab() {
             document.getElementById('fees-table').innerHTML = '<div class="atbl-empty">Loading fees...</div>';
@@ -1226,10 +1223,9 @@
         }
 
 
-        // ── Document helpers ─────────────────────────────────────────────────────────
         const _docUrlMap = {};
         const _docNameMap = {};
-        let _currentAppDocs = []; // docs loaded for the open application
+        let _currentAppDocs = [];
 
         async function adminGetDocUrl(id) {
             if (!_docUrlMap[id]) {
@@ -1338,7 +1334,7 @@
             btn.disabled = false;
             btn.textContent = '⬇ Download All as ZIP';
         }
-        // ── CSV Export ───────────────────────────────────────────────────────────────
+
         function toCSV(rows) {
             return rows.map(row =>
                 row.map(cell => {
@@ -1451,7 +1447,6 @@
             </div>
         </div>
     </div>
-
 
     <nav class="admin-mobile-tabbar" id="admin-tabbar">
         <button class="admin-tab-btn active" onclick="adminTab('overview',this)" data-tab="overview"

@@ -43,7 +43,7 @@
     </div>
     <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
 
-    <!-- HERO -->
+
     <section class="aff-hero">
         <div class="aff-hero-inner">
             <div class="aff-hero-badge"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
@@ -62,7 +62,7 @@
         </div>
     </section>
 
-    <!-- STATS STRIP -->
+
     <div class="aff-stats-strip">
         <div class="aff-stats-inner">
             <div class="aff-stat">
@@ -103,10 +103,10 @@
         </div>
     </div>
 
-    <!-- AFFILIATE STATUS PANEL (for logged-in approved affiliates) -->
+
     <div class="container" id="aff-status-wrap" style="padding-top:40px;"></div>
 
-    <!-- HOW IT WORKS -->
+
     <section class="aff-section" id="how-it-works">
         <div class="container">
             <div class="aff-section-header">
@@ -141,7 +141,7 @@
         </div>
     </section>
 
-    <!-- COMMISSIONS -->
+
     <section class="aff-section aff-tiers-section">
         <div class="container">
             <div class="aff-section-header">
@@ -170,7 +170,7 @@
         </div>
     </section>
 
-    <!-- PERKS -->
+
     <section class="aff-section">
         <div class="container">
             <div class="aff-section-header">
@@ -259,7 +259,7 @@
         </div>
     </section>
 
-    <!-- APPLICATION FORM -->
+
     <section class="aff-section aff-form-section" id="apply">
         <div class="container">
             <div class="aff-section-header">
@@ -271,7 +271,7 @@
             <div class="aff-form-card" id="aff-form-card">
                 <div class="aff-form-top-bar"></div>
 
-                <!-- Success -->
+
                 <div class="aff-success hidden" id="aff-success">
                     <div class="aff-success-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -284,7 +284,7 @@
                         email.</p>
                 </div>
 
-                <!-- Already applied / pending -->
+
                 <div class="aff-success hidden" id="aff-already">
                     <div class="aff-success-icon aff-icon-pending"><svg xmlns="http://www.w3.org/2000/svg" width="32"
                             height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -298,12 +298,12 @@
                         receive an email once a decision is made.</p>
                 </div>
 
-                <!-- Form -->
+
                 <form id="aff-form" onsubmit="submitAffiliateApp(event)">
                     <div class="aff-form-title">Your Application</div>
                     <div class="aff-form-sub">All fields are required unless marked optional.</div>
 
-                    <!-- Mobile step progress indicator -->
+
                     <div class="aff-mob-steps" id="aff-mob-steps">
                         <div class="aff-mob-step-item active" data-step="1"><span>1</span><small>You</small></div>
                         <div class="aff-mob-step-line"></div>
@@ -316,7 +316,7 @@
 
                     <div class="aff-form-grid">
 
-                        <!-- STEP 1: Personal Info -->
+
                         <div class="aff-form-step" data-step="1">
                             <div class="aff-step-heading">Personal Information</div>
                             <div class="aff-field"><label>Full Name</label><input type="text" id="aff-name"
@@ -329,7 +329,7 @@
                                     placeholder="e.g. Lagos, Abuja" required /></div>
                         </div>
 
-                        <!-- STEP 2: Channel -->
+
                         <div class="aff-form-step" data-step="2">
                             <div class="aff-step-heading">Your Channel</div>
                             <div class="aff-field">
@@ -363,7 +363,7 @@
                             </div>
                         </div>
 
-                        <!-- STEP 3: Bank Details -->
+
                         <div class="aff-form-step" data-step="3">
                             <div class="aff-step-heading">Bank Details for Payouts</div>
                             <div class="aff-field aff-field-full">
@@ -400,7 +400,7 @@
                             </div>
                         </div>
 
-                        <!-- STEP 4: About + Submit -->
+
                         <div class="aff-form-step" data-step="4">
                             <div class="aff-step-heading">Almost Done!</div>
                             <div class="aff-field aff-field-full">
@@ -418,7 +418,7 @@
 
                     </div>
 
-                    <!-- Mobile step nav buttons -->
+
                     <div class="aff-mob-nav" id="aff-mob-nav">
                         <button type="button" class="btn-aff-back" id="aff-btn-back" onclick="affStepBack()">←
                             Back</button>
@@ -428,7 +428,7 @@
                             style="display:none">Submit Application →</button>
                     </div>
 
-                    <!-- Desktop submit -->
+
                     <button type="submit" class="btn-aff-submit aff-desktop-submit" id="aff-submit-btn-desktop">Submit
                         Application &rarr;</button>
 
@@ -437,7 +437,7 @@
         </div>
     </section>
 
-    <!-- FAQ -->
+
     <section class="aff-section aff-faq-section" id="faq">
         <div class="container">
             <div class="aff-section-header">
@@ -501,7 +501,7 @@
         </div>
     </section>
 
-    <!-- FOOTER CTA -->
+
     <section class="aff-footer-cta">
         <h2>Ready to Start Earning?</h2>
         <p>Join hundreds of Nigerians already earning with Jekafly.</p>
@@ -613,7 +613,7 @@
         function escHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
         window.addEventListener('scroll', () => { document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20); });
 
-        // ── Affiliate perks flip cards (mobile only) ──────────
+
         function initAffPerkFlips() {
             if (window.innerWidth > 768) return;
             document.querySelectorAll('.aff-perk').forEach(perk => {
@@ -638,7 +638,7 @@
         document.addEventListener('DOMContentLoaded', initAffPerkFlips);
         window.addEventListener('resize', initAffPerkFlips);
 
-        // ── Mobile Step Wizard ────────────────────────────────
+
         let _affStep = 1;
         const AFF_TOTAL_STEPS = 4;
 
@@ -653,12 +653,12 @@
             if (!affIsMobile()) return;
             _affStep = step;
 
-            // Show/hide step panels
+
             document.querySelectorAll('.aff-form-step').forEach(el => {
                 el.style.display = parseInt(el.dataset.step) === step ? 'block' : 'none';
             });
 
-            // Update progress dots
+
             document.querySelectorAll('.aff-mob-step-item').forEach(el => {
                 const s = parseInt(el.dataset.step);
                 el.classList.toggle('active', s === step);
@@ -668,7 +668,7 @@
                 el.classList.toggle('done', i + 1 < step);
             });
 
-            // Show/hide buttons
+
             const back = document.getElementById('aff-btn-back');
             const next = document.getElementById('aff-btn-next');
             const submit = document.getElementById('aff-submit-btn');
@@ -679,7 +679,7 @@
 
         function affStepNext() {
             if (!affIsMobile()) return;
-            // Validate current step's required fields
+
             const currentPanel = document.querySelector(`.aff-form-step[data-step="${_affStep}"]`);
             const required = currentPanel.querySelectorAll('[required]');
             for (const field of required) {
@@ -709,12 +709,44 @@
             if (affIsMobile()) {
                 affShowStep(_affStep);
             } else {
-                // On desktop — show all steps
+
                 document.querySelectorAll('.aff-form-step').forEach(el => el.style.display = '');
             }
         });
     </script>
     <script src="mobile.js" defer></script>
+    <script>
+
+        if (window.innerWidth <= 768) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('mob-visible');
+                        observer.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const targets = [
+                    '.aff-step',
+                    '.aff-tier',
+                    '.aff-perk',
+                    '.aff-faq-item',
+                    '.aff-stat',
+                    '.aff-section-header',
+                    '.aff-form-card',
+                ];
+                targets.forEach(sel => {
+                    document.querySelectorAll(sel).forEach((el, i) => {
+                        el.classList.add('mob-fade');
+                        if (i > 0) el.style.transitionDelay = `${i * 0.07}s`;
+                        observer.observe(el);
+                    });
+                });
+            });
+        }
+    </script>
 </body>
 
 </html>

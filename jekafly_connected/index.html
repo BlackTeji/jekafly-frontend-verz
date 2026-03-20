@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/hero-animation.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
-    <link rel="stylesheet" href="mobile.css">
 </head>
 
 <body>
@@ -71,7 +70,6 @@
     ============================= -->
     <section class="hero" id="hero-section">
 
-
         <div class="hero-slides" id="hero-slides">
             <div class="hero-slide active"
                 style="background-image:url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=1600&q=80')">
@@ -87,7 +85,6 @@
             </div>
         </div>
 
-
         <div class="hero-dots" id="hero-dots">
             <div class="hero-dot active" onclick="goToSlide(0)"></div>
             <div class="hero-dot" onclick="goToSlide(1)"></div>
@@ -96,7 +93,6 @@
         </div>
 
         <div class="hero-content">
-
 
             <div class="hero-headline-wrap">
                 <div class="hero-headline animate" id="hero-headline">
@@ -176,10 +172,9 @@
     ============================= -->
     <section class="services" id="services">
         <div class="section-header">
-            <div class="section-header-row">
-                <h2 class="section-title">Our Services</h2>
-                <a href="dashboard.html" class="section-view-more">View all</a>
-            </div>
+            <div class="section-tag">Our Services</div>
+            <h2 class="section-title">Everything You Need to Travel</h2>
+            <p class="section-sub">From visa applications to travel insurance — your end-to-end travel companion.</p>
         </div>
         <div class="services-grid">
             <div class="service-card" onclick="window.location.href='apply.html'">
@@ -262,7 +257,7 @@
             </div>
             <div class="step">
                 <div class="step-num">3</div>
-                <h4>Pay &amp; Submit</h4>
+                <h4>Pay & Submit</h4>
                 <p>Pay the visa fee and service charge. We handle your application submission to the embassy.</p>
             </div>
             <div class="step">
@@ -358,8 +353,9 @@
     ============================= -->
     <section class="destinations" id="destinations">
         <div class="section-header">
-            <h2 class="section-title">Popular Destinations</h2>
-            <p class="section-sub">195+ countries. Here are the most popular.</p>
+            <div class="section-tag">Popular Destinations</div>
+            <h2 class="section-title">Where Will You Go?</h2>
+            <p class="section-sub">We process visas for 195+ countries. Here are the most popular ones.</p>
         </div>
         <div class="dest-grid">
             <div class="dest-card" onclick="selectDest('United Kingdom')"
@@ -561,8 +557,6 @@
                 </div>
             </div>
         </div>
-        <button class="testi-show-more" id="testi-show-more" onclick="showMoreReviews()" style="display:none">Show more
-            reviews ↓</button>
     </section>
 
     <!-- =============================
@@ -724,13 +718,11 @@
                 <button class="btn-check" id="btn-insurance-modal" type="button">Proceed to Payment →</button>
             </div>
 
-
             <!-- =============================
             CONSULTATION MODAL
             ============================= -->
             <div id="modal-consultation" class="modal-section-hidden">
                 <button class="modal-close modal-close-pos" onclick="closeModal()">✕</button>
-
 
                 <div id="consult-modal-step-1">
                     <h3>Book a Travel Consultation</h3>
@@ -769,7 +761,6 @@
                     </div>
                     <button class="btn-check btn-check-mt" onclick="consultModalNext()">Continue →</button>
                 </div>
-
 
                 <div id="consult-modal-step-2">
                     <button onclick="consultModalBack()" class="btn-back-link">←
@@ -1187,95 +1178,6 @@
         }
     </script>
 
-    <script src="mobile.js" defer></script>
-    <script>
-        // ── Mobile interactions (only on ≤768px) ──────────────────
-
-        function isMob() { return window.innerWidth <= 768; }
-
-        // Why Jekafly accordion
-        function initInfoList() {
-            if (!isMob()) return;
-            document.querySelectorAll('.info-list li').forEach(li => {
-                if (li.querySelector('.info-list-header')) return;
-                const icon = li.querySelector('.icon') ? li.querySelector('.icon').outerHTML : '';
-                const strong = li.querySelector('strong') ? li.querySelector('strong').textContent : '';
-                const sub = li.querySelector('.info-sub') ? li.querySelector('.info-sub').outerHTML : '';
-                li.innerHTML = `
-          <div class="info-list-header">${icon}<span class="info-list-title">${strong}</span><span class="info-list-chevron">▼</span></div>
-          ${sub}`;
-                li.querySelector('.info-list-header').addEventListener('click', function () {
-                    const isOpen = li.classList.contains('open');
-                    document.querySelectorAll('.info-list li.open').forEach(el => el.classList.remove('open'));
-                    if (!isOpen) li.classList.add('open');
-                });
-            });
-        }
-
-        // Show more reviews
-        function showMoreReviews() {
-            document.querySelectorAll('.testi-card').forEach(c => c.classList.add('visible'));
-            document.getElementById('testi-show-more').style.display = 'none';
-        }
-
-        function initTestimonials() {
-            if (!isMob()) return;
-            const btn = document.getElementById('testi-show-more');
-            const cards = document.querySelectorAll('.testi-card');
-            if (cards.length > 1 && btn) btn.style.display = 'block';
-        }
-
-        // ── Scroll fade-in animations (mobile only) ───────────────
-        function initScrollFade() {
-            if (!isMob()) return;
-
-            // Add mob-fade to key elements
-            const targets = [
-                '.services-grid .service-card',
-                '.step',
-                '.dest-card',
-                '.testi-card',
-                '.ins-feat',
-                '.ins-plan',
-                '.aff-tier',
-                '.aff-perk',
-                '.app-mob-card',
-                '.astat',
-                '.section-header',
-            ];
-
-            targets.forEach(sel => {
-                document.querySelectorAll(sel).forEach(el => {
-                    el.classList.add('mob-fade');
-                });
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('mob-visible');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
-
-            document.querySelectorAll('.mob-fade').forEach(el => observer.observe(el));
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            if (isMob()) {
-                initInfoList();
-                initTestimonials();
-                initScrollFade();
-            }
-        });
-
-        window.addEventListener('resize', function () {
-            if (isMob()) {
-                initInfoList();
-            }
-        });
-    </script>
 </body>
 
 </html>
