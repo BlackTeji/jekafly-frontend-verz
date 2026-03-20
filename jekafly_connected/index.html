@@ -763,7 +763,7 @@
                     <button class="btn-check btn-check-mt" onclick="consultModalNext()">Continue →</button>
                 </div>
 
-                <div id="consult-modal-step-2">
+                <div id="consult-modal-step-2" style="display:none">
                     <button onclick="consultModalBack()" class="btn-back-link">←
                         Back</button>
                     <h3>Create an account or log in</h3>
@@ -788,7 +788,7 @@
                         <button class="btn-check btn-check-mt" onclick="consultModalLogin()">Login & Pay →</button>
                     </form>
 
-                    <form id="consult-register-form">
+                    <form id="consult-register-form" style="display:none">
                         <div class="form-group">
                             <label>Full Name</label>
                             <input id="consult-reg-name" type="text" placeholder="John Doe" />
@@ -850,19 +850,9 @@
                 document.getElementById('reviews-sub').textContent =
                     `${reviews.length} verified review${reviews.length !== 1 ? 's' : ''} · ${avg} average rating`;
                 if (window.innerWidth <= 768 && typeof initTestiCarousel === 'function') {
-                    const old = document.querySelector('.testi-marquee-wrap');
-                    if (old) old.parentNode.removeChild(old);
-                    const style = document.getElementById('testi-marquee-style');
-                    if (style) style.parentNode.removeChild(style);
-                    const section = document.getElementById('reviews-section');
-                    if (section) {
-                        const newGrid = document.createElement('div');
-                        newGrid.id = 'testi-grid';
-                        newGrid.className = 'testi-grid';
-                        newGrid.innerHTML = grid.innerHTML;
-                        section.appendChild(newGrid);
-                    }
-                    setTimeout(initTestiCarousel, 150);
+                    const kf = document.getElementById('testi-kf');
+                    if (kf) kf.remove();
+                    setTimeout(initTestiCarousel, 100);
                 }
             } catch { }
         })();
@@ -1093,7 +1083,7 @@
                 });
             }
 
-            /* ── TESTIMONIALS: continuous horizontal scroll ────── */
+            /* ── TESTIMONIALS: CSS infinite marquee ──────────────── */
             function initTestiCarousel() {
                 if (window.innerWidth > 768) return;
                 const grid = document.getElementById('testi-grid');
@@ -1102,50 +1092,46 @@
                 if (cards.length < 2) return;
 
                 cards.forEach(c => {
-                    c.style.opacity = '1';
-                    c.style.transform = 'none';
+                    c.style.cssText = 'opacity:1;transform:none;flex:0 0 82vw;min-width:0;';
                     c.classList.remove('mob-fade');
-                    c.classList.add('mob-visible');
                 });
 
-                grid.style.animation = 'none';
-                grid.style.transform = 'none';
+                const clones = cards.map(c => {
+                    const cl = c.cloneNode(true);
+                    cl.setAttribute('aria-hidden', 'true');
+                    return cl;
+                });
+                clones.forEach(c => grid.appendChild(c));
 
-                const wrap = document.createElement('div');
-                wrap.className = 'testi-marquee-wrap';
-                wrap.style.cssText = 'overflow:hidden;width:100%;';
+                const speed = cards.length * 12;
+                grid.style.cssText = `
+                display:flex;
+                flex-direction:row;
+                overflow:hidden;
+                gap:14px;
+                margin-top:20px;
+                animation:testi-marquee ${speed}s linear infinite;
+                width:max-content;
+            `;
 
-                const inner = document.createElement('div');
-                inner.className = 'testi-marquee-inner';
-                const cardW = Math.round(window.innerWidth * 0.82) + 14;
-                const totalW = cardW * cards.length;
-                inner.style.cssText = `display:flex;gap:14px;width:${totalW * 2}px;animation:testi-scroll ${cards.length * 4}s linear infinite;`;
+                const section = grid.parentNode;
+                section.style.overflow = 'hidden';
 
-                cards.forEach(c => inner.appendChild(c));
-                const clones = cards.map(c => { const cl = c.cloneNode(true); return cl; });
-                clones.forEach(c => inner.appendChild(c));
+                grid.addEventListener('touchstart', () => grid.classList.add('paused'), { passive: true });
+                grid.addEventListener('touchend', () => setTimeout(() => grid.classList.remove('paused'), 1500), { passive: true });
 
-                grid.style.display = 'block';
-                grid.style.overflow = 'visible';
-                wrap.appendChild(inner);
-                grid.parentNode.insertBefore(wrap, grid);
-                grid.parentNode.removeChild(grid);
-
-                if (!document.getElementById('testi-marquee-style')) {
-                    const style = document.createElement('style');
-                    style.id = 'testi-marquee-style';
-                    style.textContent = `
-                    @keyframes testi-scroll {
+                if (!document.getElementById('testi-kf')) {
+                    const s = document.createElement('style');
+                    s.id = 'testi-kf';
+                    s.textContent = `
+                    @keyframes testi-marquee {
                         0%   { transform: translateX(0); }
-                        100% { transform: translateX(-${totalW}px); }
+                        100% { transform: translateX(-50%); }
                     }
-                    .testi-marquee-inner:hover { animation-play-state: paused; }
-                    .testi-marquee-inner .testi-card {
-                        flex: 0 0 82vw;
-                        min-width: 0;
-                    }
+                    #testi-grid:hover,
+                    #testi-grid.paused { animation-play-state: paused; }
                 `;
-                    document.head.appendChild(style);
+                    document.head.appendChild(s);
                 }
             }
 
@@ -1265,12 +1251,16 @@
             } else {
                 document.getElementById('consult-modal-step-1').style.display = 'none';
                 document.getElementById('consult-modal-step-2').style.display = 'block';
+                const modal = document.querySelector('.modal');
+                if (modal) modal.scrollTop = 0;
             }
         }
 
         function consultModalBack() {
             document.getElementById('consult-modal-step-2').style.display = 'none';
             document.getElementById('consult-modal-step-1').style.display = 'block';
+            const modal = document.querySelector('.modal');
+            if (modal) modal.scrollTop = 0;
         }
 
         function switchConsultTab(tab) {
