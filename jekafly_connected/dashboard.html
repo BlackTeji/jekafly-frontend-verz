@@ -2147,6 +2147,41 @@
     </script>
 
     <script src="mobile.js" defer></script>
+    <script>
+        // Scroll fade-in for dashboard cards
+        if (window.innerWidth <= 768) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('mob-visible');
+                        observer.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            function observeFadeEls() {
+                document.querySelectorAll('.astat, .stat-card, .section-header').forEach(el => {
+                    el.classList.add('mob-fade');
+                    observer.observe(el);
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', observeFadeEls);
+            // Re-run after data loads (cards are dynamically rendered)
+            const origRender = window.renderAppsPage;
+            if (typeof origRender === 'function') {
+                window.renderAppsPage = function () {
+                    origRender.apply(this, arguments);
+                    setTimeout(() => {
+                        document.querySelectorAll('.app-mob-card:not(.mob-fade)').forEach(el => {
+                            el.classList.add('mob-fade');
+                            observer.observe(el);
+                        });
+                    }, 50);
+                };
+            }
+        }
+    </script>
 </body>
 
 </html>

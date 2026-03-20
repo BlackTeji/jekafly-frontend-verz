@@ -32,6 +32,56 @@
         padding: 0 var(--mob-pad);
         box-shadow: 0 1px 0 rgba(13, 21, 96, 0.07);
         border-bottom: none;
+        transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    /* Frosted glass blur when scrolled past hero */
+    nav.scrolled {
+        background: rgba(255, 255, 255, 0.82);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: 0 2px 16px rgba(13, 21, 96, 0.1);
+    }
+
+    /* ── SCROLL FADE-IN ANIMATIONS ───────────────────────────── */
+    .mob-fade {
+        opacity: 0;
+        transform: translateY(22px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    .mob-fade.mob-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Stagger delays for grid children */
+    .mob-fade:nth-child(2) {
+        transition-delay: 0.07s;
+    }
+
+    .mob-fade:nth-child(3) {
+        transition-delay: 0.14s;
+    }
+
+    .mob-fade:nth-child(4) {
+        transition-delay: 0.21s;
+    }
+
+    /* ── BUTTON PRESS FEEL ───────────────────────────────────── */
+    .btn-hero:active,
+    .btn-check:active,
+    .btn-track:active,
+    .btn-aff-primary:active,
+    .btn-aff-submit:active,
+    .service-card:active,
+    .dest-card:active,
+    .app-mob-card:active,
+    .fan-card:active,
+    .ins-plan:active,
+    .aff-mob-step-item:active {
+        transform: scale(0.97);
+        transition: transform 0.1s ease;
     }
 
     .nav-logo img {
@@ -91,10 +141,33 @@
     /* ── HERO ────────────────────────────────────────────────── */
     .hero {
         margin-top: 60px;
-        padding: 24px var(--mob-pad) 28px;
-        height: auto;
-        min-height: 0;
-        align-items: flex-start;
+        padding: 0 var(--mob-pad);
+        height: 320px;
+        min-height: 320px;
+        max-height: 320px;
+        align-items: center;
+        justify-content: flex-start;
+        overflow: hidden;
+    }
+
+    /* Move dots lower to match extra height */
+    .hero-dots {
+        bottom: 16px;
+    }
+
+    .hero-content {
+        width: 100%;
+    }
+
+    /* Lock the headline wrap so text swaps never resize the hero */
+    .hero-headline-wrap {
+        height: 80px;
+        overflow: hidden;
+    }
+
+    .hero-headline {
+        display: flex;
+        flex-direction: column;
     }
 
     .hero-right {
@@ -102,26 +175,20 @@
     }
 
     .hero-badge {
-        font-size: 0.65rem;
-        padding: 4px 10px;
-        margin-bottom: 10px;
-        letter-spacing: 0.02em;
+        display: none;
     }
 
     .hero h1,
     .hero .hero-headline {
-        font-size: 1.75rem;
-        line-height: 1.1;
+        font-size: 1.3rem;
+        line-height: 1.12;
         letter-spacing: -0.03em;
         margin-bottom: 10px;
     }
 
     #hero-sub,
     .hero-content>p {
-        font-size: 0.85rem;
-        line-height: 1.6;
-        color: rgba(255, 255, 255, 0.78);
-        margin-bottom: 16px;
+        display: none;
     }
 
     .hero-stats {
@@ -132,9 +199,9 @@
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
         border: 1px solid rgba(255, 255, 255, 0.16);
-        border-radius: 14px;
-        padding: 10px 4px;
-        margin-bottom: 16px;
+        border-radius: 12px;
+        padding: 8px 4px;
+        margin-bottom: 14px;
     }
 
     .hero-stat {
@@ -231,11 +298,11 @@
     .insurance,
     .tracking,
     .testimonials {
-        padding: 28px var(--mob-pad);
+        padding: 24px var(--mob-pad);
     }
 
     .section-header {
-        margin-bottom: 16px;
+        margin-bottom: 14px;
     }
 
     .section-tag {
@@ -243,7 +310,7 @@
     }
 
     .section-title {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         font-weight: 800;
         letter-spacing: -0.02em;
         line-height: 1.2;
@@ -251,10 +318,7 @@
     }
 
     .section-sub {
-        font-size: 0.83rem;
-        line-height: 1.6;
-        margin-top: 4px;
-        color: var(--text-light);
+        display: none;
     }
 
     /* App-style section header with right link */
@@ -338,196 +402,57 @@
         display: none;
     }
 
-    /* ── HOW IT WORKS — fan-out scroll animation ─────────────── */
+    /* ── HOW IT WORKS — vertical steps ──────────────────────── */
     .how {
-        padding: 0 !important;
+        border-radius: 0;
     }
 
-    .steps-desktop {
-        display: none;
-    }
-
+    .steps-desktop,
     .steps-mobile {
         display: block;
     }
 
-    .fan-scene {
-        height: 280vh;
-        position: relative;
+    .steps {
+        grid-template-columns: 1fr;
+        gap: 0;
+        margin-top: 20px;
     }
 
-    .fan-sticky {
-        position: sticky;
-        top: 0;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
+    .steps::before {
+        display: none;
     }
 
-    .fan-label {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        opacity: 0;
-        pointer-events: none;
-        z-index: 1;
-        width: 240px;
-    }
-
-    .fan-label h2 {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: var(--blue);
-        letter-spacing: -0.03em;
-        line-height: 1.15;
-        margin-bottom: 6px;
-    }
-
-    .fan-label p {
-        font-size: 0.82rem;
-        color: var(--text-light);
-        font-weight: 500;
-        line-height: 1.5;
-    }
-
-    .fan-stack {
-        position: relative;
-        width: calc(100vw - 36px);
-        max-width: 340px;
-        height: 140px;
-        z-index: 2;
-    }
-
-    .fan-card {
-        position: absolute;
-        left: 0;
-        width: 100%;
-        background: white;
-        border-radius: 20px;
-        padding: 20px 18px;
-        border: 1.5px solid var(--border);
+    .step {
         display: flex;
         align-items: flex-start;
-        gap: 14px;
-        will-change: transform;
+        gap: 16px;
+        text-align: left;
+        padding: 18px 0;
+        border-bottom: 1px solid var(--border);
+        position: relative;
     }
 
-    .fan-card:nth-child(1) {
-        z-index: 4;
+    .step:last-child {
+        border-bottom: none;
     }
 
-    .fan-card:nth-child(2) {
-        z-index: 3;
-    }
-
-    .fan-card:nth-child(3) {
-        z-index: 2;
-    }
-
-    .fan-card:nth-child(4) {
-        z-index: 1;
-    }
-
-    .fan-num {
-        width: 38px;
-        min-width: 38px;
-        height: 38px;
-        border-radius: 11px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 15px;
-        font-weight: 800;
+    .step-num {
+        margin: 0;
         flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        font-size: 0.88rem;
+        border-width: 2px;
+        box-shadow: none;
     }
 
-    .fan-num-1 {
-        background: var(--blue);
-        color: white;
-    }
-
-    .fan-num-2 {
-        background: var(--red);
-        color: white;
-    }
-
-    .fan-num-3 {
-        background: var(--blue-soft, #eef0fb);
-        color: var(--blue);
-    }
-
-    .fan-num-4 {
-        background: #fde8e8;
-        color: var(--red);
-    }
-
-    .fan-title {
+    .step h4 {
         font-size: 0.92rem;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 4px;
-        letter-spacing: -0.01em;
+        margin-bottom: 0;
     }
 
-    .fan-desc {
-        font-size: 0.78rem;
-        color: var(--text-light);
-        line-height: 1.55;
-    }
-
-    .fan-scroll-hint {
-        position: absolute;
-        bottom: 36px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 6px;
-        transition: opacity 0.3s;
-    }
-
-    .fan-scroll-hint span {
-        font-size: 0.65rem;
-        color: var(--text-light);
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-    }
-
-    .fan-arrow {
-        width: 26px;
-        height: 26px;
-        border: 1.5px solid var(--border);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        animation: fanBounce 1.5s infinite;
-    }
-
-    .fan-arrow::after {
-        content: '';
-        width: 6px;
-        height: 6px;
-        border-right: 1.5px solid var(--text-light);
-        border-bottom: 1.5px solid var(--text-light);
-        transform: rotate(45deg) translateY(-2px);
-    }
-
-    @keyframes fanBounce {
-
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-
-        50% {
-            transform: translateY(4px);
-        }
+    .step p {
+        display: none;
     }
 
     /* ── VISA CHECKER ────────────────────────────────────────── */
@@ -548,8 +473,13 @@
     }
 
     .checker-form h3 {
-        font-size: 1.2rem;
-        margin-bottom: 6px;
+        font-size: 1.05rem;
+        margin-bottom: 4px;
+    }
+
+    .checker-form>p,
+    .checker-form p:not(.form-group p) {
+        display: none;
     }
 
     .form-group select,
@@ -571,13 +501,12 @@
 
     /* ── WHY JEKAFLY — accordion ─────────────────────────────── */
     .checker-info h3 {
-        font-size: 1.4rem;
-        margin-bottom: 8px;
+        font-size: 1.05rem;
+        margin-bottom: 12px;
     }
 
     .checker-info>p {
-        font-size: 0.87rem;
-        margin-bottom: 16px;
+        display: none;
     }
 
     .info-list {
@@ -657,7 +586,7 @@
     }
 
     .destinations .section-header h2 {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         letter-spacing: -0.02em;
         margin: 0;
     }
@@ -754,7 +683,7 @@
     }
 
     .ins-feat-desc {
-        font-size: 0.68rem;
+        display: none;
     }
 
     .ins-plan {
@@ -766,13 +695,16 @@
         transform: none;
     }
 
+    .ins-plan-desc {
+        display: none;
+    }
+
     .insurance-content h3 {
-        font-size: 1.45rem;
+        font-size: 1.2rem;
     }
 
     .insurance-content>p {
-        font-size: 0.85rem;
-        margin-bottom: 16px;
+        display: none;
     }
 
     /* ── TRACKING ────────────────────────────────────────────── */
@@ -781,7 +713,7 @@
     }
 
     .track-wrap .section-sub {
-        margin: 0 0 20px;
+        display: none;
     }
 
     .track-input-wrap {
@@ -844,6 +776,10 @@
         margin-bottom: 10px;
     }
 
+    .testi-meta {
+        display: none;
+    }
+
     /* Show more button */
     .testi-show-more {
         display: block;
@@ -877,12 +813,12 @@
     }
 
     .cta-banner h2 {
-        font-size: 1.45rem;
+        font-size: 1.25rem;
         letter-spacing: -0.02em;
     }
 
     .cta-banner p {
-        font-size: 0.86rem;
+        display: none;
     }
 
     .cta-actions {
@@ -974,7 +910,7 @@
     }
 
     .modal h3 {
-        font-size: 1.35rem;
+        font-size: 1.15rem;
     }
 
     .modal input,
@@ -1090,7 +1026,7 @@
     }
 
     .login-heading {
-        font-size: 1.55rem;
+        font-size: 1.3rem;
         margin-bottom: 6px;
         letter-spacing: -0.02em;
     }
@@ -1170,7 +1106,7 @@
     }
 
     .page-title {
-        font-size: 1.65rem;
+        font-size: 1.35rem;
         margin-bottom: 20px;
     }
 
@@ -1261,7 +1197,7 @@
     }
 
     .apply-header h1 {
-        font-size: 1.6rem;
+        font-size: 1.35rem;
         letter-spacing: -0.025em;
         line-height: 1.15;
     }
@@ -1445,7 +1381,7 @@
     }
 
     .dash-title {
-        font-size: 1.35rem;
+        font-size: 1.15rem;
         margin-bottom: 2px;
         letter-spacing: -0.02em;
     }
@@ -1475,7 +1411,7 @@
     }
 
     .stat-value {
-        font-size: 1.55rem;
+        font-size: 1.35rem;
         letter-spacing: -0.02em;
     }
 
@@ -2051,7 +1987,7 @@
     }
 
     .aff-section-title {
-        font-size: 1.55rem !important;
+        font-size: 1.2rem !important;
     }
 
     .aff-section-sub {
@@ -2158,7 +2094,7 @@
 @media (max-width: 390px) {
 
     .hero h1 {
-        font-size: 1.88rem;
+        font-size: 1.3rem;
     }
 
     .hero-actions {
