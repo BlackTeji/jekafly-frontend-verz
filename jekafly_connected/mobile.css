@@ -772,6 +772,11 @@
         display: none;
     }
 
+    .modal .ins-plan-desc,
+    .ins-modal-plans .ins-plan-desc {
+        display: block;
+    }
+
     .ins-title {
         font-size: 1.05rem;
         font-weight: 600;
@@ -850,15 +855,8 @@
 
     /* ── TESTIMONIALS — show 1, hide rest behind "Show more" ─── */
     .testi-grid {
-        display: flex !important;
-        flex-direction: row !important;
-        overflow-x: auto !important;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        gap: 14px !important;
+        overflow: hidden;
         margin-top: 20px;
-        padding-bottom: 8px;
     }
 
     .testi-grid::-webkit-scrollbar {
@@ -866,9 +864,6 @@
     }
 
     .testi-card {
-        flex: 0 0 82vw !important;
-        min-width: 0;
-        scroll-snap-align: start;
         padding: 20px 16px;
         border-radius: 18px;
     }
@@ -992,7 +987,8 @@
 
     /* ── MODAL ───────────────────────────────────────────────── */
     .modal-overlay {
-        align-items: flex-end;
+        align-items: flex-end !important;
+        justify-content: stretch !important;
         padding: 0;
     }
 
@@ -1002,8 +998,10 @@
         overflow-y: auto;
         width: 100%;
         max-width: 100%;
-        padding: 12px 20px 40px;
+        padding: 12px 20px env(safe-area-inset-bottom, 40px);
+        padding-bottom: max(40px, env(safe-area-inset-bottom));
         animation: slideUpSheet 0.28s cubic-bezier(0.32, 0.72, 0, 1) both;
+        position: relative;
     }
 
     @keyframes slideUpSheet {
@@ -1035,6 +1033,19 @@
         font-size: 16px !important;
         min-height: 50px;
         border-radius: 12px;
+    }
+
+    .modal input[type="date"] {
+        -webkit-appearance: none;
+        appearance: none;
+        display: block;
+        width: 100%;
+        padding-right: 12px;
+        color: var(--text);
+    }
+
+    .modal input[type="date"]::-webkit-date-and-time-value {
+        text-align: left;
     }
 
     .tab-bar {
