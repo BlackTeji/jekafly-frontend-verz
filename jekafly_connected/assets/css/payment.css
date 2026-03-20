@@ -54,7 +54,7 @@ nav {
 .nav-links a {
     text-decoration: none;
     color: var(--muted);
-    font-size: .875rem;
+    font-size: .93rem;
     font-weight: 500;
     transition: color .2s;
 }
@@ -214,7 +214,7 @@ nav {
     align-items: center;
     padding: 14px 20px;
     border-bottom: 1px solid var(--border);
-    font-size: .875rem;
+    font-size: .93rem;
 }
 
 .line-item:last-child {
@@ -232,7 +232,7 @@ nav {
 
 .line-item .li-val.ref-val {
     font-family: monospace;
-    font-size: .78rem;
+    font-size: .83rem;
     background: var(--surface);
     padding: 3px 9px;
     border-radius: 6px;
@@ -269,7 +269,7 @@ nav {
     border: 1.5px solid #bbf7d0;
     border-radius: 12px;
     padding: 14px 16px;
-    font-size: .82rem;
+    font-size: .87rem;
     color: #065f46;
     line-height: 1.55;
 }
@@ -302,7 +302,7 @@ nav {
 }
 
 .pay-box-sub {
-    font-size: .8rem;
+    font-size: .85rem;
     color: var(--muted);
 }
 
@@ -371,7 +371,7 @@ nav {
 
 .btn-pay-sub {
     font-weight: 400;
-    font-size: .82rem;
+    font-size: .87rem;
     opacity: .8;
 }
 
@@ -431,7 +431,7 @@ nav {
 }
 
 .processing-sub {
-    font-size: .82rem;
+    font-size: .87rem;
     color: var(--muted);
 }
 
@@ -454,7 +454,7 @@ nav {
 }
 
 .pay-empty p {
-    font-size: .875rem;
+    font-size: .93rem;
     color: var(--muted);
 }
 
@@ -529,7 +529,7 @@ nav {
 }
 
 .success-modal p {
-    font-size: .875rem;
+    font-size: .93rem;
     color: var(--muted);
     line-height: 1.65;
     margin-bottom: 24px;
@@ -550,7 +550,7 @@ nav {
     align-items: center;
     padding: 11px 16px;
     border-bottom: 1px solid var(--border);
-    font-size: .82rem;
+    font-size: .87rem;
 }
 
 .receipt-row:last-child {
@@ -606,7 +606,7 @@ nav {
     border-radius: 12px;
     padding: 13px;
     font-family: 'DM Sans', sans-serif;
-    font-size: .875rem;
+    font-size: .93rem;
     font-weight: 500;
     color: var(--muted);
     cursor: pointer;
@@ -617,7 +617,6 @@ nav {
     color: var(--ink);
 }
 
-/* ── Responsive ────────────────────────────────────────────── */
 @media (max-width: 760px) {
     nav {
         padding: 0 18px;
@@ -663,6 +662,16 @@ nav {
     }
 
     .fee-line {
-        font-size: 0.85rem;
+        font-size: .9rem;
+    }
+}
+
+@media (max-width: 640px) {
+
+    /* Prevent iOS input zoom */
+    input,
+    select,
+    textarea {
+        font-size: 16px !important;
     }
 }

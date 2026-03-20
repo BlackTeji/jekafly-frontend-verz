@@ -43,7 +43,7 @@
 
 /* ── Result meta row (visa checker) ────────────────────────── */
 .result-meta {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: var(--text-light);
     margin-bottom: 12px;
     display: flex;
@@ -58,13 +58,13 @@
 /* ── Checker CTA button variant ────────────────────────────── */
 .btn-check-sm {
     padding: 12px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 /* ── Info list sub-text ─────────────────────────────────────── */
 .info-sub {
     color: var(--text-light);
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     display: block;
     margin-top: 2px;
 }
@@ -72,7 +72,7 @@
 /* ── CTA tagline ────────────────────────────────────────────── */
 .cta-tagline {
     color: rgba(255, 255, 255, 0.5);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     text-align: center;
     margin-top: 8px;
 }
@@ -88,13 +88,13 @@
 .modal-demo {
     text-align: center;
     margin-top: 16px;
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: var(--text-light);
 }
 
 /* ── Insurance modal plan label ────────────────────────────── */
 .ins-plan-label {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 600;
     color: var(--text-light);
     text-transform: uppercase;
@@ -119,19 +119,19 @@
 }
 
 .visa-preview-meta {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-light);
     margin-bottom: 6px;
 }
 
 .visa-preview-docs {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-light);
 }
 
 /* ── Apply: doc checklist empty state ─────────────────────── */
 .doc-empty {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-light);
 }
 
@@ -145,13 +145,13 @@
 }
 
 .step-note p {
-    font-size: 0.84rem;
+    font-size: 0.89rem;
     color: #92400E;
 }
 
 /* ── Apply: fee display row ─────────────────────────────────── */
 .fee-sub {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: var(--text-light);
     margin-top: 2px;
 }
@@ -162,7 +162,7 @@
     align-items: flex-start;
     gap: 10px;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .terms-checkbox {
@@ -181,13 +181,13 @@
 /* ── Apply: submit footer note ─────────────────────────────── */
 .submit-note {
     margin-top: 14px;
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: var(--text-light);
 }
 
 /* ── Apply: step-5 success card ────────────────────────────── */
 .success-sub {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-light);
     margin-bottom: 18px;
 }
@@ -287,7 +287,7 @@
 }
 
 .danger-sub {
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     color: var(--text-light);
     margin-bottom: 16px;
 }
@@ -397,14 +397,14 @@
 }
 
 .track-result-meta {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .track-result-note {
     margin-top: 8px;
     color: var(--blue);
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 /* ── Dashboard: not-found error box ───────────────────────── */
@@ -414,7 +414,7 @@
     border: 1.5px solid var(--red);
     border-radius: 12px;
     color: var(--red);
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     font-weight: 600;
 }
 
@@ -457,7 +457,7 @@
 }
 
 .pay-dest-sub {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-light);
 }
 
@@ -481,7 +481,7 @@
 
 .transfer-row {
     margin-bottom: 8px;
-    font-size: 0.88rem;
+    font-size: 0.93rem;
 }
 
 .transfer-label {
@@ -499,7 +499,7 @@
 }
 
 .transfer-note {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-light);
     margin-top: 4px;
 }
@@ -522,7 +522,7 @@
 }
 
 .ussd-note {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-light);
     margin-top: 12px;
 }
@@ -637,27 +637,27 @@
 /* ── Admin: table cells ─────────────────────────────────────── */
 .cell-mono {
     font-family: monospace;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
 }
 
 .cell-date {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
 }
 
 .cell-user-sub {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: rgba(255, 255, 255, 0.4);
 }
 
 .admin-paid-yes {
     color: #6EE7B7;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
 }
 
 .admin-paid-no {
     color: #FCA5A5;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
 }
 
@@ -791,7 +791,7 @@
 
 /* ── Step note text ─────────────────────────────────────────── */
 .step-note-text {
-    font-size: 0.84rem;
+    font-size: 0.89rem;
     color: #92400E;
 }
 
@@ -802,7 +802,7 @@
 
 /* ── Section sub-label ──────────────────────────────────────── */
 .section-sublabel {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -812,7 +812,7 @@
 
 /* ── Nav user greeting ──────────────────────────────────────── */
 .nav-user-hi {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-light);
 }
 
@@ -982,7 +982,7 @@
     border: none;
     outline: none;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     color: var(--text);
     width: 100%;
     background: transparent;
@@ -1013,7 +1013,7 @@
     gap: 10px;
     padding: 9px 16px;
     cursor: pointer;
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     color: var(--text);
     transition: background .12s;
 }
@@ -1044,7 +1044,7 @@
     text-align: center;
     padding: 20px;
     color: var(--text-light);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 /* ╔══════════════════════════════════════════════════════════╗
@@ -1160,13 +1160,13 @@
 }
 
 .preview-meta-value {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     font-weight: 700;
     color: var(--text);
 }
 
 .preview-docs-list {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: var(--text-light);
     line-height: 1.6;
     border-top: 1px solid var(--border);
@@ -1175,7 +1175,7 @@
 }
 
 .visa-preview-empty {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-light);
 }
 
@@ -1205,7 +1205,7 @@
 }
 
 .travellers-sub {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-light);
     margin-top: 2px;
 }
@@ -1217,7 +1217,7 @@
     border: none;
     border-radius: 8px;
     font-weight: 700;
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     cursor: pointer;
     font-family: 'Plus Jakarta Sans', sans-serif;
     white-space: nowrap;
@@ -1246,7 +1246,7 @@
 
 .traveller-num {
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--blue);
 }
 
@@ -1320,7 +1320,7 @@ input[type=file] {
 }
 
 .doc-dropzone-hint {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: var(--text-light);
 }
 
@@ -1339,7 +1339,7 @@ input[type=file] {
     background: white;
     border: 1.5px solid var(--border);
     border-radius: 10px;
-    font-size: 0.84rem;
+    font-size: 0.89rem;
 }
 
 .file-icon {
@@ -1357,7 +1357,7 @@ input[type=file] {
 
 .file-size {
     color: var(--text-light);
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     flex-shrink: 0;
 }
 
@@ -1389,7 +1389,7 @@ input[type=file] {
 }
 
 .fee-breakdown-title {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .07em;
@@ -1500,7 +1500,7 @@ input[type=file] {
 .ins-policy-row {
     display: flex;
     justify-content: space-between;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .ins-policy-row span {
@@ -1534,7 +1534,7 @@ input[type=file] {
 }
 
 .ins-cta-sub {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     opacity: 0.75;
 }
 
@@ -1568,7 +1568,7 @@ input[type=file] {
 
 .doc-upload-sub {
     color: var(--text-light);
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     margin-bottom: 20px;
 }
 
@@ -1684,14 +1684,14 @@ input[type=file] {
 }
 
 .doc-req-heading {
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     font-weight: 700;
     color: #0D1560;
     margin-bottom: 4px;
 }
 
 .doc-req-note {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: #9BA5C0;
     margin-bottom: 12px;
 }
@@ -1864,11 +1864,11 @@ input[type=file] {
 
 /* ── Font size ──────────────────────────── */
 .fs-xs {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
 }
 
 .fs-sm {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
 }
 
 .fs-base {
@@ -1961,14 +1961,14 @@ input[type=file] {
 .inline-error {
     display: none;
     color: #DC2626;
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     margin-bottom: 8px;
 }
 
 .inline-success {
     display: none;
     color: #16a34a;
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     margin-bottom: 8px;
     font-weight: 600;
 }
@@ -1993,7 +1993,7 @@ input[type=file] {
     border: none;
     cursor: pointer;
     color: #6B7280;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 /* ── Strength bar ───────────────────────── */
@@ -2061,7 +2061,7 @@ input[type=file] {
 }
 
 .delete-modal-body {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #6b7280;
     text-align: center;
     line-height: 1.6;
@@ -2078,13 +2078,13 @@ input[type=file] {
     border: 1.5px solid #fecaca;
     border-radius: 10px;
     padding: 10px 14px;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #991b1b;
     margin-bottom: 16px;
 }
 
 .delete-modal-label {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     font-weight: 600;
     color: #374151;
     display: block;
@@ -2244,7 +2244,7 @@ input[type=file] {
 }
 
 .consult-card-desc {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: #6B7280;
     margin: 4px 0 12px;
 }
@@ -2256,7 +2256,7 @@ input[type=file] {
 }
 
 .consult-card-period {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: #9BA5C0;
     margin-top: 4px;
 }
@@ -2286,7 +2286,7 @@ input[type=file] {
 }
 
 .ins-card-desc {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: #6B7280;
     margin: 4px 0 12px;
 }
@@ -2298,7 +2298,7 @@ input[type=file] {
 }
 
 .ins-card-period {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: #9BA5C0;
     margin-top: 4px;
 }
@@ -2327,7 +2327,7 @@ input[type=file] {
 
 .prefill-notice-sub {
     color: #78350F;
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     margin-top: 2px;
 }
 
@@ -2524,7 +2524,7 @@ input[type=file] {
     border: 1.5px solid #e0e4ef;
     border-radius: 8px;
     padding: 8px 16px;
-    font-size: 0.85rem;
+    font-size: 0.87rem;
     font-weight: 600;
     color: #374151;
     cursor: pointer;
@@ -2545,7 +2545,7 @@ input[type=file] {
     border: none;
     cursor: pointer;
     color: #6B7280;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     margin-bottom: 12px;
 }
 
@@ -2617,7 +2617,7 @@ input[type=file] {
 }
 
 .admin-return-text {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #3730A3;
 }
 
@@ -2680,7 +2680,7 @@ input[type=file] {
 
 .td {
     padding: 10px 14px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     border-top: 1px solid #F3F4F6;
 }
 
@@ -2693,7 +2693,7 @@ input[type=file] {
     padding: 16px 24px;
     background: #F8F9FD;
     border-bottom: 1.5px solid #E5E9F5;
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: #9BA5C0;
 }
 
@@ -2736,7 +2736,7 @@ input[type=file] {
 }
 
 .review-text {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #374151;
     line-height: 1.55;
     margin-bottom: 6px;
@@ -2759,7 +2759,7 @@ input[type=file] {
 
 .doc-slot-name {
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #1a1a2e;
 }
 
@@ -2847,7 +2847,7 @@ input[type=file] {
 }
 
 .ins-option-desc {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #6B7280;
 }
 
@@ -2882,7 +2882,7 @@ input[type=file] {
     display: flex;
     align-items: flex-start;
     gap: 8px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #374151;
 }
 
@@ -2952,7 +2952,7 @@ input[type=file] {
     background: #FFF9EC;
     border: 1.5px solid #F5D88A;
     border-radius: 8px;
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: #92400E;
     line-height: 1.5;
 }

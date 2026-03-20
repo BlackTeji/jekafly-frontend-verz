@@ -1729,7 +1729,13 @@
     }
 
     .dash-mobile-tabbar {
+        display: flex !important;
         z-index: 950;
+    }
+
+    /* Override inline style on mobile */
+    #dash-tabbar {
+        display: flex !important;
     }
 
     .dash-track-wrap {
@@ -1840,6 +1846,7 @@
     }
 
     .dash-more-drawer {
+        display: block !important;
         position: fixed;
         bottom: 64px;
         left: 0;

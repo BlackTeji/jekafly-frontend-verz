@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="assets/css/affiliate.css" />
-    <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
 </head>
 
 <body>
@@ -877,6 +877,46 @@
                 checkAffiliateStatus();
             } catch (e) { err.textContent = e.message; err.style.display = 'block'; }
         }
+    </script>
+
+    <script>
+        (function () {
+            if (typeof IntersectionObserver === 'undefined') return;
+            var selectors = [
+                '.service-card', '.step', '.dest-card', '.testi-card',
+                '.ins-plan', '.ins-feature', '.section-header', '.checker-form',
+                '.checker-info', '.cta-banner', '.info-list li', '.dest-card',
+                '.aff-step', '.aff-tier', '.aff-perk', '.aff-faq-item',
+                '.aff-stat', '.aff-section-header', '.aff-form-card',
+                '.stat-card', '.astat', '.dash-section', '.result-wrap',
+                '.perk-item', '.login-aside', '.payment-card', '.track-wrap',
+                '.rev-card', '.admin-section'
+            ];
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        observer.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+            function init() {
+                selectors.forEach(function (sel) {
+                    document.querySelectorAll(sel).forEach(function (el, i) {
+                        el.classList.add('reveal');
+                        if (i > 0 && i < 5) el.classList.add('reveal-delay-' + i);
+                        observer.observe(el);
+                    });
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        }());
     </script>
 </body>
 

@@ -1,3 +1,12 @@
+/* ── Mobile-only elements — hidden on desktop ────────────── */
+.dash-mobile-tabbar,
+.dash-more-overlay,
+.dash-more-drawer,
+.dash-mob-steps,
+.mob-sticky-cta {
+    display: none !important;
+}
+
 .dash-page {
     margin-top: 68px;
     background: var(--off-white);
@@ -48,7 +57,7 @@
 }
 
 .dash-email {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--text-light);
 }
 
@@ -135,7 +144,7 @@
 }
 
 .stat-label {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: var(--text-light);
     font-weight: 500;
 }
@@ -192,7 +201,7 @@ th {
 
 td {
     padding: 14px 20px;
-    font-size: 0.87rem;
+    font-size: 0.92rem;
     border-top: 1px solid var(--border);
 }
 
@@ -322,12 +331,12 @@ tr:hover td {
 }
 
 .tl-content .tl-note {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 600;
 }
 
 .tl-content .tl-date {
-    font-size: 0.77rem;
+    font-size: 0.82rem;
     color: var(--text-light);
     margin-top: 2px;
 }
@@ -349,7 +358,7 @@ tr:hover td {
 
 .form-group label {
     display: block;
-    font-size: 0.77rem;
+    font-size: 0.82rem;
     font-weight: 600;
     color: var(--text-light);
     text-transform: uppercase;
@@ -481,7 +490,7 @@ tr:hover td {
 }
 
 .app-ref {
-    font-size: 0.74rem;
+    font-size: 0.79rem;
     color: var(--text-light);
     font-family: monospace;
 }
@@ -548,7 +557,7 @@ tr:hover td {
     border: none;
     background: transparent;
     color: var(--text-light);
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     font-weight: 500;
     cursor: pointer;
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -569,7 +578,7 @@ tr:hover td {
 
 /* ── Documents tab two-step flow ──────────────────────────── */
 .doc-step-label {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: .1em;
@@ -622,7 +631,7 @@ tr:hover td {
 
 .doc-app-card-ref {
     font-family: monospace;
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: #9BA5C0;
     margin-bottom: 4px;
 }
@@ -738,13 +747,13 @@ tr:hover td {
 }
 
 .doc-required-meta {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #9BA5C0;
     white-space: nowrap;
 }
 
 .doc-required-disclaimer {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: #92400E;
     background: #FFF9EC;
     border: 1.5px solid #F5D88A;
@@ -787,7 +796,7 @@ tr:hover td {
 
 .doc-required-text {
     flex: 1;
-    font-size: 0.875rem;
+    font-size: 0.93rem;
     font-weight: 600;
     color: #1A2040;
     line-height: 1.4;
@@ -803,7 +812,7 @@ tr:hover td {
 
 .doc-required-footer {
     margin-top: 14px;
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: #9BA5C0;
     font-style: italic;
 }
@@ -812,7 +821,7 @@ tr:hover td {
     padding: 14px;
     background: #F8F9FD;
     border-radius: 10px;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #9BA5C0;
     margin-bottom: 16px;
 }
@@ -954,7 +963,7 @@ tr:hover td {
     background: #EEF1FF;
     border: 1.5px solid #C7D4F5;
     border-radius: 8px;
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     font-weight: 700;
     color: #0D1560;
     cursor: pointer;
@@ -982,7 +991,7 @@ tr:hover td {
 
 /* Tab bar hidden on desktop */
 .dash-mobile-tabbar {
-    display: none;
+    display: none !important;
 }
 
 @media (max-width: 900px) {
@@ -1043,7 +1052,7 @@ tr:hover td {
     }
 
     .stat-label {
-        font-size: 0.7rem;
+        font-size: 0.75rem;
     }
 
     .stat-icon {
@@ -1106,7 +1115,7 @@ tr:hover td {
 
     /* ── Bottom Tab Bar ─────────────────────────────────── */
     .dash-mobile-tabbar {
-        display: flex !important;
+        display: none !important;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -1222,13 +1231,13 @@ tr:hover td {
 
 /* ── Doc slot status labels ────────────────────────────────── */
 .status-uploaded {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     font-weight: 600;
     color: #16a34a;
 }
 
 .status-required {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     font-weight: 500;
     color: #9BA5C0;
 }
@@ -1288,7 +1297,7 @@ tr:hover td {
 }
 
 .danger-zone-sub {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: #9BA5C0;
     line-height: 1.5;
 }
@@ -1309,7 +1318,7 @@ tr:hover td {
 }
 
 .danger-row-desc {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: #9BA5C0;
     line-height: 1.5;
     max-width: 480px;
@@ -1402,7 +1411,7 @@ tr:hover td {
 }
 
 .booking-card-ref {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     color: #9BA5C0;
     font-family: monospace;
 }
@@ -1451,7 +1460,7 @@ tr:hover td {
 
 .booking-detail span {
     display: block;
-    font-size: 0.68rem;
+    font-size: 0.73rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -1460,7 +1469,7 @@ tr:hover td {
 }
 
 .booking-detail strong {
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     color: #0D1560;
     font-weight: 700;
 }
@@ -1471,7 +1480,7 @@ tr:hover td {
     background: #FAFBFF;
     border-left: 3px solid #C7D0F0;
     border-radius: 0 8px 8px 0;
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: #6B7494;
     font-style: italic;
 }

@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="assets/css/login.css" />
-    <link rel="stylesheet" href="mobile.css">
+    <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
 </head>
 
 <body>
@@ -195,14 +195,14 @@
                 btn.textContent = 'Logging in...';
                 const res = await Auth.login(email, pass);
                 if (res.ok) {
-                    btn.textContent = 'Welcome back! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
-                    showToast('Welcome back! <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-4 0v5"/><path d="M14 10V4a2 2 0 00-4 0v6"/><path d="M10 10.5V6a2 2 0 00-4 0v8a6 6 0 006 6h.1a6 6 0 005.9-6V11a2 2 0 00-4 0"/></svg>');
+                    btn.innerHTML = 'Welcome back! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
+                    showToast('Welcome back!');
                     setTimeout(() => {
                         window.location.href = res.user.role === 'ADMIN' ? 'admin.html' : decodeURIComponent(returnUrl);
                     }, 600);
                 } else {
                     btn.disabled = false;
-                    btn.textContent = 'Login to Jekafly <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+                    btn.innerHTML = 'Login to Jekafly <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
                     showToast(res.msg, 'error');
                 }
             });
@@ -218,12 +218,12 @@
                 btn.textContent = 'Creating Account...';
                 const res = await Auth.register(name, email, phone, pass);
                 if (res.ok) {
-                    btn.textContent = 'Account Created! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
-                    showToast('Account created! Welcome to Jekafly <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>');
+                    btn.innerHTML = 'Account Created! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
+                    showToast('Account created! Welcome to Jekafly');
                     setTimeout(() => window.location.href = decodeURIComponent(returnUrl), 800);
                 } else {
                     btn.disabled = false;
-                    btn.textContent = 'Create Free Account <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+                    btn.innerHTML = 'Create Free Account <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
                     showToast(res.msg, 'error');
                 }
             });
@@ -231,6 +231,46 @@
     </script>
 
     <script src="mobile.js" defer></script>
+
+    <script>
+        (function () {
+            if (typeof IntersectionObserver === 'undefined') return;
+            var selectors = [
+                '.service-card', '.step', '.dest-card', '.testi-card',
+                '.ins-plan', '.ins-feature', '.section-header', '.checker-form',
+                '.checker-info', '.cta-banner', '.info-list li', '.dest-card',
+                '.aff-step', '.aff-tier', '.aff-perk', '.aff-faq-item',
+                '.aff-stat', '.aff-section-header', '.aff-form-card',
+                '.stat-card', '.astat', '.dash-section', '.result-wrap',
+                '.perk-item', '.login-aside', '.payment-card', '.track-wrap',
+                '.rev-card', '.admin-section'
+            ];
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        observer.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+            function init() {
+                selectors.forEach(function (sel) {
+                    document.querySelectorAll(sel).forEach(function (el, i) {
+                        el.classList.add('reveal');
+                        if (i > 0 && i < 5) el.classList.add('reveal-delay-' + i);
+                        observer.observe(el);
+                    });
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        }());
+    </script>
 </body>
 
 </html>

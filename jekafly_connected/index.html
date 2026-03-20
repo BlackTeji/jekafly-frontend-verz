@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/hero-animation.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
-    <link rel="stylesheet" href="mobile.css" />
+    <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
 </head>
 
 <body>
@@ -286,13 +286,10 @@
             </div>
             <div class="service-card">
                 <div class="service-icon-bg">
-                    <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-                            stroke-linecap="round" stroke-linejoin="round">
+                    <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                            viewBox="0 0 256 256" fill="currentColor">
                             <path
-                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                            <path d="m3.27 6.96 8.73 5.05 8.73-5.05" />
-                            <path d="M12 22.08V12" />
+                                d="M185.33,114.21l29.14-27.42.17-.17a32,32,0,0,0-45.26-45.26c0,.06-.11.11-.17.17L141.79,70.67l-83-30.2a8,8,0,0,0-8.39,1.86l-24,24a8,8,0,0,0,1.22,12.31l63.89,42.59L76.69,136H56a8,8,0,0,0-5.65,2.34l-24,24A8,8,0,0,0,29,175.42l36.82,14.73,14.7,36.75.06.16a8,8,0,0,0,13.18,2.47l23.87-23.88A8,8,0,0,0,120,200V179.31l14.76-14.76,42.59,63.89a8,8,0,0,0,12.31,1.22l24-24a8,8,0,0,0,1.86-8.39Zm-.07,97.23-42.59-63.88A8,8,0,0,0,136.8,144c-.27,0-.53,0-.79,0a8,8,0,0,0-5.66,2.35l-24,24A8,8,0,0,0,104,176v20.69L90.93,209.76,79.43,181A8,8,0,0,0,75,176.57l-28.74-11.5L59.32,152H80a8,8,0,0,0,5.66-2.34l24-24a8,8,0,0,0-1.22-12.32L44.56,70.74l13.5-13.49,83.22,30.26a8,8,0,0,0,8.56-2L180.78,52.6A16,16,0,0,1,203.4,75.23l-32.87,30.93a8,8,0,0,0-2,8.56l30.26,83.22Z" />
                         </svg></div>
                 </div>
                 <div class="service-title">Flight Booking</div>
@@ -306,15 +303,10 @@
             </div>
             <div class="service-card">
                 <div class="service-icon-bg">
-                    <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z" />
-                            <path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16" />
-                            <line x1="6" x2="18" y1="12" y2="12" />
-                            <line x1="6" x2="18" y1="20" y2="20" />
-                            <line x1="9" x2="9" y1="8" y2="12" />
-                            <line x1="15" x2="15" y1="8" y2="12" />
+                    <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                            viewBox="0 0 256 256" fill="currentColor">
+                            <path
+                                d="M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z" />
                         </svg></div>
                 </div>
                 <div class="service-title">Hotel Booking</div>
@@ -1577,6 +1569,46 @@
         }
     </script>
 
+
+    <script>
+        (function () {
+            if (typeof IntersectionObserver === 'undefined') return;
+            var selectors = [
+                '.service-card', '.step', '.dest-card', '.testi-card',
+                '.ins-plan', '.ins-feature', '.section-header', '.checker-form',
+                '.checker-info', '.cta-banner', '.info-list li', '.dest-card',
+                '.aff-step', '.aff-tier', '.aff-perk', '.aff-faq-item',
+                '.aff-stat', '.aff-section-header', '.aff-form-card',
+                '.stat-card', '.astat', '.dash-section', '.result-wrap',
+                '.perk-item', '.login-aside', '.payment-card', '.track-wrap',
+                '.rev-card', '.admin-section'
+            ];
+            var observer = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        observer.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+            function init() {
+                selectors.forEach(function (sel) {
+                    document.querySelectorAll(sel).forEach(function (el, i) {
+                        el.classList.add('reveal');
+                        if (i > 0 && i < 5) el.classList.add('reveal-delay-' + i);
+                        observer.observe(el);
+                    });
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+        }());
+    </script>
 </body>
 
 </html>

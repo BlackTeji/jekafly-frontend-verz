@@ -92,7 +92,7 @@ function showToast(msg, type = 'success') {
     }
     t.style.background = type === 'error' ? '#E31E24' : '#10B981';
     t.style.color = 'white';
-    t.textContent = msg;
+    t.innerHTML = msg;
     t.style.opacity = '1';
     clearTimeout(t._timer);
     t._timer = setTimeout(() => { t.style.opacity = '0'; }, 3000);
@@ -170,7 +170,7 @@ async function handleLogin() {
 
     closeModal();
     updateNav();
-    showToast('Welcome back, ' + res.user.name.split(' ')[0] + '! <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 00-4 0v5"/><path d="M14 10V4a2 2 0 00-4 0v6"/><path d="M10 10.5V6a2 2 0 00-4 0v8a6 6 0 006 6h.1a6 6 0 005.9-6V11a2 2 0 00-4 0"/></svg>');
+    showToast('Welcome back,' + res.user.name.split('')[0] + '!');
 
     if (window.JKF_afterLoginRedirect && window.JKF_afterLoginRedirect()) return;
 
@@ -192,7 +192,7 @@ async function handleRegister() {
 
     closeModal();
     updateNav();
-    showToast('Account created! Welcome to Jekafly <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>');
+    showToast('Account created! Welcome to Jekafly');
 
 
     if (window.JKF_afterLoginRedirect && window.JKF_afterLoginRedirect()) return;

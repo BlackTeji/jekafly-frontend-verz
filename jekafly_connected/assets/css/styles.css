@@ -46,11 +46,12 @@ html {
 
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.125rem;
     color: var(--text);
     background: var(--white);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
-    line-height: 1.6;
+    line-height: 1.65;
 }
 
 body.modal-open {
@@ -108,7 +109,7 @@ nav {
 .nav-links a {
     text-decoration: none;
     color: var(--text-light);
-    font-size: 0.875rem;
+    font-size: 0.95rem;
     font-weight: 500;
     padding: 7px 13px;
     border-radius: 8px;
@@ -139,12 +140,12 @@ nav {
 
 /* ── BUTTONS ──────────────────────────────────────────────── */
 .btn-outline {
-    padding: 9px 20px;
+    padding: 10px 22px;
     border: 1.5px solid var(--border);
     border-radius: var(--radius-sm);
     color: var(--blue);
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     cursor: pointer;
     background: var(--white);
     transition: all 0.18s;
@@ -157,13 +158,13 @@ nav {
 }
 
 .btn-primary {
-    padding: 10px 22px;
+    padding: 10px 24px;
     background: var(--blue);
     border: none;
     border-radius: var(--radius-sm);
     color: white;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.18s;
     font-family: 'Plus Jakarta Sans', sans-serif;
@@ -271,7 +272,7 @@ nav {
 
 .hero-content>p {
     color: rgba(255, 255, 255, 0.7);
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     line-height: 1.72;
     margin-top: 0;
     margin-bottom: 36px;
@@ -294,7 +295,7 @@ nav {
 }
 
 .hero-stat span {
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     color: rgba(255, 255, 255, 0.5);
     margin-top: 5px;
     display: block;
@@ -447,7 +448,7 @@ nav {
 
 .search-field label {
     display: block;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     color: var(--text-light);
     text-transform: uppercase;
@@ -502,7 +503,7 @@ nav {
     color: var(--blue);
     padding: 5px 14px;
     border-radius: 100px;
-    font-size: 0.7rem;
+    font-size: 0.73rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -521,7 +522,7 @@ nav {
 
 .section-sub {
     color: var(--text-light);
-    font-size: 0.97rem;
+    font-size: 1.05rem;
     max-width: 520px;
     line-height: 1.72;
 }
@@ -622,7 +623,7 @@ nav {
 }
 
 .service-desc {
-    font-size: 0.84rem;
+    font-size: 0.92rem;
     color: var(--text-light);
     line-height: 1.65;
     position: relative;
@@ -703,13 +704,13 @@ nav {
 
 .step h4 {
     font-weight: 700;
-    font-size: 0.95rem;
+    font-size: 1rem;
     margin-bottom: 8px;
     color: var(--text);
 }
 
 .step p {
-    font-size: 0.84rem;
+    font-size: 0.95rem;
     color: var(--text-light);
     line-height: 1.7;
 }
@@ -752,7 +753,7 @@ nav {
 
 .checker-form>p {
     color: var(--text-light);
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     margin-bottom: 28px;
     line-height: 1.6;
 }
@@ -862,7 +863,7 @@ nav {
 }
 
 .result-items li {
-    font-size: 0.83rem;
+    font-size: 0.88rem;
     color: var(--text-light);
     padding: 5px 0 5px 22px;
     position: relative;
@@ -880,7 +881,7 @@ nav {
     left: 0;
     color: var(--success);
     font-weight: 700;
-    font-size: 0.78rem;
+    font-size: 0.83rem;
 }
 
 .checker-info h3 {
@@ -907,7 +908,7 @@ nav {
     align-items: flex-start;
     gap: 14px;
     margin-bottom: 20px;
-    font-size: 0.88rem;
+    font-size: 0.92rem;
 }
 
 .info-list li .icon {
@@ -1043,7 +1044,7 @@ nav {
 
 .ins-sub {
     opacity: 0.6;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     margin-bottom: 28px;
 }
 
@@ -1067,11 +1068,11 @@ nav {
 
 .ins-feat-title {
     font-weight: 600;
-    font-size: 0.82rem;
+    font-size: 0.87rem;
 }
 
 .ins-feat-desc {
-    font-size: 0.72rem;
+    font-size: 0.77rem;
     opacity: 0.65;
     margin-top: 3px;
 }
@@ -1080,7 +1081,7 @@ nav {
     margin-top: 24px;
     padding-top: 18px;
     border-top: 1px solid rgba(255, 255, 255, 0.14);
-    font-size: 0.77rem;
+    font-size: 0.82rem;
     opacity: 0.6;
 }
 
@@ -1130,12 +1131,12 @@ nav {
 
 .ins-plan-name {
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text);
 }
 
 .ins-plan-desc {
-    font-size: 0.77rem;
+    font-size: 0.82rem;
     color: var(--text-light);
     margin-top: 3px;
 }
@@ -1281,7 +1282,7 @@ nav {
 }
 
 .track-step-label {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: var(--text-light);
     margin-top: 8px;
     font-weight: 500;
@@ -1337,7 +1338,7 @@ nav {
 }
 
 .testi-text {
-    font-size: 0.87rem;
+    font-size: 0.92rem;
     line-height: 1.75;
     color: var(--text-light);
     margin-bottom: 20px;
@@ -1359,18 +1360,18 @@ nav {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     flex-shrink: 0;
 }
 
 .testi-name {
     font-weight: 700;
-    font-size: 0.88rem;
+    font-size: 0.92rem;
     color: var(--text);
 }
 
 .testi-meta {
-    font-size: 0.74rem;
+    font-size: 0.79rem;
     color: var(--text-light);
     margin-top: 2px;
 }
@@ -1450,7 +1451,7 @@ footer {
 }
 
 .footer-tagline {
-    font-size: 0.83rem;
+    font-size: 0.88rem;
     line-height: 1.7;
     margin-bottom: 22px;
     max-width: 260px;
@@ -1471,7 +1472,7 @@ footer {
     justify-content: center;
     cursor: pointer;
     transition: background 0.18s;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.65);
 }
 
@@ -1484,13 +1485,13 @@ footer {
     color: rgba(255, 255, 255, 0.88);
     font-weight: 700;
     margin-bottom: 16px;
-    font-size: 0.84rem;
+    font-size: 0.89rem;
 }
 
 .footer-col a {
     display: block;
     color: rgba(255, 255, 255, 0.48);
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     text-decoration: none;
     margin-bottom: 10px;
     transition: color 0.18s;
@@ -1511,7 +1512,7 @@ footer {
 }
 
 .footer-bottom p {
-    font-size: 0.79rem;
+    font-size: 0.84rem;
 }
 
 .footer-badges {
@@ -1615,7 +1616,7 @@ footer {
 
 .modal>p {
     color: var(--text-light);
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     margin-bottom: 24px;
 }
 
@@ -2317,4 +2318,32 @@ footer {
     background: rgba(13, 21, 96, 0.05) !important;
     color: #0d1560 !important;
     font-weight: 700 !important;
+}
+
+/* ── Desktop scroll reveal ───────────────────────────────────────────────── */
+.reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reveal-delay-1 {
+    transition-delay: 0.08s;
+}
+
+.reveal-delay-2 {
+    transition-delay: 0.16s;
+}
+
+.reveal-delay-3 {
+    transition-delay: 0.24s;
+}
+
+.reveal-delay-4 {
+    transition-delay: 0.32s;
 }

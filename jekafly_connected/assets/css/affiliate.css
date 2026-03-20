@@ -280,7 +280,7 @@
 }
 
 .aff-stats-strip .aff-stat span {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--aff-muted);
     font-weight: 500;
     line-height: 1.3;
@@ -428,7 +428,7 @@ section#how-it-works {
 }
 
 .aff-step p {
-    font-size: 0.875rem;
+    font-size: 0.93rem;
     color: var(--aff-muted);
     line-height: 1.65;
 }
@@ -523,7 +523,7 @@ section#how-it-works {
 }
 
 .aff-tier-desc {
-    font-size: 0.83rem;
+    font-size: 0.88rem;
     color: rgba(255, 255, 255, 0.42);
     line-height: 1.6;
     margin-top: 14px;
@@ -586,7 +586,7 @@ section#how-it-works {
 }
 
 .aff-perk p {
-    font-size: 0.875rem;
+    font-size: 0.93rem;
     color: var(--aff-muted);
     line-height: 1.62;
     margin: 0;
@@ -624,7 +624,7 @@ section#how-it-works {
 }
 
 .aff-form-sub {
-    font-size: 0.875rem;
+    font-size: 0.93rem;
     color: var(--aff-muted);
     margin-bottom: 32px;
 }
@@ -670,7 +670,7 @@ section#how-it-works {
 }
 
 .aff-field label {
-    font-size: 0.8rem;
+    font-size: 0.93rem;
     font-weight: 700;
     color: var(--aff-navy);
     letter-spacing: 0.01em;
@@ -727,7 +727,7 @@ section#how-it-works {
 }
 
 .aff-hint {
-    font-size: 0.76rem;
+    font-size: 0.81rem;
     color: #B8C0D8;
 }
 
@@ -752,7 +752,7 @@ section#how-it-works {
 }
 
 .aff-terms-row label {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: var(--aff-muted);
     line-height: 1.55;
     cursor: pointer;
@@ -883,7 +883,7 @@ section#how-it-works {
 }
 
 .aff-status-sub {
-    font-size: 0.84rem;
+    font-size: 0.89rem;
     color: rgba(255, 255, 255, 0.5);
     margin-top: 4px;
 }
@@ -946,7 +946,7 @@ section#how-it-works {
 }
 
 .aff-stat-mini span {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.42);
     text-transform: uppercase;
     letter-spacing: 0.09em;
@@ -964,7 +964,7 @@ section#how-it-works {
 }
 
 .aff-ref-label {
-    font-size: 0.76rem;
+    font-size: 0.81rem;
     color: rgba(255, 255, 255, 0.42);
     white-space: nowrap;
     text-transform: uppercase;
@@ -973,7 +973,7 @@ section#how-it-works {
 
 .aff-ref-code {
     font-family: 'Courier New', monospace;
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     font-weight: 600;
     flex: 1;
     word-break: break-all;
@@ -987,7 +987,7 @@ section#how-it-works {
     border-radius: 8px;
     padding: 8px 16px;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.18s;
@@ -1243,3 +1243,87 @@ section#how-it-works {
     color: currentColor;
     vertical-align: middle;
 }
+
+.btn-aff-back {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1.5px solid #e5e7eb;
+}
+
+.btn-aff-back:hover {
+    background: #e9eaec;
+    border-color: #d1d5db;
+}
+
+.btn-aff-next {
+    background: var(--blue);
+    color: white;
+}
+
+.btn-aff-next:hover {
+    background: var(--blue-dark, #0a1040);
+    transform: translateY(-1px);
+}
+
+/* ── Desktop form layout fixes ──────────────────────────── */
+@media (min-width: 769px) {
+
+    /* Hide mobile-only elements on desktop */
+    .aff-mob-steps,
+    .aff-mob-nav {
+        display: none !important;
+    }
+
+    /* On desktop all steps show at once as a 2-col grid each */
+    .aff-form-step {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 22px;
+        grid-column: span 2;
+    }
+
+    /* Step heading spans full width, acts as section divider */
+    .aff-step-heading {
+        font-family: 'Syne', sans-serif;
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--aff-navy);
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--aff-border);
+        margin-bottom: 4px;
+        grid-column: span 2;
+    }
+
+    .aff-form-step .aff-field-full,
+    .aff-form-step .aff-terms-row {
+        grid-column: span 2;
+    }
+
+    /* Desktop submit button */
+    .aff-desktop-submit {
+        display: block;
+        width: 100%;
+        margin-top: 32px;
+        padding: 16px;
+        background: var(--aff-navy);
+        color: white;
+        border: none;
+        border-radius: 14px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.18s;
+        letter-spacing: 0.01em;
+    }
+
+    .aff-desktop-submit:hover {
+        background: #0a1040;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(13, 21, 96, 0.25);
+    }
+}
+
+/* Show desktop submit button */

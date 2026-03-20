@@ -51,7 +51,7 @@
 }
 
 .draft-banner .meta {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: var(--text-light);
 }
 
@@ -197,7 +197,7 @@
 
 .form-group label {
     display: block;
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     font-weight: 600;
     color: var(--text-light);
     text-transform: uppercase;
@@ -280,7 +280,7 @@
     border: 1.5px solid rgba(14, 14, 184, 0.18);
     color: var(--blue);
     font-weight: 800;
-    font-size: 0.86rem;
+    font-size: 0.91rem;
     cursor: pointer;
     font-family: 'Plus Jakarta Sans', sans-serif;
     transition: all .2s;
@@ -338,7 +338,7 @@
 }
 
 .doc-name {
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     font-weight: 500;
 }
 
@@ -393,7 +393,7 @@
 }
 
 .fee-label {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-light);
 }
 
@@ -435,7 +435,7 @@
 }
 
 .ref-box .ref-label {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     opacity: 0.7;
     text-transform: uppercase;
     letter-spacing: .1em;
@@ -483,7 +483,7 @@
 
 .form-card .sub {
     color: var(--text-light);
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     margin-bottom: 28px;
 }
 
@@ -625,7 +625,7 @@
     color: var(--text-light);
     border: none;
     font-weight: 500;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     cursor: pointer;
     font-family: 'Plus Jakarta Sans', sans-serif;
     transition: color 0.18s;
@@ -692,7 +692,7 @@
 }
 
 .draft-banner .meta {
-    font-size: 0.82rem;
+    font-size: 0.87rem;
     color: var(--text-light);
     margin-top: 2px;
 }
@@ -707,7 +707,7 @@
     border-radius: 12px;
     padding: 16px 18px;
     margin-bottom: 20px;
-    font-size: 0.88rem;
+    font-size: 0.93rem;
     color: #1A2040;
     line-height: 1.5;
 }
@@ -728,7 +728,7 @@
     background: #EEF1FF;
     border: 1.5px solid #C7D4F5;
     border-radius: 6px;
-    font-size: 0.76rem;
+    font-size: 0.81rem;
     font-weight: 600;
     cursor: pointer;
     color: #0D1560;
@@ -800,7 +800,7 @@
 }
 
 .review-ref-label {
-    font-size: 0.72rem;
+    font-size: 0.77rem;
     font-weight: 700;
     color: #8B93B0;
     text-transform: uppercase;
@@ -822,7 +822,7 @@
     background: white;
     border: 1.5px solid #C7D4F5;
     border-radius: 8px;
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     font-weight: 700;
     cursor: pointer;
     color: #0D1560;
@@ -856,12 +856,12 @@
 }
 
 .copy-icon {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 /* Visa preview disclaimer notice */
 .visa-preview-notice {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: #6B7494;
     background: #FFF9EC;
     border: 1.5px solid #F5D88A;
@@ -890,7 +890,7 @@
     }
 
     .apply-header p {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
     }
 
     /* ── Stepper: compact progress bar on mobile ────────────── */
@@ -938,7 +938,7 @@
     }
 
     .form-card .sub {
-        font-size: 0.82rem;
+        font-size: 0.87rem;
         margin-bottom: 20px;
     }
 
@@ -959,7 +959,7 @@
     }
 
     .form-group label {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         margin-bottom: 5px;
     }
 
@@ -1003,7 +1003,7 @@
 
     /* ── Prefill notice ─────────────────────────────────────── */
     #prefill-notice {
-        font-size: 0.8rem;
+        font-size: 0.85rem;
         padding: 10px 12px;
         border-radius: 10px;
     }
@@ -1016,7 +1016,7 @@
 }
 
 .travel-date-hint-text {
-    font-size: 0.78rem;
+    font-size: 0.83rem;
     color: #0D1560;
     margin-top: 4px;
     opacity: 0.7;
