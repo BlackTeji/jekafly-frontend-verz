@@ -25,7 +25,7 @@ async function apiFetch(method, path, body, isFormData = false) {
             return apiFetch(method, path, body, isFormData);
         }
         const stored = localStorage.getItem('jkf_user');
-        if (!stored) {
+        if (!stored && !window.location.pathname.includes('index')) {
             _accessToken = null;
             window.location.href = 'index.html';
         }

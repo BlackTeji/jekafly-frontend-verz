@@ -170,13 +170,14 @@ async function handleLogin() {
 
     closeModal();
     updateNav();
-    showToast('Welcome back,' + res.user.name.split('')[0] + '!');
+    const firstName = (res.user.name || 'there').split(' ')[0];
+    showToast('Welcome back, ' + firstName + '!');
 
     if (window.JKF_afterLoginRedirect && window.JKF_afterLoginRedirect()) return;
 
     setTimeout(() => {
         window.location.href = res.user.role === 'ADMIN' ? 'admin.html' : 'dashboard.html';
-    }, 900);
+    }, 1200);
 }
 
 async function handleRegister() {
