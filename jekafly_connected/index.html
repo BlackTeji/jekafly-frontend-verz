@@ -58,9 +58,10 @@
         <a href="#track" onclick="closeNavMenu()">Track Visa</a>
         <a href="#destinations" onclick="closeNavMenu()">Destinations</a>
         <a href="affiliate.html" onclick="closeNavMenu()" class="nav-affiliate-link">🤝 Become an Affiliate</a>
-        <div class="nav-mobile-cta" id="nav-mobile-cta">
-            <button class="btn-outline" onclick="openModal('login');closeNavMenu()">Login</button>
-            <button class="btn-primary" onclick="openModal('register');closeNavMenu()">Get
+        <div class="nav-mobile-cta" id="nav-mobile-cta" style="display:flex;flex-direction:row;gap:10px;">
+            <button class="btn-outline" style="flex:1;width:auto;"
+                onclick="openModal('login');closeNavMenu()">Login</button>
+            <button class="btn-primary" style="flex:1;width:auto;" onclick="openModal('register');closeNavMenu()">Get
                 Started</button>
         </div>
     </div>
@@ -857,8 +858,7 @@
                         wrapper.parentNode.insertBefore(grid, wrapper);
                         wrapper.remove();
                     }
-                    const clones = grid.querySelectorAll('[aria-hidden="true"]');
-                    clones.forEach(c => c.remove());
+                    grid.querySelectorAll('[aria-hidden="true"]').forEach(c => c.remove());
                     grid.style.cssText = '';
                     setTimeout(initTestiCarousel, 100);
                 }
@@ -1104,12 +1104,10 @@
                     c.classList.remove('mob-fade');
                 });
 
-                const clones = cards.map(c => {
-                    const cl = c.cloneNode(true);
-                    cl.setAttribute('aria-hidden', 'true');
-                    return cl;
-                });
-                clones.forEach(c => grid.appendChild(c));
+                const clones1 = cards.map(c => { const cl = c.cloneNode(true); cl.setAttribute('aria-hidden', 'true'); return cl; });
+                const clones2 = cards.map(c => { const cl = c.cloneNode(true); cl.setAttribute('aria-hidden', 'true'); return cl; });
+                clones1.forEach(c => grid.appendChild(c));
+                clones2.forEach(c => grid.appendChild(c));
 
                 const speed = cards.length * 12;
 
@@ -1119,6 +1117,9 @@
                 wrapper.style.cssText = 'overflow:hidden;width:100%;margin-top:20px;';
                 grid.parentNode.insertBefore(wrapper, grid);
                 wrapper.appendChild(grid);
+
+                const cardW = cards[0].offsetWidth + 14;
+                const totalW = cardW * cards.length;
 
                 grid.style.cssText = `
                 display:flex;
@@ -1141,7 +1142,7 @@
                     s.textContent = `
                     @keyframes testi-marquee {
                         0%   { transform: translateX(0); }
-                        100% { transform: translateX(-50%); }
+                        100% { transform: translateX(-${Math.round(100 / 3)}%); }
                     }
                 `;
                     document.head.appendChild(s);
