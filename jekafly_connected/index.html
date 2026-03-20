@@ -849,6 +849,11 @@
                 const avg = (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1);
                 document.getElementById('reviews-sub').textContent =
                     `${reviews.length} verified review${reviews.length !== 1 ? 's' : ''} · ${avg} average rating`;
+                if (typeof initTestiCarousel === 'function') {
+                    const g = document.getElementById('testi-grid');
+                    if (g) g._carouselRunning = false;
+                    setTimeout(initTestiCarousel, 100);
+                }
             } catch { }
         })();
 
@@ -1042,6 +1047,120 @@
         window.addEventListener('scroll', () => {
             document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 20);
         });
+    </script>
+
+    <script>
+        (function () {
+            if (window.innerWidth > 768) return;
+
+            /* ── ACCORDION: Why Jekafly Visa ──────────────────────── */
+            function initInfoList() {
+                const items = document.querySelectorAll('.info-list li');
+                items.forEach(li => {
+                    const icon = li.querySelector('.icon') ? li.querySelector('.icon').outerHTML : '';
+                    const strong = li.querySelector('strong') ? li.querySelector('strong').textContent : '';
+                    const sub = li.querySelector('.info-sub') ? li.querySelector('.info-sub').outerHTML : '';
+                    li.innerHTML = `
+                    <div class="info-list-header">${icon}<span class="info-list-title">${strong}</span><span class="info-list-chevron">▼</span></div>
+                    ${sub}`;
+                    li.querySelector('.info-list-header').addEventListener('click', function () {
+                        const isOpen = li.classList.contains('open');
+                        document.querySelectorAll('.info-list li.open').forEach(el => el.classList.remove('open'));
+                        if (!isOpen) li.classList.add('open');
+                    });
+                });
+            }
+
+            /* ── ACCORDION: Insurance plans ──────────────────────── */
+            function initInsurancePlans() {
+                const plans = document.querySelectorAll('.ins-plan');
+                plans.forEach(plan => {
+                    plan.addEventListener('click', function () {
+                        const isOpen = plan.classList.contains('mob-open');
+                        plans.forEach(p => p.classList.remove('mob-open'));
+                        if (!isOpen) plan.classList.add('mob-open');
+                    });
+                });
+            }
+
+            /* ── TESTIMONIALS: continuous horizontal scroll ────── */
+            function initTestiCarousel() {
+                if (window.innerWidth > 768) return;
+                const grid = document.getElementById('testi-grid');
+                if (!grid) return;
+                const cards = grid.querySelectorAll('.testi-card');
+                if (cards.length < 2) return;
+                cards.forEach(c => {
+                    c.style.opacity = '1';
+                    c.style.transform = 'none';
+                    c.classList.remove('mob-fade');
+                    c.classList.add('mob-visible');
+                });
+                if (grid._carouselRunning) return;
+                grid._carouselRunning = true;
+                let pos = 0, dir = 1;
+                function tick() {
+                    if (!grid._carouselRunning) return;
+                    const max = grid.scrollWidth - grid.clientWidth;
+                    if (max > 2) {
+                        pos += dir * 0.7;
+                        if (pos >= max) dir = -1;
+                        if (pos <= 0) dir = 1;
+                        grid.scrollLeft = pos;
+                    }
+                    requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            }
+
+            /* ── SCROLL FADE-IN — target everything ──────────────── */
+            function initScrollFade() {
+                const selectors = [
+                    '.service-card',
+                    '.step',
+                    '.dest-card',
+                    '.ins-plan',
+                    '.ins-features .ins-feature',
+                    '.section-header',
+                    '.section-title',
+                    '.checker-form',
+                    '.checker-info',
+                    '.track-wrap',
+                    '.cta-banner',
+                    '.info-list li',
+                    '.hero-content',
+                    '.search-section',
+                    '.destinations',
+                    '.insurance',
+                    '.tracking',
+                    '.how',
+                    '.services',
+                    '.visa-checker'
+                ];
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(e => {
+                        if (e.isIntersecting) {
+                            e.target.classList.add('mob-visible');
+                            observer.unobserve(e.target);
+                        }
+                    });
+                }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
+                selectors.forEach(sel => {
+                    document.querySelectorAll(sel).forEach((el, i) => {
+                        el.classList.add('mob-fade');
+                        if (i > 0) el.style.transitionDelay = (i * 0.07) + 's';
+                        observer.observe(el);
+                    });
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                initInfoList();
+                initInsurancePlans();
+                initScrollFade();
+                setTimeout(initTestiCarousel, 300);
+            });
+        }());
     </script>
 
     <script>
