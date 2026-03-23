@@ -1,4 +1,4 @@
-var API_BASE = 'https://jekafly-api-production.up.railway.app/api/v1';
+var API_BASE = 'https://api.jekafly.com/api/v1';
 
 var _accessToken = null;
 
