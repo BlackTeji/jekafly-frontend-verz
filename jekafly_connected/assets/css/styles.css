@@ -127,6 +127,46 @@ nav {
     align-items: center;
 }
 
+/* ── Nav logged-in state ─────────────────────────────────── */
+.nav-user-hi {
+    font-size: 0.875rem;
+    color: var(--text-light);
+    white-space: nowrap;
+}
+
+.nav-user-hi strong {
+    color: var(--text);
+    font-weight: 700;
+}
+
+.btn-outline-link {
+    padding: 9px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color .2s, background .2s;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-outline-link:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+}
+
+.btn-outline-danger {
+    border-color: #E31E24 !important;
+    color: #E31E24 !important;
+}
+
+
 .nav-toggle {
     display: none;
     background: transparent;

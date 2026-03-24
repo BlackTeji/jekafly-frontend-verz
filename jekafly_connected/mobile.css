@@ -1766,11 +1766,27 @@
         border-radius: 18px;
         padding: 20px var(--mob-pad);
         margin-bottom: 14px;
+        overflow-x: hidden;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .detail-grid {
         grid-template-columns: 1fr 1fr;
         gap: 8px;
+    }
+
+    .detail-value {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        font-size: 0.85rem;
+    }
+
+    .detail-title {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
     }
 
     .consult-grid {
@@ -1861,6 +1877,7 @@
     }
 
     .dash-more-drawer.open {
+        display: block !important;
         transform: translateY(0);
     }
 

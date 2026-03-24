@@ -892,6 +892,7 @@
 
         async function loadApplications() {
             _allApps = await AppStore.getByUser();
+            _allApps.sort((a, b) => new Date(b.travelDate || b.createdAt) - new Date(a.travelDate || a.createdAt));
             const approved = _allApps.filter(a => ['approved', 'delivered'].includes(a.status)).length;
             const pending = _allApps.filter(a => ['received', 'processing', 'embassy'].includes(a.status)).length;
             const unpaid = _allApps.filter(a => !a.paid).length;
