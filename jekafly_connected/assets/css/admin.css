@@ -139,10 +139,51 @@ body {
     box-shadow: 0 4px 20px rgba(13, 21, 96, .07);
 }
 
+
+/* ── WhatsApp-style colored admin stat icons ─────────────── */
 .astat-icon {
-    font-size: 1.4rem;
-    margin-bottom: 8px;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    font-size: 1rem;
 }
+
+/* Application stats */
+.astat:nth-child(1) .astat-icon {
+    background: #e8f0fe;
+    color: #1a56db;
+}
+
+.astat:nth-child(2) .astat-icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.astat:nth-child(3) .astat-icon {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.astat:nth-child(4) .astat-icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.astat:nth-child(5) .astat-icon {
+    background: #cffafe;
+    color: #0891b2;
+}
+
+.astat:nth-child(6) .astat-icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+
 
 .astat-val {
     font-family: 'Syne', sans-serif;

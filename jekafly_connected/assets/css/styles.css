@@ -650,6 +650,129 @@ nav {
     z-index: 1;
 }
 
+/* ── WhatsApp-style colored service icons ────────────────── */
+.service-card:nth-child(1) .service-icon-bg {
+    background: #e8f0fe;
+}
+
+.service-card:nth-child(1) .service-icon {
+    color: #1a56db;
+}
+
+.service-card:nth-child(2) .service-icon-bg {
+    background: #fce7f3;
+}
+
+.service-card:nth-child(2) .service-icon {
+    color: #db2777;
+}
+
+.service-card:nth-child(3) .service-icon-bg {
+    background: #d1fae5;
+}
+
+.service-card:nth-child(3) .service-icon {
+    color: #059669;
+}
+
+.service-card:nth-child(4) .service-icon-bg {
+    background: #ede9fe;
+}
+
+.service-card:nth-child(4) .service-icon {
+    color: #7c3aed;
+}
+
+.service-card:nth-child(5) .service-icon-bg {
+    background: #cffafe;
+}
+
+.service-card:nth-child(5) .service-icon {
+    color: #0891b2;
+}
+
+.service-card:nth-child(6) .service-icon-bg {
+    background: #fef9c3;
+}
+
+.service-card:nth-child(6) .service-icon {
+    color: #ca8a04;
+}
+
+/* Keep hover state clean */
+.service-card:hover .service-icon-bg {
+    filter: brightness(0.93) saturate(1.2);
+    background: unset !important;
+}
+
+/* ── Info-list icons — alternating colors ────────────────── */
+.info-list li:nth-child(1) .icon {
+    background: #e8f0fe;
+    color: #1a56db;
+}
+
+.info-list li:nth-child(2) .icon {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.info-list li:nth-child(3) .icon {
+    background: #fce7f3;
+    color: #db2777;
+}
+
+.info-list li:nth-child(4) .icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.info-list li:nth-child(5) .icon {
+    background: #cffafe;
+    color: #0891b2;
+}
+
+.info-list li:nth-child(6) .icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.info-list li:nth-child(7) .icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.info-list li:nth-child(8) .icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* ── Why Jekafly section icons ────────────────────────────── */
+.why-item:nth-child(1) .icon,
+.why-card:nth-child(1) .icon {
+    background: #e8f0fe;
+    color: #1a56db;
+}
+
+.why-item:nth-child(2) .icon,
+.why-card:nth-child(2) .icon {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.why-item:nth-child(3) .icon,
+.why-card:nth-child(3) .icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.why-item:nth-child(4) .icon,
+.why-card:nth-child(4) .icon {
+    background: #fce7f3;
+    color: #db2777;
+}
+
+
+
 .service-title {
     font-weight: 800;
     font-size: 1.15rem;

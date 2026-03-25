@@ -85,10 +85,93 @@
     border-left-color: var(--blue);
 }
 
+/* ── WhatsApp-style colored nav icons ────────────────────────────── */
 .dash-nav-item .icon {
-    font-size: 1.1rem;
-    width: 22px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform .15s;
 }
+
+.dash-nav-item:hover .icon {
+    transform: scale(1.08);
+}
+
+/* Icon colors per nav item */
+.dash-nav-item[onclick*="applications"] .icon,
+.dash-nav-item[onclick*="'applications'"] .icon {
+    background: #e8f0fe;
+    color: #1a56db;
+}
+
+.dash-nav-item[onclick*="mydocs"] .icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.dash-nav-item[onclick*="documents"] .icon {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.dash-nav-item[onclick*="insurance"] .icon {
+    background: #fce7f3;
+    color: #db2777;
+}
+
+.dash-nav-item[onclick*="track"] .icon {
+    background: #ede9fe;
+    color: #7c3aed;
+}
+
+.dash-nav-item[onclick*="profile"] .icon {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.dash-nav-item[onclick*="flights"] .icon {
+    background: #cffafe;
+    color: #0891b2;
+}
+
+.dash-nav-item[onclick*="hotels"] .icon {
+    background: #fef9c3;
+    color: #ca8a04;
+}
+
+.dash-nav-item[onclick*="apply.html"] .icon {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.dash-nav-item[onclick*="insurance'"] .icon,
+.dash-nav-item[onclick*="Get Insurance"] .icon {
+    background: #fce7f3;
+    color: #db2777;
+}
+
+.dash-nav-item[onclick*="visa'"] .icon,
+.dash-nav-item[onclick*="Visa"] .icon {
+    background: #e0f2fe;
+    color: #0284c7;
+}
+
+.dash-nav-item[onclick*="doLogout"] .icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+/* Active state — slightly deeper tint */
+.dash-nav-item.active .icon {
+    filter: saturate(1.2) brightness(0.95);
+}
+
+
+
 
 .dash-nav-section {
     font-size: 0.7rem;
@@ -134,7 +217,32 @@
 .stat-icon {
     font-size: 1.6rem;
     margin-bottom: 10px;
+    border-radius: 10px;
+    padding: 8px;
 }
+
+/* ── WhatsApp-style colored dashboard stat card icons ───────────── */
+.stat-card:nth-child(1) .stat-icon {
+    background: #e8f0fe;
+    color: #1a56db;
+}
+
+.stat-card:nth-child(2) .stat-icon {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.stat-card:nth-child(3) .stat-icon {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.stat-card:nth-child(4) .stat-icon {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+
 
 .stat-value {
     font-family: 'Syne', sans-serif;

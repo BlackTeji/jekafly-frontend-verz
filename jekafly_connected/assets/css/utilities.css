@@ -2971,3 +2971,30 @@ input[type=file] {
     border-color: #0E0EB8 !important;
     background: #F0F4FF !important;
 }
+
+/* ── WhatsApp-style colored insurance/feature icons ────────────── */
+.ins-plan:nth-child(1) .ins-icon {
+    background: #e8f0fe;
+    color: #1a56db;
+}
+
+.ins-plan:nth-child(2) .ins-icon {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.ins-plan:nth-child(3) .ins-icon {
+    background: #fce7f3;
+    color: #db2777;
+}
+
+.ins-feature .icon {
+    background: #e8f0fe;
+    color: #1a56db;
+}
+
+.step-circle,
+.step-num {
+    background: var(--blue);
+    color: white;
+}
