@@ -1548,23 +1548,16 @@
             }
         }
 
-        async function consultPay(email) {
+        function consultPay(email) {
             const pkg = CONSULT_PACKAGES[_cModalPkg];
-            try {
-                const res = await PaymentStore.initiate(
-                    'CONSULTATION', null, pkg.amount * 100, email,
-                    { package: _cModalPkg, packageName: pkg.name }
-                );
-                if (res?.ok && res.data?.authorizationUrl) {
-                    window.location.href = res.data.authorizationUrl;
-                } else {
-                    throw new Error(res?.error || 'Payment initiation failed');
-                }
-            } catch (e) {
-                const errEl = document.getElementById('consult-pay-error');
-                if (errEl) { errEl.textContent = e.message; errEl.style.display = 'block'; }
-                else alert(e.message);
-            }
+            localStorage.setItem('jkf_pending_payment', JSON.stringify({
+                type: 'consultation',
+                plan: pkg.name,
+                package: _cModalPkg,
+                amount: pkg.amount,
+                email: email,
+            }));
+            window.location.href = 'payment.html';
         }
     </script>
 

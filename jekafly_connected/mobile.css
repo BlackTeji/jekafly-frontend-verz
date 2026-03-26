@@ -2540,8 +2540,9 @@
         background: #fee2e2;
         color: #dc2626;
     }
-    
+
 }
+
 /* ══════════════════════════════════════════════════════════
    MOBILE NAV DRAWER — Premium logged-in menu
    ══════════════════════════════════════════════════════════ */
@@ -2825,56 +2826,10 @@
         padding-top: 14px;
     }
 
-    /* ── Applications search field ────────────────────────── */
-    .dash-search-wrap {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex: 1;
-    }
-
-    .dash-search-field {
-        position: relative;
-        flex: 1;
-    }
-
-    .dash-search-icon {
-        position: absolute;
-        left: 11px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #9BA5C0;
-        pointer-events: none;
-    }
-
+    /* ── Applications search — mobile overrides ─────────────── */
     .dash-search-input {
-        width: 100%;
-        padding: 9px 12px 9px 33px;
-        border: 1.5px solid #E3E5F5;
-        border-radius: 10px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.875rem;
-        color: #0F1124;
-        background: #F8F9FE;
-        outline: none;
-        transition: all .18s;
-        box-shadow: inset 0 1px 3px rgba(13, 21, 96, 0.04);
-    }
-
-    .dash-search-input:focus {
-        border-color: #0D1560;
-        background: white;
-        box-shadow: 0 0 0 3px rgba(13, 21, 96, 0.08);
-    }
-
-    /* On mobile, stack search above action row in table-header */
-    .table-header {
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-
-    .table-header h3 {
-        flex-shrink: 0;
+        font-size: 16px !important;
+        /* prevent iOS zoom */
     }
 
     .dash-search-wrap {

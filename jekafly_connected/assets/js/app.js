@@ -45,19 +45,88 @@ function updateNav() {
           ${isAdmin ? '<a href="admin.html" class="btn-outline btn-outline-link btn-outline-danger">Admin</a>' : ''}
           <button class="btn-primary" onclick="handleLogout()">Logout</button>`;
 
+        const isDashboard = window.location.pathname.includes('dashboard.html');
+
         mobileHtml = `
-          <div class="nav-mobile-user">
-            <div class="nav-mobile-user-greeting">Signed in as <strong>${user.name || first}</strong></div>
-            <a href="dashboard.html" onclick="closeNavMenu()" class="btn-primary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg> My Dashboard
-            </a>
-            ${isAdmin ? `<a href="admin.html" onclick="closeNavMenu()" class="btn-brand">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Admin Panel
-            </a>` : ''}
-            <button onclick="handleLogout();closeNavMenu()" class="btn-outline">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg> Logout
-            </button>
-          </div>`;
+          <div class="nav-mob-menu">
+
+            <div class="nav-mob-user-row">
+              <div class="nav-mob-avatar">${(user.name || 'U').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}</div>
+              <div class="nav-mob-user-text">
+                <div class="nav-mob-name">${user.name || first}</div>
+                <div class="nav-mob-email">${user.email || ''}</div>
+              </div>
+            </div>
+
+            ${isDashboard ? `
+            <div class="nav-mob-divider"></div>
+            <div class="nav-mob-list">
+              <button class="nav-mob-row" onclick="showTab('applications',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#EEF2FF;color:#3B5BDB"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span>
+                <span class="nav-mob-row-label">Applications</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showTab('track',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#F3F0FF;color:#7048E8"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
+                <span class="nav-mob-row-label">Track Visa</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showTab('insurance',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFF0F6;color:#C2255C"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+                <span class="nav-mob-row-label">Insurance</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showTab('mydocs',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFF9DB;color:#E67700"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></span>
+                <span class="nav-mob-row-label">My Documents</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showTab('documents',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#EBFBEE;color:#2F9E44"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/></svg></span>
+                <span class="nav-mob-row-label">Consultation</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showTab('flights',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#E0F7FA;color:#0891B2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z"/></svg></span>
+                <span class="nav-mob-row-label">Flights</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showTab('hotels',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFFDE7;color:#CA8A04"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16"/></svg></span>
+                <span class="nav-mob-row-label">Hotels</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showTab('profile',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#E7F5FF;color:#1C7ED6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21a9 9 0 0 1 18 0"/></svg></span>
+                <span class="nav-mob-row-label">My Profile</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+            ` : ''}
+
+            <div class="nav-mob-divider"></div>
+            <div class="nav-mob-footer">
+              ${isAdmin ? `<a href="admin.html" onclick="closeNavMenu()" class="nav-mob-admin-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Admin Panel
+              </a>` : ''}
+              <div class="nav-mob-action-row">
+                ${isDashboard ? `
+                <a href="apply.html" onclick="closeNavMenu()" class="nav-mob-cta-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  New Application
+                </a>` : `
+                <a href="dashboard.html" onclick="closeNavMenu()" class="nav-mob-cta-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+                  My Dashboard
+                </a>`}
+                <button onclick="handleLogout();closeNavMenu()" class="nav-mob-logout-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  Sign Out
+                </button>
+              </div>
+            </div>
+
+          </div>`
     } else {
         desktopHtml = `
           <button class="btn-outline" onclick="openModal('login')">Login</button>
@@ -208,9 +277,6 @@ function handleInsuranceModal() {
 
     if (!dest || !date || !travellers) { showToast('Please fill in all fields.', 'error'); return; }
 
-    const user = Auth.getCurrent();
-    if (!user) { closeModal(); openModal('login'); showToast('Please login to get insured.', 'error'); return; }
-
     const priceMap = {
         'Basic Plan': window._livePricing?.insuranceBasic || 25000,
         'Standard Plan': window._livePricing?.insuranceStandard || 45000,
@@ -218,6 +284,7 @@ function handleInsuranceModal() {
     };
     const price = priceMap[plan] || 45000;
 
+    // Save intent first — so it survives the login redirect
     localStorage.setItem('jkf_pending_payment', JSON.stringify({
         type: 'insurance',
         plan,
@@ -225,8 +292,20 @@ function handleInsuranceModal() {
         date,
         travellers,
         amount: price * parseInt(travellers, 10),
-        userId: user.id
     }));
+
+    const user = Auth.getCurrent();
+    if (!user) {
+        closeModal();
+        // Redirect to payment.html after login — it will read jkf_pending_payment
+        window.JKF_afterLoginRedirect = function () {
+            window.location.href = 'payment.html';
+            return true;
+        };
+        openModal('login');
+        showToast('Please login to complete your insurance purchase.', 'error');
+        return;
+    }
 
     window.location.href = 'payment.html';
 }

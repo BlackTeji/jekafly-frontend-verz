@@ -993,10 +993,16 @@
         }
 
         function renderAppsPage() {
-            const total = _allApps.length;
+            const filtered = _dashSearchQ
+                ? _allApps.filter(a => {
+                    const dateStr = a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }).toLowerCase() : '';
+                    return (a.ref + a.destination + (a.purpose || '') + dateStr).toLowerCase().includes(_dashSearchQ);
+                })
+                : _allApps;
+            const total = filtered.length;
             const totalPages = Math.ceil(total / DASH_PER_PAGE);
             const start = (_appsPage - 1) * DASH_PER_PAGE;
-            const paged = _allApps.slice(start, start + DASH_PER_PAGE);
+            const paged = filtered.slice(start, start + DASH_PER_PAGE);
 
             let html = '';
 
@@ -1060,7 +1066,13 @@
         }
 
         function dashGoPage(p) {
-            const totalPages = Math.ceil(_allApps.length / DASH_PER_PAGE);
+            const filtered = _dashSearchQ
+                ? _allApps.filter(a => {
+                    const dateStr = a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }).toLowerCase() : '';
+                    return (a.ref + a.destination + (a.purpose || '') + dateStr).toLowerCase().includes(_dashSearchQ);
+                })
+                : _allApps;
+            const totalPages = Math.ceil(filtered.length / DASH_PER_PAGE);
             if (p < 1 || p > totalPages) return;
             _appsPage = p;
             renderAppsPage();
