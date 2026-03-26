@@ -1678,3 +1678,381 @@ tr:hover td {
         border-radius: 10px;
     }
 }
+
+/* ══════════════════════════════════════════════════════════
+   TRACK TAB — Premium redesign
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Search card ─────────────────────────────────────────── */
+.track-search-card {
+    background: white;
+    border: 1.5px solid #EAECF5;
+    border-radius: 20px;
+    padding: 28px 32px 24px;
+    box-shadow: 0 2px 16px rgba(13, 21, 96, 0.05);
+    margin-bottom: 24px;
+}
+
+.track-search-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .09em;
+    color: #9BA5C0;
+    margin-bottom: 10px;
+}
+
+.track-search-row {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    margin-bottom: 20px;
+}
+
+.track-search-field {
+    position: relative;
+    flex: 1;
+}
+
+.track-search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9BA5C0;
+    pointer-events: none;
+}
+
+.track-search-input {
+    width: 100%;
+    height: 50px;
+    padding: 0 16px 0 42px;
+    border: 1.5px solid #E3E5F5;
+    border-radius: 13px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #0D1560;
+    background: #F8F9FE;
+    outline: none;
+    letter-spacing: .04em;
+    transition: all .18s;
+    box-shadow: inset 0 1px 3px rgba(13, 21, 96, 0.04);
+}
+
+.track-search-input::placeholder {
+    font-weight: 400;
+    color: #B8C0D8;
+    letter-spacing: 0;
+}
+
+.track-search-input:focus {
+    border-color: #0D1560;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(13, 21, 96, 0.08);
+}
+
+.track-search-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 24px;
+    height: 50px;
+    background: linear-gradient(135deg, #0D1560, #1520A0);
+    color: white;
+    border: none;
+    border-radius: 13px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: -0.01em;
+    box-shadow: 0 4px 14px rgba(13, 21, 96, 0.28);
+    transition: all .18s cubic-bezier(0.22, 1, 0.36, 1);
+    flex-shrink: 0;
+}
+
+.track-search-btn:hover {
+    background: linear-gradient(135deg, #090F4A, #0D1560);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(13, 21, 96, 0.34);
+}
+
+.track-search-btn:active {
+    transform: translateY(0);
+}
+
+/* ── Quick-ref chips row ─────────────────────────────────── */
+.track-quick-refs-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.track-quick-refs-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #9BA5C0;
+    white-space: nowrap;
+    letter-spacing: -0.01em;
+}
+
+.track-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.track-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    background: #F0F3FF;
+    border: 1.5px solid #D4DAFF;
+    border-radius: 100px;
+    font-family: 'Plus Jakarta Sans', monospace;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #0D1560;
+    cursor: pointer;
+    letter-spacing: .02em;
+    transition: all .15s;
+}
+
+.track-chip:hover {
+    background: #DDE3FF;
+    border-color: #0D1560;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(13, 21, 96, 0.12);
+}
+
+/* ── Result card ─────────────────────────────────────────── */
+.track-result-card {
+    background: white;
+    border: 1.5px solid #EAECF5;
+    border-radius: 20px;
+    padding: 28px 32px;
+    box-shadow: 0 4px 24px rgba(13, 21, 96, 0.07);
+    animation: trackFadeIn .25s ease;
+}
+
+@keyframes trackFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.track-result-dest-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.track-result-dest {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0D1560;
+    letter-spacing: -0.03em;
+}
+
+.track-result-ref {
+    font-size: 0.8rem;
+    color: #9BA5C0;
+    letter-spacing: -0.01em;
+    margin-bottom: 28px;
+    font-family: monospace;
+}
+
+.track-result-ref span {
+    font-weight: 700;
+    color: #6B7494;
+}
+
+/* ── Step progress bar ───────────────────────────────────── */
+.track-stepper {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 24px;
+}
+
+.track-step-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.track-step-track {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.track-step-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #E3E5F5;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #B8C0D8;
+    transition: all .2s;
+    position: relative;
+}
+
+.track-step-item.done .track-step-dot {
+    background: #0CAF60;
+    border-color: #0CAF60;
+    color: white;
+    box-shadow: 0 2px 8px rgba(12, 175, 96, 0.3);
+}
+
+.track-step-item.active .track-step-dot {
+    background: #0D1560;
+    border-color: #0D1560;
+    color: white;
+    box-shadow: 0 0 0 4px rgba(13, 21, 96, 0.12);
+}
+
+.track-step-pulse {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+    animation: trackPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes trackPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: scale(0.7);
+    }
+}
+
+.track-step-line {
+    flex: 1;
+    height: 2px;
+    background: #E3E5F5;
+    margin: 0 2px;
+    transition: background .2s;
+}
+
+.track-step-item.done .track-step-line,
+.track-step-item.done+.track-step-item .track-step-track .track-step-line {
+    background: #0CAF60;
+}
+
+.track-step-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #B8C0D8;
+    text-align: center;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    padding: 0 2px;
+}
+
+.track-step-item.done .track-step-label,
+.track-step-item.active .track-step-label {
+    color: #0D1560;
+    font-weight: 700;
+}
+
+/* ── Status note ─────────────────────────────────────────── */
+.track-result-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 13px 16px;
+    background: #F5F7FF;
+    border: 1.5px solid #E0E5FF;
+    border-radius: 11px;
+    font-size: 0.87rem;
+    color: #3A4060;
+    letter-spacing: -0.01em;
+    line-height: 1.55;
+    margin-top: 4px;
+}
+
+.track-result-note svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: #7B8ED0;
+}
+
+/* ── Not found ───────────────────────────────────────────── */
+.track-not-found {
+    padding: 20px 24px;
+    background: #FEF2F2;
+    border: 1.5px solid #FECACA;
+    border-radius: 13px;
+    font-size: 0.9rem;
+    color: #7F1D1D;
+    letter-spacing: -0.01em;
+}
+
+/* ── Mobile ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+    .track-search-card,
+    .track-result-card {
+        padding: 20px 18px;
+        border-radius: 16px;
+    }
+
+    .track-search-row {
+        flex-direction: column;
+    }
+
+    .track-search-btn {
+        width: 100%;
+        justify-content: center;
+        height: 48px;
+    }
+
+    .track-search-input {
+        height: 48px;
+        font-size: 16px !important;
+    }
+
+    .track-step-label {
+        font-size: 0.62rem;
+    }
+
+    .track-step-dot {
+        width: 26px;
+        height: 26px;
+        font-size: 0.68rem;
+    }
+
+    .track-result-dest {
+        font-size: 1.1rem;
+    }
+}

@@ -76,8 +76,7 @@ function updateNav() {
 
 async function handleLogout() {
     await Auth.logout();
-    updateNav();
-    showToast('Logged out successfully.');
+    window.location.replace('index.html');
 }
 
 

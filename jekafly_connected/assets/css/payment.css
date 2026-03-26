@@ -675,3 +675,326 @@ nav {
         font-size: 16px !important;
     }
 }
+
+/* ══════════════════════════════════════════════════════════
+   PREMIUM UPGRADE — payment page
+   Aligns to Plus Jakarta Sans + Syne design system
+   ══════════════════════════════════════════════════════════ */
+
+/* Override DM Sans/DM Serif to match site fonts */
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.65;
+}
+
+/* ── Page header ─────────────────────────────────────────── */
+.page-eyebrow {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: .12em;
+    color: #E31E24;
+}
+
+.page-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0D1560;
+    line-height: 1.1;
+}
+
+.page-sub {
+    font-size: 0.92rem;
+    color: #9BA5C0;
+    letter-spacing: -0.01em;
+    line-height: 1.65;
+}
+
+/* ── Destination card ────────────────────────────────────── */
+.dest-card {
+    background: linear-gradient(145deg, #0a1f44 0%, #0f2d5e 60%, #0D1560 100%);
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 8px 32px rgba(13, 21, 96, 0.2);
+}
+
+.dest-card-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.dest-card-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.1rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.dest-card-amount small {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+/* ── Line items ──────────────────────────────────────────── */
+.line-items {
+    border-radius: 16px;
+    border: 1.5px solid #EAECF5;
+    box-shadow: 0 2px 12px rgba(13, 21, 96, 0.04);
+    overflow: hidden;
+}
+
+.line-item {
+    padding: 14px 22px;
+    font-size: 0.9rem;
+    letter-spacing: -0.01em;
+}
+
+.line-item .li-label {
+    color: #9BA5C0;
+    font-weight: 500;
+}
+
+.line-item .li-val {
+    font-weight: 700;
+    color: #0F1124;
+    letter-spacing: -0.01em;
+}
+
+.line-item.total-line {
+    background: #F8F9FE;
+    border-top: 2px solid #EEF0F8;
+    padding: 18px 22px;
+}
+
+.line-item.total-line .li-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #0F1124;
+}
+
+.line-item.total-line .li-val {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #E31E24;
+    letter-spacing: -0.02em;
+}
+
+/* ── Payment box ─────────────────────────────────────────── */
+.pay-box {
+    border-radius: 20px;
+    border: 1.5px solid #EAECF5;
+    box-shadow: 0 8px 32px rgba(13, 21, 96, 0.08);
+    overflow: hidden;
+    background: white;
+}
+
+.pay-box-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0D1560;
+}
+
+.pay-box-sub {
+    font-size: 0.85rem;
+    color: #9BA5C0;
+    letter-spacing: -0.01em;
+}
+
+.pay-total-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: #0D1560;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+.pay-total-currency {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #9BA5C0;
+}
+
+/* ── Pay button ──────────────────────────────────────────── */
+.btn-pay {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 14px;
+    padding: 18px 24px;
+    letter-spacing: -0.01em;
+    background: linear-gradient(135deg, #e8613a 0%, #c04e2a 100%);
+    box-shadow: 0 6px 24px rgba(232, 97, 58, 0.4);
+    transition: transform .16s, box-shadow .16s;
+}
+
+.btn-pay:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 36px rgba(232, 97, 58, 0.5);
+}
+
+/* ── Trust badges ────────────────────────────────────────── */
+.trust-badge {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.71rem;
+    font-weight: 600;
+    color: #9BA5C0;
+    background: #F8F9FE;
+    border: 1.5px solid #EAECF5;
+    border-radius: 100px;
+    padding: 4px 12px;
+    letter-spacing: -0.01em;
+}
+
+/* ── Success modal ───────────────────────────────────────── */
+.success-modal {
+    border-radius: 24px;
+    padding: 48px 40px;
+    box-shadow: 0 32px 80px rgba(0, 0, 0, 0.22);
+}
+
+.success-modal h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #0D1560;
+    letter-spacing: -0.03em;
+    margin-bottom: 8px;
+}
+
+.success-modal p {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.92rem;
+    color: #9BA5C0;
+    letter-spacing: -0.01em;
+    line-height: 1.65;
+}
+
+.success-icon-wrap {
+    width: 80px;
+    height: 80px;
+    border-radius: 22px;
+    background: #F0FDF4;
+    box-shadow: 0 4px 20px rgba(22, 163, 74, 0.18);
+    margin-bottom: 24px;
+}
+
+/* ── Receipt ─────────────────────────────────────────────── */
+.receipt {
+    border-radius: 14px;
+    border: 1.5px solid #EAECF5;
+    background: #F8F9FE;
+    box-shadow: 0 2px 8px rgba(13, 21, 96, 0.04);
+}
+
+.receipt-row {
+    padding: 12px 18px;
+    border-bottom: 1px solid #EEF0F8;
+    font-size: 0.87rem;
+    letter-spacing: -0.01em;
+}
+
+.receipt-row .rl {
+    color: #9BA5C0;
+}
+
+.receipt-row .rv {
+    font-weight: 700;
+    color: #0F1124;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.receipt-row .rv.amount {
+    color: #16a34a;
+    font-size: 1rem;
+}
+
+/* ── Action buttons ──────────────────────────────────────── */
+.btn-dashboard {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #0D1560;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    transition: all .18s;
+}
+
+.btn-dashboard:hover {
+    background: #090F4A;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(13, 21, 96, 0.28);
+}
+
+.btn-home {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    border-radius: 12px;
+    border: 1.5px solid #EAECF5;
+    padding: 13px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #9BA5C0;
+    letter-spacing: -0.01em;
+    transition: all .16s;
+}
+
+.btn-home:hover {
+    border-color: #0D1560;
+    color: #0D1560;
+    background: #F0F3FF;
+}
+
+/* ── Processing state ────────────────────────────────────── */
+.processing-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
+    color: #0D1560;
+}
+
+.processing-sub {
+    font-size: 0.87rem;
+    color: #9BA5C0;
+    letter-spacing: -0.01em;
+}
+
+.spinner {
+    border-color: #EAECF5;
+    border-top-color: #e8613a;
+    width: 40px;
+    height: 40px;
+}
+
+/* ── Included strip ──────────────────────────────────────── */
+.included-strip {
+    border-radius: 12px;
+    border: 1.5px solid #BBF7D0;
+    box-shadow: 0 2px 8px rgba(22, 163, 74, 0.08);
+    font-size: 0.87rem;
+    letter-spacing: -0.01em;
+    padding: 14px 18px;
+}
+
+@media (max-width: 760px) {
+    .pay-box {
+        border-radius: 20px;
+    }
+
+    .dest-card {
+        border-radius: 18px;
+    }
+}

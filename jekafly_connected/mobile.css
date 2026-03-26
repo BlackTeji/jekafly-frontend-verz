@@ -1728,29 +1728,6 @@
         margin-bottom: 14px;
     }
 
-    .dash-mobile-tabbar {
-        display: flex !important;
-        z-index: 950;
-    }
-
-    /* Override inline style on mobile */
-    #dash-tabbar {
-        display: flex !important;
-    }
-
-
-    /* ── WhatsApp-style colored tab bar icons ─────────────────────── */
-    .dash-tab-btn .tab-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: var(--off-white);
-        transition: transform .15s, background .15s;
-    }
-
     .dash-tab-btn.active .tab-icon {
         transform: scale(1.08);
     }
@@ -2564,4 +2541,405 @@
         color: #dc2626;
     }
     
+}
+/* ══════════════════════════════════════════════════════════
+   MOBILE NAV DRAWER — Premium logged-in menu
+   ══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+    /* Drawer: taller, scrollable, frosted */
+    .nav-mobile-drawer {
+        max-height: 92vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 32px;
+    }
+
+    /* Outer wrapper — uniform padding */
+    .nav-mob-menu {
+        display: flex;
+        flex-direction: column;
+        padding: 4px 0 0;
+    }
+
+    /* ── User row ─────────────────────────────────────────── */
+    .nav-mob-user-row {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 18px 4px 20px;
+    }
+
+    .nav-mob-avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 13px;
+        background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
+        color: white;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 3px 12px rgba(13, 21, 96, 0.3);
+    }
+
+    .nav-mob-user-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        overflow: hidden;
+    }
+
+    .nav-mob-name {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #0D1560;
+        letter-spacing: -0.02em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .nav-mob-email {
+        font-size: 0.78rem;
+        color: #9BA5C0;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* ── Divider ──────────────────────────────────────────── */
+    .nav-mob-divider {
+        height: 1px;
+        background: #EEF0F8;
+        margin: 0 -4px;
+    }
+
+    /* ── Feature list ─────────────────────────────────────── */
+    .nav-mob-list {
+        display: flex;
+        flex-direction: column;
+        padding: 8px 0;
+        gap: 1px;
+    }
+
+    .nav-mob-row {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        width: 100%;
+        padding: 11px 8px;
+        background: transparent;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        text-align: left;
+        transition: background .14s;
+    }
+
+    .nav-mob-row:active {
+        background: rgba(13, 21, 96, 0.05);
+    }
+
+    .nav-mob-row-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .nav-mob-row-label {
+        flex: 1;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #1A2040;
+        letter-spacing: -0.01em;
+    }
+
+    .nav-mob-row-arrow {
+        color: #D0D6E8;
+        flex-shrink: 0;
+    }
+
+    /* ── CTA button ───────────────────────────────────────── */
+    .nav-mob-cta-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin: 14px 0 6px;
+        padding: 14px;
+        background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
+        color: white;
+        border-radius: 14px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.92rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        box-shadow: 0 4px 16px rgba(13, 21, 96, 0.28);
+        transition: opacity .15s, transform .15s;
+    }
+
+    .nav-mob-cta-btn:active {
+        opacity: 0.9;
+        transform: scale(0.99);
+    }
+
+    /* ── Footer row (admin + logout) ──────────────────────── */
+    .nav-mob-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-top: 14px;
+    }
+
+    .nav-mob-admin-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 12px;
+        background: rgba(13, 21, 96, 0.05);
+        border: 1.5px solid rgba(13, 21, 96, 0.1);
+        border-radius: 12px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.87rem;
+        font-weight: 700;
+        color: #0D1560;
+        text-decoration: none;
+        letter-spacing: -0.01em;
+        transition: background .14s;
+    }
+
+    .nav-mob-admin-btn:active {
+        background: rgba(13, 21, 96, 0.09);
+    }
+
+    .nav-mob-logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        width: 100%;
+        padding: 12px;
+        background: rgba(227, 30, 36, 0.05);
+        border: 1.5px solid rgba(227, 30, 36, 0.15);
+        border-radius: 12px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.87rem;
+        font-weight: 700;
+        color: #E31E24;
+        cursor: pointer;
+        letter-spacing: -0.01em;
+        transition: background .14s;
+    }
+
+    .nav-mob-logout-btn:active {
+        background: rgba(227, 30, 36, 0.1);
+    }
+
+    /* ── Hide bottom drawer remnants ──────────────────────── */
+    .dash-mobile-tabbar,
+    .dash-more-drawer,
+    .dash-more-overlay,
+    #dash-tabbar {
+        display: none !important;
+    }
+}
+
+/* ── Nav footer action row: New Application + Sign Out side by side ── */
+@media (max-width: 768px) {
+
+    .nav-mob-action-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 0;
+    }
+
+    /* CTA button — flush in action row */
+    .nav-mob-cta-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 13px 10px;
+        background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
+        color: white;
+        border-radius: 13px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.83rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        box-shadow: 0 3px 12px rgba(13, 21, 96, 0.25);
+        text-align: center;
+        transition: opacity .15s, transform .15s;
+    }
+
+    .nav-mob-cta-btn:active {
+        opacity: 0.88;
+        transform: scale(0.98);
+    }
+
+    /* Sign Out button — flush in action row */
+    .nav-mob-logout-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: 100%;
+        padding: 13px 10px;
+        background: rgba(227, 30, 36, 0.05);
+        border: 1.5px solid rgba(227, 30, 36, 0.18);
+        border-radius: 13px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.83rem;
+        font-weight: 700;
+        color: #E31E24;
+        cursor: pointer;
+        letter-spacing: -0.01em;
+        transition: background .14s;
+    }
+
+    .nav-mob-logout-btn:active {
+        background: rgba(227, 30, 36, 0.1);
+    }
+
+    /* Footer spacing */
+    .nav-mob-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding-top: 14px;
+    }
+
+    /* ── Applications search field ────────────────────────── */
+    .dash-search-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+    }
+
+    .dash-search-field {
+        position: relative;
+        flex: 1;
+    }
+
+    .dash-search-icon {
+        position: absolute;
+        left: 11px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9BA5C0;
+        pointer-events: none;
+    }
+
+    .dash-search-input {
+        width: 100%;
+        padding: 9px 12px 9px 33px;
+        border: 1.5px solid #E3E5F5;
+        border-radius: 10px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.875rem;
+        color: #0F1124;
+        background: #F8F9FE;
+        outline: none;
+        transition: all .18s;
+        box-shadow: inset 0 1px 3px rgba(13, 21, 96, 0.04);
+    }
+
+    .dash-search-input:focus {
+        border-color: #0D1560;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(13, 21, 96, 0.08);
+    }
+
+    /* On mobile, stack search above action row in table-header */
+    .table-header {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .table-header h3 {
+        flex-shrink: 0;
+    }
+
+    .dash-search-wrap {
+        width: 100%;
+    }
+
+    /* ── Pagination — keep 5/page, tighter controls on mobile ─ */
+    .dash-pagination {
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .dash-page-info {
+        font-size: 0.78rem;
+        color: #9BA5C0;
+        text-align: center;
+    }
+
+    .dash-page-btns {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        flex-wrap: wrap;
+    }
+
+    .dash-page-btn {
+        min-width: 36px;
+        height: 36px;
+        padding: 0 10px;
+        font-size: 0.82rem;
+        border-radius: 9px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1.5px solid #E3E5F5;
+        background: white;
+        color: #3A4060;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        transition: all .15s;
+    }
+
+    .dash-page-btn.active {
+        background: linear-gradient(135deg, #0D1560, #1520A0);
+        border-color: #0D1560;
+        color: white;
+        box-shadow: 0 2px 8px rgba(13, 21, 96, 0.25);
+    }
+
+    .dash-page-btn.disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+
+    .dash-page-ellipsis {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 36px;
+        color: #9BA5C0;
+        font-size: 0.85rem;
+    }
 }

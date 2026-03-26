@@ -233,8 +233,20 @@
                     <div class="table-card">
                         <div class="table-header">
                             <h3>All Applications</h3>
-                            <button class="btn-sm" onclick="window.location.href='apply.html'">+ New
-                                Application</button>
+                            <div class="dash-search-wrap">
+                                <div class="dash-search-field">
+                                    <svg class="dash-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="m21 21-4.35-4.35" />
+                                    </svg>
+                                    <input type="text" id="dash-app-search" class="dash-search-input"
+                                        placeholder="Search applications..." oninput="dashFilterApps()"
+                                        autocomplete="off" />
+                                </div>
+                                <button class="btn-sm" onclick="window.location.href='apply.html'">+ New</button>
+                            </div>
                         </div>
                         <div id="applications-table"></div>
                     </div>
@@ -451,121 +463,156 @@
 
                 <!-- ── INSURANCE TAB ────────────────────────────────── -->
                 <div id="tab-insurance" class="tab-panel-hidden">
-                    <div class="dash-title">My Insurance</div>
-                    <p class="dash-subtitle">All your active and past travel insurance policies.</p>
-
-                    <div id="insurance-content"></div>
-
-                    <div id="ins-purchase-section">
-                        <button class="btn-next" onclick="toggleInsPurchase()" id="ins-purchase-toggle"><svg
-                                xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    <div class="ins-tab-header">
+                        <div>
+                            <div class="dash-title">My Insurance</div>
+                            <p class="dash-subtitle">Your active and past travel insurance policies.</p>
+                        </div>
+                        <button class="ins-get-btn" onclick="toggleInsPurchase()" id="ins-purchase-toggle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
                                 <path
                                     d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-                            </svg> Get Travel
-                            Insurance <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            </svg>
+                            Get Insurance
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12" />
                                 <polyline points="12 5 19 12 12 19" />
-                            </svg></button>
+                            </svg>
+                        </button>
+                    </div>
 
-                        <div id="ins-purchase-form" class="dash-section-card mt-16 hidden">
-                            <div class="tab-section-title mb-16">Get Travel Insurance</div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Destination Region</label>
-                                    <select id="dash-ins-dest">
-                                        <option>Worldwide</option>
-                                        <option>Schengen Only</option>
-                                        <option>UK Only</option>
-                                        <option>Middle East</option>
-                                        <option>Africa</option>
-                                        <option>Asia</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Departure Date</label>
-                                    <input type="date" id="dash-ins-date" />
-                                </div>
-                                <div class="form-group">
-                                    <label>Number of Travellers</label>
-                                    <input type="number" id="dash-ins-travellers" value="1" min="1" max="10" />
-                                </div>
+                    <div id="ins-purchase-form" class="ins-purchase-card hidden">
+                        <div class="ins-purchase-card-header">
+                            <div>
+                                <div class="ins-purchase-title">Get Travel Insurance</div>
+                                <div class="ins-purchase-sub">Cover your trip with a flexible, affordable plan.</div>
                             </div>
-                            <div class="tab-section-title mb-12 mt-8">Select Plan</div>
-                            <div class="consult-grid">
-                                <div class="consult-pkg consult-card" id="dash-ins-basic"
-                                    onclick="selectDashIns('basic',this)">
-                                    <div class="consult-card-icon"><svg width="18" height="18" viewBox="0 0 24 24"
-                                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                            stroke-linejoin="round">
-                                            <path
-                                                d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6 6 6 0 006-6V4a2 2 0 00-2-2h-1a.2.2 0 10.3.3" />
-                                            <path d="M8 15v1a6 6 0 006 6v0a6 6 0 006-6v-4" />
-                                            <circle cx="20" cy="10" r="2" />
-                                        </svg></div>
-                                    <div class="consult-card-name">Basic</div>
-                                    <div class="consult-card-desc">Medical + Baggage</div>
-                                    <div class="consult-card-price" id="dash-ins-price-basic">₦25,000</div>
-                                    <div class="consult-card-period">per person</div>
-                                </div>
-                                <div class="consult-pkg consult-card selected" id="dash-ins-standard"
-                                    onclick="selectDashIns('standard',this)">
-                                    <div class="consult-card-badge">POPULAR</div>
-                                    <div class="consult-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18"
-                                            height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path
-                                                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-                                        </svg></div>
-                                    <div class="consult-card-name">Standard</div>
-                                    <div class="consult-card-desc">Medical + Cancellation + Baggage</div>
-                                    <div class="consult-card-price" id="dash-ins-price-standard">₦45,000</div>
-                                    <div class="consult-card-period">per person</div>
-                                </div>
-                                <div class="consult-pkg consult-card" id="dash-ins-premium"
-                                    onclick="selectDashIns('premium',this)">
-                                    <div class="consult-card-icon">⭐</div>
-                                    <div class="consult-card-name">Premium</div>
-                                    <div class="consult-card-desc">All coverage + Adventure + COVID</div>
-                                    <div class="consult-card-price" id="dash-ins-price-premium">₦80,000</div>
-                                    <div class="consult-card-period">per person</div>
-                                </div>
+                            <button class="ins-cancel-btn" onclick="toggleInsPurchase()">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round">
+                                    <line x1="18" y1="6" x2="6" y2="18" />
+                                    <line x1="6" y1="6" x2="18" y2="18" />
+                                </svg>
+                                Cancel
+                            </button>
+                        </div>
+                        <div class="form-row ins-trip-fields">
+                            <div class="form-group">
+                                <label>Destination Region</label>
+                                <select id="dash-ins-dest">
+                                    <option>Worldwide</option>
+                                    <option>Schengen Only</option>
+                                    <option>UK Only</option>
+                                    <option>Middle East</option>
+                                    <option>Africa</option>
+                                    <option>Asia</option>
+                                </select>
                             </div>
-                            <div class="mt-16">
-                                <button class="btn-next w-full" onclick="startDashInsPayment()">Proceed to Payment
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="5" y1="12" x2="19" y2="12" />
-                                        <polyline points="12 5 19 12 12 19" />
-                                    </svg></button>
+                            <div class="form-group">
+                                <label>Departure Date</label>
+                                <input type="date" id="dash-ins-date" />
+                            </div>
+                            <div class="form-group">
+                                <label>Number of Travellers</label>
+                                <input type="number" id="dash-ins-travellers" value="1" min="1" max="10" />
                             </div>
                         </div>
+                        <div class="ins-plan-label-row">Select a Plan</div>
+                        <div class="consult-grid">
+                            <div class="consult-pkg consult-card" id="dash-ins-basic"
+                                onclick="selectDashIns('basic',this)">
+                                <div class="consult-card-icon"><svg width="18" height="18" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path
+                                            d="M4.8 2.3A.3.3 0 105 2H4a2 2 0 00-2 2v5a6 6 0 006 6 6 6 0 006-6V4a2 2 0 00-2-2h-1a.2.2 0 10.3.3" />
+                                        <path d="M8 15v1a6 6 0 006 6v0a6 6 0 006-6v-4" />
+                                        <circle cx="20" cy="10" r="2" />
+                                    </svg></div>
+                                <div class="consult-card-name">Basic</div>
+                                <div class="consult-card-desc">Medical + Baggage</div>
+                                <div class="consult-card-price" id="dash-ins-price-basic">&#8358;25,000</div>
+                                <div class="consult-card-period">per person</div>
+                            </div>
+                            <div class="consult-pkg consult-card selected" id="dash-ins-standard"
+                                onclick="selectDashIns('standard',this)">
+                                <div class="consult-card-badge">POPULAR</div>
+                                <div class="consult-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                        height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path
+                                            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                                    </svg></div>
+                                <div class="consult-card-name">Standard</div>
+                                <div class="consult-card-desc">Medical + Cancellation + Baggage</div>
+                                <div class="consult-card-price" id="dash-ins-price-standard">&#8358;45,000</div>
+                                <div class="consult-card-period">per person</div>
+                            </div>
+                            <div class="consult-pkg consult-card" id="dash-ins-premium"
+                                onclick="selectDashIns('premium',this)">
+                                <div class="consult-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                        height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon
+                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                    </svg></div>
+                                <div class="consult-card-name">Premium</div>
+                                <div class="consult-card-desc">All coverage + Adventure + COVID</div>
+                                <div class="consult-card-price" id="dash-ins-price-premium">&#8358;80,000</div>
+                                <div class="consult-card-period">per person</div>
+                            </div>
+                        </div>
+                        <div class="mt-16">
+                            <button class="btn-next w-full" onclick="startDashInsPayment()">Proceed to Payment <svg
+                                    width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                    <polyline points="12 5 19 12 12 19" />
+                                </svg></button>
+                        </div>
                     </div>
+
+                    <div id="insurance-content"></div>
                 </div>
 
                 <!-- ── TRACK TAB ────────────────────────────────────── -->
                 <div id="tab-track" class="tab-panel-hidden">
                     <div class="dash-title">Track Visa</div>
-                    <p class="dash-subtitle">Enter your reference number to see real-time status updates.</p>
-                    <div class="dash-section-card">
-                        <div class="dash-track-wrap">
-                            <input type="text" id="dash-track-ref" placeholder="e.g. JKF-2024-000001"
-                                class="dash-track-input" />
-                            <button onclick="dashTrack()" class="btn-dash-track">Track <svg width="14" height="14"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
+                    <p class="dash-subtitle">Enter your reference number to see live status updates.</p>
+
+                    <div class="track-search-card">
+                        <div class="track-search-label">Reference Number</div>
+                        <div class="track-search-row">
+                            <div class="track-search-field">
+                                <svg class="track-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.35-4.35" />
+                                </svg>
+                                <input type="text" id="dash-track-ref" class="track-search-input"
+                                    placeholder="e.g. JKF-2024-000001" autocomplete="off" autocapitalize="characters"
+                                    spellcheck="false" onkeydown="if(event.key==='Enter')dashTrack()" />
+                            </div>
+                            <button onclick="dashTrack()" class="track-search-btn">
+                                Track Status
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                     <line x1="5" y1="12" x2="19" y2="12" />
                                     <polyline points="12 5 19 12 12 19" />
-                                </svg></button>
+                                </svg>
+                            </button>
                         </div>
-                        <div id="dash-track-result"></div>
-                        <div class="dash-quick-refs">
-                            <p class="dash-quick-refs-label">Your applications:</p>
-                            <div id="quick-refs"></div>
+                        <div class="track-quick-refs-row">
+                            <span class="track-quick-refs-label">Quick access:</span>
+                            <div id="quick-refs" class="track-chips"></div>
                         </div>
                     </div>
+
+                    <div id="dash-track-result"></div>
                 </div>
 
                 <!-- ── PROFILE TAB ───────────────────────────────────── -->
@@ -888,7 +935,42 @@
 
         let _allApps = [];
         let _appsPage = 1;
-        const DASH_PER_PAGE = 10;
+        const DASH_PER_PAGE = 5;
+        const PAGE_SIZE = 5;
+
+        function _buildPager(total, page, setPageFn, containerId) {
+            if (total <= PAGE_SIZE) return '';
+            const totalPages = Math.ceil(total / PAGE_SIZE);
+            const from = (page - 1) * PAGE_SIZE + 1;
+            const to = Math.min(page * PAGE_SIZE, total);
+            let btns = '';
+            btns += `<button class="dash-page-btn ${page === 1 ? 'disabled' : ''}" onclick="${setPageFn}(${page - 1})" ${page === 1 ? 'disabled' : ''}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>`;
+            const delta = 1;
+            let pages = new Set([1, totalPages]);
+            for (let i = Math.max(2, page - delta); i <= Math.min(totalPages - 1, page + delta); i++) pages.add(i);
+            let prev = 0;
+            [...pages].sort((a, b) => a - b).forEach(p => {
+                if (prev && p - prev > 1) btns += '<span class="dash-page-ellipsis">…</span>';
+                btns += `<button class="dash-page-btn ${p === page ? 'active' : ''}" onclick="${setPageFn}(${p})">${p}</button>`;
+                prev = p;
+            });
+            btns += `<button class="dash-page-btn ${page === totalPages ? 'disabled' : ''}" onclick="${setPageFn}(${page + 1})" ${page === totalPages ? 'disabled' : ''}><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+            return `<div class="dash-pagination"><span class="dash-page-info">Showing ${from}–${to} of ${total}</span><div class="dash-page-btns">${btns}</div></div>`;
+        }
+
+        function _paginate(items, page) {
+            const start = (page - 1) * PAGE_SIZE;
+            return items.slice(start, start + PAGE_SIZE);
+        }
+
+        function doLogout() { Auth.logout(); window.location.replace('index.html'); }
+
+        let _dashSearchQ = '';
+        function dashFilterApps() {
+            _dashSearchQ = (document.getElementById('dash-app-search')?.value || '').toLowerCase().trim();
+            _appsPage = 1;
+            renderAppsPage();
+        }
 
         async function loadApplications() {
             _allApps = await AppStore.getByUser();
@@ -1396,23 +1478,32 @@
 
         async function loadVault() {
             const vault = await DocStore.getVault();
+            _vaultFiles = vault;
             vaultFiles = vault;
             const count = document.getElementById('vault-count');
             if (count) count.textContent = vault.length + ' file' + (vault.length !== 1 ? 's' : '');
+            _vaultPage = 1;
+            renderVaultPage();
+        }
+
+        let _vaultPage = 1, _vaultFiles = [];
+        function renderVaultPage() {
             const list = document.getElementById('vault-list');
             if (!list) return;
-            if (vault.length === 0) {
+            if (_vaultFiles.length === 0) {
                 list.innerHTML = '<div class="empty-state"><div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/><polyline points="12 13 15 16 18 13"/><line x1="15" y1="16" x2="15" y2="10"/></svg></div><h3>No documents yet</h3><p>Upload documents from the section above or from an application.</p></div>';
                 return;
             }
+            const paged = _paginate(_vaultFiles, _vaultPage);
             list.innerHTML = `<table><thead><tr><th>File</th><th>Application</th><th>Uploaded</th><th></th></tr></thead><tbody>` +
-                vault.map(f => `<tr>
-            <td><span class="file-icon-sm">${f.mimeType && f.mimeType.includes('pdf') ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>'}</span> ${f.name}</td>
+                paged.map(f => `<tr>
+            <td><span class="file-icon-sm">${f.mimeType && f.mimeType.includes('pdf') ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>'} ${f.name}</span></td>
             <td>${f.ref || '<span class="text-muted">General</span>'}</td>
             <td>${new Date(f.uploadedAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
             <td><button class="btn-table-view" onclick="removeVaultFile('${f.id}')">Remove</button></td>
-        </tr>`).join('') + `</tbody></table>`;
+        </tr>`).join('') + `</tbody></table>` + _buildPager(_vaultFiles.length, _vaultPage, 'vaultGoPage', 'vault-list');
         }
+        function vaultGoPage(p) { const t = Math.ceil(_vaultFiles.length / PAGE_SIZE); if (p < 1 || p > t) return; _vaultPage = p; renderVaultPage(); }
 
         async function removeVaultFile(id) {
             await DocStore.remove(id);
@@ -1421,17 +1512,18 @@
         }
 
 
-        async function loadInsurance() {
-            const policies = await InsuranceStore.getAll();
+        let _insPage = 1, _insPoliciesAll = [];
+        function renderInsurancePage() {
             const container = document.getElementById('insurance-content');
             if (!container) return;
-            if (policies.length === 0) {
+            if (_insPoliciesAll.length === 0) {
                 container.innerHTML = `<div class="empty-state"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div><h3>No insurance policies yet</h3><p>Purchase travel insurance to see your active policies here.</p></div>`;
                 return;
             }
-            _insurancePolicies = policies;
-            if (policies.length) console.log('[Jekafly] Insurance policy fields:', Object.keys(policies[0]), policies[0]);
-            container.innerHTML = `<div class="ins-policies-grid">` + policies.map((p, _idx) => `
+            const paged = _paginate(_insPoliciesAll, _insPage);
+            container.innerHTML = `<div class="ins-policies-grid">` + paged.map((p, _idx) => {
+                const globalIdx = (_insPage - 1) * PAGE_SIZE + _idx;
+                return `
         <div class="ins-policy-card">
             <div class="ins-policy-header">
                 <div class="ins-policy-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
@@ -1449,9 +1541,20 @@
                 <div class="ins-policy-row"><span>Issued</span><strong>${new Date(p.purchasedAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</strong></div>
             </div>
             <div class="mt-12">
-                <button onclick="downloadInsurancePdf(_insurancePolicies[${_idx}])" class="btn-outline-sm w-full">⬇ Download Policy PDF</button>
+                <button onclick="downloadInsurancePdf(_insurancePolicies[${globalIdx}])" class="btn-outline-sm w-full">⬇ Download Policy PDF</button>
             </div>
-        </div>`).join('') + `</div>`;
+        </div>`;
+            }).join('') + `</div>` + _buildPager(_insPoliciesAll.length, _insPage, 'insGoPage', 'insurance-content');
+        }
+        function insGoPage(p) { const t = Math.ceil(_insPoliciesAll.length / PAGE_SIZE); if (p < 1 || p > t) return; _insPage = p; renderInsurancePage(); }
+
+        async function loadInsurance() {
+            const policies = await InsuranceStore.getAll();
+            _insPoliciesAll = policies;
+            _insurancePolicies = policies;
+            _insPage = 1;
+            if (policies.length) console.log('[Jekafly] Insurance policy fields:', Object.keys(policies[0]), policies[0]);
+            renderInsurancePage();
         }
 
 
@@ -1460,12 +1563,10 @@
 
         function toggleInsPurchase() {
             const form = document.getElementById('ins-purchase-form');
-            const btn = document.getElementById('ins-purchase-toggle');
             const open = form.classList.contains('hidden');
             form.classList.toggle('hidden', !open);
-            btn.innerHTML = open ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Cancel' : '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg> Get Travel Insurance <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
             if (open) {
-
+                form.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 PricingStore.get().then(p => {
                     if (!p) return;
                     document.getElementById('dash-ins-price-basic').textContent = '₦' + (p.insuranceBasic || 25000).toLocaleString();
@@ -1648,7 +1749,7 @@
             const apps = await AppStore.getByUser();
             const container = document.getElementById('quick-refs');
             if (apps.length === 0) { container.innerHTML = '<p class="doc-empty">No applications yet.</p>'; return; }
-            container.innerHTML = apps.map(a => `<span onclick="quickFillRef('${a.ref}')" class="quick-ref-chip">${a.ref}</span>`).join('');
+            container.innerHTML = apps.map(a => `<button onclick="quickFillRef('${a.ref}')" class="track-chip">${a.ref}</button>`).join('');
         }
 
         function quickFillRef(ref) { document.getElementById('dash-track-ref').value = ref; dashTrack(); }
@@ -1662,18 +1763,31 @@
             const steps = ['received', 'processing', 'embassy', 'approved', 'delivered'];
             const labels = ['Received', 'Docs Verified', 'Embassy Review', 'Decision', 'Delivered'];
             const curIdx = steps.indexOf(app.status);
+            const note = app.statusHistory?.length ? app.statusHistory[app.statusHistory.length - 1].note : '';
             container.innerHTML = `
-        <div class="track-result-box">
-            <div class="track-result-header">
-                ${steps.map((s, i) => `
-                    <div class="track-step-mini">
-                        ${i < steps.length - 1 ? `<div class="track-step-mini-connector track-connector-dynamic" data-done="${i < curIdx}"></div>` : ''}
-                        <div class="track-step-mini-dot track-dot-dynamic" data-done="${i < curIdx}" data-active="${i === curIdx}">${i < curIdx ? '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>' : i + 1}</div>
-                        <div class="track-step-mini-label track-label-dynamic" data-active="${i <= curIdx}">${labels[i]}</div>
-                    </div>`).join('')}
+        <div class="track-result-card">
+            <div class="track-result-dest-row">
+                <div class="track-result-dest">${app.destination}</div>
+                <span class="status-pill ${statusColors[app.status]}">${statusLabels[app.status]}</span>
             </div>
-            <div class="track-result-meta"><strong>Ref:</strong> ${app.ref} &nbsp;·&nbsp; <strong>Destination:</strong> ${app.destination} &nbsp;·&nbsp; <strong>Status:</strong> <span class="status-pill ${statusColors[app.status]}">${statusLabels[app.status]}</span></div>
-            <p class="track-result-note">${app.statusHistory?.length ? app.statusHistory[app.statusHistory.length - 1].note : ''}</p>
+            <div class="track-result-ref">Ref: <span>${app.ref}</span></div>
+            <div class="track-stepper">
+                ${steps.map((s, i) => `
+                <div class="track-step-item ${i < curIdx ? 'done' : i === curIdx ? 'active' : 'pending'}">
+                    <div class="track-step-track">
+                        <div class="track-step-dot">
+                            ${i < curIdx
+                    ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+                    : i === curIdx
+                        ? '<div class="track-step-pulse"></div>'
+                        : ''}
+                        </div>
+                        ${i < steps.length - 1 ? '<div class="track-step-line"></div>' : ''}
+                    </div>
+                    <div class="track-step-label">${labels[i]}</div>
+                </div>`).join('')}
+            </div>
+            ${note ? `<div class="track-result-note"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> ${note}</div>` : ''}
         </div>`;
         }
 
@@ -2056,6 +2170,36 @@
 
 
 
+        let _flightsPage = 1, _flightsAll = [];
+        function renderFlightsPage() {
+            const container = document.getElementById('flights-content');
+            if (!container) return;
+            const EMPTY = `<div class="empty-state"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z"/></svg></div><h3>No flight bookings yet</h3><p>Your flight bookings will appear here once the booking system is live.</p></div>`;
+            if (!_flightsAll.length) { container.innerHTML = EMPTY; return; }
+            const paged = _paginate(_flightsAll, _flightsPage);
+            container.innerHTML = paged.map(b => `
+                <div class="booking-card">
+                    <div class="booking-card-header">
+                        <div class="booking-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z"/></svg></div>
+                        <div class="flex-1">
+                            <div class="booking-card-title">${escHtml(b.from || b.origin || '—')} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg> ${escHtml(b.to || b.destination || '—')}</div>
+                            <div class="booking-card-ref">Ref: ${escHtml(b.ref || b.id?.slice(0, 8) || '—')}</div>
+                        </div>
+                        <span class="booking-status-pill booking-status-${(b.status || 'pending').toLowerCase()}">${escHtml(b.status || 'Pending')}</span>
+                    </div>
+                    <div class="booking-card-details">
+                        <div class="booking-detail"><span>Departure</span><strong>${b.departureDate ? new Date(b.departureDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</strong></div>
+                        <div class="booking-detail"><span>Return</span><strong>${b.returnDate ? new Date(b.returnDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : 'One Way'}</strong></div>
+                        <div class="booking-detail"><span>Passengers</span><strong>${b.passengers || 1}</strong></div>
+                        <div class="booking-detail"><span>Class</span><strong>${escHtml(b.cabinClass || b.class || 'Economy')}</strong></div>
+                        <div class="booking-detail"><span>Airline</span><strong>${escHtml(b.airline || '—')}</strong></div>
+                        <div class="booking-detail"><span>Booked</span><strong>${b.createdAt ? new Date(b.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</strong></div>
+                    </div>
+                    ${b.notes ? `<div class="booking-notes">${escHtml(b.notes)}</div>` : ''}
+                </div>`).join('') + _buildPager(_flightsAll.length, _flightsPage, 'flightsGoPage', 'flights-content');
+        }
+        function flightsGoPage(p) { const t = Math.ceil(_flightsAll.length / PAGE_SIZE); if (p < 1 || p > t) return; _flightsPage = p; renderFlightsPage(); }
+
         async function loadFlightBookings() {
             const container = document.getElementById('flights-content');
             if (!container) return;
@@ -2101,6 +2245,36 @@
 
 
 
+
+        let _hotelsPage = 1, _hotelsAll = [];
+        function renderHotelsPage() {
+            const container = document.getElementById('hotels-content');
+            if (!container) return;
+            const EMPTY = `<div class="empty-state"><div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16"/><line x1="6" x2="18" y1="12" y2="12"/><line x1="6" x2="18" y1="20" y2="20"/><line x1="9" x2="9" y1="8" y2="12"/><line x1="15" x2="15" y1="8" y2="12"/></svg></div><h3>No hotel bookings yet</h3><p>Your hotel reservations will appear here once the booking system is live.</p></div>`;
+            if (!_hotelsAll.length) { container.innerHTML = EMPTY; return; }
+            const paged = _paginate(_hotelsAll, _hotelsPage);
+            container.innerHTML = paged.map(b => `
+                <div class="booking-card">
+                    <div class="booking-card-header">
+                        <div class="booking-card-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16"/><line x1="6" x2="18" y1="12" y2="12"/><line x1="6" x2="18" y1="20" y2="20"/><line x1="9" x2="9" y1="8" y2="12"/><line x1="15" x2="15" y1="8" y2="12"/></svg></div>
+                        <div class="flex-1">
+                            <div class="booking-card-title">${escHtml(b.hotelName || b.hotel || '—')}${b.city ? ' · ' + escHtml(b.city) : ''}</div>
+                            <div class="booking-card-ref">Ref: ${escHtml(b.ref || b.id?.slice(0, 8) || '—')}</div>
+                        </div>
+                        <span class="booking-status-pill booking-status-${(b.status || 'pending').toLowerCase()}">${escHtml(b.status || 'Pending')}</span>
+                    </div>
+                    <div class="booking-card-details">
+                        <div class="booking-detail"><span>Check-In</span><strong>${b.checkIn ? new Date(b.checkIn).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</strong></div>
+                        <div class="booking-detail"><span>Check-Out</span><strong>${b.checkOut ? new Date(b.checkOut).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</strong></div>
+                        <div class="booking-detail"><span>Guests</span><strong>${b.guests || 1}</strong></div>
+                        <div class="booking-detail"><span>Room Type</span><strong>${escHtml(b.roomType || b.room || '—')}</strong></div>
+                        <div class="booking-detail"><span>Nights</span><strong>${b.nights || '—'}</strong></div>
+                        <div class="booking-detail"><span>Booked</span><strong>${b.createdAt ? new Date(b.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</strong></div>
+                    </div>
+                    ${b.notes ? `<div class="booking-notes">${escHtml(b.notes)}</div>` : ''}
+                </div>`).join('') + _buildPager(_hotelsAll.length, _hotelsPage, 'hotelsGoPage', 'hotels-content');
+        }
+        function hotelsGoPage(p) { const t = Math.ceil(_hotelsAll.length / PAGE_SIZE); if (p < 1 || p > t) return; _hotelsPage = p; renderHotelsPage(); }
 
         async function loadHotelBookings() {
             const container = document.getElementById('hotels-content');
@@ -2258,6 +2432,30 @@
             } catch (e) { }
         }
 
+        let _consultPage = 1, _consultAll = [];
+        function renderConsultPage() {
+            const el = document.getElementById('consult-history');
+            if (!el) return;
+            if (!_consultAll.length) { el.innerHTML = '<div class="empty-state">No past consultations yet.</div>'; return; }
+            const paged = _paginate(_consultAll, _consultPage);
+            el.innerHTML = `<table class="data-table">
+            <thead><tr>
+                <th class="th">Date</th>
+                <th class="th">Package</th>
+                <th class="th">Amount</th>
+                <th class="th">Status</th>
+            </tr></thead>
+            <tbody>${paged.map(p => `
+            <tr>
+                <td class="td">${new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
+                <td class="td">${p.metadata?.packageName || 'Consultation'}</td>
+                <td class="td fw-600">₦${(p.amount || 0).toLocaleString()}</td>
+                <td class="td"><span class="badge-success"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span></td>
+            </tr>`).join('')}
+            </tbody></table>` + _buildPager(_consultAll.length, _consultPage, 'consultGoPage', 'consult-history');
+        }
+        function consultGoPage(p) { const t = Math.ceil(_consultAll.length / PAGE_SIZE); if (p < 1 || p > t) return; _consultPage = p; renderConsultPage(); }
+
         async function loadConsultHistory() {
             const payments = await PaymentStore.list();
             const consultations = (payments || []).filter(p =>
@@ -2295,143 +2493,8 @@
         });
     </script>
 
-    <!-- ── Mobile Bottom Tab Bar ─────────────────────────── -->
-    <template id="dash-tabbar-tpl">
-        <nav class="dash-mobile-tabbar" id="dash-tabbar" style="display:none">
-            <button class="dash-tab-btn active" onclick="showTab('applications',this)" data-tab="applications">
-                <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
-                        <rect x="9" y="3" width="6" height="4" rx="1" />
-                        <line x1="9" y1="12" x2="15" y2="12" />
-                        <line x1="9" y1="16" x2="13" y2="16" />
-                    </svg></span>
-                <span class="tab-label">Applications</span>
-            </button>
-            <button class="dash-tab-btn" onclick="showTab('track',this)" data-tab="track">
-                <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8" />
-                        <path d="m21 21-4.35-4.35" />
-                    </svg></span>
-                <span class="tab-label">Track</span>
-            </button>
-            <button class="dash-tab-btn" onclick="showTab('mydocs',this)" data-tab="mydocs">
-                <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path
-                            d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" />
-                    </svg></span>
-                <span class="tab-label">Docs</span>
-            </button>
-            <button class="dash-tab-btn" onclick="showTab('profile',this)" data-tab="profile">
-                <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <circle cx="12" cy="8" r="5" />
-                        <path d="M3 21a9 9 0 0 1 18 0" />
-                    </svg></span>
-                <span class="tab-label">Profile</span>
-            </button>
-            <button class="dash-tab-btn" onclick="toggleMoreDrawer()" id="more-tab-btn">
-                <span class="tab-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round">
-                        <line x1="3" y1="6" x2="21" y2="6" />
-                        <line x1="3" y1="12" x2="21" y2="12" />
-                        <line x1="3" y1="18" x2="21" y2="18" />
-                    </svg></span>
-                <span class="tab-label">More</span>
-            </button>
-        </nav>
-    </template>
-    <script>
-        (function () {
-            if (window.innerWidth > 768) return;
-            var tpl = document.getElementById('dash-tabbar-tpl');
-            if (!tpl) return;
-            var nav = tpl.content.cloneNode(true);
-            document.body.appendChild(nav);
-        })();
-    </script>
-    <div class="dash-more-overlay" id="dash-more-overlay" onclick="closeMoreDrawer()"></div>
-    <div class="dash-more-drawer" id="dash-more-drawer">
-        <div class="dash-more-handle"></div>
-        <div class="dash-more-grid">
-            <button class="dash-more-item" onclick="showTabFromMore('insurance')">
-                <span class="dash-more-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path
-                            d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
-                    </svg></span>
-                <span class="dash-more-label">My Insurance</span>
-            </button>
-            <button class="dash-more-item" onclick="showTabFromMore('documents')">
-                <span class="dash-more-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M8 2v4" />
-                        <path d="M16 2v4" />
-                        <rect width="18" height="18" x="3" y="4" rx="2" />
-                        <path d="M3 10h18" />
-                        <path d="M8 14h.01" />
-                        <path d="M12 14h.01" />
-                        <path d="M16 14h.01" />
-                        <path d="M8 18h.01" />
-                        <path d="M12 18h.01" />
-                        <path d="M16 18h.01" />
-                    </svg></span>
-                <span class="dash-more-label">Consultation</span>
-            </button>
-            <button class="dash-more-item" onclick="showTabFromMore('flights')">
-                <span class="dash-more-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path
-                            d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z" />
-                    </svg></span>
-                <span class="dash-more-label">Flights</span>
-            </button>
-            <button class="dash-more-item" onclick="showTabFromMore('hotels')">
-                <span class="dash-more-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z" />
-                        <path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16" />
-                        <line x1="6" x2="18" y1="12" y2="12" />
-                        <line x1="6" x2="18" y1="20" y2="20" />
-                        <line x1="9" x2="9" y1="8" y2="12" />
-                        <line x1="15" x2="15" y1="8" y2="12" />
-                    </svg></span>
-                <span class="dash-more-label">Hotels</span>
-            </button>
-        </div>
-    </div>
 
-    <script>
-        function toggleMoreDrawer() {
-            const drawer = document.getElementById('dash-more-drawer');
-            const overlay = document.getElementById('dash-more-overlay');
-            const open = drawer.classList.contains('open');
-            if (open) { closeMoreDrawer(); } else {
-                drawer.classList.add('open');
-                overlay.classList.add('open');
-                document.getElementById('more-tab-btn').classList.add('active');
-            }
-        }
-        function closeMoreDrawer() {
-            document.getElementById('dash-more-drawer').classList.remove('open');
-            document.getElementById('dash-more-overlay').classList.remove('open');
-            document.getElementById('more-tab-btn').classList.remove('active');
-        }
-        function showTabFromMore(tab) {
-            closeMoreDrawer();
-            const navItem = document.querySelector(`.dash-nav-item[onclick*="${tab}"]`);
-            showTab(tab, navItem);
-        }
-    </script>
+
 
     <script src="mobile.js" defer></script>
     <script>

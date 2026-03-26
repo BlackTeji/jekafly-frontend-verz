@@ -1021,3 +1021,256 @@
     margin-top: 4px;
     opacity: 0.7;
 }
+
+/* ══════════════════════════════════════════════════════════
+   PREMIUM UPGRADE — apply page
+   ══════════════════════════════════════════════════════════ */
+
+/* ── Page header ─────────────────────────────────────────── */
+.apply-page {
+    padding: 52px 5%;
+}
+
+.apply-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0D1560;
+    margin-bottom: 6px;
+    line-height: 1.1;
+}
+
+.apply-header p {
+    font-size: 0.93rem;
+    color: #9BA5C0;
+    letter-spacing: -0.01em;
+    line-height: 1.6;
+}
+
+/* ── Stepper ─────────────────────────────────────────────── */
+.stepper {
+    background: white;
+    border: 1.5px solid #EAECF5;
+    border-radius: 18px;
+    padding: 20px 28px;
+    margin-bottom: 32px;
+    box-shadow: 0 2px 12px rgba(13, 21, 96, 0.05);
+}
+
+.step-circle {
+    width: 42px;
+    height: 42px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    border: 3px solid #F5F7FC;
+    box-shadow: 0 0 0 4px rgba(13, 21, 96, 0.07);
+    letter-spacing: -0.02em;
+}
+
+.step-item.active .step-circle {
+    background: #0D1560;
+    box-shadow: 0 0 0 5px rgba(13, 21, 96, 0.14);
+}
+
+.step-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 7px;
+}
+
+/* ── Form card ───────────────────────────────────────────── */
+.form-card {
+    background: white;
+    border-radius: 20px;
+    border: 1.5px solid #EAECF5;
+    padding: 40px;
+    box-shadow: 0 4px 24px rgba(13, 21, 96, 0.06);
+    margin-bottom: 16px;
+    transition: box-shadow .2s;
+}
+
+.form-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0D1560;
+    margin-bottom: 5px;
+    line-height: 1.15;
+}
+
+.form-card .sub {
+    font-size: 0.92rem;
+    color: #9BA5C0;
+    margin-bottom: 28px;
+    letter-spacing: -0.01em;
+    line-height: 1.65;
+}
+
+/* ── Form inputs ─────────────────────────────────────────── */
+.form-group label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    margin-bottom: 7px;
+    color: #9BA5C0;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.92rem;
+    border: 1.5px solid #E3E5F5;
+    background: #F8F9FE;
+    color: #0F1124;
+    transition: all .18s;
+    box-shadow: inset 0 1px 3px rgba(13, 21, 96, 0.04);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: #0D1560;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(13, 21, 96, 0.08);
+}
+
+/* ── Nav buttons ─────────────────────────────────────────── */
+.form-nav {
+    padding-top: 24px;
+    margin-top: 28px;
+    border-top: 1.5px solid #EEF0F8;
+    gap: 12px;
+}
+
+.btn-next {
+    padding: 13px 32px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.92rem;
+    letter-spacing: -0.01em;
+    transition: all .18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.btn-next:hover {
+    background: #090F4A;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(13, 21, 96, 0.28);
+}
+
+.btn-back {
+    padding: 13px 22px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    letter-spacing: -0.01em;
+    transition: all .18s;
+}
+
+.btn-back:hover {
+    border-color: #0D1560;
+    color: #0D1560;
+    background: #F0F3FF;
+}
+
+/* ── Draft banner ────────────────────────────────────────── */
+.draft-banner {
+    border-radius: 14px;
+    border: 1.5px solid #EAECF5;
+    box-shadow: 0 2px 10px rgba(13, 21, 96, 0.05);
+    padding: 16px 20px;
+}
+
+/* ── Review grid ─────────────────────────────────────────── */
+.review-grid {
+    border: 1.5px solid #EAECF5;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(13, 21, 96, 0.04);
+    gap: 0;
+}
+
+.review-item {
+    padding: 13px 18px;
+    border-bottom: 1px solid #EEF0F8;
+    border-right: 1px solid #EEF0F8;
+    background: white;
+    transition: background .15s;
+}
+
+.review-item:hover {
+    background: #F8F9FE;
+}
+
+.review-item:nth-child(even) {
+    border-right: none;
+}
+
+.review-label {
+    font-size: 0.67rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    color: #B8C0D8;
+    margin-bottom: 4px;
+}
+
+.review-value {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0F1124;
+    letter-spacing: -0.01em;
+}
+
+/* ── Fee box ─────────────────────────────────────────────── */
+.fee-box {
+    border-radius: 14px;
+    padding: 22px 26px;
+    box-shadow: 0 2px 10px rgba(13, 21, 96, 0.08);
+}
+
+.fee-amount {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+/* ── Success card ────────────────────────────────────────── */
+.success-card h2 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #0D1560;
+}
+
+.ref-box {
+    background: linear-gradient(135deg, #0D1560, #1520A0);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 28px rgba(13, 21, 96, 0.22);
+}
+
+.ref-box .ref-code {
+    font-size: 1.9rem;
+    letter-spacing: -0.01em;
+}
+
+/* ── Doc checklist items ─────────────────────────────────── */
+.doc-item {
+    border-radius: 10px;
+    border: 1.5px solid #E3E5F5;
+    padding: 13px 16px;
+    transition: all .18s;
+}
+
+.doc-item:hover {
+    border-color: #0D1560;
+    background: rgba(13, 21, 96, 0.03);
+    transform: translateX(2px);
+}
