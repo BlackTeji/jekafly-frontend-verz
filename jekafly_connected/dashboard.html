@@ -2358,7 +2358,7 @@
             document.getElementById('consult-pkg-error').style.display = 'none';
         }
 
-        async function startConsultPayment() {
+        function startConsultPayment() {
             if (!_selectedPkg) {
                 document.getElementById('consult-pkg-error').style.display = 'block';
                 return;
@@ -2367,33 +2367,28 @@
             const user = Auth.getCurrent();
             if (!user) { window.location.href = 'login.html'; return; }
 
-            sessionStorage.setItem('jkf_pending_payment', JSON.stringify({
+            localStorage.setItem('jkf_pending_payment', JSON.stringify({
                 type: 'consultation',
-                ref: null,
+                plan: pkg.name,
+                package: _selectedPkg,
                 amount: pkg.amount,
                 email: user.email,
-                metadata: { package: _selectedPkg, packageName: pkg.name }
             }));
-
-            const res = await PaymentStore.initiate(
-                'CONSULTATION',
-                null,
-                pkg.amount * 100,
-                user.email,
-                { package: _selectedPkg, packageName: pkg.name }
-            );
-
-            if (res?.ok && res.data?.authorizationUrl) {
-                sessionStorage.setItem('jkf_consult_return', '1');
-                window.location.href = res.data.authorizationUrl;
-            } else {
-                showToast(res?.error || 'Payment initiation failed. Please try again.', 'error');
-            }
+            window.location.href = 'payment.html';
         }
 
         async function checkConsultPaymentReturn() {
             const params = new URLSearchParams(window.location.search);
-            const reference = params.get('ref') || params.get('reference') || params.get('trxref');
+            const reference = params.get('ref') || params.get('reference') || params.get('trxref') || params.get('consult_ref');
+            const tab = params.get('tab');
+            if (!reference && !tab) return;
+
+            // Auto-navigate to documents tab if specified
+            if (tab === 'documents') {
+                const navItem = document.querySelector('.dash-nav-item[onclick*="documents"]');
+                showTab('documents', navItem);
+            }
+
             if (!reference) return;
 
             window.history.replaceState({}, '', 'dashboard.html');
