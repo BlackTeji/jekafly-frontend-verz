@@ -1,7 +1,3 @@
-/* ============================================================
-   JEKAFLY — DESIGN SYSTEM v2
-   ============================================================ */
-
 :root {
     --blue: #0D1560;
     --blue-dark: #090F4A;
@@ -58,7 +54,6 @@ body.modal-open {
     overflow: hidden;
 }
 
-/* ── NAV ──────────────────────────────────────────────────── */
 nav {
     position: fixed;
     top: 0;
@@ -127,7 +122,6 @@ nav {
     align-items: center;
 }
 
-/* ── Nav logged-in state ─────────────────────────────────── */
 .nav-user-hi {
     font-size: 0.875rem;
     color: var(--text-light);
@@ -166,7 +160,6 @@ nav {
     color: #E31E24 !important;
 }
 
-
 .nav-toggle {
     display: none;
     background: transparent;
@@ -178,7 +171,6 @@ nav {
     font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* ── BUTTONS ──────────────────────────────────────────────── */
 .btn-outline {
     padding: 10px 22px;
     border: 1.5px solid var(--border);
@@ -216,7 +208,6 @@ nav {
     box-shadow: 0 4px 14px rgba(13, 21, 96, 0.25);
 }
 
-/* ── HERO ─────────────────────────────────────────────────── */
 .hero {
     margin-top: 68px;
     background: var(--blue);
@@ -454,7 +445,6 @@ nav {
     box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.25);
 }
 
-/* ── SEARCH BAR ───────────────────────────────────────────── */
 .search-section {
     background: var(--off-white);
     padding: 52px 5%;
@@ -535,7 +525,6 @@ nav {
     transform: translateY(-1px);
 }
 
-/* ── SECTION SHARED ───────────────────────────────────────── */
 .section-tag {
     display: inline-flex;
     align-items: center;
@@ -571,7 +560,6 @@ nav {
     margin-bottom: 52px;
 }
 
-/* ── SERVICES ─────────────────────────────────────────────── */
 .services {
     padding: 88px 5%;
 }
@@ -650,7 +638,6 @@ nav {
     z-index: 1;
 }
 
-/* ── WhatsApp-style colored service icons ────────────────── */
 .service-card:nth-child(1) .service-icon-bg {
     background: #e8f0fe;
 }
@@ -699,13 +686,11 @@ nav {
     color: #ca8a04;
 }
 
-/* Keep hover state clean */
 .service-card:hover .service-icon-bg {
     filter: brightness(0.93) saturate(1.2);
     background: unset !important;
 }
 
-/* ── Info-list icons — alternating colors ────────────────── */
 .info-list li:nth-child(1) .icon {
     background: #e8f0fe;
     color: #1a56db;
@@ -746,7 +731,6 @@ nav {
     color: #dc2626;
 }
 
-/* ── Why Jekafly section icons ────────────────────────────── */
 .why-item:nth-child(1) .icon,
 .why-card:nth-child(1) .icon {
     background: #e8f0fe;
@@ -770,8 +754,6 @@ nav {
     background: #fce7f3;
     color: #db2777;
 }
-
-
 
 .service-title {
     font-weight: 800;
@@ -805,7 +787,6 @@ nav {
     z-index: 1;
 }
 
-/* ── HOW IT WORKS ─────────────────────────────────────────── */
 .how {
     background: var(--off-white);
     padding: 88px 5%;
@@ -878,7 +859,6 @@ nav {
     line-height: 1.7;
 }
 
-/* ── VISA CHECKER ─────────────────────────────────────────── */
 .visa-checker {
     padding: 88px 5%;
 }
@@ -1087,7 +1067,6 @@ nav {
     margin-top: 1px;
 }
 
-/* ── DESTINATIONS ─────────────────────────────────────────── */
 .destinations {
     background: var(--off-white);
     padding: 88px 5%;
@@ -1121,7 +1100,6 @@ nav {
 .dest-card:hover .dest-overlay {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.1));
 }
-
 
 .dest-overlay {
     position: absolute;
@@ -1160,7 +1138,6 @@ nav {
     letter-spacing: 0.07em;
 }
 
-/* ── INSURANCE ───────────────────────────────────────────── */
 .insurance {
     padding: 88px 5%;
 }
@@ -1310,7 +1287,6 @@ nav {
     font-size: 0.9rem;
 }
 
-/* ── TRACKING ─────────────────────────────────────────────── */
 .tracking {
     background: var(--off-white);
     padding: 88px 5%;
@@ -1467,7 +1443,6 @@ nav {
     color: var(--text);
 }
 
-/* ── TESTIMONIALS ─────────────────────────────────────────── */
 .testimonials {
     padding: 88px 5%;
 }
@@ -1539,7 +1514,6 @@ nav {
     margin-top: 2px;
 }
 
-/* ── CTA ──────────────────────────────────────────────────── */
 .cta-banner {
     margin: 0 5% 88px;
     background: var(--blue);
@@ -1587,7 +1561,6 @@ nav {
     flex-shrink: 0;
 }
 
-/* ── FOOTER ──────────────────────────────────────────────── */
 footer {
     background: var(--text);
     color: rgba(255, 255, 255, 0.58);
@@ -1693,7 +1666,6 @@ footer {
     border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-/* ── MODAL ───────────────────────────────────────────────── */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -1821,7 +1793,6 @@ footer {
     display: block;
 }
 
-/* ── WHATSAPP FLOAT ──────────────────────────────────────── */
 .wa-float {
     position: fixed;
     bottom: 24px;
@@ -1858,12 +1829,6 @@ footer {
     }
 }
 
-
-/* ══════════════════════════════════════════════════════════
-   MOBILE NAV — hamburger + drawer
-   ══════════════════════════════════════════════════════════ */
-
-
 .nav-mobile-overlay {
     display: none;
     position: fixed;
@@ -1887,10 +1852,11 @@ footer {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1.5px solid var(--border);
-    padding: 8px 5% 24px;
+    padding: 8px 0 24px;
     z-index: 999;
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     gap: 0;
     box-shadow: 0 16px 40px rgba(10, 31, 68, 0.1);
     opacity: 0;
@@ -1965,10 +1931,6 @@ footer {
     margin: -8px auto 20px;
 }
 
-
-/* ═══════════════════════════════════════════════════════════════
-   RESPONSIVE — TABLET (≤900px)
-   ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
     .hero-right {
         display: none;
@@ -2014,10 +1976,6 @@ footer {
     }
 }
 
-
-/* ═══════════════════════════════════════════════════════════════
-   RESPONSIVE — MOBILE (≤640px)
-   ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 640px) {
     .nav-links {
         display: none;
@@ -2351,10 +2309,6 @@ footer {
     }
 }
 
-
-/* ═══════════════════════════════════════════════════════════════
-   RESPONSIVE — SMALL PHONES (≤390px)
-   ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 390px) {
     .hero-headline {
         font-size: 1.85rem;
@@ -2373,7 +2327,6 @@ footer {
     }
 }
 
-/* ── Hero review card ──────────────────────────────────────── */
 .hero-review-card {
     cursor: default;
     padding: 34px 30px 28px;
@@ -2454,7 +2407,6 @@ footer {
     }
 }
 
-/* ── Affiliate nav link ───────────────────────────────────── */
 .nav-affiliate-link {
     background: rgba(13, 21, 96, 0.07) !important;
     color: #0d1560 !important;
@@ -2483,7 +2435,6 @@ footer {
     font-weight: 700 !important;
 }
 
-/* ── Desktop scroll reveal ───────────────────────────────────────────────── */
 .reveal {
     opacity: 0;
     transform: translateY(32px);
@@ -2509,4 +2460,110 @@ footer {
 
 .reveal-delay-4 {
     transition-delay: 0.32s;
+}
+
+.nav-mob-menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px 18px 0;
+}
+
+.nav-mob-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.nav-mob-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    padding: 12px 0 !important;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #F0F2FA;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.nav-mob-row:last-child {
+    border-bottom: none;
+}
+
+.nav-mob-row-icon {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 8px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+}
+
+.nav-mob-row-label {
+    font-size: 0.88rem !important;
+    font-weight: 600 !important;
+    color: #1A2040 !important;
+    letter-spacing: -0.01em;
+    flex: 1;
+    text-align: left !important;
+    white-space: nowrap;
+}
+
+.nav-mob-row-arrow {
+    color: #D0D6E8;
+    flex-shrink: 0;
+}
+
+.nav-mob-action-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.nav-mob-cta-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 13px 4px !important;
+    background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
+    color: white;
+    border-radius: 13px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.nav-mob-logout-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 13px 4px !important;
+    background: rgba(227, 30, 36, 0.05);
+    border: 1.5px solid rgba(227, 30, 36, 0.18);
+    border-radius: 13px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #E31E24;
+    cursor: pointer;
+    text-align: center;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
 }

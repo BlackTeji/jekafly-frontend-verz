@@ -1,4 +1,3 @@
-// ── Mobile nav (shared across all pages) ────────────────────
 function toggleNavMenu() {
     const drawer = document.getElementById('nav-mobile-drawer');
     const overlay = document.getElementById('nav-mobile-overlay');
@@ -21,12 +20,7 @@ function closeNavMenu() {
     document.body.style.overflow = '';
 }
 (function initMobileNav() {
-    let lastY = 0;
-    window.addEventListener('scroll', () => {
-        if (Math.abs(window.scrollY - lastY) > 10) { closeNavMenu(); lastY = window.scrollY; }
-    }, { passive: true });
 })();
-
 
 function updateNav() {
     const user = Auth.getCurrent();
@@ -46,6 +40,7 @@ function updateNav() {
           <button class="btn-primary" onclick="handleLogout()">Logout</button>`;
 
         const isDashboard = window.location.pathname.includes('dashboard.html');
+        const isAdminPage = window.location.pathname.includes('admin.html');
 
         mobileHtml = `
           <div class="nav-mob-menu">
@@ -102,15 +97,63 @@ function updateNav() {
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
             </div>
+            ` : isAdminPage ? `
+            <div class="nav-mob-divider"></div>
+            <div class="nav-mob-list">
+              <button class="nav-mob-row" onclick="adminTab('overview', null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#EEF2FF;color:#3B5BDB"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span>
+                <span class="nav-mob-row-label">Overview</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="adminTab('applications', null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#F3F0FF;color:#7048E8"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg></span>
+                <span class="nav-mob-row-label">All Applications</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="adminTab('users', null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#EBFBEE;color:#2F9E44"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                <span class="nav-mob-row-label">Users</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="adminTab('fees', null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFF9DB;color:#E67700"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+                <span class="nav-mob-row-label">Manage Fees</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="adminTab('reviews', null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFF0F6;color:#C2255C"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+                <span class="nav-mob-row-label">Reviews</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="adminTab('consultations', null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#E0F7FA;color:#0891B2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+                <span class="nav-mob-row-label">Consultations</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="adminTab('insurance', null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFF0F6;color:#C2255C"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
+                <span class="nav-mob-row-label">Insurance</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="adminTab('affiliates', null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFFDE7;color:#CA8A04"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg></span>
+                <span class="nav-mob-row-label">Affiliates</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
             ` : ''}
 
             <div class="nav-mob-divider"></div>
             <div class="nav-mob-footer">
-              ${isAdmin ? `<a href="admin.html" onclick="closeNavMenu()" class="nav-mob-admin-btn">
+              ${isAdmin ? `<a href="admin.html" onclick="closeNavMenu()" class="nav-mob-admin-btn" style="${isAdminPage ? 'display:none' : ''}">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Admin Panel
               </a>` : ''}
               <div class="nav-mob-action-row">
-                ${isDashboard ? `
+                ${isAdminPage ? `
+                <a href="dashboard.html" onclick="closeNavMenu()" class="nav-mob-cta-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+                  User Dashboard
+                </a>` : isDashboard ? `
                 <a href="apply.html" onclick="closeNavMenu()" class="nav-mob-cta-btn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   New Application
@@ -148,7 +191,6 @@ async function handleLogout() {
     window.location.replace('index.html');
 }
 
-
 function showToast(msg, type = 'success') {
     let t = document.getElementById('jkf-toast');
     if (!t) {
@@ -165,7 +207,6 @@ function showToast(msg, type = 'success') {
     clearTimeout(t._timer);
     t._timer = setTimeout(() => { t.style.opacity = '0'; }, 3000);
 }
-
 
 function openModal(type) {
     const auth = document.getElementById("modal-auth");
@@ -220,12 +261,10 @@ function switchTab(tab) {
     if (sub) sub.textContent = tab === "login" ? "Sign in to your Jekafly account" : "Join thousands of travellers using Jekafly";
 }
 
-
 function selectPlan(el) {
     document.querySelectorAll(".ins-plan").forEach(p => p.classList.remove("active"));
     el.classList.add("active");
 }
-
 
 async function handleLogin() {
     const email = document.getElementById('login-email')?.value?.trim();
@@ -263,7 +302,6 @@ async function handleRegister() {
     updateNav();
     showToast('Account created! Welcome to Jekafly');
 
-
     if (window.JKF_afterLoginRedirect && window.JKF_afterLoginRedirect()) return;
 
     setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
@@ -284,7 +322,6 @@ function handleInsuranceModal() {
     };
     const price = priceMap[plan] || 45000;
 
-    // Save intent first — so it survives the login redirect
     localStorage.setItem('jkf_pending_payment', JSON.stringify({
         type: 'insurance',
         plan,
@@ -297,7 +334,6 @@ function handleInsuranceModal() {
     const user = Auth.getCurrent();
     if (!user) {
         closeModal();
-        // Redirect to payment.html after login — it will read jkf_pending_payment
         window.JKF_afterLoginRedirect = function () {
             window.location.href = 'payment.html';
             return true;
@@ -309,7 +345,6 @@ function handleInsuranceModal() {
 
     window.location.href = 'payment.html';
 }
-
 
 async function handleTrackModal() {
     const ref = document.getElementById('track-ref')?.value?.trim();
@@ -344,10 +379,8 @@ async function handleTrackModal() {
     demo.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-
 var visaRequirements = window.visaRequirements = {
 
-    // ── EUROPE ──────────────────────────────────────────────
     "Albania": {
         flag: "🇦🇱", region: "Europe", type: "Visa Required",
         fee: "€35", processing: "5–10 business days",
@@ -579,7 +612,6 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid Schengen visa (apply via Italy)", "Valid passport", "No separate Vatican visa required"]
     },
 
-    // ── NORTH AMERICA ────────────────────────────────────────
     "Antigua and Barbuda": {
         flag: "🇦🇬", region: "Caribbean", type: "Visa-Free (30 days)",
         fee: "Free", processing: "N/A",
@@ -696,7 +728,6 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid passport (6+ months)", "DS-160 online application form", "Application fee payment receipt", "Embassy interview appointment letter", "Passport photo", "Bank statements (12 months)", "Employment letter & payslips", "Proof of strong ties to Nigeria (property, family)", "Travel itinerary", "Letter of invitation (if visiting family/friends)"]
     },
 
-    // ── SOUTH AMERICA ─────────────────────────────────────────
     "Argentina": {
         flag: "🇦🇷", region: "South America", type: "Visa Required",
         fee: "$100", processing: "5–10 business days",
@@ -758,7 +789,6 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Invitation letter (if applicable)"]
     },
 
-    // ── AFRICA ──────────────────────────────────────────────
     "Algeria": {
         flag: "🇩🇿", region: "Africa", type: "Visa Required",
         fee: "DZD 5,000", processing: "10–15 business days",
@@ -1025,7 +1055,6 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Yellow fever vaccination certificate (if applicable)", "Sufficient funds ($30/day)"]
     },
 
-    // ── MIDDLE EAST ──────────────────────────────────────────
     "Bahrain": {
         flag: "🇧🇭", region: "Middle East", type: "eVisa Required",
         fee: "BHD 29", processing: "Online — immediate",
@@ -1102,7 +1131,6 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation letter from Yemen", "⚠️ Travel to Yemen not recommended due to ongoing conflict"]
     },
 
-    // ── ASIA ─────────────────────────────────────────────────
     "Afghanistan": {
         flag: "🇦🇫", region: "Asia", type: "Visa Required",
         fee: "$50", processing: "Variable",
@@ -1269,7 +1297,6 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid passport (6+ months)", "Vietnam eVisa (apply at evisa.xuatnhapcanh.gov.vn)", "Digital passport photo", "Return/onward ticket", "Hotel reservation", "Bank statements"]
     },
 
-    // ── OCEANIA ──────────────────────────────────────────────
     "Australia": {
         flag: "🇦🇺", region: "Oceania", type: "Visa Required (Subclass 600)",
         fee: "AUD 145", processing: "4–8 weeks",
@@ -1501,7 +1528,6 @@ var nationalityList = [
     { name: "Zimbabwean", flag: "🇿🇼" },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
-
 function makeSearchableSelect(selectId, placeholder, customList) {
     const nativeSelect = document.getElementById(selectId);
     if (!nativeSelect) return;
@@ -1619,7 +1645,6 @@ function populateCountrySelect(selectId, placeholder) {
     makeSearchableSelect(selectId, placeholder);
 }
 
-
 function showRequirements() {
     const dest = getSelectValue("c-to");
     if (!dest) { showToast("Please select a destination country.", "error"); return; }
@@ -1707,20 +1732,17 @@ function selectDest(country) {
     }
 }
 
-
 window.addEventListener("scroll", () => {
     const nav = document.querySelector("nav");
     if (!nav) return;
     nav.style.boxShadow = window.scrollY > 20 ? "0 2px 20px rgba(14,14,184,0.08)" : "none";
 });
 
-
 document.addEventListener("DOMContentLoaded", async () => {
     makeSearchableSelect("c-to", "— Select Destination —");
     makeSearchableSelect("s-to", "Select Destination");
     makeSearchableSelect("c-from", "— Select Nationality —", nationalityList);
     makeSearchableSelect("s-from", "— Nationality —", nationalityList);
-
 
     PricingStore.get().then(p => {
         if (!p) return;
@@ -1741,7 +1763,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     Auth.init().then(() => updateNav()).catch(() => updateNav());
-
 
     document.getElementById("btn-insurance-modal")?.addEventListener("click", handleInsuranceModal);
 

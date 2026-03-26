@@ -43,7 +43,6 @@
         </button>
     </nav>
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
-        <a href="dashboard.html" onclick="closeNavMenu()">My Dashboard</a>
         <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
     </div>
     <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
@@ -76,7 +75,8 @@
                             <rect x="9" y="3" width="6" height="4" rx="1" />
                             <line x1="9" y1="12" x2="15" y2="12" />
                             <line x1="9" y1="16" x2="13" y2="16" />
-                        </svg></span>All Applications</div>
+                        </svg></span>All Applications
+                </div>
                 <div class="admin-nav-item" onclick="adminTab('users',this)" data-roles="super,applications"><span
                         class="ni"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -115,7 +115,14 @@
                             <path d="M8 18h.01" />
                             <path d="M12 18h.01" />
                             <path d="M16 18h.01" />
-                        </svg></span>Consultations</div>
+                        </svg></span>Consultations
+                </div>
+                <div class="admin-nav-item" onclick="adminTab('insurance',this)" data-roles="super,finance"><span
+                        class="ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                        </svg></span><span class="nl">Insurance</span></div>
                 <div class="admin-nav-item" onclick="adminTab('affiliates',this)" data-roles="super,affiliates"><span
                         class="ni"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -456,6 +463,22 @@
                 </div>
 
                 <!-- AFFILIATES -->
+                <div id="tab-insurance" style="display:none">
+                    <div class="admin-section-header">
+                        <h2 class="admin-title">Insurance Policies</h2>
+                        <p class="admin-sub">All travel insurance purchases made through Jekafly.</p>
+                    </div>
+                    <div class="acard">
+                        <div class="acard-header">
+                            <h3>Insurance Payments</h3>
+                            <span id="insurance-count" class="acard-count"></span>
+                        </div>
+                        <div id="insurance-table">
+                            <div class="atbl-empty">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="tab-affiliates" style="display:none">
                     <div class="admin-title">Affiliates</div>
                     <p class="admin-sub">Manage affiliate partners, approve applications, and process commission
@@ -498,7 +521,7 @@
 
         let allApps = [], appFilter = 'all', selectedApp = null, _appsPage = 1;
 
-        /* ── Pagination constants & helpers ── */
+
         const APPS_PER_PAGE = 5;
 
         function _adminPaginate(items, page) {
@@ -538,7 +561,7 @@
         };
 
         const ROLE_TABS = {
-            super: ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'affiliates'],
+            super: ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates'],
             applications: ['overview', 'applications', 'users', 'reviews'],
             finance: ['overview', 'fees'],
             consultations: ['overview', 'consultations'],
@@ -589,7 +612,7 @@
             if (_adminRole !== 'super' && !ROLE_TABS[_adminRole].includes(tab)) {
                 showToast('You don\'t have access to that section.', 'error'); return;
             }
-            ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'affiliates']
+            ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates']
                 .filter(t => document.getElementById('tab-' + t))
                 .forEach(t => document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none');
             document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
@@ -601,10 +624,11 @@
             if (tab === 'reviews') loadReviews();
             if (tab === 'fees') loadFeesTab();
             if (tab === 'consultations') loadConsultations();
+            if (tab === 'insurance') loadInsurance();
             if (tab === 'affiliates') loadAffiliates();
         }
 
-        /* ── CONSULTATIONS ── */
+
         let _consultsAll = [], _consultsPage = 1;
         async function loadConsultations() {
             const container = document.getElementById('consult-table');
@@ -634,7 +658,38 @@
         }
         function consultsGoPage(p) { const t = Math.ceil(_consultsAll.length / APPS_PER_PAGE); if (p < 1 || p > t) return; _consultsPage = p; renderConsultsPage(); }
 
-        /* ── AFFILIATES ── */
+        let _insuranceAll = [], _insurancePage = 1;
+        async function loadInsurance() {
+            const container = document.getElementById('insurance-table');
+            const countEl = document.getElementById('insurance-count');
+            if (!container) return;
+            container.innerHTML = '<div class="atbl-empty">Loading...</div>';
+            try {
+                const payments = await PaymentStore.list();
+                _insuranceAll = (payments || []).filter(p => p.type === 'INSURANCE');
+                if (countEl) countEl.textContent = _insuranceAll.length + ' total';
+            } catch (e) { _insuranceAll = []; }
+            _insurancePage = 1;
+            renderInsurancePage();
+        }
+        function renderInsurancePage() {
+            const container = document.getElementById('insurance-table');
+            if (!container) return;
+            if (!_insuranceAll.length) { container.innerHTML = '<div class="atbl-empty">No insurance payments yet.</div>'; return; }
+            const paged = _adminPaginate(_insuranceAll, _insurancePage);
+            container.innerHTML = `<table><thead><tr><th>Date</th><th>Customer</th><th>Plan</th><th>Destination</th><th>Travellers</th><th>Amount</th><th>Status</th></tr></thead><tbody>${paged.map(p => `<tr>
+                <td>${new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
+                <td>${escHtml(p.email || '—')}</td>
+                <td>${escHtml(p.metadata?.plan || '—')}</td>
+                <td>${escHtml(p.metadata?.dest || p.metadata?.destination || '—')}</td>
+                <td>${p.metadata?.travellers || '—'}</td>
+                <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
+                <td><span class="status-pill ${p.status === 'SUCCESS' ? 'status-approved' : 'status-received'}">${p.status === 'SUCCESS' ? '✓ Paid' : p.status || 'Pending'}</span></td>
+            </tr>`).join('')}</tbody></table>` + _adminBuildPager(_insuranceAll.length, _insurancePage, 'insuranceGoPage');
+        }
+        function insuranceGoPage(p) { const t = Math.ceil(_insuranceAll.length / APPS_PER_PAGE); if (p < 1 || p > t) return; _insurancePage = p; renderInsurancePage(); }
+
+
         async function loadAffiliates() {
             const statsEl = document.getElementById('aff-admin-stats');
             const pendEl = document.getElementById('aff-pending-table');
@@ -776,7 +831,7 @@
             else { showToast(res?.error || 'Action failed.', 'error'); }
         }
 
-        /* ── OVERVIEW ── */
+
         async function loadOverview() {
             allApps = await AppStore.getAll();
             const approved = allApps.filter(a => ['approved', 'delivered'].includes(a.status)).length;
@@ -831,7 +886,7 @@
             document.getElementById('overview-recent').innerHTML = renderTable(recent, false);
         }
 
-        /* ── APPLICATIONS ── */
+
         async function loadApps() { allApps = await AppStore.getAll(); renderFiltered(); }
 
         function setFilter(f, el) {
@@ -969,7 +1024,7 @@
             renderFiltered();
         }
 
-        /* ── USERS ── */
+
         let _pendingDeleteUserId = null, _usersAll = [], _usersPage = 1;
 
         async function loadUsers() {
@@ -1043,7 +1098,7 @@
             loadUsers();
         }
 
-        /* ── REVIEWS ── */
+
         let _reviewsPending = [], _reviewsApproved = [], _revPendPage = 1, _revApprPage = 1;
 
         async function loadReviews() {
@@ -1106,10 +1161,10 @@
             loadReviews();
         }
 
-        /* ── LOGOUT ── */
+
         function doLogout() { Auth.logout(); window.location.replace('index.html'); }
 
-        /* ── FEES ── */
+
         const DEFAULT_FEES = {
             'United Kingdom': 185000, 'United States': 220000, 'Canada': 195000, 'Australia': 210000,
             'France': 160000, 'Germany': 160000, 'UAE': 95000, 'Japan': 175000, 'China': 180000,
@@ -1236,7 +1291,7 @@
             renderFeeTable(document.getElementById('fee-search').value);
         }
 
-        /* ── DOC PREVIEW ── */
+
         const _docUrlMap = {}, _docNameMap = {};
         let _currentAppDocs = [], _adminPreviewUrl = null, _adminPreviewName = '';
 
@@ -1287,7 +1342,7 @@
             btn.disabled = false; btn.textContent = '⬇ Download All as ZIP';
         }
 
-        /* ── CSV EXPORT ── */
+
         function toCSV(rows) { return rows.map(row => row.map(cell => { const s = String(cell ?? ''); if (/^[+]?[\d\s()\-]{7,}$/.test(s.trim())) return `"=""${s.replace(/"/g, '""')}"""`; const escaped = s.replace(/"/g, '""'); return /[,"\n]/.test(s) ? `"${escaped}"` : escaped; }).join(',')).join('\n'); }
         function downloadCSV(filename, content) { const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url); }
 
@@ -1388,6 +1443,12 @@
                     <path d="M16 18h.01" />
                 </svg></span><span class="tab-label">Consults</span>
         </button>
+        <button class="admin-tab-btn" onclick="adminTab('insurance',this)" data-tab="insurance"
+            data-roles="super,finance"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                    d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+            </svg> Insurance</button>
         <button class="admin-tab-btn" onclick="adminTab('affiliates',this)" data-tab="affiliates"
             data-roles="super,affiliates">
             <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"

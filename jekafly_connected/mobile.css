@@ -1,10 +1,6 @@
-/* ============================================================
-   JEKAFLY — MOBILE
-   ============================================================ */
-
 @media (max-width: 768px) {
 
-    /* ── TOKENS ─────────────────────────────────────────────── */
+
     :root {
         --mob-pad: 18px;
         --mob-radius: 18px;
@@ -26,7 +22,7 @@
         width: 100%;
     }
 
-    /* ── NAV ─────────────────────────────────────────────────── */
+
     nav {
         height: 60px;
         padding: 0 var(--mob-pad);
@@ -42,7 +38,7 @@
         box-shadow: 0 2px 16px rgba(13, 21, 96, 0.1);
     }
 
-    /* ── FONT CONSISTENCY — override Syne headings site-wide ─── */
+
     .checker-form h3,
     .checker-info h3,
     .cta-banner h2,
@@ -58,7 +54,7 @@
         font-family: 'Plus Jakarta Sans', sans-serif !important;
     }
 
-    /* ── SCROLL FADE-IN ANIMATIONS ───────────────────────────── */
+
     .mob-fade {
         opacity: 0;
         transform: translateY(40px) scale(0.97);
@@ -82,7 +78,7 @@
         transition-delay: 0.24s;
     }
 
-    /* ── BUTTON PRESS FEEL ───────────────────────────────────── */
+
     .btn-hero:active,
     .btn-check:active,
     .btn-track:active,
@@ -167,7 +163,7 @@
         letter-spacing: 0.01em;
     }
 
-    /* ── HERO ────────────────────────────────────────────────── */
+
     .hero {
         margin-top: 60px;
         padding: 0 var(--mob-pad);
@@ -290,7 +286,7 @@
         letter-spacing: 0.01em;
     }
 
-    /* ── SEARCH ──────────────────────────────────────────────── */
+
     .search-section {
         padding: 28px var(--mob-pad);
     }
@@ -328,7 +324,7 @@
         box-shadow: 0 4px 16px rgba(13, 21, 96, 0.22);
     }
 
-    /* ── SECTIONS ────────────────────────────────────────────── */
+
     section {
         padding-left: var(--mob-pad);
         padding-right: var(--mob-pad);
@@ -382,7 +378,7 @@
         flex-shrink: 0;
     }
 
-    /* ── SERVICES — 2×2 icon grid ───────────────────────────── */
+
     .services-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -446,7 +442,7 @@
         display: none;
     }
 
-    /* ── HOW IT WORKS — vertical steps ──────────────────────── */
+
     .how {
         border-radius: 0;
     }
@@ -514,7 +510,7 @@
         display: none;
     }
 
-    /* ── VISA CHECKER ────────────────────────────────────────── */
+
     .checker-wrap {
         grid-template-columns: 1fr;
         gap: 40px;
@@ -566,7 +562,7 @@
         margin-top: 8px;
     }
 
-    /* ── WHY JEKAFLY — accordion ─────────────────────────────── */
+
     .checker-info h3 {
         font-size: 1.05rem;
         margin-bottom: 12px;
@@ -644,7 +640,7 @@
         display: block;
     }
 
-    /* ── DESTINATIONS — horizontal scroll row ───────────────── */
+
     .destinations .section-header {
         display: block;
         margin-bottom: 16px;
@@ -724,7 +720,7 @@
         right: 8px;
     }
 
-    /* ── INSURANCE ───────────────────────────────────────────── */
+
     .insurance-wrap {
         grid-template-columns: 1fr;
         gap: 32px;
@@ -819,7 +815,7 @@
         display: none;
     }
 
-    /* ── TRACKING ────────────────────────────────────────────── */
+
     .track-wrap {
         text-align: center;
     }
@@ -853,7 +849,7 @@
         border-radius: var(--mob-radius-lg);
     }
 
-    /* ── TESTIMONIALS — show 1, hide rest behind "Show more" ─── */
+
     .testi-grid {
         overflow: hidden;
         margin-top: 20px;
@@ -911,7 +907,7 @@
         background: var(--border);
     }
 
-    /* ── CTA BANNER ──────────────────────────────────────────── */
+
     .cta-banner {
         margin: 32px var(--mob-pad) 48px;
         padding: 32px 20px;
@@ -953,7 +949,7 @@
         letter-spacing: 0.01em;
     }
 
-    /* ── FOOTER ──────────────────────────────────────────────── */
+
     footer {
         padding: 44px var(--mob-pad) 28px;
     }
@@ -985,7 +981,7 @@
         gap: 16px;
     }
 
-    /* ── MODAL ───────────────────────────────────────────────── */
+
     .modal-overlay {
         align-items: flex-end !important;
         justify-content: stretch !important;
@@ -1052,7 +1048,7 @@
         margin-bottom: 20px;
     }
 
-    /* ── WHATSAPP FLOAT ──────────────────────────────────────── */
+
     .wa-float {
         bottom: 88px;
         right: var(--mob-pad);
@@ -1062,7 +1058,7 @@
         box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45);
     }
 
-    /* ── STICKY CTA ──────────────────────────────────────────── */
+
     .mob-sticky-cta {
         position: fixed;
         bottom: 0;
@@ -1125,7 +1121,7 @@
         transform: scale(0.97);
     }
 
-    /* ── LOGIN ───────────────────────────────────────────────── */
+
     .login-page {
         margin-top: 60px;
         padding: 32px var(--mob-pad) 48px;
@@ -1216,7 +1212,7 @@
         margin-top: 24px;
     }
 
-    /* ── PAYMENT ─────────────────────────────────────────────── */
+
     .pay-page {
         padding: 76px var(--mob-pad) 48px;
         background: var(--surface, #f7f8fc);
@@ -1271,7 +1267,7 @@
         font-size: 0.85rem;
     }
 
-    /* ── SURVEY ──────────────────────────────────────────────── */
+
     .survey-page {
         margin-top: 60px;
     }
@@ -1311,7 +1307,7 @@
         min-height: 120px;
     }
 
-    /* ── APPLY ───────────────────────────────────────────────── */
+
     .apply-page {
         margin-top: 60px;
         padding: 24px var(--mob-pad) 80px;
@@ -1481,7 +1477,7 @@
         justify-content: flex-start;
     }
 
-    /* ── DASHBOARD ───────────────────────────────────────────── */
+
     .dash-page {
         margin-top: 60px;
     }
@@ -1581,7 +1577,7 @@
         border: none;
     }
 
-    /* ── Application pagination ──────────────────────────────── */
+
     .dash-pagination {
         padding: 14px var(--mob-pad);
         flex-direction: column;
@@ -1601,7 +1597,7 @@
         text-align: center;
     }
 
-    /* ── Applications mobile cards — date badge style ────────── */
+
     .app-mob-card {
         background: white;
         border: 1px solid var(--border);
@@ -1732,7 +1728,7 @@
         transform: scale(1.08);
     }
 
-    /* Per-tab colors */
+
     .dash-tab-btn[data-tab="applications"] .tab-icon {
         background: #e8f0fe;
         color: #1a56db;
@@ -1758,7 +1754,7 @@
         color: #6b7280;
     }
 
-    /* Active tab — deeper tint on icon */
+
     .dash-tab-btn[data-tab="applications"].active .tab-icon {
         background: #c7d9fc;
     }
@@ -1775,7 +1771,7 @@
         background: #bfdbfe;
     }
 
-    /* ── WhatsApp-style colored more drawer icons ──────────────────── */
+
     .dash-more-icon {
         width: 48px;
         height: 48px;
@@ -1915,7 +1911,7 @@
         font-size: 16px !important;
     }
 
-    /* ── More drawer ─────────────────────────────────────────── */
+
     .dash-more-overlay {
         display: none;
         position: fixed;
@@ -1998,7 +1994,7 @@
         color: var(--red);
     }
 
-    /* ── AFFILIATE STEP WIZARD ───────────────────────────────── */
+
 
     .aff-desktop-submit {
         display: none !important;
@@ -2150,7 +2146,7 @@
         font-size: 16px !important;
     }
 
-    /* ── AFFILIATE HERO ──────────────────────────────────────── */
+
     .aff-hero {
         padding: 80px var(--mob-pad) 40px;
         min-height: 0 !important;
@@ -2220,7 +2216,7 @@
         font-weight: 700 !important;
     }
 
-    /* ── Perks — 2-col flip cards ────────────────────────────── */
+
     .aff-perks {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
@@ -2301,7 +2297,7 @@
         margin: 0;
     }
 
-    /* ── APPLY PAGE ──────────────────────────────────────────── */
+
     .apply-header h1 {
         font-size: 1.2rem;
         font-weight: 600;
@@ -2321,7 +2317,7 @@
         font-size: 1.1rem;
     }
 
-    /* ── PAYMENT PAGE ────────────────────────────────────────── */
+
     .page-title {
         font-size: 1.1rem;
         font-weight: 600;
@@ -2341,7 +2337,7 @@
         font-weight: 600;
     }
 
-    /* ── SURVEY PAGE ─────────────────────────────────────────── */
+
     h1 {
         font-weight: 600;
     }
@@ -2355,7 +2351,7 @@
         font-size: 2rem;
     }
 
-    /* ── LOGIN PAGE ──────────────────────────────────────────── */
+
     .aside-heading {
         font-size: 1.3rem;
         font-weight: 600;
@@ -2366,7 +2362,7 @@
         font-weight: 600;
     }
 
-    /* ── DASHBOARD ───────────────────────────────────────────── */
+
     .dash-title {
         font-weight: 600;
     }
@@ -2375,13 +2371,13 @@
         font-weight: 700;
     }
 
-    /* ── ADMIN ───────────────────────────────────────────────── */
+
     .admin-title {
         font-size: 1.1rem;
         font-weight: 600;
     }
 
-    /* ── GLOBAL: reduce all 800-weight headings site-wide ────── */
+
     h1,
     h2,
     h3,
@@ -2396,14 +2392,14 @@
         font-weight: 700;
     }
 
-    /* ── NAV drawer glass feel — ensure it overrides =*/
+
     #nav-mobile-drawer {
         background: rgba(248, 249, 255, 0.78) !important;
         backdrop-filter: blur(28px) saturate(180%) !important;
         -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
     }
 
-    /* ── Section spacing — add bottom margin between sections ── */
+
     .services,
     .how,
     .visa-checker,
@@ -2427,7 +2423,6 @@
 
 }
 
-/* ── SMALL PHONES ────────────────────────────────────────── */
 @media (max-width: 390px) {
 
     .hero h1 {
@@ -2463,8 +2458,7 @@
     }
 
 
-    /* ── WhatsApp-style colored icons on mobile ─────────────────────── */
-    /* Service section icons */
+
     .service-card:nth-child(1) .service-icon-bg {
         background: #e8f0fe;
     }
@@ -2513,14 +2507,14 @@
         color: #ca8a04;
     }
 
-    /* How it works step numbers */
+
     .step-num {
         background: var(--blue) !important;
         color: white !important;
         font-weight: 800;
     }
 
-    /* Dashboard stat cards on mobile */
+
     .stat-card:nth-child(1) .stat-icon {
         background: #e8f0fe;
         color: #1a56db;
@@ -2543,49 +2537,49 @@
 
 }
 
-/* ══════════════════════════════════════════════════════════
-   MOBILE NAV DRAWER — Premium logged-in menu
-   ══════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
 
-    /* Drawer: taller, scrollable, frosted */
     .nav-mobile-drawer {
         max-height: 92vh;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
         padding-bottom: 32px;
     }
 
-    /* Outer wrapper — uniform padding */
     .nav-mob-menu {
         display: flex;
         flex-direction: column;
-        padding: 4px 0 0;
+        padding: 4px 18px 0;
+        width: 100%;
+        box-sizing: border-box;
     }
 
-    /* ── User row ─────────────────────────────────────────── */
     .nav-mob-user-row {
         display: flex;
         align-items: center;
-        gap: 14px;
-        padding: 18px 4px 20px;
+        gap: 12px;
+        padding: 16px 0 18px;
+        border-bottom: 1.5px solid #EEF0F8;
+        margin-bottom: 2px;
     }
 
     .nav-mob-avatar {
-        width: 46px;
-        height: 46px;
-        border-radius: 13px;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
         background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
         color: white;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         font-weight: 800;
         letter-spacing: -0.02em;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        box-shadow: 0 3px 12px rgba(13, 21, 96, 0.3);
+        box-shadow: 0 3px 10px rgba(13, 21, 96, 0.25);
     }
 
     .nav-mob-user-text {
@@ -2597,7 +2591,7 @@
 
     .nav-mob-name {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         font-weight: 700;
         color: #0D1560;
         letter-spacing: -0.02em;
@@ -2607,7 +2601,7 @@
     }
 
     .nav-mob-email {
-        font-size: 0.78rem;
+        font-size: 0.75rem;
         color: #9BA5C0;
         letter-spacing: -0.01em;
         white-space: nowrap;
@@ -2615,44 +2609,47 @@
         text-overflow: ellipsis;
     }
 
-    /* ── Divider ──────────────────────────────────────────── */
     .nav-mob-divider {
         height: 1px;
         background: #EEF0F8;
         margin: 0 -4px;
     }
 
-    /* ── Feature list ─────────────────────────────────────── */
     .nav-mob-list {
         display: flex;
         flex-direction: column;
-        padding: 8px 0;
-        gap: 1px;
+        padding: 6px 0;
+        gap: 0;
     }
 
     .nav-mob-row {
         display: flex;
         align-items: center;
-        gap: 13px;
+        gap: 12px;
         width: 100%;
-        padding: 11px 8px;
+        padding: 11px 0;
         background: transparent;
         border: none;
-        border-radius: 12px;
+        border-bottom: 1px solid #F0F2FA;
+        border-radius: 0;
         cursor: pointer;
         font-family: 'Plus Jakarta Sans', sans-serif;
         text-align: left;
         transition: background .14s;
     }
 
+    .nav-mob-row:last-child {
+        border-bottom: none;
+    }
+
     .nav-mob-row:active {
-        background: rgba(13, 21, 96, 0.05);
+        background: rgba(13, 21, 96, 0.04);
     }
 
     .nav-mob-row-icon {
-        width: 34px;
-        height: 34px;
-        border-radius: 9px;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -2660,11 +2657,12 @@
     }
 
     .nav-mob-row-label {
-        flex: 1;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         font-weight: 600;
         color: #1A2040;
         letter-spacing: -0.01em;
+        flex: 1;
+        text-align: left;
     }
 
     .nav-mob-row-arrow {
@@ -2672,32 +2670,6 @@
         flex-shrink: 0;
     }
 
-    /* ── CTA button ───────────────────────────────────────── */
-    .nav-mob-cta-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        margin: 14px 0 6px;
-        padding: 14px;
-        background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
-        color: white;
-        border-radius: 14px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.92rem;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        text-decoration: none;
-        box-shadow: 0 4px 16px rgba(13, 21, 96, 0.28);
-        transition: opacity .15s, transform .15s;
-    }
-
-    .nav-mob-cta-btn:active {
-        opacity: 0.9;
-        transform: scale(0.99);
-    }
-
-    /* ── Footer row (admin + logout) ──────────────────────── */
     .nav-mob-footer {
         display: flex;
         flex-direction: column;
@@ -2723,178 +2695,204 @@
         transition: background .14s;
     }
 
-    .nav-mob-admin-btn:active {
-        background: rgba(13, 21, 96, 0.09);
+    .nav-mob-action-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .nav-mob-cta-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 13px 4px;
+        background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
+        color: white;
+        border-radius: 13px;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 0.82rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        text-decoration: none;
+        text-align: center;
+        box-shadow: 0 3px 12px rgba(13, 21, 96, 0.25);
+        transition: opacity .15s;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
     }
 
     .nav-mob-logout-btn {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 7px;
-        width: 100%;
-        padding: 12px;
+        gap: 6px;
+        padding: 13px 4px;
         background: rgba(227, 30, 36, 0.05);
-        border: 1.5px solid rgba(227, 30, 36, 0.15);
-        border-radius: 12px;
+        border: 1.5px solid rgba(227, 30, 36, 0.18);
+        border-radius: 13px;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.87rem;
+        font-size: 0.82rem;
         font-weight: 700;
         color: #E31E24;
         cursor: pointer;
         letter-spacing: -0.01em;
+        text-align: center;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
         transition: background .14s;
     }
 
-    .nav-mob-logout-btn:active {
-        background: rgba(227, 30, 36, 0.1);
+    .nav-mobile-drawer>a {
+        display: none;
     }
 
-    /* ── Hide bottom drawer remnants ──────────────────────── */
     .dash-mobile-tabbar,
     .dash-more-drawer,
     .dash-more-overlay,
     #dash-tabbar {
         display: none !important;
     }
-}
 
-/* ── Nav footer action row: New Application + Sign Out side by side ── */
-@media (max-width: 768px) {
-
-    .nav-mob-action-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-        margin-top: 0;
-    }
-
-    /* CTA button — flush in action row */
-    .nav-mob-cta-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        padding: 13px 10px;
-        background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
-        color: white;
-        border-radius: 13px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.83rem;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        text-decoration: none;
-        box-shadow: 0 3px 12px rgba(13, 21, 96, 0.25);
-        text-align: center;
-        transition: opacity .15s, transform .15s;
-    }
-
-    .nav-mob-cta-btn:active {
-        opacity: 0.88;
-        transform: scale(0.98);
-    }
-
-    /* Sign Out button — flush in action row */
-    .nav-mob-logout-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        width: 100%;
-        padding: 13px 10px;
-        background: rgba(227, 30, 36, 0.05);
-        border: 1.5px solid rgba(227, 30, 36, 0.18);
-        border-radius: 13px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.83rem;
-        font-weight: 700;
-        color: #E31E24;
-        cursor: pointer;
-        letter-spacing: -0.01em;
-        transition: background .14s;
-    }
-
-    .nav-mob-logout-btn:active {
-        background: rgba(227, 30, 36, 0.1);
-    }
-
-    /* Footer spacing */
-    .nav-mob-footer {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        padding-top: 14px;
-    }
-
-    /* ── Applications search — mobile overrides ─────────────── */
     .dash-search-input {
         font-size: 16px !important;
-        /* prevent iOS zoom */
     }
 
     .dash-search-wrap {
         width: 100%;
     }
+}
 
-    /* ── Pagination — keep 5/page, tighter controls on mobile ─ */
-    .dash-pagination {
-        padding: 12px 16px;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
+@media (max-width: 768px) {
+
+
+    .dash-stats,
+    .stat-cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-bottom: 16px;
     }
 
-    .dash-page-info {
-        font-size: 0.78rem;
-        color: #9BA5C0;
-        text-align: center;
+    .stat-card {
+        padding: 12px 14px;
+        border-radius: 12px;
     }
 
-    .dash-page-btns {
-        display: flex;
-        justify-content: center;
-        gap: 5px;
-        flex-wrap: wrap;
-    }
-
-    .dash-page-btn {
-        min-width: 36px;
-        height: 36px;
-        padding: 0 10px;
-        font-size: 0.82rem;
-        border-radius: 9px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border: 1.5px solid #E3E5F5;
-        background: white;
-        color: #3A4060;
-        font-weight: 600;
-        cursor: pointer;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        transition: all .15s;
-    }
-
-    .dash-page-btn.active {
-        background: linear-gradient(135deg, #0D1560, #1520A0);
-        border-color: #0D1560;
-        color: white;
-        box-shadow: 0 2px 8px rgba(13, 21, 96, 0.25);
-    }
-
-    .dash-page-btn.disabled {
-        opacity: 0.35;
-        cursor: default;
-    }
-
-    .dash-page-ellipsis {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+    .stat-icon {
         width: 28px;
-        height: 36px;
-        color: #9BA5C0;
-        font-size: 0.85rem;
+        height: 28px;
+        border-radius: 7px;
+        font-size: 0.9rem;
+        margin-bottom: 6px;
+        padding: 0;
+    }
+
+    .stat-value {
+        font-size: 1.2rem;
+        letter-spacing: -0.03em;
+        margin-bottom: 2px;
+    }
+
+    .stat-label {
+        font-size: 0.62rem;
+        letter-spacing: 0.04em;
+    }
+
+
+    .admin-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-bottom: 16px;
+    }
+
+    .astat {
+        padding: 12px 14px;
+        border-radius: 12px;
+    }
+
+    .astat-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        margin-bottom: 8px;
+    }
+
+    .astat-val {
+        font-size: 1.2rem;
+        letter-spacing: -0.03em;
+        margin-bottom: 2px;
+    }
+
+    .astat-lbl {
+        font-size: 0.62rem;
+        letter-spacing: 0.02em;
+    }
+
+
+    .rev-card {
+        padding: 18px 16px 14px;
+        border-radius: 14px;
+        margin-bottom: 14px;
+    }
+
+    .rev-card-eyebrow {
+        font-size: 0.6rem;
+        letter-spacing: .1em;
+    }
+
+    .rev-card-total {
+        font-size: 1.6rem;
+    }
+
+    .rev-card-sub {
+        font-size: 0.72rem;
+    }
+
+    .rev-card-badge {
+        font-size: 0.62rem;
+        padding: 4px 9px;
+    }
+
+    .rev-card-header {
+        margin-bottom: 14px;
+    }
+
+    .rev-bars {
+        height: 80px;
+        gap: 4px;
+    }
+
+    .rev-bar {
+        border-radius: 4px 4px 0 0;
+    }
+
+    .rev-bar-val {
+        font-size: 0;
+    }
+
+    .rev-label {
+        font-size: 0.55rem;
+        letter-spacing: 0;
+    }
+
+    .rev-labels {
+        gap: 4px;
+    }
+
+    .rev-footer {
+        gap: 10px;
+        margin-top: 12px;
+        padding-top: 12px;
+    }
+
+    .rev-foot-label {
+        font-size: 0.6rem;
+    }
+
+    .rev-foot-val {
+        font-size: 0.9rem;
     }
 }

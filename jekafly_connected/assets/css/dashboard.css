@@ -1,4 +1,3 @@
-/* ── Mobile-only elements — hidden on desktop ────────────── */
 .dash-mobile-tabbar,
 .dash-more-overlay,
 .dash-more-drawer,
@@ -19,7 +18,6 @@
     min-height: calc(100vh - 68px);
 }
 
-/* SIDEBAR */
 .dash-sidebar {
     background: white;
     border-right: 1.5px solid var(--border);
@@ -85,7 +83,6 @@
     border-left-color: var(--blue);
 }
 
-/* ── WhatsApp-style colored nav icons ────────────────────────────── */
 .dash-nav-item .icon {
     width: 34px;
     height: 34px;
@@ -101,7 +98,6 @@
     transform: scale(1.08);
 }
 
-/* Icon colors per nav item */
 .dash-nav-item[onclick*="applications"] .icon,
 .dash-nav-item[onclick*="'applications'"] .icon {
     background: #e8f0fe;
@@ -165,13 +161,9 @@
     color: #dc2626;
 }
 
-/* Active state — slightly deeper tint */
 .dash-nav-item.active .icon {
     filter: saturate(1.2) brightness(0.95);
 }
-
-
-
 
 .dash-nav-section {
     font-size: 0.7rem;
@@ -182,7 +174,6 @@
     padding: 20px 24px 8px;
 }
 
-/* MAIN */
 .dash-main {
     padding: 36px 40px;
 }
@@ -199,7 +190,6 @@
     margin-bottom: 32px;
 }
 
-/* STATS */
 .dash-stats {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -215,13 +205,17 @@
 }
 
 .stat-icon {
-    font-size: 1.6rem;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    padding: 8px;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    padding: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* ── WhatsApp-style colored dashboard stat card icons ───────────── */
 .stat-card:nth-child(1) .stat-icon {
     background: #e8f0fe;
     color: #1a56db;
@@ -242,8 +236,6 @@
     color: #dc2626;
 }
 
-
-
 .stat-value {
     font-family: 'Syne', sans-serif;
     font-size: 1.8rem;
@@ -257,7 +249,6 @@
     font-weight: 500;
 }
 
-/* TABLE */
 .table-card {
     background: white;
     border-radius: 16px;
@@ -307,13 +298,11 @@
     box-shadow: 0 4px 14px rgba(13, 21, 96, 0.28);
 }
 
-/* ── Applications search ──────────────────────────────────── */
 .dash-search-wrap {
     display: flex;
     align-items: center;
     gap: 8px;
     flex: 0 1 320px;
-    /* max ~320px, shrinks if needed */
     min-width: 0;
 }
 
@@ -425,7 +414,6 @@ tr:hover td {
     color: var(--red);
 }
 
-/* DETAIL PANEL */
 .detail-panel {
     background: white;
     border-radius: 16px;
@@ -517,7 +505,6 @@ tr:hover td {
     margin-top: 2px;
 }
 
-/* PROFILE */
 .profile-card {
     background: white;
     border-radius: 16px;
@@ -583,7 +570,6 @@ tr:hover td {
     background: var(--blue-dark);
 }
 
-/* EMPTY STATE */
 .empty-state {
     text-align: center;
     padding: 60px 20px;
@@ -606,9 +592,6 @@ tr:hover td {
     margin-bottom: 24px;
 }
 
-
-
-/* ── DASHBOARD V2 POLISH ──────────────────────────────────── */
 .stat-cards {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -620,21 +603,21 @@ tr:hover td {
     background: white;
     border: 1.5px solid var(--border);
     border-radius: 14px;
-    padding: 22px;
+    padding: 16px 18px;
     box-shadow: 0 1px 3px rgba(13, 21, 96, 0.06);
 }
 
 .stat-value {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 800;
     color: var(--text);
     letter-spacing: -0.03em;
     line-height: 1;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
 }
 
 .stat-label {
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     color: var(--text-light);
     text-transform: uppercase;
     font-weight: 600;
@@ -752,7 +735,6 @@ tr:hover td {
     color: var(--text);
 }
 
-/* ── Documents tab two-step flow ──────────────────────────── */
 .doc-step-label {
     font-size: 0.75rem;
     font-weight: 800;
@@ -762,7 +744,6 @@ tr:hover td {
     margin-bottom: 4px;
 }
 
-/* Application selection cards */
 .doc-app-cards {
     display: flex;
     flex-direction: column;
@@ -864,7 +845,6 @@ tr:hover td {
     background: #F8F9FF;
 }
 
-/* Step 2 header */
 .doc-step-2-header {
     display: flex;
     align-items: flex-start;
@@ -902,7 +882,6 @@ tr:hover td {
     margin-top: 3px;
 }
 
-/* Required docs panel */
 .doc-required-panel {
     margin-bottom: 24px;
 }
@@ -1002,7 +981,6 @@ tr:hover td {
     margin-bottom: 16px;
 }
 
-/* Modal divider */
 .doc-modal-divider {
     display: flex;
     align-items: center;
@@ -1023,14 +1001,12 @@ tr:hover td {
     background: var(--border);
 }
 
-/* Modal doc required list (same item style but inside modal) */
 .doc-modal {
     max-width: 580px;
     max-height: 88vh;
     overflow-y: auto;
 }
 
-/* Doc tab empty / no-apps state */
 .doc-no-apps {
     display: flex;
     flex-direction: column;
@@ -1068,7 +1044,6 @@ tr:hover td {
     color: white;
 }
 
-/* ── Per-document upload row ──────────────────────────────── */
 .doc-required-item {
     display: flex;
     align-items: center;
@@ -1161,11 +1136,6 @@ tr:hover td {
     cursor: default;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   DASHBOARD — PREMIUM MOBILE  (bottom tab bar pattern)
-   ═══════════════════════════════════════════════════════════ */
-
-/* Tab bar hidden on desktop */
 .dash-mobile-tabbar {
     display: none !important;
 }
@@ -1199,10 +1169,10 @@ tr:hover td {
         grid-template-columns: 1fr;
         min-height: 0;
         padding-bottom: 72px;
-        /* clear fixed bottom tab bar */
+
     }
 
-    /* ── Sidebar hidden — use bottom tab bar ─────────────── */
+
     .dash-sidebar {
         display: none;
     }
@@ -1211,7 +1181,7 @@ tr:hover td {
         padding: 18px 14px 20px;
     }
 
-    /* ── Stat cards: 2 col ──────────────────────────────── */
+
     .stat-cards {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
@@ -1236,14 +1206,14 @@ tr:hover td {
         margin-bottom: 6px;
     }
 
-    /* ── Section cards ──────────────────────────────────── */
+
     .dash-section-card {
         padding: 18px 14px;
         border-radius: 16px;
         margin-bottom: 14px;
     }
 
-    /* ── Tables: horizontal scroll ──────────────────────── */
+
     .dash-table-wrap {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -1261,7 +1231,7 @@ tr:hover td {
         white-space: nowrap;
     }
 
-    /* ── Track section ──────────────────────────────────── */
+
     .dash-track-wrap {
         flex-direction: column;
         gap: 10px;
@@ -1276,20 +1246,20 @@ tr:hover td {
         padding: 14px;
     }
 
-    /* ── Application row cards ──────────────────────────── */
+
     .app-row-card {
         padding: 14px;
         border-radius: 14px;
     }
 
-    /* ── iOS zoom prevention ────────────────────────────── */
+
     .dash-main input,
     .dash-main select,
     .dash-main textarea {
         font-size: 16px !important;
     }
 
-    /* ── Bottom Tab Bar ─────────────────────────────────── */
+
     .dash-mobile-tabbar {
         display: none !important;
         position: fixed;
@@ -1361,13 +1331,11 @@ tr:hover td {
     box-shadow: 0 4px 20px rgba(14, 14, 184, 0.15);
 }
 
-/* ── Doc slot number badge — done state ───────────────────── */
 .dreq-num-done {
     background: #f0fdf4;
     color: #16a34a;
 }
 
-/* ── My Documents app list card hover ─────────────────────── */
 .ins-item--link {
     cursor: pointer;
     transition: border-color .15s, box-shadow .15s;
@@ -1378,7 +1346,6 @@ tr:hover td {
     box-shadow: 0 2px 12px rgba(232, 97, 58, 0.1);
 }
 
-/* ── Document slot Replace button ─────────────────────────── */
 .btn-replace {
     display: inline-flex;
     align-items: center;
@@ -1405,7 +1372,6 @@ tr:hover td {
     display: none;
 }
 
-/* ── Doc slot status labels ────────────────────────────────── */
 .status-uploaded {
     font-size: 0.83rem;
     font-weight: 600;
@@ -1418,7 +1384,6 @@ tr:hover td {
     color: #9BA5C0;
 }
 
-/* ── My Docs preview modal overlay ────────────────────────── */
 .mydocs-preview-overlay {
     position: fixed;
     inset: 0;
@@ -1434,7 +1399,6 @@ tr:hover td {
     display: none !important;
 }
 
-/* ── Premium Danger Zone ───────────────────────────────────── */
 .danger-zone-card {
     background: #fff;
     border: 1.5px solid #fecaca;
@@ -1544,7 +1508,6 @@ tr:hover td {
     background: #b91c1c;
 }
 
-/* ── Booking Cards (Flight & Hotel) ────────────────────────── */
 .booking-card {
     background: #fff;
     border: 1.5px solid #E5E9F5;
@@ -1661,7 +1624,6 @@ tr:hover td {
     font-style: italic;
 }
 
-/* ── Application pagination ──────────────────────────────── */
 .dash-pagination {
     display: flex;
     align-items: center;
@@ -1747,11 +1709,6 @@ tr:hover td {
     }
 }
 
-/* ══════════════════════════════════════════════════════════
-   TRACK TAB — Premium redesign
-   ══════════════════════════════════════════════════════════ */
-
-/* ── Search card ─────────────────────────────────────────── */
 .track-search-card {
     background: white;
     border: 1.5px solid #EAECF5;
@@ -1851,7 +1808,6 @@ tr:hover td {
     transform: translateY(0);
 }
 
-/* ── Quick-ref chips row ─────────────────────────────────── */
 .track-quick-refs-row {
     display: flex;
     align-items: center;
@@ -1896,7 +1852,6 @@ tr:hover td {
     box-shadow: 0 2px 8px rgba(13, 21, 96, 0.12);
 }
 
-/* ── Result card ─────────────────────────────────────────── */
 .track-result-card {
     background: white;
     border: 1.5px solid #EAECF5;
@@ -1947,7 +1902,6 @@ tr:hover td {
     color: #6B7494;
 }
 
-/* ── Step progress bar ───────────────────────────────────── */
 .track-stepper {
     display: flex;
     align-items: flex-start;
@@ -2053,7 +2007,6 @@ tr:hover td {
     font-weight: 700;
 }
 
-/* ── Status note ─────────────────────────────────────────── */
 .track-result-note {
     display: flex;
     align-items: flex-start;
@@ -2075,7 +2028,6 @@ tr:hover td {
     color: #7B8ED0;
 }
 
-/* ── Not found ───────────────────────────────────────────── */
 .track-not-found {
     padding: 20px 24px;
     background: #FEF2F2;
@@ -2086,7 +2038,6 @@ tr:hover td {
     letter-spacing: -0.01em;
 }
 
-/* ── Mobile ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
 
     .track-search-card,
@@ -2125,7 +2076,6 @@ tr:hover td {
     }
 }
 
-/* ── Insurance tab — header + purchase form ──────────────── */
 .ins-tab-header {
     display: flex;
     align-items: flex-start;
@@ -2265,4 +2215,345 @@ tr:hover td {
         flex-direction: column;
         gap: 12px;
     }
+}
+
+@media (max-width: 640px) {
+    .stat-card {
+        padding: 12px 13px;
+        border-radius: 12px;
+    }
+
+    .stat-value {
+        font-size: 1.2rem;
+        margin-bottom: 2px;
+    }
+
+    .stat-label {
+        font-size: 0.62rem;
+        letter-spacing: .04em;
+    }
+
+    .stat-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        font-size: 0.85rem;
+        margin-bottom: 6px;
+    }
+}
+
+.track-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.track-quick-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    background: white;
+    border: 1.5px solid #EAECF5;
+    border-radius: 12px;
+    cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    text-align: left;
+    transition: all .16s;
+    box-shadow: 0 1px 4px rgba(13, 21, 96, 0.05);
+}
+
+.track-quick-card:hover {
+    border-color: rgba(13, 21, 96, 0.2);
+    box-shadow: 0 4px 14px rgba(13, 21, 96, 0.08);
+    transform: translateY(-1px);
+}
+
+.track-quick-flag {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.track-quick-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+}
+
+.track-quick-dest {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #0D1560;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-quick-ref {
+    font-size: 0.72rem;
+    color: #9BA5C0;
+    font-weight: 600;
+    letter-spacing: .01em;
+    font-family: monospace;
+}
+
+.track-quick-status {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.consult-packages-wrap {
+    background: white;
+    border: 1.5px solid #EAECF5;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 12px rgba(13, 21, 96, 0.05);
+}
+
+.consult-pkg-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #F0F2FA;
+    cursor: pointer;
+    transition: background .14s;
+    position: relative;
+    background: white;
+}
+
+.consult-pkg-row:last-child {
+    border-bottom: none;
+}
+
+.consult-pkg-row:hover {
+    background: #F8F9FE;
+}
+
+.consult-pkg-row.selected {
+    background: linear-gradient(135deg, rgba(13, 21, 96, 0.04), rgba(21, 32, 160, 0.03));
+    border-left: 3px solid #0D1560;
+}
+
+.consult-pkg-row--popular {
+    background: #FAFBFF;
+}
+
+.consult-pkg-badge {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    color: #7048E8;
+    background: #F3F0FF;
+    border: 1px solid #E0D9FF;
+    border-radius: 100px;
+    padding: 2px 7px;
+}
+
+.consult-pkg-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.consult-pkg-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.consult-pkg-name {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #0D1560;
+    letter-spacing: -0.02em;
+}
+
+.consult-pkg-desc {
+    font-size: 0.75rem;
+    color: #9BA5C0;
+    letter-spacing: -0.01em;
+    margin-top: 1px;
+}
+
+.consult-pkg-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 800;
+    color: #0D1560;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.consult-pkg-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid #D0D6E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: transparent;
+    transition: all .15s;
+}
+
+.consult-pkg-row.selected .consult-pkg-check {
+    background: #0D1560;
+    border-color: #0D1560;
+    color: white;
+}
+
+.consult-includes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    padding: 14px 0 18px;
+}
+
+.consult-includes-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #4A5578;
+    letter-spacing: -0.01em;
+}
+
+.consult-confirmed-banner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 20px;
+    background: #F0FDF4;
+    border: 1.5px solid #BBF7D0;
+    border-radius: 12px;
+    margin-bottom: 18px;
+}
+
+.consult-confirmed-icon {
+    width: 36px;
+    height: 36px;
+    background: #DCFCE7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.consult-confirmed-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #15803D;
+    letter-spacing: -0.02em;
+}
+
+.consult-confirmed-sub {
+    font-size: 0.78rem;
+    color: #4ADE80;
+    margin-top: 2px;
+}
+
+.consult-cal-fallback {
+    font-size: 0.75rem;
+    text-align: center;
+    color: #9BA5C0;
+    margin-top: 10px;
+}
+
+.consult-cal-fallback a {
+    color: #0D1560;
+    font-weight: 600;
+}
+
+.profile-card--compact {
+    padding: 22px 24px;
+    margin-bottom: 16px;
+}
+
+.profile-card--compact h3 {
+    font-size: 0.95rem;
+    margin-bottom: 14px;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid #F0F2FA;
+}
+
+.data-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.ins-policy-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.ins-policy-row-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 24px;
+    border-bottom: 1px solid #F0F2FA;
+}
+
+.ins-policy-row-item:last-child {
+    border-bottom: none;
+}
+
+.ins-policy-row-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.ins-policy-row-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #0D1560;
+    letter-spacing: -0.02em;
+}
+
+.ins-policy-row-meta {
+    font-size: 0.74rem;
+    color: #9BA5C0;
+    letter-spacing: -0.01em;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ins-policy-row-amount {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #0D1560;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+}
+
+.ins-policy-dl-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 12px;
+    font-size: 0.75rem;
 }
