@@ -376,11 +376,7 @@ nav {
 }
 
 .trust-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    padding: 0 24px 20px;
+    display: none;
 }
 
 .trust-badge {
@@ -488,13 +484,15 @@ nav {
 
 .success-modal {
     background: var(--white);
-    border-radius: 24px;
-    padding: 44px 36px;
-    max-width: 460px;
+    border-radius: 20px;
+    padding: 28px 24px 24px;
+    max-width: 420px;
     width: 100%;
     text-align: center;
-    box-shadow: 0 28px 72px rgba(0, 0, 0, .25);
+    box-shadow: 0 20px 56px rgba(0, 0, 0, .2);
     animation: popIn .38s cubic-bezier(.34, 1.56, .64, 1);
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 @keyframes popIn {
@@ -510,37 +508,38 @@ nav {
 }
 
 .success-icon-wrap {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 20px;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 14px;
     background: #f0fdf4;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.2rem;
 }
 
 .success-modal h2 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.7rem;
+    font-family: 'Syne', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 800;
     color: var(--navy);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
+    letter-spacing: -0.03em;
 }
 
 .success-modal p {
-    font-size: .93rem;
+    font-size: .82rem;
     color: var(--muted);
-    line-height: 1.65;
-    margin-bottom: 24px;
+    line-height: 1.55;
+    margin-bottom: 16px;
 }
 
 .receipt {
     background: var(--surface);
-    border-radius: 14px;
+    border-radius: 12px;
     border: 1.5px solid var(--border);
     overflow: hidden;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     text-align: left;
 }
 
@@ -548,9 +547,9 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 11px 16px;
+    padding: 9px 14px;
     border-bottom: 1px solid var(--border);
-    font-size: .87rem;
+    font-size: .82rem;
 }
 
 .receipt-row:last-child {
@@ -668,7 +667,7 @@ nav {
 
 @media (max-width: 640px) {
 
-    /* Prevent iOS input zoom */
+
     input,
     select,
     textarea {
@@ -676,19 +675,12 @@ nav {
     }
 }
 
-/* ══════════════════════════════════════════════════════════
-   PREMIUM UPGRADE — payment page
-   Aligns to Plus Jakarta Sans + Syne design system
-   ══════════════════════════════════════════════════════════ */
-
-/* Override DM Sans/DM Serif to match site fonts */
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     line-height: 1.65;
 }
 
-/* ── Page header ─────────────────────────────────────────── */
 .page-eyebrow {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.68rem;
@@ -712,7 +704,6 @@ body {
     line-height: 1.65;
 }
 
-/* ── Destination card ────────────────────────────────────── */
 .dest-card {
     background: linear-gradient(145deg, #0a1f44 0%, #0f2d5e 60%, #0D1560 100%);
     border-radius: 20px;
@@ -742,7 +733,6 @@ body {
     text-transform: uppercase;
 }
 
-/* ── Line items ──────────────────────────────────────────── */
 .line-items {
     border-radius: 16px;
     border: 1.5px solid #EAECF5;
@@ -788,7 +778,6 @@ body {
     letter-spacing: -0.02em;
 }
 
-/* ── Payment box ─────────────────────────────────────────── */
 .pay-box {
     border-radius: 20px;
     border: 1.5px solid #EAECF5;
@@ -827,7 +816,6 @@ body {
     color: #9BA5C0;
 }
 
-/* ── Pay button ──────────────────────────────────────────── */
 .btn-pay {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 1rem;
@@ -845,7 +833,6 @@ body {
     box-shadow: 0 12px 36px rgba(232, 97, 58, 0.5);
 }
 
-/* ── Trust badges ────────────────────────────────────────── */
 .trust-badge {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.71rem;
@@ -858,7 +845,6 @@ body {
     letter-spacing: -0.01em;
 }
 
-/* ── Success modal ───────────────────────────────────────── */
 .success-modal {
     border-radius: 24px;
     padding: 48px 40px;
@@ -891,7 +877,6 @@ body {
     margin-bottom: 24px;
 }
 
-/* ── Receipt ─────────────────────────────────────────────── */
 .receipt {
     border-radius: 14px;
     border: 1.5px solid #EAECF5;
@@ -921,7 +906,6 @@ body {
     font-size: 1rem;
 }
 
-/* ── Action buttons ──────────────────────────────────────── */
 .btn-dashboard {
     font-family: 'Plus Jakarta Sans', sans-serif;
     background: #0D1560;
@@ -957,7 +941,6 @@ body {
     background: #F0F3FF;
 }
 
-/* ── Processing state ────────────────────────────────────── */
 .processing-title {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
@@ -979,7 +962,6 @@ body {
     height: 40px;
 }
 
-/* ── Included strip ──────────────────────────────────────── */
 .included-strip {
     border-radius: 12px;
     border: 1.5px solid #BBF7D0;

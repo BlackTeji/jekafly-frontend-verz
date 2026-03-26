@@ -241,19 +241,25 @@
                         <div class="acard-header">
                             <h3>Applications</h3>
                             <div class="afilters">
-                                <input type="text" class="search-input" id="app-search"
-                                    placeholder="Search ref, name, destination, travel date..."
-                                    oninput="filterApps()" />
-                                <button class="btn-manage ml-auto nowrap" onclick="exportCSV('applications')">⬇ Export
-                                    CSV</button>
-                                <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
-                                <button class="filter-btn" onclick="setFilter('received',this)">Received</button>
-                                <button class="filter-btn" onclick="setFilter('processing',this)">Processing</button>
-                                <button class="filter-btn" onclick="setFilter('embassy',this)">Embassy</button>
-                                <button class="filter-btn" onclick="setFilter('approved',this)">Approved</button>
+                                <div class="afilters-top">
+                                    <input type="text" class="search-input" id="app-search"
+                                        placeholder="Search ref, name, destination..." oninput="filterApps()" />
+                                    <button class="btn-manage nowrap" onclick="exportCSV('applications')">Export
+                                        CSV</button>
+                                </div>
+                                <div class="afilters-pills">
+                                    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+                                    <button class="filter-btn" onclick="setFilter('received',this)">Received</button>
+                                    <button class="filter-btn"
+                                        onclick="setFilter('processing',this)">Processing</button>
+                                    <button class="filter-btn" onclick="setFilter('embassy',this)">Embassy</button>
+                                    <button class="filter-btn" onclick="setFilter('approved',this)">Approved</button>
+                                </div>
                             </div>
                         </div>
-                        <div id="apps-table"></div>
+                        <div class="acard-table-wrap">
+                            <div id="apps-table"></div>
+                        </div>
                     </div>
                 </div>
 
@@ -264,10 +270,12 @@
                     <div class="acard">
                         <div class="acard-header">
                             <h3>Registered Users</h3>
-                            <button class="btn-manage nowrap" onclick="exportCSV('users')">⬇ Export CSV</button>
+                            <button class="btn-manage nowrap" onclick="exportCSV('users')">Export CSV</button>
                         </div>
-                        <div id="users-table">
-                            <div class="atbl-empty">Loading users...</div>
+                        <div class="acard-table-wrap">
+                            <div id="users-table">
+                                <div class="atbl-empty">Loading users...</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -401,7 +409,7 @@
                         <div class="acard-header">
                             <h3>Destination Fees</h3>
                             <div class="flex-row flex-gap-8">
-                                <button class="btn-manage ml-auto nowrap" onclick="exportCSV('fees')">&#x2B07; Export
+                                <button class="btn-manage ml-auto nowrap" onclick="exportCSV('fees')">Export
                                     CSV</button>
                                 <input type="text" class="search-input min-w-180" id="fee-search"
                                     placeholder="Search country..." oninput="filterFeeTable()" />
@@ -456,8 +464,10 @@
                         <div class="acard-header">
                             <h3>All Consultation Payments</h3><span id="consult-count" class="fs-sm text-light"></span>
                         </div>
-                        <div id="consult-table">
-                            <div class="atbl-empty">Loading...</div>
+                        <div class="acard-table-wrap">
+                            <div id="consult-table">
+                                <div class="atbl-empty">Loading...</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -473,8 +483,10 @@
                             <h3>Insurance Payments</h3>
                             <span id="insurance-count" class="acard-count"></span>
                         </div>
-                        <div id="insurance-table">
-                            <div class="atbl-empty">Loading...</div>
+                        <div class="acard-table-wrap">
+                            <div id="insurance-table">
+                                <div class="atbl-empty">Loading...</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -560,6 +572,7 @@
             affiliates: 'Affiliates Admin',
         };
 
+        window._jekafly_page = 'admin';
         const ROLE_TABS = {
             super: ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates'],
             applications: ['overview', 'applications', 'users', 'reviews'],
@@ -650,7 +663,7 @@
             const paged = _adminPaginate(_consultsAll, _consultsPage);
             container.innerHTML = `<table><thead><tr><th>Date</th><th>Customer</th><th>Package</th><th>Amount</th><th>Status</th></tr></thead><tbody>${paged.map(p => `<tr>
                 <td>${new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
-                <td>${escHtml(p.email || '—')}</td>
+                <td>${escHtml(p.userName || p.user?.name || p.email || '—')}</td>
                 <td>${escHtml(p.metadata?.packageName || p.metadata?.package || 'Consultation')}</td>
                 <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
                 <td><span class="status-pill ${p.status === 'SUCCESS' ? 'status-approved' : 'status-received'}">${p.status === 'SUCCESS' ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid' : p.status || 'Pending'}</span></td>
@@ -679,7 +692,7 @@
             const paged = _adminPaginate(_insuranceAll, _insurancePage);
             container.innerHTML = `<table><thead><tr><th>Date</th><th>Customer</th><th>Plan</th><th>Destination</th><th>Travellers</th><th>Amount</th><th>Status</th></tr></thead><tbody>${paged.map(p => `<tr>
                 <td>${new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
-                <td>${escHtml(p.email || '—')}</td>
+                <td>${escHtml(p.userName || p.user?.name || p.email || '—')}</td>
                 <td>${escHtml(p.metadata?.plan || '—')}</td>
                 <td>${escHtml(p.metadata?.dest || p.metadata?.destination || '—')}</td>
                 <td>${p.metadata?.travellers || '—'}</td>
@@ -1060,7 +1073,7 @@
                 return `<tr>
                 <td><strong>${escHtml(u.name)}</strong></td>
                 <td>${escHtml(u.email)}</td>
-                <td>${u.phone ? escHtml(u.phone) : '—'}</td>
+                <td style="white-space:nowrap">${u.phone ? escHtml(u.phone) : '—'}</td>
                 <td><span class="status-pill ${isAdmin ? 'status-embassy' : 'status-received'}">${u.role?.toLowerCase() || 'user'}</span></td>
                 ${adminLevelCell}
                 <td class="cell-date">${new Date(u.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>

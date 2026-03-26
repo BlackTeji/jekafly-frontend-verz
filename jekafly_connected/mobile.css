@@ -2551,16 +2551,31 @@
     .nav-mob-menu {
         display: flex;
         flex-direction: column;
-        padding: 4px 18px 0;
         width: 100%;
         box-sizing: border-box;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .nav-mob-scroll {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 4px 18px 0;
+    }
+
+    .nav-mob-footer {
+        flex-shrink: 0;
+        padding: 12px 18px 24px;
+        border-top: 1px solid #EEF0F8;
+        background: transparent;
     }
 
     .nav-mob-user-row {
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 16px 0 18px;
+        padding: 12px 0 14px;
         border-bottom: 1.5px solid #EEF0F8;
         margin-bottom: 2px;
     }
@@ -2627,7 +2642,7 @@
         align-items: center;
         gap: 12px;
         width: 100%;
-        padding: 11px 0;
+        padding: 8px 0;
         background: transparent;
         border: none;
         border-bottom: 1px solid #F0F2FA;
@@ -2670,29 +2685,23 @@
         flex-shrink: 0;
     }
 
-    .nav-mob-footer {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        padding-top: 14px;
-    }
-
     .nav-mob-admin-btn {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 7px;
-        padding: 12px;
+        padding: 10px;
         background: rgba(13, 21, 96, 0.05);
         border: 1.5px solid rgba(13, 21, 96, 0.1);
         border-radius: 12px;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.87rem;
+        font-size: 0.83rem;
         font-weight: 700;
         color: #0D1560;
         text-decoration: none;
         letter-spacing: -0.01em;
         transition: background .14s;
+        margin-bottom: 14px;
     }
 
     .nav-mob-action-row {

@@ -39,12 +39,13 @@ function updateNav() {
           ${isAdmin ? '<a href="admin.html" class="btn-outline btn-outline-link btn-outline-danger">Admin</a>' : ''}
           <button class="btn-primary" onclick="handleLogout()">Logout</button>`;
 
-        const isDashboard = window.location.pathname.includes('dashboard.html');
-        const isAdminPage = window.location.pathname.includes('admin.html');
+        const _href = window.location.href;
+        const isDashboard = _href.includes('dashboard.html') || (window._jekafly_page === 'dashboard');
+        const isAdminPage = _href.includes('admin.html') || (window._jekafly_page === 'admin');
 
         mobileHtml = `
           <div class="nav-mob-menu">
-
+            <div class="nav-mob-scroll">
             <div class="nav-mob-user-row">
               <div class="nav-mob-avatar">${(user.name || 'U').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}</div>
               <div class="nav-mob-user-text">
@@ -143,10 +144,13 @@ function updateNav() {
             </div>
             ` : ''}
 
-            <div class="nav-mob-divider"></div>
+            </div>
             <div class="nav-mob-footer">
-              ${isAdmin ? `<a href="admin.html" onclick="closeNavMenu()" class="nav-mob-admin-btn" style="${isAdminPage ? 'display:none' : ''}">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg> Admin Panel
+            <div class="nav-mob-footer-inner">
+              ${isAdmin && !isAdminPage ? `
+              <a href="admin.html" onclick="closeNavMenu()" class="nav-mob-admin-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
+                Admin Panel
               </a>` : ''}
               <div class="nav-mob-action-row">
                 ${isAdminPage ? `
@@ -167,6 +171,7 @@ function updateNav() {
                   Sign Out
                 </button>
               </div>
+            </div>
             </div>
 
           </div>`
