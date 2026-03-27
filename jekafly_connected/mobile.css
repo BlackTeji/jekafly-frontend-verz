@@ -2540,7 +2540,7 @@
 @media (max-width: 768px) {
 
     .nav-mobile-drawer {
-        max-height: 92vh;
+        max-height: 60vh;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         padding-left: 0 !important;
