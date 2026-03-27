@@ -181,9 +181,9 @@ function updateNav() {
           <button class="btn-primary" onclick="openModal('register')">Get Started</button>`;
 
         mobileHtml = `
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-top:8px;width:100%;box-sizing:border-box;">
-            <button class="nav-mob-cta-btn" onclick="openModal('login');closeNavMenu()">Login</button>
-            <button class="nav-mob-cta-btn" style="background:transparent!important;border:1.5px solid rgba(13,21,96,0.2)!important;color:#0D1560!important;box-shadow:none!important;" onclick="openModal('register');closeNavMenu()">Get Started</button>
+          <div class="nav-mobile-cta" style="display:flex;flex-direction:row;gap:10px;width:100%;">
+            <button class="btn-primary" style="flex:1;min-width:0;width:100%;box-sizing:border-box;" onclick="openModal('login');closeNavMenu()">Login</button>
+            <button class="btn-outline" style="flex:1;min-width:0;width:100%;box-sizing:border-box;" onclick="openModal('register');closeNavMenu()">Get Started</button>
           </div>`;
     }
 
