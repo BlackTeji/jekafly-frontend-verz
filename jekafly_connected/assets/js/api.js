@@ -2,7 +2,6 @@ var API_BASE = 'https://api.jekafly.com/api/v1';
 
 var _accessToken = null;
 
-// ─── Core fetch wrapper ───────────────────────────────────────────────────────
 async function apiFetch(method, path, body, isFormData = false) {
     const headers = {};
     if (!isFormData) headers['Content-Type'] = 'application/json';
@@ -27,7 +26,6 @@ async function apiFetch(method, path, body, isFormData = false) {
         const stored = localStorage.getItem('jkf_user');
         if (!stored) {
             _accessToken = null;
-            // Only redirect to index from authenticated pages
             if (!window.location.pathname.match(/index\.html|\/$/)) {
                 window.location.href = 'index.html';
             }
@@ -45,7 +43,27 @@ var put = (path, body) => apiFetch('PUT', path, body);
 var del = (path) => apiFetch('DELETE', path);
 var upload = (path, form) => apiFetch('POST', path, form, true);
 
-// ─── Auth ─────────────────────────────────────────────────────────────────────
+async function apiFetchBlob(path) {
+    const headers = {};
+    if (_accessToken) headers['Authorization'] = `Bearer ${_accessToken}`;
+    const res = await fetch(API_BASE + path, {
+        method: 'GET',
+        credentials: 'include',
+        headers,
+    });
+    if (res.status === 401) {
+        const refreshed = await fetch(API_BASE + '/auth/refresh', { method: 'POST', credentials: 'include' });
+        if (refreshed.ok) {
+            const data = await refreshed.json();
+            _accessToken = data.data.accessToken;
+            return apiFetchBlob(path);
+        }
+        return null;
+    }
+    if (!res.ok) return null;
+    return res.blob();
+}
+
 var Auth = {
     async register(name, email, phone, password) {
         const res = await post('/auth/register', { name, email, phone, password });
@@ -108,7 +126,6 @@ var Auth = {
         if (Auth._initPromise) return Auth._initPromise;
         Auth._initPromise = (async () => {
             try {
-                // Try refresh — retry once after 800ms for mobile cookie timing
                 const tryRefresh = async () => {
                     const res = await fetch(API_BASE + '/auth/refresh', {
                         method: 'POST', credentials: 'include',
@@ -118,7 +135,6 @@ var Auth = {
 
                 let res = await tryRefresh();
 
-                // First attempt failed — wait and retry (mobile cookies can be slow)
                 if (!res.ok) {
                     await new Promise(r => setTimeout(r, 800));
                     res = await tryRefresh();
@@ -130,16 +146,13 @@ var Auth = {
                     return user;
                 }
 
-                // Both attempts failed — session is genuinely expired
                 if (res.status === 401) {
                     localStorage.removeItem('jkf_user');
                     return null;
                 }
 
-                // Non-401 error (network, server down) — keep user logged in
                 return user;
             } catch {
-                // Network error — keep user logged in optimistically
                 return user;
             } finally {
                 Auth._initPromise = null;
@@ -149,7 +162,6 @@ var Auth = {
     },
 };
 
-// ─── Applications ─────────────────────────────────────────────────────────────
 var AppStore = {
     async create(data) {
         const res = await post('/applications', data);
@@ -188,7 +200,6 @@ var AppStore = {
     },
 };
 
-// ─── Documents (Vault) ────────────────────────────────────────────────────────
 var DocStore = {
     async upload(files, ref, docIndex) {
         const hasSlotIndex = files.some(f => f.docIndex != null);
@@ -228,7 +239,6 @@ var DocStore = {
     },
 };
 
-// ─── Fees ─────────────────────────────────────────────────────────────────────
 var FeeStore = {
     _cache: null,
     _cacheTime: 0,
@@ -270,7 +280,6 @@ var FeeStore = {
     },
 };
 
-// ─── Payments ─────────────────────────────────────────────────────────────────
 var PaymentStore = {
     async initiate(type, ref, amount, email, metadata) {
         const body = { type, amount: Number(amount), email, metadata };
@@ -288,7 +297,6 @@ var PaymentStore = {
     },
 };
 
-// ─── Insurance ────────────────────────────────────────────────────────────────
 var InsuranceStore = {
     async getAll() {
         const res = await get('/insurance');
@@ -296,7 +304,6 @@ var InsuranceStore = {
     },
 };
 
-// ─── Admin ────────────────────────────────────────────────────────────────────
 var AdminStore = {
     async getByRef(ref) {
         const res = await get(`/admin/applications/${ref}`);
@@ -323,13 +330,11 @@ var AdminStore = {
     },
 };
 
-// ─── Logout helper ────────────────────────────────────────────────────────────
 async function doLogout() {
     await Auth.logout();
     window.location.href = 'index.html';
 }
 
-// ─── PricingStore ─────────────────────────────────────────────────────────────
 var PricingStore = {
     async get() {
         const res = await get('/pricing');
@@ -340,7 +345,6 @@ var PricingStore = {
     },
 };
 
-// ─── AffiliateStore ──────────────────────────────────────────────────────────
 var AffiliateStore = {
     async apply(data) {
         return post('/affiliates/apply', data);

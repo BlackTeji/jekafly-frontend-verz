@@ -16,6 +16,8 @@
             caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
         }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
         rel="stylesheet" />
@@ -23,6 +25,18 @@
     <link rel="stylesheet" href="assets/css/hero-animation.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+    </style>
 </head>
 
 <body>
@@ -66,17 +80,93 @@
     </nav>
 
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
-        <a href="#services" onclick="closeNavMenu()">Services</a>
-        <a href="#visa" onclick="closeNavMenu()">Visa Application</a>
-        <a href="#insurance" onclick="closeNavMenu()">Insurance</a>
-        <a href="#track" onclick="closeNavMenu()">Track Visa</a>
-        <a href="#destinations" onclick="closeNavMenu()">Destinations</a>
-        <a href="affiliate.html" onclick="closeNavMenu()" class="nav-affiliate-link">Become an Affiliate</a>
-        <div class="nav-mobile-cta" id="nav-mobile-cta" style="display:flex;flex-direction:row;gap:10px;">
-            <button class="btn-outline" style="flex:1;width:auto;display:inline-block;"
-                onclick="openModal('login');closeNavMenu()">Login</button>
-            <button class="btn-primary" style="flex:1;width:auto;display:inline-block;"
-                onclick="openModal('register');closeNavMenu()">Get Started</button>
+        <div class="nav-mob-list">
+            <a href="#services" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#EEF0FB; color:#0D1560;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Services</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a href="#visa" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#EEF0FB; color:#0D1560;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Visa Application</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a href="#insurance" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#EEF0FB; color:#0D1560;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Insurance</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a href="#track" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#EEF0FB; color:#0D1560;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Track Visa</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a href="#destinations" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#EEF0FB; color:#0D1560;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="10" r="3" />
+                        <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 14 8 14s8-8.75 8-14a8 8 0 0 0-8-8z" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Destinations</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+        </div>
+        <div class="nav-mob-footer" id="nav-mobile-cta">
+            <a href="affiliate.html" onclick="closeNavMenu()" class="nav-mob-admin-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <line x1="23" y1="11" x2="17" y2="11" />
+                    <line x1="20" y1="8" x2="20" y2="14" />
+                </svg>
+                Become an Affiliate
+            </a>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <button class="nav-mob-cta-btn" onclick="openModal('login');closeNavMenu()">Login</button>
+                <button class="nav-mob-cta-btn nav-mob-cta-btn--outline"
+                    onclick="openModal('register');closeNavMenu()">Get Started</button>
+            </div>
         </div>
     </div>
     <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
@@ -552,7 +642,7 @@
                             d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
                     </svg></div>
                 <div class="ins-title">Jekafly Travel Insurance</div>
-                <div class="ins-sub">In partnership with Allianz Global Assistance</div>
+                <div class="ins-sub">Reliable support wherever you travel</div>
                 <div class="ins-features">
                     <div class="ins-feat">
                         <div class="ins-feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -608,7 +698,7 @@
                         <path d="m21 3 1 11h-2" />
                         <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" />
                         <path d="M3 4h8" />
-                    </svg> Powered by Allianz Global Assistance · 24/7 Worldwide Support</div>
+                    </svg> Backed by a world-class travel Insurance partner · 24/7 Global Support</div>
             </div>
             <div class="insurance-content">
                 <div class="section-tag">Travel Insurance</div>
@@ -750,7 +840,9 @@
     <footer>
         <div class="footer-top">
             <div>
-                <div class="footer-logo-text">Jek<span>a</span>fly</div>
+               <a href="index.html" class="nav-logo">
+            <img src="assets/images/JEKAFLY LOGO W-R 2.png" alt="Jekafly Logo" />
+        </a>
                 <div class="footer-tagline">Your Journey Simplified. Visa applications, travel insurance, and document
                     support — all in one platform.</div>
                 <div class="footer-social">
@@ -774,14 +866,7 @@
 
         </div>
         <div class="footer-bottom">
-            <p>© 2024 Jekafly Technologies Limited. All rights reserved. Registered in Nigeria.</p>
-            <div class="footer-badges"><span class="badge"><svg xmlns="http://www.w3.org/2000/svg" width="18"
-                        height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                    </svg> SSL Secured</span><span class="badge">🇳🇬 Nigeria
-                    Registered</span><span class="badge">Allianz Partner</span></div>
+            <p>© 2026 Kazwhale Concepts Limited. All rights reserved. Registered in Nigeria.</p>
         </div>
     </footer>
 
@@ -819,7 +904,7 @@
                     </div>
                     <button class="btn-check btn-check-mt" id="btn-login" type="button" onclick="handleLogin()">Login to
                         Jekafly</button>
-
+                    <p class="modal-demo">Demo: <strong>admin@jekafly.com</strong> / <strong>admin1234</strong></p>
                 </div>
 
                 <div class="tab-content" id="tab-register">
@@ -1089,7 +1174,6 @@
             } catch { }
         })();
 
-        // ── Hero review card cycle ─────────────────────────────────
         (function () {
             const fallbacks = [
                 { stars: 5, text: 'Jekafly made the whole process seamless.', name: 'Adaeze O.' },
@@ -1105,7 +1189,6 @@
             const auth = document.getElementById('hero-review-author');
             if (!card) return;
 
-            // Try loading live reviews after 1s
             setTimeout(() => {
                 fetch('https://jekafly-api-production.up.railway.app/api/v1/reviews')
                     .then(r => r.json())
@@ -1139,7 +1222,6 @@
         }());
     </script>
     <script>
-        // ── Hero slideshow + rotating headlines ──────────────────────
         const heroSlides = [
             { bg: 0, line1: 'Visa Applications,', line2: 'Simplified.' },
             { bg: 1, line1: 'Travel the World,', line2: 'Stress-Free.' },
@@ -1283,9 +1365,10 @@
 
     <script>
         (function () {
-            if (window.innerWidth > 768) return;
+            const _isMob = window.matchMedia('(max-width: 768px)').matches;
+            if (!_isMob) return;
 
-            /* ── ACCORDION: Why Jekafly Visa ──────────────────────── */
+
             function initInfoList() {
                 const items = document.querySelectorAll('.info-list li');
                 items.forEach(li => {
@@ -1303,7 +1386,7 @@
                 });
             }
 
-            /* ── ACCORDION: Insurance plans ──────────────────────── */
+
             function initInsurancePlans() {
                 const plans = document.querySelectorAll('.ins-plan');
                 plans.forEach(plan => {
@@ -1315,9 +1398,9 @@
                 });
             }
 
-            /* ── TESTIMONIALS: CSS infinite marquee ──────────────── */
+
             function initTestiCarousel() {
-                if (window.innerWidth > 768) return;
+                if (!window.matchMedia('(max-width: 768px)').matches) return;
                 const grid = document.getElementById('testi-grid');
                 if (!grid) return;
                 const cards = Array.from(grid.querySelectorAll('.testi-card'));
@@ -1335,7 +1418,6 @@
 
                 const speed = cards.length * 12;
 
-                // Wrap in a clipping container
                 const wrapper = document.createElement('div');
                 wrapper.id = 'testi-wrapper';
                 wrapper.style.cssText = 'overflow:hidden;width:100%;margin-top:20px;';
@@ -1373,7 +1455,7 @@
                 }
             }
 
-            /* ── SCROLL FADE-IN — target everything ──────────────── */
+
             function initScrollFade() {
                 const selectors = [
                     '.service-card',
@@ -1430,7 +1512,6 @@
     </script>
 
     <script>
-        // ── Consultation modal ────────────────────────────────────────────────
         const CONSULT_PACKAGES = {
             standard: { name: 'Standard Consultation', amount: 15000 },
             priority: { name: 'Priority Consultation', amount: 25000 },
@@ -1560,7 +1641,6 @@
             window.location.href = 'payment.html';
         }
     </script>
-
 
     <script>
         (function () {

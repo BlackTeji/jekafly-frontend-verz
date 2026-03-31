@@ -16,6 +16,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
     <title>Admin Panel — Jekafly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
         rel="stylesheet" />
@@ -23,6 +25,18 @@
     <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="assets/css/admin.css" />
     <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+    </style>
 </head>
 
 <body>
@@ -211,7 +225,7 @@
                                             d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
                                     </svg> Uploaded Documents</div>
                                 <button id="admin-zip-btn" onclick="downloadDocsZip()" class="btn-navy"
-                                    style="display:none">⬇ Download All as ZIP</button>
+                                    style="display:none">Download All as ZIP</button>
                             </div>
                             <div id="admin-doc-list" class="fs-sm text-muted">Select an application to view documents.
                             </div>
@@ -953,11 +967,16 @@
             if (window.innerWidth <= 768) {
                 return apps.map(a => `
                 <div class="app-mob-card" onclick="${actions ? `viewApp('${a.ref}')` : ''}">
-                    <div class="app-mob-card-top"><span class="app-mob-dest">${a.destination}</span><span class="status-pill ${SC[a.status]}">${SL[a.status] || a.status}</span></div>
-                    <div class="app-mob-ref">${a.ref}</div>
-                    <div class="app-mob-card-bottom">
-                        <span class="app-mob-date">${a.applicantName} · ${new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</span>
-                        ${a.paid ? '<span class="paid-yes"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span>' : '<span class="paid-no"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Unpaid</span>'}
+                    <div class="app-mob-card-content">
+                        <div class="app-mob-card-top">
+                            <span class="app-mob-dest">${a.destination}</span>
+                            ${a.paid ? '<span class="paid-yes" style="font-size:0.7rem;white-space:nowrap"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span>' : '<span class="paid-no" style="font-size:0.7rem;white-space:nowrap"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Unpaid</span>'}
+                        </div>
+                        <div class="app-mob-ref">${a.ref}</div>
+                        <div class="app-mob-card-bottom">
+                            <span class="status-pill ${SC[a.status]}" style="font-size:0.65rem;padding:3px 8px">${SL[a.status] || a.status}</span>
+                            <span class="app-mob-date" style="white-space:nowrap">${a.applicantName ? a.applicantName.split(' ')[0] : ''} · ${new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</span>
+                        </div>
                     </div>
                 </div>`).join('');
             }
@@ -1014,7 +1033,7 @@
                         </div>
                         <div class="flex-gap-6">
                             <button onclick="adminViewDoc('${d.id}')" class="btn-approve"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> View</button>
-                            <button onclick="adminDownloadDoc('${d.id}','${escHtml(d.name)}')" class="btn-publish">⬇ Download</button>
+                            <button onclick="adminDownloadDoc('${d.id}','${escHtml(d.name)}')" class="btn-publish">Download</button>
                         </div>
                     </div>`).join('');
             }
@@ -1306,6 +1325,7 @@
 
 
         const _docUrlMap = {}, _docNameMap = {};
+        let _adminPreviewDocId = null;
         let _currentAppDocs = [], _adminPreviewUrl = null, _adminPreviewName = '';
 
         async function adminGetDocUrl(id) {
@@ -1318,41 +1338,97 @@
             const modal = document.getElementById('admin-preview-modal');
             const body = document.getElementById('admin-preview-body');
             const label = document.getElementById('admin-preview-name');
-            modal.style.display = 'flex'; body.innerHTML = '<div class="text-muted text-center">Loading...</div>'; label.textContent = name; _adminPreviewName = name;
-            const url = await adminGetDocUrl(id);
-            if (!url) { body.innerHTML = '<div class="text-brand text-center">Could not load document.</div>'; return; }
-            _adminPreviewUrl = url;
-            const ext = (name || '').split('.').pop().toLowerCase();
-            if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) { body.style.alignItems = 'center'; body.innerHTML = `<img src="${url}" class="doc-img-block"/>`; }
-            else { body.style.alignItems = 'flex-start'; body.innerHTML = `<iframe src="${url}" class="doc-full-iframe" allowfullscreen></iframe>`; }
+            modal.style.display = 'flex';
+            body.innerHTML = '<div class="text-muted text-center">Loading...</div>';
+            label.textContent = name;
+            _adminPreviewName = name;
+            _adminPreviewDocId = id;
+            try {
+                const blob = await apiFetchBlob(`/admin/documents/${encodeURIComponent(id)}/stream`);
+                if (!blob) throw new Error('empty');
+                const objectUrl = URL.createObjectURL(blob);
+                _adminPreviewUrl = objectUrl;
+                const ext = (name || '').split('.').pop().toLowerCase();
+                if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
+                    body.style.alignItems = 'center';
+                    const img = document.createElement('img');
+                    img.src = objectUrl;
+                    img.className = 'doc-img-block';
+                    body.innerHTML = '';
+                    body.appendChild(img);
+                } else {
+                    body.style.alignItems = 'flex-start';
+                    const iframe = document.createElement('iframe');
+                    iframe.src = objectUrl;
+                    iframe.className = 'doc-full-iframe';
+                    iframe.allowFullscreen = true;
+                    body.innerHTML = '';
+                    body.appendChild(iframe);
+                }
+            } catch {
+                body.innerHTML = '<div class="text-brand text-center">Could not load document.</div>';
+            }
         }
 
-        function adminPreviewDownload() { if (!_adminPreviewUrl) return; const a = document.createElement('a'); a.href = _adminPreviewUrl; a.download = _adminPreviewName; a.click(); }
+        function adminPreviewDownload() {
+            if (!_adminPreviewDocId) return;
+            adminDownloadDoc(_adminPreviewDocId, _adminPreviewName);
+        }
         function closeAdminPreview(e) { if (e.target === document.getElementById('admin-preview-modal')) closeAdminPreviewDirect(); }
-        function closeAdminPreviewDirect() { document.getElementById('admin-preview-modal').style.display = 'none'; document.getElementById('admin-preview-body').innerHTML = ''; _adminPreviewUrl = null; }
+        function closeAdminPreviewDirect() {
+            if (_adminPreviewUrl && _adminPreviewUrl.startsWith('blob:')) URL.revokeObjectURL(_adminPreviewUrl);
+            document.getElementById('admin-preview-modal').style.display = 'none';
+            document.getElementById('admin-preview-body').innerHTML = '';
+            _adminPreviewUrl = null;
+            _adminPreviewDocId = null;
+        }
 
         async function adminDownloadDoc(id, name) {
             showToast('Preparing download...');
-            const url = await adminGetDocUrl(id);
-            if (!url) { showToast('Could not load document.', 'error'); return; }
-            const res = await fetch(url); const blob = await res.blob();
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; a.click(); URL.revokeObjectURL(a.href);
+            try {
+                const blob = await apiFetchBlob(`/admin/documents/${encodeURIComponent(id)}/stream`);
+                if (!blob) throw new Error('No response');
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = name || 'document';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => { URL.revokeObjectURL(url); document.body.removeChild(a); }, 1000);
+            } catch {
+                showToast('Download failed.', 'error');
+            }
         }
 
         async function downloadDocsZip() {
             if (!_currentAppDocs.length) { showToast('No documents to download.', 'error'); return; }
-            const ref = selectedApp?.ref || 'documents';
+            const ref = selectedApp?.ref;
+            if (!ref) { showToast('No application selected.', 'error'); return; }
             const btn = document.getElementById('admin-zip-btn');
-            btn.disabled = true; btn.textContent = 'Preparing ZIP...'; showToast(`Fetching ${_currentAppDocs.length} document(s)...`);
+            btn.disabled = true;
+            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin .8s linear infinite"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Preparing...';
             try {
-                if (!window.JSZip) { await new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
-                const zip = new JSZip();
-                for (const d of _currentAppDocs) { const url = await adminGetDocUrl(d.id); if (!url) continue; const res = await fetch(url); const blob = await res.blob(); zip.file(d.name, blob); }
-                const zipBlob = await zip.generateAsync({ type: 'blob' });
-                const a = document.createElement('a'); a.href = URL.createObjectURL(zipBlob); a.download = `${ref}-documents.zip`; a.click(); URL.revokeObjectURL(a.href);
-                showToast(`ZIP downloaded with ${_currentAppDocs.length} file(s)`);
-            } catch (e) { showToast('ZIP generation failed. Try again.', 'error'); }
-            btn.disabled = false; btn.textContent = '⬇ Download All as ZIP';
+                const blob = await apiFetchBlob(`/admin/documents/zip?ref=${encodeURIComponent(ref)}`);
+                if (!blob) throw new Error('No blob returned');
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${ref}-documents.zip`;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => { URL.revokeObjectURL(url); document.body.removeChild(a); }, 1000);
+                showToast('ZIP downloaded successfully.');
+            } catch (e) {
+                showToast('ZIP unavailable. Opening files individually.', 'error');
+                for (const d of _currentAppDocs) {
+                    const u = await adminGetDocUrl(d.id);
+                    if (u) { const a = document.createElement('a'); a.href = u; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); setTimeout(() => document.body.removeChild(a), 200); }
+                    await new Promise(r => setTimeout(r, 400));
+                }
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Download All as ZIP';
+            }
         }
 
 
@@ -1396,18 +1472,30 @@
         <div id="admin-preview-box">
             <div id="admin-preview-header">
                 <div class="fw-700 text-navy nowrap flex-1" id="admin-preview-name">Document</div>
-                <div class="flex-gap-8 flex-shrink-0">
-                    <button onclick="adminPreviewDownload()" class="btn-success-sm">⬇ Download</button>
-                    <button onclick="closeAdminPreviewDirect()" class="btn-secondary-sm"><svg width="14" height="14"
-                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                            stroke-linecap="round">
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg> Close</button>
-                </div>
+                <button onclick="closeAdminPreviewDirect()" class="admin-preview-close-btn" aria-label="Close">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
             </div>
             <div id="admin-preview-body">
                 <div class="text-muted text-center">Loading...</div>
+            </div>
+            <div id="admin-preview-footer">
+                <button onclick="adminPreviewDownload()" class="admin-preview-download-btn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    Download
+                </button>
+                <button onclick="closeAdminPreviewDirect()" class="admin-preview-close-action-btn">
+                    Close
+                </button>
             </div>
         </div>
     </div>
