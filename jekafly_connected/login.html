@@ -10,6 +10,9 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
     <title>Login or Create Account — Jekafly</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
         rel="stylesheet" />
@@ -93,7 +96,8 @@
         <div class="login-wrap">
 
             <div class="login-aside">
-                <div class="aside-logo">Jek<span>a</span>fly</div>
+                <div class="aside-logo"><img src="assets/images/JEKAFLY LOGO W-R 2.png" alt="Jekafly"
+                        style="height:36px;width:auto;display:block;" /></div>
                 <h2 class="aside-heading">Almost there.<br>Let's save your application.</h2>
                 <p class="aside-sub">Create a free account or login to submit your visa application and track its
                     progress in real time.</p>
@@ -214,60 +218,66 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
+
     <script>
+        const params = new URLSearchParams(window.location.search);
+        const returnUrl = params.get('return') || 'dashboard.html';
+
+        document.getElementById('btn-login')?.addEventListener('click', async () => {
+            const email = document.getElementById('login-email')?.value.trim();
+            const pass = document.getElementById('login-pass')?.value;
+            if (!email || !pass) { showToast('Please enter email and password.', 'error'); return; }
+            const btn = document.getElementById('btn-login');
+            btn.disabled = true;
+            btn.textContent = 'Logging in...';
+            const res = await Auth.login(email, pass);
+            if (res.ok) {
+                btn.innerHTML = 'Welcome back! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
+                showToast('Welcome back!');
+                setTimeout(() => {
+                    window.location.href = res.user.role === 'ADMIN' ? 'admin.html' : decodeURIComponent(returnUrl);
+                }, 600);
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = 'Login to Jekafly <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+                showToast(res.msg, 'error');
+            }
+        });
+
+        document.getElementById('btn-register')?.addEventListener('click', async () => {
+            const name = document.getElementById('reg-name')?.value.trim();
+            const email = document.getElementById('reg-email')?.value.trim();
+            const phone = document.getElementById('reg-phone')?.value.trim();
+            const pass = document.getElementById('reg-pass')?.value;
+            if (!name || !email || !pass) { showToast('Please fill in all required fields.', 'error'); return; }
+            const btn = document.getElementById('btn-register');
+            btn.disabled = true;
+            btn.textContent = 'Creating Account...';
+            const res = await Auth.register(name, email, phone, pass);
+            if (res.ok) {
+                btn.innerHTML = 'Account Created! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
+                showToast('Account created! Welcome to Jekafly');
+                setTimeout(() => window.location.href = decodeURIComponent(returnUrl), 800);
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = 'Create Free Account <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+                showToast(res.msg, 'error');
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', async () => {
             await Auth.init();
             const user = Auth.getCurrent();
             if (user) {
-                window.location.href = user.role === 'ADMIN' ? 'admin.html' : 'dashboard.html';
+                window.location.href = user.role === 'ADMIN' ? 'admin.html' : decodeURIComponent(returnUrl);
                 return;
             }
             updateNav();
 
-            const params = new URLSearchParams(window.location.search);
-            const returnUrl = params.get('return') || 'dashboard.html';
-
-            document.getElementById('btn-login')?.addEventListener('click', async () => {
-                const email = document.getElementById('login-email')?.value.trim();
-                const pass = document.getElementById('login-pass')?.value;
-                if (!email || !pass) { showToast('Please enter email and password.', 'error'); return; }
-                const btn = document.getElementById('btn-login');
-                btn.disabled = true;
-                btn.textContent = 'Logging in...';
-                const res = await Auth.login(email, pass);
-                if (res.ok) {
-                    btn.innerHTML = 'Welcome back! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
-                    showToast('Welcome back!');
-                    setTimeout(() => {
-                        window.location.href = res.user.role === 'ADMIN' ? 'admin.html' : decodeURIComponent(returnUrl);
-                    }, 600);
-                } else {
-                    btn.disabled = false;
-                    btn.innerHTML = 'Login to Jekafly <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
-                    showToast(res.msg, 'error');
-                }
-            });
-
-            document.getElementById('btn-register')?.addEventListener('click', async () => {
-                const name = document.getElementById('reg-name')?.value.trim();
-                const email = document.getElementById('reg-email')?.value.trim();
-                const phone = document.getElementById('reg-phone')?.value.trim();
-                const pass = document.getElementById('reg-pass')?.value;
-                if (!name || !email || !pass) { showToast('Please fill in all required fields.', 'error'); return; }
-                const btn = document.getElementById('btn-register');
-                btn.disabled = true;
-                btn.textContent = 'Creating Account...';
-                const res = await Auth.register(name, email, phone, pass);
-                if (res.ok) {
-                    btn.innerHTML = 'Account Created! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
-                    showToast('Account created! Welcome to Jekafly');
-                    setTimeout(() => window.location.href = decodeURIComponent(returnUrl), 800);
-                } else {
-                    btn.disabled = false;
-                    btn.innerHTML = 'Create Free Account <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
-                    showToast(res.msg, 'error');
-                }
-            });
+            const returnNotice = document.getElementById('return-notice');
+            if (returnNotice && params.get('return')) {
+                returnNotice.style.display = 'flex';
+            }
         });
     </script>
 

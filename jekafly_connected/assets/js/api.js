@@ -302,6 +302,19 @@ var InsuranceStore = {
         const res = await get('/insurance');
         return res?.ok ? res.data.policies : [];
     },
+
+    async downloadReceipt(id, plan) {
+        const blob = await apiFetchBlob(`/insurance/${encodeURIComponent(id)}/receipt`);
+        if (!blob) { return; }
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'jekafly-insurance-' + (plan || 'policy').replace(/\s+/g, '-').toLowerCase() + '.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+    },
 };
 
 var AdminStore = {
@@ -327,6 +340,11 @@ var AdminStore = {
 
     async deleteUser(id) {
         return del(`/admin/users/${id}`);
+    },
+
+    async getAllPayments() {
+        const res = await get('/admin/payments');
+        return res?.ok ? res.data.payments : [];
     },
 };
 

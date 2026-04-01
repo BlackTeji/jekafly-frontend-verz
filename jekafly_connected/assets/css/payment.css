@@ -118,7 +118,7 @@ nav {
 
 .page-title {
     font-family: 'DM Serif Display', serif;
-    font-size: 2.2rem;
+    font-size: 1.5rem;
     line-height: 1.15;
     color: var(--navy);
     margin-bottom: 6px;
@@ -163,7 +163,7 @@ nav {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     flex-shrink: 0;
 }
 
@@ -187,7 +187,7 @@ nav {
 
 .dest-card-amount {
     font-family: 'DM Serif Display', serif;
-    font-size: 2rem;
+    font-size: 1.4rem;
     color: #fff;
     text-align: right;
 }
@@ -257,7 +257,7 @@ nav {
 
 .line-item.total-line .li-val {
     font-family: 'DM Serif Display', serif;
-    font-size: 1.4rem;
+    font-size: 1.05rem;
     color: var(--brand);
 }
 
@@ -802,7 +802,7 @@ body {
 
 .pay-total-amount {
     font-family: 'Syne', sans-serif;
-    font-size: 2.4rem;
+    font-size: 1.8rem;
     font-weight: 800;
     color: #0D1560;
     letter-spacing: -0.03em;

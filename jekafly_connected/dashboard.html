@@ -2,20 +2,23 @@
 <html lang="en">
 
 <head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
             caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
         }
     </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
     <title>My Dashboard — Jekafly</title>
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -447,6 +450,15 @@
                         <p class="consult-cal-fallback">Can't see the calendar? <a
                                 href="https://calendly.com/jekaflynigeria/30min" target="_blank">Open in new tab ↗</a>
                         </p>
+                        <button onclick="resetConsultStep()" class="btn-next" style="margin-top:20px;width:100%;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="m9 11 3 3 8-8" />
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                            </svg>
+                            Done — Booking Complete
+                        </button>
                     </div>
 
                     <div class="table-card mt-24">
@@ -884,6 +896,7 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/session.js" defer></script>
     <script>
         let currentUser = null;
         let selectedApp = null;
@@ -917,6 +930,7 @@
         });
 
         function showTab(tab, el) {
+            window._dashTabUserClick = !!(el && el.classList && el.classList.contains('dash-nav-item'));
             ['applications', 'documents', 'insurance', 'track', 'profile', 'mydocs', 'flights', 'hotels'].forEach(t => {
                 const panel = document.getElementById('tab-' + t);
                 if (!panel) return;
@@ -933,7 +947,7 @@
             document.querySelectorAll('.dash-tab-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.tab === tab);
             });
-            if (window.innerWidth <= 640) window.scrollTo({ top: 68, behavior: 'smooth' });
+            if (window.innerWidth <= 640 && window._dashTabUserClick) window.scrollTo({ top: 68, behavior: 'smooth' });
             if (tab === 'track') loadQuickRefs();
             if (tab === 'insurance') loadInsurance();
             if (tab === 'documents') { loadConsultTab(); }
@@ -1560,7 +1574,7 @@
                         <div class="ins-policy-row-meta">${p.destination || 'Worldwide'} &middot; ${dateStr} &middot; ${p.travellers || 1} traveller${(p.travellers || 1) > 1 ? 's' : ''}</div>
                     </div>
                     <div class="ins-policy-row-amount">₦${(p.amount || 0).toLocaleString()}</div>
-
+                    <button onclick="InsuranceStore.downloadReceipt('${p.id}','${escHtml(p.plan || 'policy')}')" class="btn-dl-policy"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> PDF</button>
                 </div>`;
             }).join('') + `</div>` + _buildPager(_insPoliciesAll.length, _insPage, 'insGoPage', 'insurance-content');
         }
@@ -1976,10 +1990,10 @@
                 const alreadyUploaded = uploadedByIndex[i];
                 const borderColor = alreadyUploaded ? '#16a34a' : '#eef0f6';
                 const statusHtml = alreadyUploaded
-                    ? `<span class="status-uploaded"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3 8-8"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg> Submitted</span>`
+                    ? ``
                     : `<span class="status-required">Required</span>`;
                 const fileHtml = alreadyUploaded
-                    ? `<span class="text-green fw-600">${escHtml(alreadyUploaded.originalName || alreadyUploaded.name || 'Document')}</span>
+                    ? `<span class="text-green fw-600 doc-fname-truncate">${escHtml((alreadyUploaded.originalName || alreadyUploaded.name || 'Document').replace(/^.*[/\\]/, ''))}</span>
                        <button onclick="previewMyDoc('${alreadyUploaded.id}')" class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg> Preview</button>`
                     : '';
                 const btnHtml = alreadyUploaded
@@ -2460,9 +2474,9 @@
             <tbody>${paged.map(p => `
             <tr>
                 <td class="td">${new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
-                <td class="td">${p.metadata?.packageName || 'Consultation'}</td>
+                <td class="td">${p.metadata?.packageName || p.plan || p.metadata?.plan || p.metadata?.package || 'Consultation'}</td>
                 <td class="td fw-600">₦${(p.amount || 0).toLocaleString()}</td>
-                <td class="td"><span class="badge-success"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span></td>
+                <td class="td"><span class="badge-success"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span></td>
             </tr>`).join('')}
             </tbody></table>` + _buildPager(_consultAll.length, _consultPage, 'consultGoPage', 'consult-history');
         }

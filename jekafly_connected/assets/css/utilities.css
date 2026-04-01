@@ -2472,12 +2472,17 @@ input[type=file] {
 }
 
 .badge-success {
-    background: #D1FAE5;
-    color: #065F46;
-    padding: 3px 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+    color: #fff;
+    padding: 4px 10px 4px 8px;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
+    letter-spacing: 0.01em;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.28);
 }
 
 .badge-error-xs {

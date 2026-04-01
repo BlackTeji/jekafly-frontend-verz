@@ -165,8 +165,9 @@
     }
 
     .hero-headline-wrap {
-        height: 100px;
-        overflow: hidden;
+        min-height: 100px;
+        height: auto;
+        overflow: visible;
     }
 
     .hero-headline {
@@ -175,17 +176,17 @@
     }
 
     .hero-line-1 {
-        font-size: 1.4rem;
-        font-weight: 700;
-        line-height: 1.2;
+        font-size: 1.55rem;
+        font-weight: 800;
+        line-height: 1.1;
         display: block;
         white-space: nowrap;
     }
 
     .hero-line-2 {
-        font-size: 1.4rem;
-        font-weight: 700;
-        line-height: 1.2;
+        font-size: 1.55rem;
+        font-weight: 800;
+        line-height: 1.1;
         display: block;
     }
 
@@ -199,9 +200,9 @@
 
     .hero h1,
     .hero .hero-headline {
-        font-size: 1.3rem;
-        font-weight: 600;
-        line-height: 1.12;
+        font-size: 1.55rem;
+        font-weight: 800;
+        line-height: 1.1;
         letter-spacing: -0.03em;
         margin-bottom: 10px;
     }
@@ -267,6 +268,17 @@
         letter-spacing: 0.01em;
     }
 
+    .hero-seo-h1 {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
 
     .search-section {
         padding: 28px var(--mob-pad);
@@ -547,6 +559,10 @@
     .checker-info h3 {
         font-size: 1.05rem;
         margin-bottom: 12px;
+    }
+
+    .checker-info {
+        padding-left: 0;
     }
 
     .checker-info>p {
@@ -1210,7 +1226,7 @@
     }
 
     .page-title {
-        font-size: 1.35rem;
+        font-size: 1.15rem;
         margin-bottom: 20px;
     }
 
@@ -1220,7 +1236,7 @@
     }
 
     .dest-card-amount {
-        font-size: 1.7rem;
+        font-size: 1.25rem;
     }
 
     .pay-box {
@@ -1229,7 +1245,7 @@
     }
 
     .pay-total-amount {
-        font-size: 2.2rem;
+        font-size: 1.6rem;
     }
 
     .btn-pay {
@@ -2300,24 +2316,23 @@
 
 
     .page-title {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 600;
     }
 
     .dest-card-amount {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
     }
 
     .pay-total-amount {
-        font-size: 1.6rem;
+        font-size: 1.4rem;
         font-weight: 600;
     }
 
     .line-item.total-line .li-val {
-        font-size: 1.1rem;
+        font-size: 0.95rem;
         font-weight: 600;
     }
-
 
     h1 {
         font-weight: 600;

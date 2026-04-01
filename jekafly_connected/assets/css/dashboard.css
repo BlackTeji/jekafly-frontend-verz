@@ -2516,19 +2516,19 @@ tr:hover td {
 .consult-confirmed-banner {
     display: flex;
     align-items: flex-start;
-    gap: 16px;
-    padding: 18px 22px;
+    gap: 12px;
+    padding: 12px 16px;
     background: linear-gradient(135deg, #F0FDF8, #E8F5F0);
     border: 1.5px solid #A7F3D0;
     border-left: 4px solid #10B981;
-    border-radius: 14px;
-    margin-bottom: 24px;
-    box-shadow: 0 2px 12px rgba(16, 185, 129, 0.08);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.06);
 }
 
 .consult-confirmed-icon {
-    width: 38px;
-    height: 38px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: linear-gradient(135deg, #10B981, #059669);
     color: white;
@@ -2536,11 +2536,11 @@ tr:hover td {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
 }
 
 .consult-confirmed-title {
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     font-weight: 700;
     color: #065F46;
     letter-spacing: -0.01em;
@@ -2548,9 +2548,9 @@ tr:hover td {
 }
 
 .consult-confirmed-sub {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     color: #34D399;
-    margin-top: 3px;
+    margin-top: 2px;
     font-weight: 500;
 }
 
@@ -2634,6 +2634,7 @@ tr:hover td {
     background: #FAFBFF;
     margin-bottom: 8px;
     transition: border-color .15s, box-shadow .15s;
+    min-width: 0;
 }
 
 .doc-slot:last-child {
@@ -2666,6 +2667,47 @@ tr:hover td {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.doc-slot>div {
+    min-width: 0;
+    flex: 1;
+}
+
+.doc-fname-truncate {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+    font-size: 0.76rem;
+}
+
+.btn-dl-policy {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    background: #0D1560;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+    letter-spacing: -0.01em;
+    transition: background .15s;
+}
+
+.btn-dl-policy:hover {
+    background: #090F4A;
+}
+
+.ins-policy-row-item {
+    align-items: center;
 }
 
 .btn-view-doc {

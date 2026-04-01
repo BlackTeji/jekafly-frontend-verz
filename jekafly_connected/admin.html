@@ -2,20 +2,23 @@
 <html lang="en">
 
 <head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
             caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
         }
     </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
     <title>Admin Panel — Jekafly</title>
+    <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -542,6 +545,7 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/session.js" defer></script>
     <script>
         function escHtml(s) { return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
@@ -663,7 +667,7 @@
             if (!container) return;
             container.innerHTML = '<div class="atbl-empty">Loading...</div>';
             try {
-                const payments = await PaymentStore.list();
+                const payments = await AdminStore.getAllPayments();
                 _consultsAll = (payments || []).filter(p => p.type === 'CONSULTATION');
                 if (countEl) countEl.textContent = _consultsAll.length + ' total';
             } catch (e) { _consultsAll = []; }
@@ -692,7 +696,7 @@
             if (!container) return;
             container.innerHTML = '<div class="atbl-empty">Loading...</div>';
             try {
-                const payments = await PaymentStore.list();
+                const payments = await AdminStore.getAllPayments();
                 _insuranceAll = (payments || []).filter(p => p.type === 'INSURANCE');
                 if (countEl) countEl.textContent = _insuranceAll.length + ' total';
             } catch (e) { _insuranceAll = []; }
@@ -1046,10 +1050,16 @@
 
         async function updateStatus() {
             if (!selectedApp) return;
+            const btn = document.querySelector('.btn-update-status');
+            if (btn) { btn.disabled = true; btn.textContent = 'Updating...'; }
             const s = document.getElementById('new-status').value;
             const note = document.getElementById('status-note').value.trim() || 'Status updated by admin.';
             const res = await AppStore.updateStatus(selectedApp.ref, s, note);
-            if (!res) { showToast('Failed to update status.', 'error'); return; }
+            if (!res) {
+                showToast('Failed to update status.', 'error');
+                if (btn) { btn.disabled = false; btn.innerHTML = 'Update Status <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>'; }
+                return;
+            }
             showToast('Status updated to "' + (SL[s] || s) + '"');
             closeDetail();
             allApps = await AppStore.getAll();
@@ -1254,82 +1264,221 @@
 
         function renderFeeTable(filter = '') {
             if (!_cachedFees) return;
+
             const overrides = _cachedFees.destinations || {};
             const enabledSet = new Set(_cachedFees.enabledCountries || Object.keys(overrides));
             const allCountries = {};
-            Object.entries(DEFAULT_FEES).forEach(([k, v]) => allCountries[k] = { default: v, override: overrides[k] });
-            Object.entries(overrides).forEach(([k, v]) => { if (!allCountries[k]) allCountries[k] = { default: null, override: v }; });
-            const sorted = Object.entries(allCountries).filter(([k]) => !filter || k.toLowerCase().includes(filter.toLowerCase())).sort(([a], [b]) => a.localeCompare(b));
-            if (!sorted.length) { document.getElementById('fees-table').innerHTML = '<div class="atbl-empty">No matching countries.</div>'; return; }
-            document.getElementById('fees-table').innerHTML = `<table><thead><tr><th>Country</th><th>Processing</th><th>Default Fee</th><th>Custom Fee</th><th>Effective Fee</th><th></th></tr></thead><tbody>${sorted.map(([country, data]) => {
+
+            Object.entries(DEFAULT_FEES).forEach(([k, v]) => {
+                allCountries[k] = { default: v, override: overrides[k] };
+            });
+
+            Object.entries(overrides).forEach(([k, v]) => {
+                if (!allCountries[k]) {
+                    allCountries[k] = { default: null, override: v };
+                }
+            });
+
+            const sorted = Object.entries(allCountries)
+                .filter(([k]) => !filter || k.toLowerCase().includes(filter.toLowerCase()))
+                .sort(([a], [b]) => a.localeCompare(b));
+
+            if (!sorted.length) {
+                document.getElementById('fees-table').innerHTML =
+                    '<div class="atbl-empty">No matching countries.</div>';
+                return;
+            }
+
+            document.getElementById('fees-table').innerHTML = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Country</th>
+                    <th>Processing</th>
+                    <th>Default Fee</th>
+                    <th>Custom Fee</th>
+                    <th>Effective Fee</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                ${sorted.map(([country, data]) => {
                 const enabled = enabledSet.has(country);
-                return `<tr class="fee-row">
-                    <td><strong>${country}</strong> ${window.visaRequirements?.[country]?.flag || ''}</td>
-                    <td><button onclick="toggleCountry('${country}')" style="border:none;cursor:pointer;padding:3px 10px;border-radius:6px;font-size:0.75rem;font-weight:500;background:${enabled ? '#F0FDF4' : '#F9FAFB'};color:${enabled ? '#16A34A' : '#9CA3AF'};border:1px solid ${enabled ? '#BBF7D0' : '#E5E7EB'}">${enabled ? '● Active' : '○ Inactive'}</button></td>
-                    <td>₦${data.default ? data.default.toLocaleString() : '—'}</td>
-                    <td><input type="number" value="${data.override != null ? data.override : ''}" placeholder="—" class="select-xs" onchange="updateFeeInline('${country}',this.value)" min="0" step="500"/></td>
-                    <td class="fw-700 text-navy">₦${((data.override != null ? data.override : data.default) || 0).toLocaleString()}</td>
-                    <td>${data.override != null ? `<button class="btn-manage badge-error-xs" onclick="resetFee('${country}')">Reset</button>` : '<span class="fs-xs text-muted">default</span>'}</td>
-                </tr>`;
-            }).join('')}</tbody></table>`;
+                return `
+                        <tr class="fee-row" style="${!enabled ? 'opacity:0.65;background:#FAFAFA;' : ''}">
+                            <td>
+                                <strong>${country}</strong> ${window.visaRequirements?.[country]?.flag || ''}
+                            </td>
+                            <td>
+                                <button 
+                                    onclick="toggleCountry('${country}')" 
+                                    style="
+                                        border:none;
+                                        cursor:pointer;
+                                        padding:3px 10px;
+                                        border-radius:6px;
+                                        font-size:0.75rem;
+                                        font-weight:500;
+                                        background:${enabled ? '#F0FDF4' : '#F9FAFB'};
+                                        color:${enabled ? '#16A34A' : '#9CA3AF'};
+                                        border:1px solid ${enabled ? '#BBF7D0' : '#E5E7EB'};
+                                    ">
+                                    ${enabled ? '● Active' : '○ Inactive'}
+                                </button>
+                            </td>
+                            <td>₦${data.default ? data.default.toLocaleString() : '—'}</td>
+                            <td>
+                                <input
+                                    type="number"
+                                    value="${data.override != null ? data.override : ''}"
+                                    placeholder="—"
+                                    class="select-xs"
+                                    onchange="updateFeeInline('${country}', this.value)"
+                                    min="0"
+                                    step="500"
+                                />
+                            </td>
+                            <td class="fw-700 text-navy">
+                                ₦${((data.override != null ? data.override : data.default) || 0).toLocaleString()}
+                            </td>
+                            <td style="display:flex;gap:6px;align-items:center;">
+                                ${data.override != null
+                        ? `<button class="btn-manage badge-error-xs" onclick="resetFee('${country}')">Reset</button>`
+                        : '<span class="fs-xs text-muted">default</span>'
+                    }
+                                <button
+                                    class="btn-manage"
+                                    style="background:#FEE2E2;color:#991B1B;font-size:0.72rem;padding:3px 8px;"
+                                    onclick="deleteCountryFee('${country}')">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+            }).join('')}
+            </tbody>
+        </table>
+    `;
         }
 
         async function toggleCountry(country) {
             const res = await FeeStore.toggleCountry(country);
-            if (!res?.ok) { showToast('Failed to update country status.', 'error'); return; }
-            const enabled = res.data?.enabled;
-            if (_cachedFees?.enabledCountries) {
-                if (enabled) { if (!_cachedFees.enabledCountries.includes(country)) _cachedFees.enabledCountries.push(country); }
-                else { _cachedFees.enabledCountries = _cachedFees.enabledCountries.filter(c => c !== country); }
+            if (!res?.ok) {
+                showToast('Failed to update country status.', 'error');
+                return;
             }
+
+            const enabled = res.data?.enabled;
+
+            if (_cachedFees?.enabledCountries) {
+                if (enabled) {
+                    if (!_cachedFees.enabledCountries.includes(country)) {
+                        _cachedFees.enabledCountries.push(country);
+                    }
+                } else {
+                    _cachedFees.enabledCountries = _cachedFees.enabledCountries.filter(c => c !== country);
+                }
+            }
+
             const btn = document.querySelector(`button[onclick="toggleCountry('${country}')"]`);
             if (btn) {
-                btn.style.background = enabled ? '#F0FDF4' : '#F9FAFB'; btn.style.color = enabled ? '#16A34A' : '#9CA3AF'; btn.style.borderColor = enabled ? '#BBF7D0' : '#E5E7EB';
+                btn.style.background = enabled ? '#F0FDF4' : '#F9FAFB';
+                btn.style.color = enabled ? '#16A34A' : '#9CA3AF';
+                btn.style.borderColor = enabled ? '#BBF7D0' : '#E5E7EB';
                 btn.textContent = enabled ? '● Active' : '○ Inactive';
+
                 const row = btn.closest('tr');
-                if (row) { row.style.opacity = enabled ? '1' : '0.65'; row.style.background = enabled ? '' : '#FAFAFA'; }
+                if (row) {
+                    row.style.opacity = enabled ? '1' : '0.65';
+                    row.style.background = enabled ? '' : '#FAFAFA';
+                }
             }
         }
 
-        function filterFeeTable() { renderFeeTable(document.getElementById('fee-search').value); }
+        function filterFeeTable() {
+            renderFeeTable(document.getElementById('fee-search').value);
+        }
 
         async function updateFeeInline(country, val) {
             const n = parseInt(val);
             if (!isNaN(n) && n >= 0) {
                 const res = await FeeStore.setDestinationFee(country, n);
-                if (!res?.ok) { showToast('Failed to update fee: ' + (res?.error || 'Unknown error'), 'error'); return; }
-                _cachedFees = await FeeStore.getAll(); showToast(country + ' fee set to ₦' + n.toLocaleString());
+                if (!res?.ok) {
+                    showToast('Failed to update fee: ' + (res?.error || 'Unknown error'), 'error');
+                    return;
+                }
+
+                _cachedFees = await FeeStore.getAll();
+                showToast(country + ' fee set to ₦' + n.toLocaleString());
                 renderFeeTable(document.getElementById('fee-search').value);
             }
         }
 
         async function resetFee(country) {
             const res = await FeeStore.resetDestinationFee(country);
-            if (!res?.ok) { showToast('Failed to reset fee: ' + (res?.error || 'Unknown error'), 'error'); return; }
-            _cachedFees = await FeeStore.getAll(); showToast(country + ' reset to default fee.');
+            if (!res?.ok) {
+                showToast('Failed to reset fee: ' + (res?.error || 'Unknown error'), 'error');
+                return;
+            }
+
+            _cachedFees = await FeeStore.getAll();
+            showToast(country + ' reset to default fee.');
+            renderFeeTable(document.getElementById('fee-search').value);
+        }
+
+        async function deleteCountryFee(country) {
+            if (!confirm(`Remove ${country} from the fee list? This cannot be undone.`)) return;
+
+            const res = await FeeStore.resetDestinationFee(country);
+            if (!res?.ok) {
+                showToast('Failed to delete: ' + (res?.error || 'Unknown error'), 'error');
+                return;
+            }
+
+            if (_cachedFees?.destinations) delete _cachedFees.destinations[country];
+            _cachedFees = await FeeStore.getAll();
+
+            showToast(country + ' removed from fee list.');
             renderFeeTable(document.getElementById('fee-search').value);
         }
 
         async function addCustomFee() {
             const country = document.getElementById('new-fee-country').value.trim();
             const amount = parseInt(document.getElementById('new-fee-amount').value);
-            if (!country) { showToast('Enter a country name.', 'error'); return; }
-            if (isNaN(amount) || amount < 0) { showToast('Enter a valid amount.', 'error'); return; }
+
+            if (!country) {
+                showToast('Enter a country name.', 'error');
+                return;
+            }
+
+            if (isNaN(amount) || amount < 0) {
+                showToast('Enter a valid amount.', 'error');
+                return;
+            }
+
             const res = await FeeStore.setDestinationFee(country, amount);
-            if (!res?.ok) { showToast('Failed to set fee: ' + (res?.error || 'Unknown error'), 'error'); return; }
+            if (!res?.ok) {
+                showToast('Failed to set fee: ' + (res?.error || 'Unknown error'), 'error');
+                return;
+            }
+
             _cachedFees = await FeeStore.getAll();
-            document.getElementById('new-fee-country').value = ''; document.getElementById('new-fee-amount').value = '';
+            document.getElementById('new-fee-country').value = '';
+            document.getElementById('new-fee-amount').value = '';
+
             showToast(country + ' fee set to ₦' + amount.toLocaleString());
             renderFeeTable(document.getElementById('fee-search').value);
         }
-
 
         const _docUrlMap = {}, _docNameMap = {};
         let _adminPreviewDocId = null;
         let _currentAppDocs = [], _adminPreviewUrl = null, _adminPreviewName = '';
 
         async function adminGetDocUrl(id) {
-            if (!_docUrlMap[id]) { const url = await DocStore.getSignedUrl(id); if (url) _docUrlMap[id] = url; }
+            if (!_docUrlMap[id]) {
+                const url = await DocStore.getSignedUrl(id);
+                if (url) _docUrlMap[id] = url;
+            }
             return _docUrlMap[id] || null;
         }
 
@@ -1338,17 +1487,23 @@
             const modal = document.getElementById('admin-preview-modal');
             const body = document.getElementById('admin-preview-body');
             const label = document.getElementById('admin-preview-name');
+
             modal.style.display = 'flex';
             body.innerHTML = '<div class="text-muted text-center">Loading...</div>';
             label.textContent = name;
+
             _adminPreviewName = name;
             _adminPreviewDocId = id;
+
             try {
                 const blob = await apiFetchBlob(`/admin/documents/${encodeURIComponent(id)}/stream`);
                 if (!blob) throw new Error('empty');
+
                 const objectUrl = URL.createObjectURL(blob);
                 _adminPreviewUrl = objectUrl;
+
                 const ext = (name || '').split('.').pop().toLowerCase();
+
                 if (['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext)) {
                     body.style.alignItems = 'center';
                     const img = document.createElement('img');

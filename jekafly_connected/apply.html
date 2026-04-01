@@ -2,20 +2,38 @@
 <html lang="en">
 
 <head>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
             caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
         }
     </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
-    <title>Apply for Visa — Jekafly</title>
+    <title>Apply for Visa Online — UK, US, Canada, Schengen & More | Jekafly</title>
+    <meta name="description"
+        content="Start your visa application online in minutes. Expert document review, embassy submission, and real-time tracking for UK, US, Canada, Schengen, UAE, and 150+ countries." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://jekafly.com/apply" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jekafly.com/apply" />
+    <meta property="og:site_name" content="Jekafly" />
+    <meta property="og:title" content="Apply for Visa Online — UK, US, Canada, Schengen & More | Jekafly" />
+    <meta property="og:description"
+        content="Start your visa application online in minutes. Expert document review for 150+ countries." />
+    <meta property="og:image" content="https://jekafly.com/assets/images/og-image.png" />
+    <meta property="og:locale" content="en_NG" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Apply for Visa Online — UK, US, Canada, Schengen & More | Jekafly" />
+    <meta name="twitter:description" content="Expert document review and embassy submission for 150+ countries." />
+    <meta name="twitter:image" content="https://jekafly.com/assets/images/og-image.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,6 +47,18 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .req-star {
+            color: #E31E24;
+            font-weight: 700;
         }
 
         h1,
@@ -449,6 +479,7 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/session.js" defer></script>
     <script>
         let currentStep = 1;
         let travellers = [];
@@ -920,11 +951,12 @@
                 return true;
             }
             if (step === 2) {
-                const fname = val('a-fname'), lname = val('a-lname'), email = val('a-email'), phone = val('a-phone'), passport = val('a-passport'), expiry = val('a-passport-expiry');
+                const fname = val('a-fname'), lname = val('a-lname'), email = val('a-email'), phone = val('a-phone'), passport = val('a-passport'), issue = val('a-passport-issue'), expiry = val('a-passport-expiry');
                 if (!fname || !lname) { showToast?.('Please enter your full name.', 'error'); return false; }
                 if (!email) { showToast?.('Please enter your email address.', 'error'); return false; }
                 if (!phone) { showToast?.('Please enter your phone number.', 'error'); return false; }
                 if (!passport) { showToast?.('Please enter your passport number.', 'error'); return false; }
+                if (!issue) { showToast?.('Please enter your passport issue date.', 'error'); return false; }
                 if (!expiry) { showToast?.('Please enter your passport expiry date.', 'error'); return false; }
                 return true;
             }
@@ -1159,6 +1191,7 @@
                     passportExpiry: draft?.personal?.passportExpiry || '',
                     travellers: travellers,
                     fee: window._computedTotal || (feeMap[appData.destination] || 120000) + JEKAFLY_SERVICE_FEE,
+                    hasDocuments: uploadedFiles.length > 0,
                 };
                 const result = await AppStore.create(appData);
                 if (result?.ref) {

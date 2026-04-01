@@ -9,7 +9,26 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
-    <title>Become an Affiliate — Jekafly</title>
+    <title>Become a Jekafly Affiliate — Earn Commission on Every Visa Referral</title>
+    <meta name="description"
+        content="Join the Jekafly affiliate programme and earn commission for every visa application you refer. Flexible tiers, real-time dashboard, and fast payouts." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://jekafly.com/affiliate" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jekafly.com/affiliate" />
+    <meta property="og:site_name" content="Jekafly" />
+    <meta property="og:title" content="Become a Jekafly Affiliate — Earn on Every Visa Referral" />
+    <meta property="og:description"
+        content="Refer clients to Jekafly and earn commission on every successful visa application." />
+    <meta property="og:image" content="https://jekafly.com/assets/images/og-image.png" />
+    <meta property="og:locale" content="en_NG" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Become a Jekafly Affiliate — Earn on Every Visa Referral" />
+    <meta name="twitter:description"
+        content="Refer clients to Jekafly and earn commission on every successful visa application." />
+    <meta name="twitter:image" content="https://jekafly.com/assets/images/og-image.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
         rel="stylesheet" />
@@ -32,7 +51,12 @@
         </div>
         <div class="nav-cta" id="nav-cta-area"></div>
         <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
-            <span class="nav-burger" id="nav-burger">&#9776;</span>
+            <span class="nav-burger" id="nav-burger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                </svg></span>
         </button>
     </nav>
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
@@ -545,6 +569,7 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/session.js" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             await Auth.init();

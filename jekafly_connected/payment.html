@@ -4,16 +4,23 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payment — Jekafly</title>
+    <title>Secure Payment — Jekafly</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap"
-        rel="stylesheet" <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+        rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/payment.css" />
-    rel="stylesheet" />
+
     <script src="https://js.paystack.co/v1/inline.js"></script>
 
     <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
@@ -157,20 +164,22 @@
                 if (p.ref) rows.push({ l: 'Application Ref', v: p.ref, isRef: true });
             } else if (p.type === 'consultation') {
                 flag = '&#128172;'; destName = p.plan || 'Travel Consultation';
-                destRef = 'Expert visa guidance &amp; document review';
+                destRef = 'One-on-one session with a dedicated visa expert';
                 rows.push({ l: 'Package', v: p.plan || '&mdash;' });
-                rows.push({ l: 'Service', v: 'Travel Consultation' });
+                rows.push({ l: 'Session Type', v: 'Video Call &mdash; Visa Strategy' });
                 rows.push({ l: 'Amount', v: '&#8358;' + (p.amount || 0).toLocaleString() });
             } else {
-                flag = '&#128737;'; destName = p.plan || 'Insurance';
-                destRef = (p.dest || '') + (p.travellers ? ' &middot; ' + p.travellers + ' traveller(s)' : '');
+                flag = '&#128737;'; destName = p.plan || 'Travel Insurance';
+                destRef = (p.dest || 'Worldwide') + (p.travellers ? ' &middot; ' + p.travellers + ' traveller' + (p.travellers > 1 ? 's' : '') : '');
                 const _procPct = (window._livePricing?.processingFeePercent ?? 5) / 100;
                 const svc = Math.round((p.amount || 0) * _procPct);
                 total = (p.amount || 0) + svc;
                 rows.push({ l: 'Insurance Plan', v: p.plan || '&mdash;' });
-                rows.push({ l: 'Destination', v: p.dest || '&mdash;' });
+                rows.push({ l: 'Destination', v: p.dest || 'Worldwide' });
+                rows.push({ l: 'Travel Date', v: p.date || '&mdash;' });
+                rows.push({ l: 'Travellers', v: String(p.travellers || 1) });
                 rows.push({ l: 'Plan Cost', v: '&#8358;' + (p.amount || 0).toLocaleString() });
-                rows.push({ l: 'Processing Fee', v: '&#8358;' + svc.toLocaleString() });
+                rows.push({ l: 'Processing Fee (' + Math.round(_procPct * 100) + '%)', v: '&#8358;' + svc.toLocaleString() });
             }
             pendingPayment.amount = total;
 
@@ -194,7 +203,7 @@
                 '<div class="dest-card-amount"><small>Total</small>' + totalStr + '</div>' +
                 '</div></div>' +
                 '<div class="line-items">' + lineItemsHtml + '</div>' +
-                '<div class="included-strip"><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>What&#39;s included:</strong> ' + (p.type === 'consultation' ? 'Dedicated visa consultant, document checklist review, Q&amp;A session, and expert advice on your application.' : p.type === 'insurance' ? 'Medical cover, baggage protection, and trip cancellation as per your selected plan.' : 'Expert document review, embassy submission, real-time tracking, and a dedicated support agent.') + '</span></div>' +
+                '<div class="included-strip"><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>What&#39;s included:</strong> ' + (p.type === 'consultation' ? 'A dedicated Jekafly visa expert will review your profile, advise on the strongest application strategy, check your document checklist, and answer all your visa questions in a live session.' : p.type === 'insurance' ? 'Emergency medical cover, trip cancellation protection, baggage loss compensation, and 24/7 travel assistance — as per your selected plan.' : 'Expert document review by a visa specialist, embassy submission, real-time application tracking, and a dedicated support agent throughout the process.') + '</span></div>' +
                 '</div>' +
                 '<div class="pay-panel"><div class="pay-box" id="pay-box-main">' +
                 '<div id="pay-form-view">' +
@@ -334,10 +343,10 @@
         window.addEventListener('scroll', () => {
             document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20);
         });
-        // Nav is handled by app.js updateNav()
 
     </script>
     <script src="mobile.js" defer></script>
+    <script src="assets/js/session.js" defer></script>
 
     <script>
         (function () {
