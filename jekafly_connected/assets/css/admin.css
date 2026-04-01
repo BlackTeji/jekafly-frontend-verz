@@ -230,7 +230,7 @@ body {
 
 .astat-val {
     font-family: 'Syne', sans-serif;
-    font-size: 1.7rem;
+    font-size: 1.35rem;
     font-weight: 800;
     color: #0D1560;
     letter-spacing: -0.03em;
@@ -383,16 +383,21 @@ body {
 }
 
 .rev-bar-val {
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0);
+    color: #9BA5C0;
+    text-align: center;
     margin-bottom: 4px;
-    transition: color .2s;
     white-space: nowrap;
 }
 
 .rev-bar-wrap:hover .rev-bar-val {
-    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: #9BA5C0;
+    text-align: center;
+    margin-bottom: 4px;
+    white-space: nowrap;
 }
 
 .rev-bar {
@@ -474,7 +479,8 @@ body {
 }
 
 .filter-btn {
-    padding: 7px 15px;
+    height: 38px;
+    padding: 0 15px;
     border-radius: 9px;
     font-size: 0.79rem;
     font-weight: 700;
@@ -485,6 +491,9 @@ body {
     font-family: 'Plus Jakarta Sans', sans-serif;
     letter-spacing: -0.01em;
     transition: all .16s;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
 }
 
 .filter-btn:hover {
@@ -502,18 +511,20 @@ body {
 }
 
 .search-input {
-    padding: 8px 14px;
+    height: 38px;
+    padding: 0 14px;
     border-radius: 10px;
     background: #F5F7FC;
     border: 1.5px solid #E3E5F5;
     color: #0F1124;
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 0.875rem;
+    font-size: 0.82rem;
     outline: none;
     min-width: 210px;
     transition: all .18s;
     box-shadow: inset 0 1px 3px rgba(13, 21, 96, 0.04);
     letter-spacing: -0.01em;
+    vertical-align: middle;
 }
 
 .search-input:focus {
@@ -642,7 +653,8 @@ tr:hover td {
 }
 
 .btn-manage {
-    padding: 8px 16px;
+    padding: 0 16px;
+    height: 38px;
     background: #0D1560;
     color: #fff;
     border: none;
@@ -1654,5 +1666,82 @@ tr:hover td {
 
     .fees-input {
         min-width: 100%;
+    }
+}
+
+#fees-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+#fees-table table,
+#users-table table,
+#apps-table table,
+#consult-table table,
+#insurance-table table,
+#reviews-pending-list table,
+#reviews-approved-list table {
+    min-width: 560px;
+}
+
+.acard-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.admin-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid #EEF0F8;
+}
+
+.acard-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 20px;
+    padding: 0 7px;
+    background: #EEF2FF;
+    color: #3B5BDB;
+    border-radius: 100px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.afilters-top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.afilters-pills {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.rev-card-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 768px) {
+    .admin-doc-download-btn {
+        display: none;
     }
 }

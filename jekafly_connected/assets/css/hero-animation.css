@@ -1,7 +1,3 @@
-/* ============================================================
-   JEKAFLY — ANIMATED HERO
-   ============================================================ */
-
 .hero-slides {
     position: absolute;
     inset: 0;
@@ -39,9 +35,8 @@
     background: var(--blue) !important;
 }
 
-/* ── TYPEWRITER headline ────────────────────────────────────── */
 .hero-headline-wrap {
-    min-height: 9rem;
+    min-height: 8rem;
     display: flex;
     align-items: flex-start;
     overflow: hidden;
@@ -50,7 +45,7 @@
 
 .hero-headline {
     font-family: 'Syne', sans-serif;
-    font-size: clamp(2.4rem, 4.5vw, 3.7rem);
+    font-size: clamp(1.8rem, 3.2vw, 2.8rem);
     color: white;
     line-height: 1.15;
     margin-bottom: 0;
@@ -92,24 +87,20 @@
     animation: fadeSlideUp 0.6s 0.18s ease both;
 }
 
-/* ── Animated badge pulse ───────────────────────────────────── */
 .hero-badge span {
     animation: blink 1.8s ease-in-out infinite;
 }
 
-/* ── Floating stat counters ─────────────────────────────────── */
 .hero-stats {
     opacity: 0;
     animation: fadeSlideUp 0.7s 0.5s ease both;
 }
 
-/* ── CTA buttons ────────────────────────────────────────────── */
 .hero-actions {
     opacity: 0;
     animation: fadeSlideUp 0.7s 0.7s ease both;
 }
 
-/* ── Slide indicators ───────────────────────────────────────── */
 .hero-dots {
     position: absolute;
     bottom: 28px;
@@ -133,7 +124,6 @@
     width: 24px;
 }
 
-/* ── Typography stretch (letter-spacing & line-height boost) ── */
 body {
     letter-spacing: 0.008em;
 }
@@ -164,7 +154,6 @@ h4 {
     letter-spacing: -0.015em;
 }
 
-/* ── Enhanced custom select (searchable) ────────────────────── */
 .cs-wrapper {
     position: relative;
     width: 100%;
@@ -349,7 +338,6 @@ h4 {
     font-size: 0.85rem;
 }
 
-/* ── Enhanced native select (non-searchable, e.g. purpose/gender) ── */
 .form-group select:not(.cs-wrapper select) {
     appearance: none;
     -webkit-appearance: none;
@@ -369,7 +357,6 @@ h4 {
     display: none !important;
 }
 
-/* ── Date picker UX ─────────────────────────────────────────── */
 .date-input-wrap {
     position: relative;
     display: flex;
@@ -440,7 +427,6 @@ h4 {
     font-weight: 500;
 }
 
-/* ── Visa requirements preview panel ────────────────────────── */
 .visa-preview-panel {
     margin-top: 20px;
     background: linear-gradient(135deg, rgba(13, 21, 96, 0.04) 0%, rgba(13, 21, 96, 0.02) 100%);
@@ -539,7 +525,6 @@ h4 {
     opacity: 0.5;
 }
 
-/* ── Fee breakdown in review ────────────────────────────────── */
 .fee-breakdown-box {
     background: linear-gradient(135deg, rgba(13, 21, 96, 0.04) 0%, rgba(13, 21, 96, 0.02) 100%);
     border: 1.5px solid rgba(13, 21, 96, 0.15);
@@ -586,7 +571,6 @@ h4 {
     margin-top: 4px;
 }
 
-/* ── Payment success — centered overlay ─────────────────────── */
 .pay-success-overlay {
     display: none;
     position: fixed;
@@ -653,7 +637,6 @@ h4 {
     line-height: 1.6;
 }
 
-/* ── Doc optional tag ───────────────────────────────────────── */
 .doc-optional-tag {
     font-size: 0.68rem;
     font-weight: 600;
@@ -664,7 +647,6 @@ h4 {
     opacity: 0.7;
 }
 
-/* ── Additional traveller card ──────────────────────────────── */
 .travellers-section {
     margin: 24px 0;
     padding: 20px;
@@ -751,7 +733,6 @@ h4 {
     color: var(--red);
 }
 
-/* ── Make all dropdowns searchable on index.html too ─────────── */
 .search-field .cs-trigger {
     background: var(--off-white);
     padding: 11px 14px;
@@ -759,7 +740,6 @@ h4 {
     min-height: 43px;
 }
 
-/* ── Insurance badge on dashboard ───────────────────────────── */
 .ins-policies-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -833,7 +813,6 @@ h4 {
     color: var(--text);
 }
 
-/* ── Dashboard insurance nav indicator ──────────────────────── */
 .dash-nav-item .ins-badge {
     margin-left: auto;
     background: var(--success);

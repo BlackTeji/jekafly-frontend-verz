@@ -36,13 +36,53 @@
         </button>
     </nav>
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
-        <a href="index.html" onclick="closeNavMenu()">Home</a>
-        <a href="index.html#services" onclick="closeNavMenu()">Services</a>
-        <a href="index.html#visa" onclick="closeNavMenu()">Visa Application</a>
-        <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
+        <div class="nav-mob-list">
+            <a href="index.html" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#EEF2FF;color:#3B5BDB;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        <polyline points="9 22 9 12 15 12 15 22" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Home</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a href="index.html#services" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#F3F0FF;color:#7048E8;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Services</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a href="index.html#visa" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#FFF9DB;color:#E67700;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Visa Application</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+        </div>
+        <div class="nav-mob-footer" id="nav-mobile-cta"></div>
     </div>
     <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
-
 
     <section class="aff-hero">
         <div class="aff-hero-inner">
@@ -61,7 +101,6 @@
             </div>
         </div>
     </section>
-
 
     <div class="aff-stats-strip">
         <div class="aff-stats-inner">
@@ -103,9 +142,7 @@
         </div>
     </div>
 
-
     <div class="container" id="aff-status-wrap" style="padding-top:40px;"></div>
-
 
     <section class="aff-section" id="how-it-works">
         <div class="container">
@@ -141,7 +178,6 @@
         </div>
     </section>
 
-
     <section class="aff-section aff-tiers-section">
         <div class="container">
             <div class="aff-section-header">
@@ -169,7 +205,6 @@
             </div>
         </div>
     </section>
-
 
     <section class="aff-section">
         <div class="container">
@@ -259,7 +294,6 @@
         </div>
     </section>
 
-
     <section class="aff-section aff-form-section" id="apply">
         <div class="container">
             <div class="aff-section-header">
@@ -270,7 +304,6 @@
             </div>
             <div class="aff-form-card" id="aff-form-card">
                 <div class="aff-form-top-bar"></div>
-
 
                 <div class="aff-success hidden" id="aff-success">
                     <div class="aff-success-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"
@@ -283,7 +316,6 @@
                     <p>Our team will review your application and get back to you within 48 hours. Keep an eye on your
                         email.</p>
                 </div>
-
 
                 <div class="aff-success hidden" id="aff-already">
                     <div class="aff-success-icon aff-icon-pending"><svg xmlns="http://www.w3.org/2000/svg" width="32"
@@ -298,11 +330,9 @@
                         receive an email once a decision is made.</p>
                 </div>
 
-
                 <form id="aff-form" onsubmit="submitAffiliateApp(event)">
                     <div class="aff-form-title">Your Application</div>
                     <div class="aff-form-sub">All fields are required unless marked optional.</div>
-
 
                     <div class="aff-mob-steps" id="aff-mob-steps">
                         <div class="aff-mob-step-item active" data-step="1"><span>1</span><small>You</small></div>
@@ -316,7 +346,6 @@
 
                     <div class="aff-form-grid">
 
-
                         <div class="aff-form-step" data-step="1">
                             <div class="aff-step-heading">Personal Information</div>
                             <div class="aff-field"><label>Full Name</label><input type="text" id="aff-name"
@@ -328,7 +357,6 @@
                             <div class="aff-field"><label>State / Location</label><input type="text" id="aff-location"
                                     placeholder="e.g. Lagos, Abuja" required /></div>
                         </div>
-
 
                         <div class="aff-form-step" data-step="2">
                             <div class="aff-step-heading">Your Channel</div>
@@ -362,7 +390,6 @@
                                 <div class="aff-hint">Link to your main profile or website.</div>
                             </div>
                         </div>
-
 
                         <div class="aff-form-step" data-step="3">
                             <div class="aff-step-heading">Bank Details for Payouts</div>
@@ -400,7 +427,6 @@
                             </div>
                         </div>
 
-
                         <div class="aff-form-step" data-step="4">
                             <div class="aff-step-heading">Almost Done!</div>
                             <div class="aff-field aff-field-full">
@@ -417,7 +443,6 @@
                         </div>
 
                     </div>
-
 
                     <div class="aff-mob-nav" id="aff-mob-nav">
                         <button type="button" class="btn-aff-back" id="aff-btn-back" onclick="affStepBack()"><svg
@@ -441,7 +466,6 @@
                             </svg></button>
                     </div>
 
-
                     <button type="submit" class="btn-aff-submit aff-desktop-submit" id="aff-submit-btn-desktop">Submit
                         Application &rarr;</button>
 
@@ -449,7 +473,6 @@
             </div>
         </div>
     </section>
-
 
     <section class="aff-section aff-faq-section" id="faq">
         <div class="container">
@@ -513,7 +536,6 @@
             </div>
         </div>
     </section>
-
 
     <section class="aff-footer-cta">
         <h2>Ready to Start Earning?</h2>
@@ -626,7 +648,6 @@
         function escHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
         window.addEventListener('scroll', () => { document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20); });
 
-
         function initAffPerkFlips() {
             if (window.innerWidth > 768) return;
             document.querySelectorAll('.aff-perk').forEach(perk => {
@@ -651,7 +672,6 @@
         document.addEventListener('DOMContentLoaded', initAffPerkFlips);
         window.addEventListener('resize', initAffPerkFlips);
 
-
         let _affStep = 1;
         const AFF_TOTAL_STEPS = 4;
 
@@ -666,11 +686,9 @@
             if (!affIsMobile()) return;
             _affStep = step;
 
-
             document.querySelectorAll('.aff-form-step').forEach(el => {
                 el.style.display = parseInt(el.dataset.step) === step ? 'block' : 'none';
             });
-
 
             document.querySelectorAll('.aff-mob-step-item').forEach(el => {
                 const s = parseInt(el.dataset.step);
@@ -680,7 +698,6 @@
             document.querySelectorAll('.aff-mob-step-line').forEach((el, i) => {
                 el.classList.toggle('done', i + 1 < step);
             });
-
 
             const back = document.getElementById('aff-btn-back');
             const next = document.getElementById('aff-btn-next');

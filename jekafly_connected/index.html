@@ -49,11 +49,10 @@
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
         </a>
         <div class="nav-links" id="nav-links">
-            <a href="#services" onclick="closeNavMenu()">Services</a>
             <a href="#visa" onclick="closeNavMenu()">Visa Application</a>
             <a href="#insurance" onclick="closeNavMenu()">Insurance</a>
             <a href="#track" onclick="closeNavMenu()">Track Visa</a>
-            <a href="#destinations" onclick="closeNavMenu()">Destinations</a>
+            <a href="#" onclick="openConsultModal();closeNavMenu()">Travel Consultation</a>
             <a href="affiliate.html" class="nav-affiliate-link"><svg xmlns="http://www.w3.org/2000/svg" width="18"
                     height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
@@ -82,7 +81,7 @@
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
         <div class="nav-mob-list">
             <a href="#services" onclick="closeNavMenu()" class="nav-mob-row">
-                <span class="nav-mob-row-icon" style="background:#EEF0FB; color:#0D1560;">
+                <span class="nav-mob-row-icon" style="background:#EEF2FF; color:#3B5BDB;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
@@ -96,7 +95,7 @@
                 </svg>
             </a>
             <a href="#visa" onclick="closeNavMenu()" class="nav-mob-row">
-                <span class="nav-mob-row-icon" style="background:#EEF0FB; color:#0D1560;">
+                <span class="nav-mob-row-icon" style="background:#F3F0FF; color:#7048E8;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -110,7 +109,7 @@
                 </svg>
             </a>
             <a href="#insurance" onclick="closeNavMenu()" class="nav-mob-row">
-                <span class="nav-mob-row-icon" style="background:#EEF0FB; color:#0D1560;">
+                <span class="nav-mob-row-icon" style="background:#FFF0F6; color:#C2255C;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -123,7 +122,7 @@
                 </svg>
             </a>
             <a href="#track" onclick="closeNavMenu()" class="nav-mob-row">
-                <span class="nav-mob-row-icon" style="background:#EEF0FB; color:#0D1560;">
+                <span class="nav-mob-row-icon" style="background:#E0F7FA; color:#0891B2;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8" />
@@ -137,7 +136,7 @@
                 </svg>
             </a>
             <a href="#destinations" onclick="closeNavMenu()" class="nav-mob-row">
-                <span class="nav-mob-row-icon" style="background:#EEF0FB; color:#0D1560;">
+                <span class="nav-mob-row-icon" style="background:#FFF9DB; color:#E67700;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="10" r="3" />
@@ -216,8 +215,13 @@
             </div>
             <div class="hero-actions">
                 <button class="btn-hero btn-hero-primary"
-                    onclick="document.getElementById('visa').scrollIntoView({behavior:'smooth'})">Apply for
-                    Visa</button>
+                    onclick="document.getElementById('visa').scrollIntoView({behavior:'smooth'})">Check Requirements
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </button>
                 <button class="btn-hero btn-hero-secondary"
                     onclick="document.getElementById('track').scrollIntoView({behavior:'smooth'})">Track
                     Application</button>
@@ -240,49 +244,6 @@
     </section>
 
     <!-- =============================
-    QUICK SEARCH
-    ============================= -->
-    <section class="search-section">
-        <div class="search-container">
-            <div class="search-label"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.35-4.35" />
-                </svg> Check Visa Requirements Instantly</div>
-            <div class="search-box">
-                <div class="search-field">
-                    <label>From (Nationality)</label>
-                    <select id="s-from">
-                        <option value="">— Nationality —</option>
-                    </select>
-                </div>
-                <div class="search-field">
-                    <label>Destination</label>
-                    <select id="s-to">
-                        <option value="">Select Destination</option>
-                    </select>
-                </div>
-                <div class="search-field">
-                    <label>Travel Purpose</label>
-                    <select id="s-type">
-                        <option>Tourism</option>
-                        <option>Business</option>
-                        <option>Study</option>
-                        <option>Medical</option>
-                        <option>Family Visit</option>
-                    </select>
-                </div>
-                <button class="btn-search" id="btn-quick-search" type="button">Check <svg width="14" height="14"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                    </svg></button>
-            </div>
-        </div>
-    </section>
-
-    <!-- =============================
     SERVICES
     ============================= -->
     <section class="services" id="services">
@@ -292,7 +253,7 @@
             <p class="section-sub">From visa applications to travel insurance — your end-to-end travel companion.</p>
         </div>
         <div class="services-grid">
-            <div class="service-card" onclick="window.location.href='apply.html'">
+            <div class="service-card" onclick="document.getElementById('visa').scrollIntoView({behavior:'smooth'})">
                 <div class="service-icon-bg">
                     <div class="service-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -490,12 +451,15 @@
                     </div>
                     <ul class="result-items" id="result-list"></ul>
                     <div class="checker-result-cta">
-                        <button class="btn-check btn-check-sm" onclick="applyWithDest(getSelectValue('c-to'))">Start
-                            Application <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <button class="btn-check btn-check-sm"
+                            onclick="window.location.href='apply.html?dest='+encodeURIComponent(getSelectValue('c-to')||'')">
+                            Apply for This Visa
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="5" y1="12" x2="19" y2="12" />
                                 <polyline points="12 5 19 12 12 19" />
-                            </svg></button>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -642,7 +606,7 @@
                             d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
                     </svg></div>
                 <div class="ins-title">Jekafly Travel Insurance</div>
-                <div class="ins-sub">Reliable support wherever you travel</div>
+                <div class="ins-sub">Premium coverage backed by world-class underwriters</div>
                 <div class="ins-features">
                     <div class="ins-feat">
                         <div class="ins-feat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -698,7 +662,7 @@
                         <path d="m21 3 1 11h-2" />
                         <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" />
                         <path d="M3 4h8" />
-                    </svg> Backed by a world-class travel Insurance partner · 24/7 Global Support</div>
+                    </svg> Backed by A-rated global underwriters · 24/7 Worldwide Emergency Support</div>
             </div>
             <div class="insurance-content">
                 <div class="section-tag">Travel Insurance</div>
@@ -820,11 +784,11 @@
     ============================= -->
     <div class="cta-banner">
         <div>
-            <h2>Ready to Travel? Start Your Visa Application Today.</h2>
-            <p>Join travellers who have simplified their journey with Jekafly.</p>
+            <h2>Ready? Start Your Application Now.</h2>
+            <p>Join thousands of travellers who simplified their journey with Jekafly.</p>
         </div>
         <div class="cta-actions">
-            <button class="btn-hero btn-hero-primary" onclick="applyWithDest(getSelectValue('s-to'))">Apply Now
+            <button class="btn-hero btn-hero-primary" onclick="window.location.href='apply.html'">Start Application
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12" />
@@ -840,9 +804,8 @@
     <footer>
         <div class="footer-top">
             <div>
-               <a href="index.html" class="nav-logo">
-            <img src="assets/images/JEKAFLY LOGO W-R 2.png" alt="Jekafly Logo" />
-        </a>
+                <a href="index.html"><img src="assets/images/JEKAFLY LOGO W-R 2.png" alt="Jekafly"
+                        style="height:38px;width:auto;margin-bottom:14px;display:block;" /></a>
                 <div class="footer-tagline">Your Journey Simplified. Visa applications, travel insurance, and document
                     support — all in one platform.</div>
                 <div class="footer-social">
@@ -866,7 +829,8 @@
 
         </div>
         <div class="footer-bottom">
-            <p>© 2026 Kazwhale Concepts Limited. All rights reserved. Registered in Nigeria.</p>
+            <p>© 2024 Jekafly Technologies Limited. All rights reserved. Registered in Nigeria.</p>
+
         </div>
     </footer>
 
@@ -1173,6 +1137,7 @@
             } catch { }
         })();
 
+        // ── Hero review card cycle ─────────────────────────────────
         (function () {
             const fallbacks = [
                 { stars: 5, text: 'Jekafly made the whole process seamless.', name: 'Adaeze O.' },
@@ -1188,6 +1153,7 @@
             const auth = document.getElementById('hero-review-author');
             if (!card) return;
 
+            // Try loading live reviews after 1s
             setTimeout(() => {
                 fetch('https://jekafly-api-production.up.railway.app/api/v1/reviews')
                     .then(r => r.json())
@@ -1221,6 +1187,7 @@
         }());
     </script>
     <script>
+        // ── Hero slideshow + rotating headlines ──────────────────────
         const heroSlides = [
             { bg: 0, line1: 'Visa Applications,', line2: 'Simplified.' },
             { bg: 1, line1: 'Travel the World,', line2: 'Stress-Free.' },
@@ -1417,6 +1384,7 @@
 
                 const speed = cards.length * 12;
 
+                // Wrap in a clipping container
                 const wrapper = document.createElement('div');
                 wrapper.id = 'testi-wrapper';
                 wrapper.style.cssText = 'overflow:hidden;width:100%;margin-top:20px;';
@@ -1470,7 +1438,6 @@
                     '.cta-banner',
                     '.info-list li',
                     '.hero-content',
-                    '.search-section',
                     '.destinations',
                     '.insurance',
                     '.tracking',
@@ -1511,6 +1478,7 @@
     </script>
 
     <script>
+        // ── Consultation modal ────────────────────────────────────────────────
         const CONSULT_PACKAGES = {
             standard: { name: 'Standard Consultation', amount: 15000 },
             priority: { name: 'Priority Consultation', amount: 25000 },

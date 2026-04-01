@@ -16,6 +16,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
     <title>Apply for Visa — Jekafly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
         rel="stylesheet" />
@@ -24,6 +26,18 @@
     <link rel="stylesheet" href="assets/css/apply.css" />
     <link rel="stylesheet" href="assets/css/hero-animation.css" />
     <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+    </style>
 </head>
 
 <body>
@@ -51,7 +65,7 @@
         <a href="index.html" onclick="closeNavMenu()">Home</a>
         <a href="index.html#visa" onclick="closeNavMenu()">Visa Application</a>
         <a href="dashboard.html" onclick="closeNavMenu()">My Applications</a>
-        <div class="nav-mobile-cta" id="nav-mobile-cta"></div>
+        <div class="nav-mob-footer" id="nav-mobile-cta"></div>
     </div>
     <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
 
@@ -64,7 +78,6 @@
                 <p>Complete all steps below. You can start without login — we'll ask you to login only when you're ready
                     to pay.</p>
             </div>
-
 
             <div class="draft-banner" id="draft-banner">
                 <div class="left">
@@ -152,7 +165,6 @@
                     </div>
                 </div>
 
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Intended Travel Date</label>
@@ -182,7 +194,6 @@
                         <div class="date-hint" id="trip-duration-hint"></div>
                     </div>
                 </div>
-
 
                 <div class="visa-preview-panel" id="visa-req-preview">
                     <p class="visa-preview-empty">Select a destination to see requirements</p>
@@ -268,7 +279,6 @@
                 </div>
                 <div class="form-group"><label>Residential Address</label><input type="text" id="a-address"
                         placeholder="House number, Street, City, State" /></div>
-
 
                 <div class="travellers-section">
                     <div class="travellers-header">
@@ -363,7 +373,6 @@
 
                 <div class="review-grid" id="review-grid"></div>
 
-
                 <div class="fee-breakdown" id="fee-breakdown"></div>
 
                 <div class="terms-wrap">
@@ -426,7 +435,6 @@
         </div>
     </div>
 
-
     <div id="doc-preview-modal" class="doc-preview-modal" onclick="closePreview(event)">
         <div class="doc-preview-inner">
             <button class="doc-preview-close"
@@ -461,7 +469,6 @@
         document.addEventListener('DOMContentLoaded', async () => {
             FeeStore._cache = null; // Always fetch fresh fees
             const user = Auth?.getCurrent ? Auth.getCurrent() : null;
-
 
             makeSearchableSelect('a-destination', '— Select Destination —');
 
@@ -507,6 +514,16 @@
             });
 
             document.getElementById('a-destination')?.addEventListener('change', renderVisaPreview);
+            document.getElementById('a-visa-type')?.addEventListener('change', renderVisaPreview);
+            document.getElementById('a-purpose')?.addEventListener('change', renderVisaPreview);
+
+            if (typeof setSelectValue === 'function') {
+                setSelectValue('a-nationality', 'Nigerian');
+            } else {
+                const aNat = document.getElementById('a-nationality');
+                if (aNat && !aNat.value) aNat.value = 'Nigerian';
+            }
+
             renderVisaPreview();
 
             claimIfNeeded();
@@ -514,8 +531,6 @@
             bindAutosave();
             updateNav();
         });
-
-
 
         function setupDateDisplay(inputId, displayId) {
             const input = document.getElementById(inputId);
@@ -555,7 +570,6 @@
             }
         }
 
-        // ── TRAVELLERS ──────────────────────────────────────────────
         function addTraveller() {
             const id = Date.now();
             travellers.push({ id, name: '', passport: '' });
@@ -597,7 +611,6 @@
             if (t) t[field] = value;
         }
 
-        // ── FILE UPLOAD ─────────────────────────────────────────────
         function handleFileUpload(event) {
             const files = Array.from(event.target.files);
             files.forEach(f => {
@@ -651,7 +664,6 @@
             renderUploadedFiles();
         }
 
-        // ── VISA PREVIEW ─────────────────────────────────────────────
         function parseProcessingDays(str) {
             if (!str || str === 'N/A' || str === 'On arrival' || str.toLowerCase().includes('arrival')) return 2;
             const match = str.match(/(\d+)/);
@@ -713,7 +725,30 @@
             const _svcFee = _feeData.serviceFee || JEKAFLY_SERVICE_FEE;
             const _destFee = _feeData.destinations[dest] != null ? _feeData.destinations[dest] : (feeMap[dest] || 120000);
             const _enabled = !_feeData.enabledCountries || _feeData.enabledCountries.includes(dest);
-            const docs = data.docs || [];
+            const _rawPurpose = (document.getElementById('a-visa-type')?.value || document.getElementById('app-type')?.value || 'Tourism').toLowerCase();
+            let docs = [...(data.docs || [])];
+
+            const _purposeExtras = {
+                business: ['Business invitation letter', 'Company registration documents', 'Business itinerary'],
+                study: ['University/school admission letter', 'Proof of tuition payment', "Sponsor's bank statements & letter"],
+                medical: ['Hospital appointment letter', 'Medical referral letter', 'Proof of medical funds'],
+                family: ['Invitation letter from host', "Host's residence/status proof", 'Relationship proof (birth/marriage certificate)'],
+            };
+
+            const _purposeKey = _rawPurpose.includes('business') ? 'business'
+                : _rawPurpose.includes('study') ? 'study'
+                    : _rawPurpose.includes('medical') ? 'medical'
+                        : _rawPurpose.includes('family') ? 'family'
+                            : null;
+
+            if (_purposeKey) {
+                if (_purposeKey !== 'business' && _purposeKey !== 'medical') {
+                    docs = docs.filter(d => !/(hotel reservation|accommodation|return flight itinerary)/i.test(d));
+                }
+                _purposeExtras[_purposeKey].forEach(d => {
+                    if (!docs.some(e => e.toLowerCase().includes(d.split(' ')[1]?.toLowerCase() || d))) docs.push(d);
+                });
+            }
 
             const _disabledMsg = 'Visa processing is not available for this destination';
             ['btn-step1-next', 'btn-submit-app'].forEach(id => {
@@ -741,22 +776,18 @@
                 <span class="visa-type-badge ${typeClass}">${data.type || 'Visa Required'}</span>
             </div>
         </div>
-        <div class="visa-preview-notice">
-            ℹ️ Embassy fees, processing times, and required documents are <strong>general guidelines</strong> for Nigerian passport holders. Exact requirements may vary — Jekafly will verify details for your specific application.
-        </div>
         <div class="visa-preview-meta">
-            <div class="visa-preview-meta-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg> Embassy fee (est.): <strong>${data.fee || '—'}</strong></div>
-            <div class="visa-preview-meta-item">⏱ Processing (est.): <strong>${data.processing || '—'}</strong></div>
-            <div class="visa-preview-meta-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg> <strong>${docs.length}</strong> documents required</div>
-            <div class="visa-preview-meta-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="22" height="16" x="1" y="4" rx="2" ry="2"/><line x1="1" x2="23" y1="10" y2="10"/></svg> Jekafly fee: <strong>₦${_destFee.toLocaleString()}</strong> + ₦${_svcFee.toLocaleString()} service = <strong>₦${(_destFee + _svcFee).toLocaleString()} total</strong></div>
+            ${data.processing ? `<span class="result-meta-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${data.processing}</span>` : ''}
+            ${data.region ? `<span class="result-meta-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>${data.region}</span>` : ''}
+            ${docs.length ? `<span class="result-meta-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>${docs.length} required</span>` : ''}
         </div>
+        <p class="result-note">Document requirements shown are general guidelines. Jekafly's team will verify and confirm all details for your specific application.</p>
         ${docs.length ? `
         <div class="visa-preview-docs-title">Required Documents</div>
         <div class="visa-req-list">${docs.map(d => `<div class="visa-req-item">${d}</div>`).join('')}</div>` : ''}
     `;
         }
 
-        // ── AUTOSAVE & DRAFT ─────────────────────────────────────────
         function bindAutosave() {
             const fields = ['a-nationality', 'a-destination', 'a-purpose', 'a-visa-type', 'a-travel-date', 'a-return-date', 'a-fname', 'a-lname', 'a-dob', 'a-gender', 'a-email', 'a-phone', 'a-passport', 'a-passport-issue', 'a-passport-expiry', 'a-address', 'a-notes'];
             fields.forEach(id => {
@@ -863,7 +894,6 @@
 
         function startNewDraft() { clearDraft(); showToast?.('Started a new application draft.', 'success'); window.location.reload(); }
 
-        // ── NAVIGATION ───────────────────────────────────────────────
         function goStep(n) {
             if (n > currentStep && !validateStep(currentStep)) return;
             document.getElementById('step-' + currentStep).style.display = 'none';
@@ -907,7 +937,6 @@
             return true;
         }
 
-        // ── DOCUMENTS ────────────────────────────────────────────────
         function buildDocChecklist() {
             const wrapper = document.querySelector('[data-select-id="a-destination"]');
             const dest = (wrapper && wrapper.dataset.value) || document.getElementById('a-destination')?.value || '';
@@ -939,7 +968,6 @@
             saveDraft(false);
         }
 
-        // ── REVIEW & FEE BREAKDOWN ───────────────────────────────────
         async function buildReview() {
             const dest = val('a-destination'), fname = val('a-fname'), lname = val('a-lname'),
                 email = val('a-email'), phone = val('a-phone'), passport = val('a-passport'),
@@ -1024,8 +1052,6 @@
             return String(s || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#039;');
         }
 
-        // ── SUBMIT ───────────────────────────────────────────────────
-        // ── Saved applicant profile (persists across applications) ──────────────
         const PROFILE_KEY = 'jkf_saved_profile';
 
         function saveApplicantProfile(appData) {

@@ -1,3 +1,4 @@
+// ── Mobile nav (shared across all pages) ────────────────────
 function toggleNavMenu() {
     const drawer = document.getElementById('nav-mobile-drawer');
     const overlay = document.getElementById('nav-mobile-overlay');
@@ -20,7 +21,9 @@ function closeNavMenu() {
     document.body.style.overflow = '';
 }
 (function initMobileNav() {
+    // Drawer stays open on scroll — user must tap overlay or X to close
 })();
+
 
 function updateNav() {
     const user = Auth.getCurrent();
@@ -42,6 +45,7 @@ function updateNav() {
         const _href = window.location.href;
         const isDashboard = _href.includes('dashboard.html') || (window._jekafly_page === 'dashboard');
         const isAdminPage = _href.includes('admin.html') || (window._jekafly_page === 'admin');
+        const isAffiliatePage = _href.includes('affiliate.html') || (window._jekafly_page === 'affiliate');
 
         mobileHtml = `
           <div class="nav-mob-menu">
@@ -182,11 +186,12 @@ function updateNav() {
 
         mobileHtml = `
           <div class="nav-mob-footer">
+            ${!isAffiliatePage ? `
             <a href="affiliate.html" onclick="closeNavMenu()" class="nav-mob-admin-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>
               Become an Affiliate
-            </a>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            </a>` : ''}
+            <div class="nav-mob-action-row">
               <button class="nav-mob-cta-btn" onclick="openModal('login');closeNavMenu()">Login</button>
               <button class="nav-mob-cta-btn nav-mob-cta-btn--outline" onclick="openModal('register');closeNavMenu()">Get Started</button>
             </div>
@@ -201,6 +206,7 @@ async function handleLogout() {
     await Auth.logout();
     window.location.replace('index.html');
 }
+
 
 function showToast(msg, type = 'success') {
     let t = document.getElementById('jkf-toast');
@@ -218,6 +224,7 @@ function showToast(msg, type = 'success') {
     clearTimeout(t._timer);
     t._timer = setTimeout(() => { t.style.opacity = '0'; }, 3000);
 }
+
 
 function openModal(type) {
     const auth = document.getElementById("modal-auth");
@@ -272,10 +279,12 @@ function switchTab(tab) {
     if (sub) sub.textContent = tab === "login" ? "Sign in to your Jekafly account" : "Join thousands of travellers using Jekafly";
 }
 
+
 function selectPlan(el) {
     document.querySelectorAll(".ins-plan").forEach(p => p.classList.remove("active"));
     el.classList.add("active");
 }
+
 
 async function handleLogin() {
     const email = document.getElementById('login-email')?.value?.trim();
@@ -313,6 +322,7 @@ async function handleRegister() {
     updateNav();
     showToast('Account created! Welcome to Jekafly');
 
+
     if (window.JKF_afterLoginRedirect && window.JKF_afterLoginRedirect()) return;
 
     setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
@@ -333,6 +343,7 @@ function handleInsuranceModal() {
     };
     const price = priceMap[plan] || 45000;
 
+    // Save intent first — so it survives the login redirect
     localStorage.setItem('jkf_pending_payment', JSON.stringify({
         type: 'insurance',
         plan,
@@ -345,6 +356,7 @@ function handleInsuranceModal() {
     const user = Auth.getCurrent();
     if (!user) {
         closeModal();
+        // Redirect to payment.html after login — it will read jkf_pending_payment
         window.JKF_afterLoginRedirect = function () {
             window.location.href = 'payment.html';
             return true;
@@ -356,6 +368,7 @@ function handleInsuranceModal() {
 
     window.location.href = 'payment.html';
 }
+
 
 async function handleTrackModal() {
     const ref = document.getElementById('track-ref')?.value?.trim();
@@ -390,8 +403,10 @@ async function handleTrackModal() {
     demo.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
+
 var visaRequirements = window.visaRequirements = {
 
+    // ── EUROPE ──────────────────────────────────────────────
     "Albania": {
         flag: "🇦🇱", region: "Europe", type: "Visa Required",
         fee: "€35", processing: "5–10 business days",
@@ -623,6 +638,7 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid Schengen visa (apply via Italy)", "Valid passport", "No separate Vatican visa required"]
     },
 
+    // ── NORTH AMERICA ────────────────────────────────────────
     "Antigua and Barbuda": {
         flag: "🇦🇬", region: "Caribbean", type: "Visa-Free (30 days)",
         fee: "Free", processing: "N/A",
@@ -739,6 +755,7 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid passport (6+ months)", "DS-160 online application form", "Application fee payment receipt", "Embassy interview appointment letter", "Passport photo", "Bank statements (12 months)", "Employment letter & payslips", "Proof of strong ties to Nigeria (property, family)", "Travel itinerary", "Letter of invitation (if visiting family/friends)"]
     },
 
+    // ── SOUTH AMERICA ─────────────────────────────────────────
     "Argentina": {
         flag: "🇦🇷", region: "South America", type: "Visa Required",
         fee: "$100", processing: "5–10 business days",
@@ -800,6 +817,7 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Bank statements", "Return ticket", "Invitation letter (if applicable)"]
     },
 
+    // ── AFRICA ──────────────────────────────────────────────
     "Algeria": {
         flag: "🇩🇿", region: "Africa", type: "Visa Required",
         fee: "DZD 5,000", processing: "10–15 business days",
@@ -1066,6 +1084,7 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Yellow fever vaccination certificate (if applicable)", "Sufficient funds ($30/day)"]
     },
 
+    // ── MIDDLE EAST ──────────────────────────────────────────
     "Bahrain": {
         flag: "🇧🇭", region: "Middle East", type: "eVisa Required",
         fee: "BHD 29", processing: "Online — immediate",
@@ -1142,6 +1161,7 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation letter from Yemen", "⚠️ Travel to Yemen not recommended due to ongoing conflict"]
     },
 
+    // ── ASIA ─────────────────────────────────────────────────
     "Afghanistan": {
         flag: "🇦🇫", region: "Asia", type: "Visa Required",
         fee: "$50", processing: "Variable",
@@ -1308,6 +1328,7 @@ var visaRequirements = window.visaRequirements = {
         docs: ["Valid passport (6+ months)", "Vietnam eVisa (apply at evisa.xuatnhapcanh.gov.vn)", "Digital passport photo", "Return/onward ticket", "Hotel reservation", "Bank statements"]
     },
 
+    // ── OCEANIA ──────────────────────────────────────────────
     "Australia": {
         flag: "🇦🇺", region: "Oceania", type: "Visa Required (Subclass 600)",
         fee: "AUD 145", processing: "4–8 weeks",
@@ -1539,6 +1560,7 @@ var nationalityList = [
     { name: "Zimbabwean", flag: "🇿🇼" },
 ].sort((a, b) => a.name.localeCompare(b.name));
 
+
 function makeSearchableSelect(selectId, placeholder, customList) {
     const nativeSelect = document.getElementById(selectId);
     if (!nativeSelect) return;
@@ -1646,6 +1668,32 @@ function makeSearchableSelect(selectId, placeholder, customList) {
     });
 }
 
+function setSelectValue(selectId, value) {
+    const wrapper = document.querySelector('[data-select-id="' + selectId + '"]');
+    const nativeSel = document.getElementById(selectId);
+    if (nativeSel) nativeSel.value = value;
+    if (!wrapper) return;
+    wrapper.dataset.value = value;
+    const list = wrapper.querySelector('.cs-list');
+    const valueEl = wrapper.querySelector('.cs-value');
+    if (list) {
+        list.querySelectorAll('.cs-option').forEach(o => {
+            const match = o.dataset.value === value;
+            o.classList.toggle('selected', match);
+        });
+    }
+    if (valueEl) {
+        const opt = list?.querySelector(`.cs-option[data-value="${value}"]`);
+        if (opt) {
+            const flag = opt.querySelector('.cs-flag')?.textContent || '';
+            const name = opt.querySelector('.cs-name')?.textContent || '';
+            valueEl.textContent = flag ? flag + ' ' + name : name;
+            wrapper.classList.add('has-value');
+        }
+    }
+    if (nativeSel) nativeSel.dispatchEvent(new Event('change', { bubbles: true }));
+}
+
 function getSelectValue(selectId) {
     const wrapper = document.querySelector('[data-select-id="' + selectId + '"]');
     if (wrapper) return wrapper.dataset.value || "";
@@ -1655,6 +1703,7 @@ function getSelectValue(selectId) {
 function populateCountrySelect(selectId, placeholder) {
     makeSearchableSelect(selectId, placeholder);
 }
+
 
 function showRequirements() {
     const dest = getSelectValue("c-to");
@@ -1679,16 +1728,47 @@ function showRequirements() {
 
     const metaEl = document.getElementById("result-meta");
     if (metaEl) {
-        metaEl.innerHTML = `
-      <span class="result-meta-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg> <strong>Embassy fee (est.):</strong> ${data.fee || "N/A"}</span>
-      <span class="result-meta-item">⏱ <strong>Processing (est.):</strong> ${data.processing || "N/A"}</span>
-      <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg> <strong>Region:</strong> ${data.region || "N/A"}</span>
-      <div class="result-disclaimer">
-        ⚠️ <strong>Disclaimer:</strong> Embassy fees, processing times, and document requirements shown are <em>general guidelines</em> based on Nigerian passport holders. Actual requirements may vary by embassy, application type, or individual circumstances. Jekafly will verify and confirm all details for your specific application.
-      </div>`;
+        const selectedPurpose = getSelectValue("c-type") || "Tourism";
+        const metaParts = [];
+        if (data.processing) metaParts.push(`<span class="result-meta-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${data.processing}</span>`);
+        if (data.region) metaParts.push(`<span class="result-meta-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>${data.region}</span>`);
+        metaParts.push(`<span class="result-meta-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${selectedPurpose}</span>`);
+        metaEl.innerHTML = `<div class="result-meta-pills">${metaParts.join('')}</div><p class="result-note">Document requirements shown are general guidelines. Jekafly's team will verify and confirm all details for your specific application.</p>`;
     }
 
-    if (list) list.innerHTML = (data.docs || []).map(r => `<li>${r}</li>`).join("");
+    const purpose = (getSelectValue("c-type") || "Tourism").toLowerCase();
+    let docs = data.docs || [];
+
+    // Purpose-aware doc filtering
+    const isStudy = purpose.includes("study");
+    const isBusiness = purpose.includes("business");
+    const isMedical = purpose.includes("medical");
+    const isFamily = purpose.includes("family");
+
+    // Add purpose-specific docs if not already in list
+    const purposeDocs = {
+        business: ["Business invitation letter", "Company registration documents", "Business itinerary"],
+        study: ["University/school admission letter", "Proof of tuition payment", "Sponsor's bank statements & letter"],
+        medical: ["Hospital appointment letter", "Medical referral letter", "Proof of medical funds"],
+        family: ["Invitation letter from host", "Host's residence/status proof", "Relationship proof (birth/marriage certificate)"],
+    };
+
+    const toAdd = isBusiness ? purposeDocs.business
+        : isStudy ? purposeDocs.study
+        : isMedical ? purposeDocs.medical
+        : isFamily ? purposeDocs.family
+        : [];
+
+    // Remove generic tourism docs that don't apply to other purposes
+    if (!purpose.includes("tourism") && !purpose.includes("holiday")) {
+        docs = docs.filter(d => !/(hotel|accommodation|return flight itinerary)/i.test(d));
+    }
+
+    // Merge: base docs + purpose-specific, deduplicating
+    const allDocs = [...docs];
+    toAdd.forEach(d => { if (!allDocs.some(e => e.toLowerCase().includes(d.split(" ")[1]?.toLowerCase() || d))) allDocs.push(d); });
+
+    if (list) list.innerHTML = allDocs.map(r => `<li>${r}</li>`).join("");
     result?.classList.add("visible");
     result?.scrollIntoView({ behavior: "smooth", block: "nearest" });
 }
@@ -1743,17 +1823,29 @@ function selectDest(country) {
     }
 }
 
+
 window.addEventListener("scroll", () => {
     const nav = document.querySelector("nav");
     if (!nav) return;
     nav.style.boxShadow = window.scrollY > 20 ? "0 2px 20px rgba(14,14,184,0.08)" : "none";
 });
 
+
 document.addEventListener("DOMContentLoaded", async () => {
     makeSearchableSelect("c-to", "— Select Destination —");
     makeSearchableSelect("s-to", "Select Destination");
     makeSearchableSelect("c-from", "— Select Nationality —", nationalityList);
     makeSearchableSelect("s-from", "— Nationality —", nationalityList);
+
+    setSelectValue("c-from", "Nigerian");
+    setSelectValue("s-from", "Nigerian");
+
+    document.getElementById("c-type")?.addEventListener("change", () => {
+        if (document.getElementById("checker-result")?.classList.contains("visible")) {
+            showRequirements();
+        }
+    });
+
 
     PricingStore.get().then(p => {
         if (!p) return;
@@ -1774,6 +1866,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     Auth.init().then(() => updateNav()).catch(() => updateNav());
+
 
     document.getElementById("btn-insurance-modal")?.addEventListener("click", handleInsuranceModal);
 

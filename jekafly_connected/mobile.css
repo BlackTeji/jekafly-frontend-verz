@@ -130,9 +130,10 @@
         background: rgba(255, 255, 255, 0.72) !important;
         backdrop-filter: blur(28px) !important;
         -webkit-backdrop-filter: blur(28px) !important;
+        overflow-x: hidden;
     }
 
-    .nav-mobile-drawer>a {
+    .nav-mobile-drawer>a:not(.nav-mob-row):not(.nav-mob-admin-btn):not(.nav-mob-cta-btn) {
         font-size: 0.92rem;
         font-weight: 600;
         padding: 9px 2px;
@@ -141,42 +142,6 @@
         letter-spacing: -0.01em;
         display: block;
         text-decoration: none;
-    }
-
-    .nav-mobile-cta {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 10px;
-    }
-
-    .nav-mobile-cta button,
-    .nav-mobile-cta a {
-        flex: 1;
-        width: auto !important;
-    }
-
-    .nav-mobile-cta a,
-    .nav-mobile-cta button,
-    .nav-mobile-user a,
-    .nav-mobile-user button {
-        border-radius: 13px;
-        padding: 13px 8px;
-        font-size: 0.85rem;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-    }
-
-    .nav-mobile-cta .btn-primary {
-        background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%) !important;
-        border: none !important;
-        color: white !important;
-        box-shadow: 0 3px 12px rgba(13, 21, 96, 0.25);
-    }
-
-    .nav-mobile-cta .btn-outline {
-        background: transparent !important;
-        border: 1.5px solid rgba(13, 21, 96, 0.2) !important;
-        color: #0D1560 !important;
     }
 
 
@@ -210,16 +175,16 @@
     }
 
     .hero-line-1 {
-        font-size: 1.55rem;
-        font-weight: 600;
+        font-size: 1.4rem;
+        font-weight: 700;
         line-height: 1.2;
         display: block;
         white-space: nowrap;
     }
 
     .hero-line-2 {
-        font-size: 1.55rem;
-        font-weight: 600;
+        font-size: 1.4rem;
+        font-weight: 700;
         line-height: 1.2;
         display: block;
     }
@@ -2164,9 +2129,9 @@
 
 
     .aff-hero {
-        padding: 80px var(--mob-pad) 40px;
-        min-height: 0 !important;
-        max-height: 380px;
+        padding: 140px var(--mob-pad) 100px;
+        min-height: 70vh !important;
+        max-height: 70vh !important;
         overflow: hidden;
         background-attachment: scroll;
     }
@@ -2556,7 +2521,7 @@
 @media (max-width: 768px) {
 
     .nav-mobile-drawer {
-        max-height: 92vh;
+        max-height: calc(100vh - 60px);
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         padding-bottom: env(safe-area-inset-bottom, 24px);
@@ -2564,6 +2529,7 @@
 
     .nav-mobile-drawer:not(:has(.nav-mob-menu)) {
         max-height: fit-content;
+        padding-bottom: max(24px, env(safe-area-inset-bottom, 24px));
     }
 
 
@@ -2572,6 +2538,20 @@
         flex-direction: column;
         padding: 4px 0 0;
         min-height: 0;
+    }
+
+    .nav-mob-scroll {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        min-height: 0;
+    }
+
+    .nav-mob-footer-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
     }
 
 
@@ -2653,6 +2633,7 @@
         cursor: pointer;
         font-family: 'Plus Jakarta Sans', sans-serif;
         text-align: left;
+        text-decoration: none;
         transition: background .14s;
     }
 
@@ -2661,22 +2642,33 @@
     }
 
     .nav-mobile-drawer .nav-mob-row {
+        border-bottom: 1px solid rgba(13, 21, 96, 0.06);
+    }
+
+    .nav-mobile-drawer .nav-mob-row:last-child {
         border-bottom: none;
     }
 
     .nav-mob-row-icon {
-        width: 34px;
-        height: 34px;
-        border-radius: 9px;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
+        color: #0D1560;
+        background: #D6DBFF;
+    }
+
+    .nav-mob-row-icon svg {
+        display: block;
         flex-shrink: 0;
     }
 
     .nav-mob-row-label {
         flex: 1;
-        font-size: 0.9rem;
+        font-size: 0.86rem;
         font-weight: 600;
         color: #1A2040;
         letter-spacing: -0.01em;
@@ -2693,10 +2685,11 @@
         align-items: center;
         justify-content: center;
         width: 100%;
-        margin: 14px 0 6px;
+        margin: 0;
         padding: 13px 8px;
         background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
         color: white;
+        border: none;
         border-radius: 13px;
         font-family: 'Plus Jakarta Sans', sans-serif;
         font-size: 0.88rem;
@@ -2705,6 +2698,9 @@
         text-decoration: none;
         box-shadow: 0 4px 16px rgba(13, 21, 96, 0.28);
         transition: opacity .15s, transform .15s;
+        cursor: pointer;
+        box-sizing: border-box;
+        min-height: 46px;
     }
 
     .nav-mob-cta-btn:active {
@@ -2712,12 +2708,25 @@
         transform: scale(0.99);
     }
 
+    .nav-mob-cta-btn--outline {
+        background: transparent !important;
+        border: 1.5px solid rgba(13, 21, 96, 0.18) !important;
+        color: #0D1560 !important;
+        box-shadow: none !important;
+    }
+
+    .nav-mob-cta-btn--outline:active {
+        background: rgba(13, 21, 96, 0.05) !important;
+    }
+
 
     .nav-mob-footer {
         display: flex;
         flex-direction: column;
         gap: 8px;
-        padding-top: 14px;
+        padding: 14px 0 32px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .nav-mob-admin-btn {
@@ -2725,17 +2734,20 @@
         align-items: center;
         justify-content: center;
         gap: 7px;
-        padding: 12px;
+        width: 100%;
+        padding: 11px 16px;
         background: rgba(13, 21, 96, 0.05);
         border: 1.5px solid rgba(13, 21, 96, 0.1);
         border-radius: 12px;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.87rem;
+        font-size: 0.84rem;
         font-weight: 700;
         color: #0D1560;
         text-decoration: none;
         letter-spacing: -0.01em;
         transition: background .14s;
+        text-align: center;
+        box-sizing: border-box;
     }
 
     .nav-mob-admin-btn:active {
@@ -2748,17 +2760,19 @@
         justify-content: center;
         gap: 7px;
         width: 100%;
-        padding: 12px;
+        padding: 13px 8px;
         background: rgba(227, 30, 36, 0.05);
         border: 1.5px solid rgba(227, 30, 36, 0.15);
-        border-radius: 12px;
+        border-radius: 13px;
         font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 0.87rem;
+        font-size: 0.88rem;
         font-weight: 700;
         color: #E31E24;
         cursor: pointer;
         letter-spacing: -0.01em;
         transition: background .14s;
+        box-sizing: border-box;
+        min-height: 46px;
     }
 
     .nav-mob-logout-btn:active {
@@ -2781,6 +2795,7 @@
         grid-template-columns: 1fr 1fr;
         gap: 8px;
         margin-top: 0;
+        align-items: stretch;
     }
 
 
@@ -2789,7 +2804,8 @@
         align-items: center;
         justify-content: center;
         gap: 6px;
-        padding: 13px 10px;
+        padding: 0 10px;
+        min-height: 46px;
         background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
         color: white;
         border-radius: 13px;
@@ -2837,7 +2853,9 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
-        padding-top: 14px;
+        padding: 14px 0 32px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
 
@@ -2957,4 +2975,53 @@
         color: #9BA5C0;
         font-size: 0.85rem;
     }
+}
+
+@media (max-width: 768px) {
+    .acard-table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .fees-price-wrap,
+    #consult-table,
+    #insurance-table,
+    #users-table,
+    #apps-table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        display: block;
+        width: 100%;
+    }
+
+    #fees-table,
+    #users-table,
+    #apps-table,
+    #consult-table,
+    #insurance-table,
+    .acard-table-wrap,
+    #reviews-pending-list,
+    #reviews-approved-list {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        max-width: 100%;
+    }
+
+    #fees-table table,
+    #users-table table,
+    #apps-table table,
+    #consult-table table,
+    #insurance-table table {
+        min-width: 520px;
+        width: max-content;
+    }
+
+    .acard {
+        overflow: hidden;
+    }
+
+    .ins-trip-fields {
+        grid-template-columns: 1fr;
+    }
+
 }
