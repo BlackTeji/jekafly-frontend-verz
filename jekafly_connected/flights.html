@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <title>Jekafly — Nigeria's #1 Visa, Flights & Travel Platform</title>
+    <meta name="description"
+        content="Book flights, apply for visas, find hotels, and get travel insurance — all in one platform. Nigeria's most trusted travel service." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://jekafly.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jekafly.com/" />
+    <meta property="og:site_name" content="Jekafly" />
+    <meta property="og:title" content="Jekafly — Nigeria's #1 Visa, Flights & Travel Platform" />
+    <meta property="og:description"
+        content="Book flights, apply for visas, find hotels, and get travel insurance — all in one platform." />
+    <meta property="og:image" content="https://jekafly.com/assets/images/og-image.png" />
+    <meta property="og:locale" content="en_NG" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@jekafly" />
+    <meta name="twitter:title" content="Jekafly — Nigeria's #1 Visa, Flights & Travel Platform" />
+    <meta name="twitter:image" content="https://jekafly.com/assets/images/og-image.png" />
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+            caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+    <link rel="stylesheet" href="assets/css/utilities.css" />
+    <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
+    <style>
+        body {
+            font-family: 'Poppins', Georgia, Helvetica, sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Poppins', Georgia, Helvetica, sans-serif;
+            font-weight: 700;
+        }
+
+        .flights-empty {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flights-hero {
+            background: #0D1560;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 24px 80px;
+        }
+
+        .flights-hero-inner {
+            max-width: 560px;
+            text-align: center;
+        }
+
+        .flights-hero-icon {
+            width: 72px;
+            height: 72px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 28px;
+        }
+
+        .flights-hero h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            margin: 0 0 16px;
+        }
+
+        .flights-hero p {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.7;
+            margin: 0 0 36px;
+        }
+
+        .flights-cta-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-flights-primary {
+            background: #E31E24;
+            color: #fff;
+            border: none;
+            padding: 13px 28px;
+            border-radius: 8px;
+            font-family: 'Poppins', Georgia, Helvetica, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.15s;
+        }
+
+        .btn-flights-primary:hover {
+            opacity: 0.88;
+        }
+
+        .btn-flights-ghost {
+            background: transparent;
+            color: #fff;
+            border: 1.5px solid rgba(255, 255, 255, 0.35);
+            padding: 13px 28px;
+            border-radius: 8px;
+            font-family: 'Poppins', Georgia, Helvetica, sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: border-color 0.15s, background 0.15s;
+        }
+
+        .btn-flights-ghost:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .flights-services {
+            background: #F5F6FF;
+            padding: 64px 24px;
+        }
+
+        .flights-services-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .flights-services h2 {
+            font-size: 1.4rem;
+            color: #0D1560;
+            margin: 0 0 8px;
+        }
+
+        .flights-services>.flights-services-inner>p {
+            color: #6B7280;
+            font-size: 0.9rem;
+            margin: 0 0 40px;
+        }
+
+        .flights-service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        @media (max-width: 600px) {
+            .flights-service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .flights-hero h1 {
+                font-size: 1.6rem;
+            }
+        }
+
+        .flights-service-card {
+            background: #fff;
+            border: 0.5px solid #E5E7EB;
+            border-radius: 12px;
+            padding: 24px 20px;
+            text-align: left;
+            text-decoration: none;
+            display: block;
+            transition: box-shadow 0.15s, transform 0.15s;
+        }
+
+        .flights-service-card:hover {
+            box-shadow: 0 4px 20px rgba(13, 21, 96, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .flights-service-card .sc-icon {
+            width: 40px;
+            height: 40px;
+            background: #EEF0FB;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            color: #0D1560;
+        }
+
+        .flights-service-card .sc-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0D1560;
+            margin-bottom: 6px;
+        }
+
+        .flights-service-card .sc-desc {
+            font-size: 0.8rem;
+            color: #6B7280;
+            line-height: 1.55;
+        }
+
+        .flights-footer {
+            background: #0D1560;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .flights-footer p {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.78rem;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav id="main-nav">
+        <a href="/" class="nav-logo">
+            <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
+        </a>
+        <div class="nav-links" id="nav-links">
+            <a href="visa.html" onclick="closeNavMenu()">Visa Application</a>
+            <a href="hotels.html" onclick="closeNavMenu()">Hotels</a>
+            <a href="visa.html#insurance" onclick="closeNavMenu()">Insurance</a>
+            <a href="visa.html#track" onclick="closeNavMenu()">Track Visa</a>
+            <a href="affiliate.html" class="nav-affiliate-link"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+                    height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m11 17 2 2a1 1 0 1 0 3-3" />
+                    <path
+                        d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4" />
+                    <path d="m21 3 1 11h-2" />
+                    <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" />
+                    <path d="M3 4h8" />
+                </svg> Become an Affiliate</a>
+        </div>
+        <div class="nav-cta" id="nav-cta-area">
+            <button class="btn-outline" onclick="openModal('login')">Login</button>
+            <button class="btn-primary" onclick="openModal('register')">Get Started</button>
+        </div>
+        <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
+            <span class="nav-burger" id="nav-burger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="3" y1="6" x2="21" y2="6" />
+                    <line x1="3" y1="12" x2="21" y2="12" />
+                    <line x1="3" y1="18" x2="21" y2="18" />
+                </svg></span>
+        </button>
+    </nav>
+
+    <div class="nav-mobile-drawer" id="nav-mobile-drawer">
+        <div class="nav-mob-list">
+            <a href="visa.html" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#F3F0FF; color:#7048E8;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                        <polyline points="14 2 14 8 20 8" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Visa Application</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a href="hotels.html" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#FFF3E0; color:#E65100;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 22V12a9 9 0 0 1 18 0v10" />
+                        <path d="M3 18h18" />
+                        <path d="M9 22v-4h6v4" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Hotels</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a href="visa.html#insurance" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#FFF0F6; color:#C2255C;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Insurance</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a href="visa.html#track" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#E0F7FA; color:#0891B2;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Track Visa</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+        </div>
+        <div class="nav-mob-footer" id="nav-mobile-cta">
+            <a href="affiliate.html" onclick="closeNavMenu()" class="nav-mob-admin-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <line x1="23" y1="11" x2="17" y2="11" />
+                    <line x1="20" y1="8" x2="20" y2="14" />
+                </svg>
+                Become an Affiliate
+            </a>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <button class="nav-mob-cta-btn" onclick="openModal('login');closeNavMenu()">Login</button>
+                <button class="nav-mob-cta-btn nav-mob-cta-btn--outline"
+                    onclick="openModal('register');closeNavMenu()">Get Started</button>
+            </div>
+        </div>
+    </div>
+    <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
+
+    <!-- EMPTY STATE -->
+    <div class="flights-empty">
+        <div class="flights-hero">
+            <div class="flights-hero-inner">
+                <div class="flights-hero-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 256 256" fill="white">
+                        <path
+                            d="M185.33,114.21l29.14-27.42.17-.17a32,32,0,0,0-45.26-45.26c0,.06-.11.11-.17.17L141.79,70.67l-83-30.2a8,8,0,0,0-8.39,1.86l-24,24a8,8,0,0,0,1.22,12.31l63.89,42.59L76.69,136H56a8,8,0,0,0-5.65,2.34l-24,24A8,8,0,0,0,29,175.42l36.82,14.73,14.7,36.75.06.16a8,8,0,0,0,13.18,2.47l23.87-23.88A8,8,0,0,0,120,200V179.31l14.76-14.76,42.59,63.89a8,8,0,0,0,12.31,1.22l24-24a8,8,0,0,0,1.86-8.39Zm-.07,97.23-42.59-63.88A8,8,0,0,0,136.8,144c-.27,0-.53,0-.79,0a8,8,0,0,0-5.66,2.35l-24,24A8,8,0,0,0,104,176v20.69L90.93,209.76,79.43,181A8,8,0,0,0,75,176.57l-28.74-11.5L59.32,152H80a8,8,0,0,0,5.66-2.34l24-24a8,8,0,0,0-1.22-12.32L44.56,70.74l13.5-13.49,83.22,30.26a8,8,0,0,0,8.56-2L180.78,52.6A16,16,0,0,1,203.4,75.23l-32.87,30.93a8,8,0,0,0-2,8.56l30.26,83.22Z" />
+                    </svg>
+                </div>
+                <h1>Flights — Coming Soon</h1>
+                <p>We're building Nigeria's best flight booking experience. Search real flights, get visa itineraries,
+                    and book in minutes — all in one place. Check back soon.</p>
+                <div class="flights-cta-row">
+                    <a href="visa.html" class="btn-flights-primary">
+                        Apply for a Visa
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </a>
+                    <a href="hotels.html" class="btn-flights-ghost">
+                        Find Hotels
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                            <polyline points="12 5 19 12 12 19" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="flights-services">
+            <div class="flights-services-inner">
+                <h2>While you wait, explore what Jekafly already does</h2>
+                <p>Nigeria's most trusted platform for visas, insurance, and travel support.</p>
+                <div class="flights-service-grid">
+                    <a href="visa.html" class="flights-service-card">
+                        <div class="sc-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                                <rect x="9" y="3" width="6" height="4" rx="1" />
+                                <line x1="9" y1="12" x2="15" y2="12" />
+                                <line x1="9" y1="16" x2="13" y2="16" />
+                            </svg>
+                        </div>
+                        <div class="sc-title">Visa Application</div>
+                        <div class="sc-desc">UK, US, Schengen, Canada, UAE and 150+ countries. Expert review and embassy
+                            submission.</div>
+                    </a>
+                    <a href="hotels.html" class="flights-service-card">
+                        <div class="sc-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256"
+                                fill="#0D1560">
+                                <path
+                                    d="M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z" />
+                            </svg>
+                        </div>
+                        <div class="sc-title">Hotel Booking</div>
+                        <div class="sc-desc">Book accommodation or get hotel proof letters for your visa application
+                            instantly.</div>
+                    </a>
+                    <a href="visa.html#insurance" class="flights-service-card">
+                        <div class="sc-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                            </svg>
+                        </div>
+                        <div class="sc-title">Travel Insurance</div>
+                        <div class="sc-desc">Medical, trip cancellation, and baggage cover. Meets Schengen and global
+                            embassy requirements.</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="flights-footer">
+            <p>© 2026 Kazwhale Concepts Limited. All rights reserved. Registered in Nigeria.</p>
+        </footer>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/session.js" defer></script>
+    <script>
+        window.addEventListener('scroll', () => {
+            document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 20);
+        });
+    </script>
+
+</body>
+
+</html>

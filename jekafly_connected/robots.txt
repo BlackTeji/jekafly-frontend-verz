@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
-Allow: /index.html
-Allow: /apply.html
-Allow: /affiliate.html
+Allow: /visa
+Allow: /hotels
+Allow: /apply
+Allow: /affiliate
 Disallow: /dashboard.html
 Disallow: /admin.html
 Disallow: /payment.html

@@ -152,7 +152,8 @@ nav {
 .dest-card-top {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+    flex-wrap: wrap;
 }
 
 .dest-flag-box {
@@ -519,9 +520,9 @@ nav {
 }
 
 .success-modal h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.35rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--navy);
     margin-bottom: 6px;
     letter-spacing: -0.03em;
@@ -676,22 +677,22 @@ nav {
 }
 
 body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
     line-height: 1.65;
 }
 
 .page-eyebrow {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.68rem;
     letter-spacing: .12em;
     color: #E31E24;
 }
 
 .page-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 2rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.03em;
     color: #0D1560;
     line-height: 1.1;
@@ -712,22 +713,22 @@ body {
 }
 
 .dest-card-name {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.2rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.02em;
 }
 
 .dest-card-amount {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 2.1rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1;
 }
 
 .dest-card-amount small {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.72rem;
     letter-spacing: .04em;
     text-transform: uppercase;
@@ -764,16 +765,16 @@ body {
 }
 
 .line-item.total-line .li-label {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 0.95rem;
     color: #0F1124;
 }
 
 .line-item.total-line .li-val {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #E31E24;
     letter-spacing: -0.02em;
 }
@@ -787,9 +788,9 @@ body {
 }
 
 .pay-box-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.02em;
     color: #0D1560;
 }
@@ -801,23 +802,23 @@ body {
 }
 
 .pay-total-amount {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.8rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #0D1560;
     letter-spacing: -0.03em;
     line-height: 1;
 }
 
 .pay-total-currency {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     font-weight: 600;
     color: #9BA5C0;
 }
 
 .btn-pay {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     font-weight: 700;
     border-radius: 14px;
@@ -834,7 +835,7 @@ body {
 }
 
 .trust-badge {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.71rem;
     font-weight: 600;
     color: #9BA5C0;
@@ -852,16 +853,16 @@ body {
 }
 
 .success-modal h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.8rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #0D1560;
     letter-spacing: -0.03em;
     margin-bottom: 8px;
 }
 
 .success-modal p {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.92rem;
     color: #9BA5C0;
     letter-spacing: -0.01em;
@@ -898,7 +899,7 @@ body {
 .receipt-row .rv {
     font-weight: 700;
     color: #0F1124;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .receipt-row .rv.amount {
@@ -907,7 +908,7 @@ body {
 }
 
 .btn-dashboard {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: #0D1560;
     border-radius: 12px;
     padding: 14px;
@@ -924,7 +925,7 @@ body {
 }
 
 .btn-home {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     border-radius: 12px;
     border: 1.5px solid #EAECF5;
     padding: 13px;
@@ -942,8 +943,8 @@ body {
 }
 
 .processing-title {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
     font-size: 1rem;
     letter-spacing: -0.02em;
     color: #0D1560;

@@ -204,7 +204,7 @@ function updateNav() {
 
 async function handleLogout() {
     await Auth.logout();
-    window.location.replace('index.html');
+    window.location.replace('/');
 }
 
 
@@ -214,7 +214,7 @@ function showToast(msg, type = 'success') {
         t = document.createElement('div');
         t.id = 'jkf-toast';
         t.style.cssText =
-            'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:9999;padding:14px 28px;border-radius:12px;font-family:"Plus Jakarta Sans",sans-serif;font-weight:600;font-size:0.9rem;box-shadow:0 8px 32px rgba(0,0,0,0.18);transition:opacity .3s;pointer-events:none;';
+            'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);z-index:9999;padding:14px 28px;border-radius:12px;font-family:"Poppins",sans-serif;font-weight:600;font-size:0.9rem;box-shadow:0 8px 32px rgba(0,0,0,0.18);transition:opacity .3s;pointer-events:none;';
         document.body.appendChild(t);
     }
     t.style.background = type === 'error' ? '#E31E24' : '#10B981';
@@ -1755,9 +1755,9 @@ function showRequirements() {
 
     const toAdd = isBusiness ? purposeDocs.business
         : isStudy ? purposeDocs.study
-        : isMedical ? purposeDocs.medical
-        : isFamily ? purposeDocs.family
-        : [];
+            : isMedical ? purposeDocs.medical
+                : isFamily ? purposeDocs.family
+                    : [];
 
     // Remove generic tourism docs that don't apply to other purposes
     if (!purpose.includes("tourism") && !purpose.includes("holiday")) {
@@ -1793,7 +1793,7 @@ function quickSearch() {
             showRequirements();
         }, 500);
     } else {
-        window.location.href = `index.html?dest=${encodeURIComponent(dest)}`;
+        window.location.href = `visa.html?dest=${encodeURIComponent(dest)}`;
     }
 }
 

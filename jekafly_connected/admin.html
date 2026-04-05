@@ -21,8 +21,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
@@ -30,14 +29,14 @@
     <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         h1,
         h2,
         h3,
         h4 {
-            font-family: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
         }
     </style>
 </head>
@@ -45,7 +44,7 @@
 <body>
 
     <nav id="main-nav">
-        <a href="index.html" class="nav-logo">
+        <a href="/" class="nav-logo">
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
         </a>
         <div class="nav-links"></div>
@@ -151,8 +150,20 @@
                             <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" />
                             <path d="M3 4h8" />
                         </svg></span>Affiliates</div>
+                <div class="admin-nav-item" onclick="adminTab('flights',this)" data-roles="super"><span class="ni"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256"
+                            fill="currentColor">
+                            <path
+                                d="M185.33,114.21l29.14-27.42.17-.17a32,32,0,0,0-45.26-45.26c0,.06-.11.11-.17.17L141.79,70.67l-83-30.2a8,8,0,0,0-8.39,1.86l-24,24a8,8,0,0,0,1.22,12.31l63.89,42.59L76.69,136H56a8,8,0,0,0-5.65,2.34l-24,24A8,8,0,0,0,29,175.42l36.82,14.73,14.7,36.75.06.16a8,8,0,0,0,13.18,2.47l23.87-23.88A8,8,0,0,0,120,200V179.31l14.76-14.76,42.59,63.89a8,8,0,0,0,12.31,1.22l24-24a8,8,0,0,0,1.86-8.39Z" />
+                        </svg></span>Flights</div>
+                <div class="admin-nav-item" onclick="adminTab('hotels',this)" data-roles="super"><span class="ni"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256"
+                            fill="currentColor">
+                            <path
+                                d="M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z" />
+                        </svg></span>Hotels</div>
                 <div class="admin-nav-section">Quick Links</div>
-                <div class="admin-nav-item" onclick="location.href='index.html'"><span class="ni"><svg
+                <div class="admin-nav-item" onclick="location.href='/'"><span class="ni"><svg
                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10" />
@@ -539,6 +550,38 @@
                     </div>
                 </div>
 
+                <!-- FLIGHTS -->
+                <div id="tab-flights" style="display:none">
+                    <div class="admin-title">Flight Orders</div>
+                    <p class="admin-sub">All flight bookings made through Jekafly.</p>
+                    <div class="acard mt-20">
+                        <div class="acard-header">
+                            <h3>All Flight Orders</h3><span id="flights-admin-count" class="fs-sm text-light"></span>
+                        </div>
+                        <div class="acard-table-wrap">
+                            <div id="flights-admin-table">
+                                <div class="atbl-empty">No flight orders yet.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HOTELS -->
+                <div id="tab-hotels" style="display:none">
+                    <div class="admin-title">Hotel Orders</div>
+                    <p class="admin-sub">All hotel reservations made through Jekafly.</p>
+                    <div class="acard mt-20">
+                        <div class="acard-header">
+                            <h3>All Hotel Orders</h3><span id="hotels-admin-count" class="fs-sm text-light"></span>
+                        </div>
+                        <div class="acard-table-wrap">
+                            <div id="hotels-admin-table">
+                                <div class="atbl-empty">No hotel orders yet.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </main>
         </div>
     </div>
@@ -592,7 +635,7 @@
 
         window._jekafly_page = 'admin';
         const ROLE_TABS = {
-            super: ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates'],
+            super: ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates', 'flights', 'hotels'],
             applications: ['overview', 'applications', 'users', 'reviews'],
             finance: ['overview', 'fees'],
             consultations: ['overview', 'consultations'],
@@ -604,8 +647,8 @@
         document.addEventListener('DOMContentLoaded', async () => {
             await Auth.init();
             const admin = Auth.getCurrent();
-            if (!admin) { location.href = 'index.html'; return; }
-            if (admin.role !== 'ADMIN') { showToast('Access denied.', 'error'); setTimeout(() => location.href = 'index.html', 1200); return; }
+            if (!admin) { location.href = '/'; return; }
+            if (admin.role !== 'ADMIN') { showToast('Access denied.', 'error'); setTimeout(() => location.href = '/', 1200); return; }
 
             _adminRole = (admin.adminRole || 'super').toLowerCase();
             if (!ROLE_TABS[_adminRole]) _adminRole = 'super';
@@ -643,7 +686,7 @@
             if (_adminRole !== 'super' && !ROLE_TABS[_adminRole].includes(tab)) {
                 showToast('You don\'t have access to that section.', 'error'); return;
             }
-            ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates']
+            ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates', 'flights', 'hotels']
                 .filter(t => document.getElementById('tab-' + t))
                 .forEach(t => document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none');
             document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
@@ -657,6 +700,8 @@
             if (tab === 'consultations') loadConsultations();
             if (tab === 'insurance') loadInsurance();
             if (tab === 'affiliates') loadAffiliates();
+            if (tab === 'flights') loadFlightOrders();
+            if (tab === 'hotels') loadHotelOrders();
         }
 
 
@@ -860,6 +905,54 @@
             const res = await AffiliateStore.adminProcessPayout(payoutId);
             if (res?.ok) { showToast('Payout marked as paid!'); loadAffiliates(); }
             else { showToast(res?.error || 'Action failed.', 'error'); }
+        }
+
+
+        async function loadFlightOrders() {
+            const container = document.getElementById('flights-admin-table');
+            const countEl = document.getElementById('flights-admin-count');
+            if (!container) return;
+            container.innerHTML = '<div class="atbl-empty">Loading...</div>';
+            try {
+                const res = await AdminStore.getFlightOrders?.();
+                const orders = res?.data?.orders || res?.orders || [];
+                if (countEl) countEl.textContent = orders.length + ' order' + (orders.length !== 1 ? 's' : '');
+                if (!orders.length) { container.innerHTML = '<div class="atbl-empty">No flight orders yet.</div>'; return; }
+                container.innerHTML = '<table class="atbl"><thead><tr><th>Ref</th><th>User</th><th>Route</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead><tbody>' +
+                    orders.map(o => '<tr>' +
+                        '<td class="atbl-ref">' + (o.ref || o.id || '—') + '</td>' +
+                        '<td>' + (o.user?.name || o.userName || '—') + '</td>' +
+                        '<td>' + (o.origin || '—') + ' → ' + (o.destination || '—') + '</td>' +
+                        '<td>' + (o.departDate ? new Date(o.departDate).toLocaleDateString('en-NG') : '—') + '</td>' +
+                        '<td>₦' + (o.amount || 0).toLocaleString() + '</td>' +
+                        '<td><span class="status-pill status-' + (o.status || 'pending').toLowerCase() + '">' + (o.status || 'Pending') + '</span></td>' +
+                        '</tr>').join('') +
+                    '</tbody></table>';
+            } catch { container.innerHTML = '<div class="atbl-empty">Failed to load flight orders.</div>'; }
+        }
+
+        async function loadHotelOrders() {
+            const container = document.getElementById('hotels-admin-table');
+            const countEl = document.getElementById('hotels-admin-count');
+            if (!container) return;
+            container.innerHTML = '<div class="atbl-empty">Loading...</div>';
+            try {
+                const res = await AdminStore.getHotelOrders?.();
+                const orders = res?.data?.orders || res?.orders || [];
+                if (countEl) countEl.textContent = orders.length + ' order' + (orders.length !== 1 ? 's' : '');
+                if (!orders.length) { container.innerHTML = '<div class="atbl-empty">No hotel orders yet.</div>'; return; }
+                container.innerHTML = '<table class="atbl"><thead><tr><th>Ref</th><th>User</th><th>Hotel</th><th>Check-in</th><th>Check-out</th><th>Amount</th><th>Status</th></tr></thead><tbody>' +
+                    orders.map(o => '<tr>' +
+                        '<td class="atbl-ref">' + (o.ref || o.id || '—') + '</td>' +
+                        '<td>' + (o.user?.name || o.userName || '—') + '</td>' +
+                        '<td>' + (o.hotelName || '—') + '</td>' +
+                        '<td>' + (o.checkIn ? new Date(o.checkIn).toLocaleDateString('en-NG') : '—') + '</td>' +
+                        '<td>' + (o.checkOut ? new Date(o.checkOut).toLocaleDateString('en-NG') : '—') + '</td>' +
+                        '<td>₦' + (o.amount || 0).toLocaleString() + '</td>' +
+                        '<td><span class="status-pill status-' + (o.status || 'pending').toLowerCase() + '">' + (o.status || 'Pending') + '</span></td>' +
+                        '</tr>').join('') +
+                    '</tbody></table>';
+            } catch { container.innerHTML = '<div class="atbl-empty">Failed to load hotel orders.</div>'; }
         }
 
 
@@ -1204,7 +1297,7 @@
         }
 
 
-        function doLogout() { Auth.logout(); window.location.replace('index.html'); }
+        function doLogout() { Auth.logout(); window.location.replace('/'); }
 
 
         const DEFAULT_FEES = {
@@ -1716,6 +1809,20 @@
                     <path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3" />
                     <path d="M3 4h8" />
                 </svg></span><span class="tab-label">Affiliates</span>
+        </button>
+        <button class="admin-tab-btn" onclick="adminTab('flights',this)" data-tab="flights" data-roles="super">
+            <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256"
+                    fill="currentColor">
+                    <path
+                        d="M185.33,114.21l29.14-27.42.17-.17a32,32,0,0,0-45.26-45.26c0,.06-.11.11-.17.17L141.79,70.67l-83-30.2a8,8,0,0,0-8.39,1.86l-24,24a8,8,0,0,0,1.22,12.31l63.89,42.59L76.69,136H56a8,8,0,0,0-5.65,2.34l-24,24A8,8,0,0,0,29,175.42l36.82,14.73,14.7,36.75.06.16a8,8,0,0,0,13.18,2.47l23.87-23.88A8,8,0,0,0,120,200V179.31l14.76-14.76,42.59,63.89a8,8,0,0,0,12.31,1.22l24-24a8,8,0,0,0,1.86-8.39Z" />
+                </svg></span><span class="tab-label">Flights</span>
+        </button>
+        <button class="admin-tab-btn" onclick="adminTab('hotels',this)" data-tab="hotels" data-roles="super">
+            <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256"
+                    fill="currentColor">
+                    <path
+                        d="M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z" />
+                </svg></span><span class="tab-label">Hotels</span>
         </button>
     </nav>
 

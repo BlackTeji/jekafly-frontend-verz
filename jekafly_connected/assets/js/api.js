@@ -26,8 +26,8 @@ async function apiFetch(method, path, body, isFormData = false) {
         const stored = localStorage.getItem('jkf_user');
         if (!stored) {
             _accessToken = null;
-            if (!window.location.pathname.match(/index\.html|\/$/)) {
-                window.location.href = 'index.html';
+            if (!window.location.pathname.match(/visa\.html|flights\.html|\/$/)) {
+                window.location.href = '/';
             }
         }
         return null;
@@ -346,11 +346,21 @@ var AdminStore = {
         const res = await get('/admin/payments');
         return res?.ok ? res.data.payments : [];
     },
+
+    async getFlightOrders() {
+        const res = await get('/admin/flights');
+        return res?.ok ? res : { orders: [] };
+    },
+
+    async getHotelOrders() {
+        const res = await get('/admin/hotels');
+        return res?.ok ? res : { orders: [] };
+    },
 };
 
 async function doLogout() {
     await Auth.logout();
-    window.location.href = 'index.html';
+    window.location.href = '/';
 }
 
 var PricingStore = {

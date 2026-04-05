@@ -8,7 +8,7 @@ html {
 
 body {
     background: #F5F7FC;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     color: #0F1124;
     margin: 0;
     -webkit-font-smoothing: antialiased;
@@ -52,7 +52,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 1.05rem;
     margin-bottom: 13px;
     box-shadow: 0 4px 14px rgba(13, 21, 96, 0.28);
@@ -149,9 +149,9 @@ body {
 }
 
 .admin-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 2rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.03em;
     color: #0D1560;
     margin-bottom: 5px;
@@ -229,9 +229,9 @@ body {
 }
 
 .astat-val {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.35rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #0D1560;
     letter-spacing: -0.03em;
     line-height: 1;
@@ -270,9 +270,9 @@ body {
 }
 
 .acard-header h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #0D1560;
     letter-spacing: -0.02em;
 }
@@ -317,9 +317,9 @@ body {
 }
 
 .rev-card-total {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 2.4rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #fff;
     line-height: 1;
     letter-spacing: -0.03em;
@@ -488,7 +488,7 @@ body {
     border: 1.5px solid #E3E5F5;
     background: #fff;
     color: #9BA5C0;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     letter-spacing: -0.01em;
     transition: all .16s;
     display: inline-flex;
@@ -517,7 +517,7 @@ body {
     background: #F5F7FC;
     border: 1.5px solid #E3E5F5;
     color: #0F1124;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.82rem;
     outline: none;
     min-width: 210px;
@@ -662,7 +662,7 @@ tr:hover td {
     font-size: 0.82rem;
     font-weight: 700;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     letter-spacing: -0.01em;
     display: inline-flex;
     align-items: center;
@@ -685,7 +685,7 @@ tr:hover td {
     font-size: 0.92rem;
     font-weight: 700;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     letter-spacing: -0.01em;
     display: inline-flex;
     align-items: center;
@@ -709,7 +709,7 @@ tr:hover td {
     font-size: 0.8rem;
     font-weight: 700;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -730,7 +730,7 @@ tr:hover td {
     font-weight: 700;
     color: #6B7494;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: all .16s;
 }
 
@@ -755,9 +755,9 @@ tr:hover td {
 }
 
 .app-detail h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.05rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #0D1560;
     margin-bottom: 20px;
     padding-bottom: 16px;
@@ -829,7 +829,7 @@ tr:hover td {
     border: 1.5px solid #C7D4F5;
     color: #0F1124;
     border-radius: 10px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
     outline: none;
     margin-bottom: 12px;
@@ -880,7 +880,7 @@ tr:hover td {
     font-size: 0.84rem;
     font-weight: 600;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -976,7 +976,7 @@ tr:hover td {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 0.97rem;
     flex-shrink: 0;
     box-shadow: 0 3px 10px rgba(13, 21, 96, 0.2);
@@ -1080,7 +1080,7 @@ tr:hover td {
     border: none;
     border-radius: 10px;
     padding: 10px 22px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
@@ -1104,7 +1104,7 @@ tr:hover td {
     border: 1.5px solid #ef4444;
     border-radius: 10px;
     padding: 10px 22px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
     font-weight: 700;
     cursor: pointer;
@@ -1248,7 +1248,7 @@ tr:hover td {
     color: #fff;
     border: none;
     border-radius: 13px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.88rem;
     font-weight: 700;
     letter-spacing: -0.01em;
@@ -1267,7 +1267,7 @@ tr:hover td {
     background: transparent;
     border: 1.5px solid rgba(13, 21, 96, 0.15);
     border-radius: 13px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.88rem;
     font-weight: 700;
     letter-spacing: -0.01em;
@@ -1450,7 +1450,7 @@ tr:hover td {
         cursor: pointer;
         padding: 6px 2px;
         border-radius: 10px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-family: 'Poppins', sans-serif;
         color: #9BA5C0;
         transition: color .15s;
         position: relative;
@@ -1527,7 +1527,7 @@ tr:hover td {
     padding: 10px 14px;
     border: 1.5px solid #E3E5F5;
     border-radius: 10px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.92rem;
     font-weight: 600;
     color: #0F1124;
@@ -1607,12 +1607,12 @@ tr:hover td {
 .acard-inner input,
 .acard-inner span,
 .fs-sm {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .label-xs {
     font-style: normal;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -1711,7 +1711,7 @@ tr:hover td {
     color: #3B5BDB;
     border-radius: 100px;
     font-size: 0.68rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.01em;
     margin-left: 6px;
     vertical-align: middle;

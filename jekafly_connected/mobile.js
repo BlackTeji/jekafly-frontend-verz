@@ -1,9 +1,3 @@
-/**
- * JEKAFLY — mobile.js
- * Handles: sticky bottom CTA, smooth scroll reveal, tap feedback
- * Runs only on mobile (≤768px). Desktop behaviour is untouched.
- */
-
 (function () {
     'use strict';
 
@@ -13,15 +7,13 @@
     function initStickyCTA() {
         if (!isMobile()) return;
 
-        // Only inject on the homepage (index.html)
         const isHome =
             location.pathname === '/' ||
-            location.pathname.endsWith('index.html') ||
+            location.pathname.endsWith('flights.html') ||
             location.pathname.endsWith('/');
 
         if (!isHome) return;
 
-        // Create element
         const cta = document.createElement('div');
         cta.className = 'mob-sticky-cta';
         cta.innerHTML = `
@@ -33,7 +25,6 @@
     `;
         document.body.appendChild(cta);
 
-        // Show after scrolling past the hero
         let lastY = 0;
         const heroEl = document.querySelector('.hero');
 

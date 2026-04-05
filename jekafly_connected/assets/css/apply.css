@@ -15,7 +15,7 @@
 }
 
 .apply-header h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 2rem;
     margin-bottom: 6px;
 }
@@ -44,7 +44,7 @@
 }
 
 .draft-banner .title {
-    font-weight: 800;
+    font-weight: 700;
     font-size: 0.95rem;
     color: var(--text);
 }
@@ -72,7 +72,7 @@
     cursor: pointer;
     transition: all .2s;
     color: var(--text);
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .btn-small:hover {
@@ -175,7 +175,7 @@
 }
 
 .form-card h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.4rem;
     margin-bottom: 4px;
 }
@@ -209,7 +209,7 @@
     padding: 12px 16px;
     border: 1.5px solid var(--border);
     border-radius: 10px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
     color: var(--text);
     background: var(--off-white);
@@ -242,7 +242,7 @@
     font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     color: var(--text-light);
     transition: all .2s;
 }
@@ -261,7 +261,7 @@
     font-weight: 700;
     font-size: 0.9rem;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: all .2s;
 }
 
@@ -276,10 +276,10 @@
     background: rgba(14, 14, 184, 0.08);
     border: 1.5px solid rgba(14, 14, 184, 0.18);
     color: var(--blue);
-    font-weight: 800;
+    font-weight: 700;
     font-size: 0.91rem;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: all .2s;
 }
 
@@ -394,7 +394,7 @@
 
 .fee-amount {
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--blue);
     white-space: nowrap;
 }
@@ -410,7 +410,7 @@
 }
 
 .success-card h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.8rem;
     margin-bottom: 8px;
 }
@@ -437,7 +437,7 @@
 
 .ref-box .ref-code {
     font-size: 1.8rem;
-    font-weight: 800;
+    font-weight: 700;
     font-family: monospace;
     margin-top: 4px;
 }
@@ -450,9 +450,9 @@
 }
 
 .apply-header h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 2rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.03em;
 }
 
@@ -466,9 +466,9 @@
 }
 
 .form-card h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.4rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.02em;
     margin-bottom: 4px;
 }
@@ -581,7 +581,7 @@
     font-weight: 700;
     font-size: 0.9rem;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: all 0.18s;
     margin-left: auto;
 }
@@ -600,7 +600,7 @@
     font-weight: 600;
     font-size: 0.88rem;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: all 0.18s;
 }
 
@@ -617,7 +617,7 @@
     font-weight: 500;
     font-size: 0.9rem;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: color 0.18s;
 }
 
@@ -674,7 +674,7 @@
 }
 
 .draft-banner .title {
-    font-weight: 800;
+    font-weight: 700;
     font-size: 0.95rem;
     color: var(--text);
 }
@@ -718,7 +718,7 @@
     font-weight: 600;
     cursor: pointer;
     color: #0D1560;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: background 0.15s;
     margin-left: auto;
 }
@@ -763,7 +763,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: background 0.15s;
 }
 
@@ -809,7 +809,7 @@
     font-weight: 700;
     cursor: pointer;
     color: #0D1560;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: all 0.15s;
     white-space: nowrap;
 }
@@ -994,7 +994,7 @@
 
 .apply-header h1 {
     font-size: 2rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.03em;
     color: #0D1560;
     margin-bottom: 6px;
@@ -1021,7 +1021,7 @@
     width: 42px;
     height: 42px;
     font-size: 0.9rem;
-    font-weight: 800;
+    font-weight: 700;
     border: 3px solid #F5F7FC;
     box-shadow: 0 0 0 4px rgba(13, 21, 96, 0.07);
     letter-spacing: -0.02em;
@@ -1050,9 +1050,9 @@
 }
 
 .form-card h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.03em;
     color: #0D1560;
     margin-bottom: 5px;
@@ -1191,13 +1191,13 @@
 
 .fee-amount {
     font-size: 1.6rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.03em;
 }
 
 .success-card h2 {
     font-size: 1.9rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.03em;
     color: #0D1560;
 }

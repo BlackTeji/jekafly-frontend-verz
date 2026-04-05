@@ -32,7 +32,7 @@
         ].join(';');
         modal.innerHTML = [
             '<div style="background:#fff;border-radius:20px;padding:32px 28px;max-width:360px;width:100%;',
-            'box-shadow:0 24px 64px rgba(13,21,96,0.22);text-align:center;font-family:\'Plus Jakarta Sans\',sans-serif;">',
+            'box-shadow:0 24px 64px rgba(13,21,96,0.22);text-align:center;font-family:\'Poppins\',sans-serif;">',
             '<div style="width:52px;height:52px;border-radius:14px;background:#FEF3C7;display:flex;',
             'align-items:center;justify-content:center;margin:0 auto 18px;">',
             '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">',
@@ -44,11 +44,11 @@
             'Your session will expire in <strong id="jkf-session-countdown" style="color:#0D1560;">5:00</strong> due to inactivity.</p>',
             '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">',
             '<button id="jkf-session-logout" style="padding:12px;border-radius:12px;background:transparent;',
-            'border:1.5px solid rgba(13,21,96,0.18);color:#0D1560;font-family:\'Plus Jakarta Sans\',sans-serif;',
+            'border:1.5px solid rgba(13,21,96,0.18);color:#0D1560;font-family:\'Poppins\',sans-serif;',
             'font-size:0.88rem;font-weight:700;cursor:pointer;">Sign Out</button>',
             '<button id="jkf-session-stay" style="padding:12px;border-radius:12px;',
             'background:linear-gradient(135deg,#0D1560,#1C2FBF);color:#fff;border:none;',
-            'font-family:\'Plus Jakarta Sans\',sans-serif;font-size:0.88rem;font-weight:700;',
+            'font-family:\'Poppins\',sans-serif;font-size:0.88rem;font-weight:700;',
             'cursor:pointer;box-shadow:0 4px 14px rgba(13,21,96,0.28);">Stay Logged In</button>',
             '</div></div>'
         ].join('');
@@ -97,11 +97,11 @@
     function doSessionLogout() {
         if (typeof Auth !== 'undefined' && Auth.logout) {
             Auth.logout().then(function () {
-                window.location.href = 'index.html';
+                window.location.href = '/';
             });
         } else {
             try { localStorage.removeItem('jkf_user'); } catch (e) { }
-            window.location.href = 'index.html';
+            window.location.href = '/';
         }
     }
 

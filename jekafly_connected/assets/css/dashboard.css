@@ -43,7 +43,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 1.2rem;
     margin-bottom: 12px;
 }
@@ -179,7 +179,7 @@
 }
 
 .dash-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.8rem;
     margin-bottom: 4px;
 }
@@ -236,9 +236,9 @@
 }
 
 .stat-value {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.8rem;
-    font-weight: 800;
+    font-weight: 700;
     margin-bottom: 2px;
 }
 
@@ -267,9 +267,9 @@
 }
 
 .table-header h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.95rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.02em;
     color: #0D1560;
     flex-shrink: 0;
@@ -287,7 +287,7 @@
     font-weight: 700;
     font-size: 0.8rem;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     letter-spacing: -0.01em;
     white-space: nowrap;
     flex-shrink: 0;
@@ -380,7 +380,7 @@ tr:hover td {
 }
 
 .detail-panel h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.1rem;
     margin-bottom: 20px;
     padding-bottom: 14px;
@@ -466,7 +466,7 @@ tr:hover td {
 }
 
 .profile-card h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.1rem;
     margin-bottom: 20px;
 }
@@ -486,7 +486,7 @@ tr:hover td {
     padding: 12px 16px;
     border: 1.5px solid var(--border);
     border-radius: 10px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
     color: var(--text);
     background: var(--off-white);
@@ -514,7 +514,7 @@ tr:hover td {
     font-weight: 700;
     font-size: 0.9rem;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: all .2s;
 }
 
@@ -533,7 +533,7 @@ tr:hover td {
 }
 
 .empty-state h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.2rem;
     margin-bottom: 8px;
 }
@@ -561,7 +561,7 @@ tr:hover td {
 
 .stat-value {
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--text);
     letter-spacing: -0.03em;
     line-height: 1;
@@ -671,7 +671,7 @@ tr:hover td {
     font-size: 0.93rem;
     font-weight: 500;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     border-bottom: 2.5px solid transparent;
     margin-bottom: -2px;
     transition: all 0.15s;
@@ -689,7 +689,7 @@ tr:hover td {
 
 .doc-step-label {
     font-size: 0.75rem;
-    font-weight: 800;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: .1em;
     color: #0D1560;
@@ -732,7 +732,7 @@ tr:hover td {
 }
 
 .doc-app-card-dest {
-    font-weight: 800;
+    font-weight: 700;
     font-size: 1rem;
     color: #0D1560;
     margin-bottom: 2px;
@@ -751,9 +751,9 @@ tr:hover td {
 }
 
 .doc-app-card-count {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.8rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #0D1560;
     line-height: 1;
 }
@@ -785,7 +785,7 @@ tr:hover td {
     font-weight: 600;
     color: #9BA5C0;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     transition: all .15s;
     width: 100%;
     text-align: left;
@@ -815,7 +815,7 @@ tr:hover td {
     font-weight: 700;
     cursor: pointer;
     color: #6B7494;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     white-space: nowrap;
     transition: all .15s;
     margin-top: 2px;
@@ -848,7 +848,7 @@ tr:hover td {
 }
 
 .doc-required-title {
-    font-weight: 800;
+    font-weight: 700;
     font-size: 0.97rem;
     color: #0D1560;
 }
@@ -894,7 +894,7 @@ tr:hover td {
     color: white;
     border-radius: 50%;
     font-size: 0.72rem;
-    font-weight: 800;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1078,7 +1078,7 @@ tr:hover td {
     white-space: nowrap;
     flex-shrink: 0;
     transition: background .15s, border-color .15s;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .doc-slot-upload-btn:hover {
@@ -1250,7 +1250,7 @@ tr:hover td {
         cursor: pointer;
         padding: 6px 2px;
         border-radius: 10px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-family: 'Poppins', sans-serif;
         color: var(--text-light);
         transition: color .15s;
         position: relative;
@@ -1322,7 +1322,7 @@ tr:hover td {
     white-space: nowrap;
     flex-shrink: 0;
     transition: border-color .15s, color .15s;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
 }
 
 .btn-replace:hover {
@@ -1391,9 +1391,9 @@ tr:hover td {
 }
 
 .danger-zone-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #dc2626;
     margin-bottom: 3px;
 }
@@ -1441,7 +1441,7 @@ tr:hover td {
     font-weight: 700;
     font-size: 0.85rem;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     white-space: nowrap;
     flex-shrink: 0;
     transition: background .15s, color .15s;
@@ -1460,7 +1460,7 @@ tr:hover td {
     font-weight: 700;
     font-size: 0.85rem;
     cursor: pointer;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     white-space: nowrap;
     flex-shrink: 0;
     transition: background .15s;
@@ -1612,7 +1612,7 @@ tr:hover td {
     border: 1.5px solid var(--border);
     border-radius: 8px;
     background: white;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--text);
@@ -1716,7 +1716,7 @@ tr:hover td {
     padding: 0 16px 0 42px;
     border: 1.5px solid #E3E5F5;
     border-radius: 13px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.95rem;
     font-weight: 600;
     color: #0D1560;
@@ -1749,7 +1749,7 @@ tr:hover td {
     color: white;
     border: none;
     border-radius: 13px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.88rem;
     font-weight: 700;
     cursor: pointer;
@@ -1798,7 +1798,7 @@ tr:hover td {
     background: #F0F3FF;
     border: 1.5px solid #D4DAFF;
     border-radius: 100px;
-    font-family: 'Plus Jakarta Sans', monospace;
+    font-family: 'Poppins', monospace;
     font-size: 0.78rem;
     font-weight: 700;
     color: #0D1560;
@@ -1845,9 +1845,9 @@ tr:hover td {
 }
 
 .track-result-dest {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.35rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #0D1560;
     letter-spacing: -0.03em;
 }
@@ -2308,7 +2308,7 @@ tr:hover td {
     color: white;
     border: none;
     border-radius: 12px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
@@ -2340,7 +2340,7 @@ tr:hover td {
     border-radius: 12px;
     cursor: pointer;
     transition: border-color .15s, box-shadow .15s;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     text-align: left;
 }
 
@@ -2430,7 +2430,7 @@ tr:hover td {
     padding: 0 12px 0 32px;
     border: 1.5px solid #E3E5F5;
     border-radius: 10px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.8rem;
     font-weight: 500;
     color: #0F1124;
@@ -2462,9 +2462,9 @@ tr:hover td {
 }
 
 .ins-purchase-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.05rem;
-    font-weight: 800;
+    font-weight: 700;
     color: #0D1560;
     letter-spacing: -0.02em;
 }
@@ -2597,7 +2597,7 @@ tr:hover td {
     padding: 11px 14px;
     border: 1.5px solid #F3C5C5;
     border-radius: 10px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.86rem;
     color: #E31E24;
     background: #FEF8F8;
@@ -2693,7 +2693,7 @@ tr:hover td {
     color: #fff;
     border: none;
     border-radius: 8px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.74rem;
     font-weight: 700;
     cursor: pointer;
@@ -2718,7 +2718,7 @@ tr:hover td {
     background: white;
     border: 1.5px solid #D4DAFF;
     border-radius: 8px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.75rem;
     font-weight: 700;
     color: #0D1560;

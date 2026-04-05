@@ -13,10 +13,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/payment.css" />
@@ -26,14 +23,14 @@
     <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
         h1,
         h2,
         h3,
         h4 {
-            font-family: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
         }
     </style>
 </head>
@@ -41,8 +38,8 @@
 <body>
 
     <nav id="main-nav">
-        <a href="index.html" class="nav-logo"><img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" /></a>
-        <div class="nav-links"><a href="index.html">Home</a><a href="dashboard.html">My Dashboard</a></div>
+        <a href="/" class="nav-logo"><img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" /></a>
+        <div class="nav-links"><a href="/">Home</a><a href="dashboard.html">My Dashboard</a></div>
         <div class="nav-cta" id="nav-cta-area"></div>
         <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
             <span class="nav-burger" id="nav-burger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -55,7 +52,7 @@
     </nav>
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
         <div class="nav-mob-list">
-            <a href="index.html" onclick="closeNavMenu()" class="nav-mob-row">
+            <a href="/" onclick="closeNavMenu()" class="nav-mob-row">
                 <span class="nav-mob-row-icon" style="background:#EEF2FF;color:#3B5BDB;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -106,7 +103,7 @@
             <div class="success-actions">
                 <button class="btn-dashboard" onclick="window.location.href='dashboard.html'">Go to My Dashboard
                     &rarr;</button>
-                <button class="btn-home" onclick="window.location.href='index.html'">Back to Home</button>
+                <button class="btn-home" onclick="window.location.href='/'">Back to Home</button>
             </div>
         </div>
     </div>
@@ -120,8 +117,7 @@
             PricingStore.get().then(pr => { if (pr) window._livePricing = pr; }).catch(() => { });
             const urlParams = new URLSearchParams(window.location.search);
             const returnRef = urlParams.get('ref') || urlParams.get('reference') || urlParams.get('trxref');
-            // If returning from Paystack, verify payment before checking auth
-            // (the page reload may race with the refresh token)
+        
             if (returnRef) {
                 renderProcessing();
                 await Auth.init();
@@ -131,7 +127,7 @@
             }
             await Auth.init();
             const user = Auth.getCurrent();
-            if (!user) { window.location.href = 'index.html'; return; }
+            if (!user) { window.location.href = '/'; return; }
             updateNav();
             try { pendingPayment = JSON.parse(localStorage.getItem('jkf_pending_payment')); } catch { }
             if (!pendingPayment) {
@@ -168,6 +164,31 @@
                 rows.push({ l: 'Package', v: p.plan || '&mdash;' });
                 rows.push({ l: 'Session Type', v: 'Video Call &mdash; Visa Strategy' });
                 rows.push({ l: 'Amount', v: '&#8358;' + (p.amount || 0).toLocaleString() });
+            } else if (p.type === 'flight') {
+                flag = '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 256 256" fill="#0D1560"><path d="M185.33,114.21l29.14-27.42.17-.17a32,32,0,0,0-45.26-45.26c0,.06-.11.11-.17.17L141.79,70.67l-83-30.2a8,8,0,0,0-8.39,1.86l-24,24a8,8,0,0,0,1.22,12.31l63.89,42.59L76.69,136H56a8,8,0,0,0-5.65,2.34l-24,24A8,8,0,0,0,29,175.42l36.82,14.73,14.7,36.75.06.16a8,8,0,0,0,13.18,2.47l23.87-23.88A8,8,0,0,0,120,200V179.31l14.76-14.76,42.59,63.89a8,8,0,0,0,12.31,1.22l24-24a8,8,0,0,0,1.86-8.39Z"/></svg>';
+                destName = (p.origin || '') + ' &rarr; ' + (p.destination || 'Flight');
+                destRef = (p.departDate ? 'Departs ' + new Date(p.departDate).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' }) : '') + (p.passengers ? ' &middot; ' + p.passengers + ' passenger' + (p.passengers > 1 ? 's' : '') : '');
+                rows.push({ l: 'Route', v: (p.origin || '—') + ' → ' + (p.destination || '—') });
+                rows.push({ l: 'Trip Type', v: p.tripType || 'Round Trip' });
+                rows.push({ l: 'Depart Date', v: p.departDate ? new Date(p.departDate).toLocaleDateString('en-NG') : '—' });
+                if (p.returnDate) rows.push({ l: 'Return Date', v: new Date(p.returnDate).toLocaleDateString('en-NG') });
+                rows.push({ l: 'Passengers', v: String(p.passengers || 1) });
+                rows.push({ l: 'Class', v: p.cabinClass || 'Economy' });
+                rows.push({ l: 'Airline', v: p.airline || '—' });
+                rows.push({ l: 'Ticket Amount', v: '&#8358;' + (p.amount || 0).toLocaleString() });
+                if (p.ref) rows.push({ l: 'Booking Ref', v: p.ref, isRef: true });
+            } else if (p.type === 'hotel') {
+                flag = '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 256 256" fill="#0D1560"><path d="M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z"/></svg>';
+                destName = p.hotelName || 'Hotel Reservation';
+                destRef = (p.destination || '') + (p.checkIn ? ' &middot; Check-in ' + new Date(p.checkIn).toLocaleDateString('en-NG', { day: 'numeric', month: 'short' }) : '');
+                rows.push({ l: 'Hotel', v: p.hotelName || '—' });
+                rows.push({ l: 'Location', v: p.destination || '—' });
+                rows.push({ l: 'Check-in', v: p.checkIn ? new Date(p.checkIn).toLocaleDateString('en-NG') : '—' });
+                rows.push({ l: 'Check-out', v: p.checkOut ? new Date(p.checkOut).toLocaleDateString('en-NG') : '—' });
+                rows.push({ l: 'Rooms', v: String(p.rooms || 1) });
+                rows.push({ l: 'Guests', v: String(p.guests || 1) });
+                rows.push({ l: 'Room Cost', v: '&#8358;' + (p.amount || 0).toLocaleString() });
+                if (p.ref) rows.push({ l: 'Reservation Ref', v: p.ref, isRef: true });
             } else {
                 flag = '&#128737;'; destName = p.plan || 'Travel Insurance';
                 destRef = (p.dest || 'Worldwide') + (p.travellers ? ' &middot; ' + p.travellers + ' traveller' + (p.travellers > 1 ? 's' : '') : '');
@@ -203,7 +224,7 @@
                 '<div class="dest-card-amount"><small>Total</small>' + totalStr + '</div>' +
                 '</div></div>' +
                 '<div class="line-items">' + lineItemsHtml + '</div>' +
-                '<div class="included-strip"><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>What&#39;s included:</strong> ' + (p.type === 'consultation' ? 'A dedicated Jekafly visa expert will review your profile, advise on the strongest application strategy, check your document checklist, and answer all your visa questions in a live session.' : p.type === 'insurance' ? 'Emergency medical cover, trip cancellation protection, baggage loss compensation, and 24/7 travel assistance — as per your selected plan.' : 'Expert document review by a visa specialist, embassy submission, real-time application tracking, and a dedicated support agent throughout the process.') + '</span></div>' +
+                '<div class="included-strip"><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>What&#39;s included:</strong> ' + (p.type === 'consultation' ? 'A dedicated Jekafly visa expert will review your profile, advise on the strongest application strategy, check your document checklist, and answer all your visa questions in a live session.' : p.type === 'insurance' ? 'Emergency medical cover, trip cancellation protection, baggage loss compensation, and 24/7 travel assistance — as per your selected plan.' : p.type === 'flight' ? 'Confirmed flight booking with e-ticket, booking reference, and passenger itinerary sent to your email.' : p.type === 'hotel' ? 'Confirmed hotel reservation with voucher, reservation reference, and check-in details sent to your email.' : 'Expert document review by a visa specialist, embassy submission, real-time application tracking, and a dedicated support agent throughout the process.') + '</span></div>' +
                 '</div>' +
                 '<div class="pay-panel"><div class="pay-box" id="pay-box-main">' +
                 '<div id="pay-form-view">' +

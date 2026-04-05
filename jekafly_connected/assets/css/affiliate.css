@@ -109,9 +109,9 @@
 }
 
 .aff-hero h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: clamp(2.8rem, 6.5vw, 5rem);
-    font-weight: 800;
+    font-weight: 700;
     line-height: 1.02;
     color: var(--aff-white);
     letter-spacing: -0.03em;
@@ -148,7 +148,7 @@
     border: none;
     border-radius: 50px;
     padding: 15px 34px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
     cursor: pointer;
@@ -172,7 +172,7 @@
     border: 1.5px solid rgba(255, 255, 255, 0.25);
     border-radius: 50px;
     padding: 15px 30px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
@@ -252,9 +252,9 @@
 }
 
 .aff-stats-strip .aff-stat strong {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.9rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--aff-navy);
     letter-spacing: -0.03em;
     line-height: 1;
@@ -315,9 +315,9 @@ section#how-it-works {
 }
 
 .aff-section-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: clamp(1.75rem, 3.2vw, 2.4rem);
-    font-weight: 800;
+    font-weight: 700;
     color: var(--aff-navy);
     letter-spacing: -0.025em;
     margin-bottom: 10px;
@@ -373,9 +373,9 @@ section#how-it-works {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.25rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--aff-navy);
     margin-bottom: 22px;
     background: var(--aff-white);
@@ -393,7 +393,7 @@ section#how-it-works {
 }
 
 .aff-step h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1rem;
     font-weight: 700;
     color: var(--aff-navy);
@@ -458,7 +458,7 @@ section#how-it-works {
     background: var(--aff-red);
     color: #fff;
     font-size: 0.65rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     padding: 4px 12px;
@@ -480,9 +480,9 @@ section#how-it-works {
 }
 
 .aff-tier-rate {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 4.2rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--aff-white);
     letter-spacing: -0.04em;
     line-height: 1;
@@ -540,7 +540,7 @@ section#how-it-works {
 }
 
 .aff-perk h4 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.98rem;
     font-weight: 700;
     color: var(--aff-navy);
@@ -575,9 +575,9 @@ section#how-it-works {
 }
 
 .aff-form-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.6rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--aff-navy);
     letter-spacing: -0.025em;
     margin-bottom: 4px;
@@ -644,7 +644,7 @@ section#how-it-works {
 .aff-field input,
 .aff-field select,
 .aff-field textarea {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.92rem;
     color: var(--aff-text);
     background: var(--aff-off-white);
@@ -725,7 +725,7 @@ section#how-it-works {
     border: none;
     border-radius: 12px;
     padding: 16px 28px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.97rem;
     font-weight: 700;
     cursor: pointer;
@@ -774,9 +774,9 @@ section#how-it-works {
 }
 
 .aff-success h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.6rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--aff-navy);
     letter-spacing: -0.02em;
     margin-bottom: 12px;
@@ -832,9 +832,9 @@ section#how-it-works {
 }
 
 .aff-status-title {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.3rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.02em;
 }
 
@@ -894,9 +894,9 @@ section#how-it-works {
 
 .aff-stat-mini strong {
     display: block;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.7rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.03em;
     margin-bottom: 4px;
 }
@@ -942,7 +942,7 @@ section#how-it-works {
     color: #fff;
     border-radius: 8px;
     padding: 8px 16px;
-    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.85rem;
     font-weight: 700;
     cursor: pointer;
@@ -982,7 +982,7 @@ section#how-it-works {
 
 .aff-faq-q {
     padding: 18px 22px;
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 0.94rem;
     color: var(--aff-navy);
@@ -1058,9 +1058,9 @@ section#how-it-works {
 }
 
 .aff-footer-cta h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 800;
+    font-weight: 700;
     color: var(--aff-white);
     letter-spacing: -0.03em;
     margin-bottom: 14px;
@@ -1232,7 +1232,7 @@ section#how-it-works {
 
 
     .aff-step-heading {
-        font-family: 'Syne', sans-serif;
+        font-family: 'Poppins', sans-serif;
         font-size: 0.72rem;
         font-weight: 700;
         letter-spacing: 0.12em;
@@ -1259,7 +1259,7 @@ section#how-it-works {
         color: white;
         border: none;
         border-radius: 14px;
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-family: 'Poppins', sans-serif;
         font-size: 1rem;
         font-weight: 700;
         cursor: pointer;
