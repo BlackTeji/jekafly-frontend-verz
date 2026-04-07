@@ -815,7 +815,7 @@
             try { affiliates = await AffiliateStore.adminGetAll(); } catch (e) { }
 
             const pending = affiliates.filter(a => a.status === 'pending');
-            const active = affiliates.filter(a => a.status === 'active');
+            const active = affiliates.filter(a => a.status === 'approvedgit');
             const allPayouts = active.flatMap(a => (a.payouts || []).map(p => ({ ...p, affiliateName: a.name, affiliateEmail: a.email })));
             const pendingPayouts = allPayouts.filter(p => p.status === 'pending');
 
@@ -974,15 +974,16 @@
             const btn = document.getElementById('aff-confirm-btn');
             btn.disabled = true;
             btn.textContent = 'Processing...';
-            const res = await AffiliateStore.adminUpdateStatus(_affPendingId, _affPendingStatus);
+            const actionStatus = _affPendingStatus;
+            const res = await AffiliateStore.adminUpdateStatus(_affPendingId, actionStatus);
             if (res?.ok) {
                 closeAffModal();
-                showToast(_affPendingStatus === 'APPROVED' ? 'Affiliate approved! Approval email sent.' : 'Application rejected.');
+                showToast(actionStatus === 'APPROVED' ? 'Affiliate approved! Approval email sent.' : 'Application rejected.');
                 loadAffiliates();
             } else {
                 showToast(res?.error || 'Action failed.', 'error');
                 btn.disabled = false;
-                btn.textContent = _affPendingStatus === 'APPROVED' ? 'Approve' : 'Reject';
+                btn.textContent = actionStatus === 'APPROVED' ? 'Approve' : 'Reject';
             }
         }
 
