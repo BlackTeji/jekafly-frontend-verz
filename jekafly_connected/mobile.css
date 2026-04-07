@@ -3049,3 +3049,23 @@
     text-align: left;
     margin-top: 8px;
 }
+
+@media (max-width: 768px) {
+    #ins-date {
+        width: 100% !important;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .fees-price-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .fees-pricing-block {
+        overflow: hidden;
+    }
+
+    .success-modal {
+        padding: 22px 18px 18px !important;
+    }
+}

@@ -905,7 +905,7 @@
         let modalUploads = [];
         let vaultFiles = [];
 
-        const statusLabels = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved', delivered: 'Delivered', rejected: 'Rejected' };
+        const statusLabels = { received: 'Received', processing: 'Docs Verification', embassy: 'Embassy Review', approved: 'Approved', delivered: 'Delivered', rejected: 'Rejected' };
         const statusColors = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
 
         document.addEventListener('DOMContentLoaded', async () => {
@@ -1280,7 +1280,7 @@
                 const vr = window.visaRequirements?.[a.destination];
                 const flag = vr?.flag || '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
                 const docCount = vr?.docs?.length || 0;
-                const sl = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved', delivered: 'Delivered', rejected: 'Rejected' };
+                const sl = { received: 'Received', processing: 'Docs Verification', embassy: 'Embassy Review', approved: 'Approved', delivered: 'Delivered', rejected: 'Rejected' };
                 const sc = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
                 return `
         <div class="doc-app-card" onclick="selectDocApp('${a.ref}')">
@@ -1380,7 +1380,7 @@
                 if (fileEl) fileEl.innerHTML = `
             <span class="dreq-fname">${escHtml(file.name)}</span>
             <button class="dreq-preview-btn" onclick="previewSlotFile(${slotIndex})"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></button>
-            <button class="dreq-remove-btn" onclick="removeSlotFile(${slotIndex})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
+`;
                 if (btn) btn.textContent = 'Upload';
 
                 updateSlotFooter();
@@ -1792,7 +1792,7 @@
             const container = document.getElementById('dash-track-result');
             if (!app) { container.innerHTML = `<div class="track-not-found">No application found with reference <strong>${ref}</strong>.</div>`; return; }
             const steps = ['received', 'processing', 'embassy', 'approved', 'delivered'];
-            const labels = ['Received', 'Docs Verified', 'Embassy Review', 'Decision', 'Delivered'];
+            const labels = ['Received', 'Docs Verification', 'Embassy Review', 'Decision', 'Delivered'];
             const curIdx = steps.indexOf(app.status);
             const note = app.statusHistory?.length ? app.statusHistory[app.statusHistory.length - 1].note : '';
             container.innerHTML = `
@@ -1916,7 +1916,7 @@
                 </div>`;
                 return;
             }
-            const sl = { received: 'Received', processing: 'Docs Verified', embassy: 'Embassy Review', approved: 'Approved <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>', delivered: 'Delivered <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>', rejected: 'Rejected <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>' };
+            const sl = { received: 'Received', processing: 'Docs Verification', embassy: 'Embassy Review', approved: 'Approved <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>', delivered: 'Delivered <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>', rejected: 'Rejected <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>' };
             const sc = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
             window._myDocsApps = apps;
             window._myDocsPage = 1;

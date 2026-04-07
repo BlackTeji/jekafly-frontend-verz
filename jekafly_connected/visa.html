@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
-    <title>Jekafly Visa — Apply for a Visa Online from Nigeria</title>
+    <title>Jekafly Visa</title>
     <meta name="description"
         content="Apply for UK, US, Canada, Schengen, UAE, and 150+ country visas online from Nigeria. Expert document review, embassy submission support, travel insurance, and real-time tracking — all handled for you." />
     <meta name="keywords"
@@ -78,6 +78,7 @@
         </a>
         <div class="nav-links" id="nav-links">
             <a href="visa.html" class="nav-active" onclick="closeNavMenu()">Visa Application</a>
+            <a href="flights.html" onclick="closeNavMenu()">Flights</a>
             <a href="hotels.html" onclick="closeNavMenu()">Hotels</a>
             <a href="#insurance" onclick="closeNavMenu()">Insurance</a>
             <a href="#track" onclick="closeNavMenu()">Track Visa</a>
@@ -118,6 +119,20 @@
                     </svg>
                 </span>
                 <span class="nav-mob-row-label">Visa Application</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+            <a href="flights.html" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#E0F7FA; color:#0891B2;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Flights</span>
                 <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <polyline points="9 18 15 12 9 6" />
@@ -891,7 +906,19 @@
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input id="login-pass" type="password" placeholder="••••••••" />
+                        <div class="pass-wrap">
+                            <input id="login-pass" type="password" placeholder="••••••••" />
+                            <button type="button" class="pass-eye" onclick="togglePass('login-pass',this)"
+                                tabindex="-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg></button>
+                        </div>
+                    </div>
+                    <div class="forgot-row">
+                        <a href="#" class="forgot-link" onclick="handleForgotPassword(event)">Forgot password?</a>
                     </div>
                     <button class="btn-check btn-check-mt" id="btn-login" type="button" onclick="handleLogin()">Login to
                         Jekafly</button>
@@ -911,7 +938,16 @@
                     </div>
                     <div class="form-group">
                         <label>Password</label>
-                        <input id="reg-pass" type="password" placeholder="Min. 8 characters" />
+                        <div class="pass-wrap">
+                            <input id="reg-pass" type="password" placeholder="Min. 8 characters" />
+                            <button type="button" class="pass-eye" onclick="togglePass('reg-pass',this)"
+                                tabindex="-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg></button>
+                        </div>
                     </div>
                     <button class="btn-check btn-check-mt" id="btn-register" type="button"
                         onclick="handleRegister()">Create Free Account</button>
@@ -1057,7 +1093,19 @@
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input id="consult-login-pass" type="password" placeholder="••••••••" />
+                            <div class="pass-wrap">
+                                <input id="consult-login-pass" type="password" placeholder="••••••••" />
+                                <button type="button" class="pass-eye" onclick="togglePass('consult-login-pass',this)"
+                                    tabindex="-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg></button>
+                            </div>
+                        </div>
+                        <div class="forgot-row">
+                            <a href="#" class="forgot-link" onclick="handleForgotPassword(event)">Forgot password?</a>
                         </div>
                         <div id="consult-login-error" class="inline-error"></div>
                         <button class="btn-check btn-check-mt" onclick="consultModalLogin()">Login & Pay <svg width="14"
@@ -1082,7 +1130,16 @@
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input id="consult-reg-pass" type="password" placeholder="Min. 8 characters" />
+                            <div class="pass-wrap">
+                                <input id="consult-reg-pass" type="password" placeholder="Min. 8 characters" />
+                                <button type="button" class="pass-eye" onclick="togglePass('consult-reg-pass',this)"
+                                    tabindex="-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg></button>
+                            </div>
                         </div>
                         <div id="consult-reg-error" class="inline-error"></div>
                         <button class="btn-check btn-check-mt" onclick="consultModalRegister()">Create Account & Pay
@@ -1598,6 +1655,25 @@
         }());
     </script>
 
+    <script>
+        function togglePass(id, btn) {
+            var inp = document.getElementById(id);
+            if (!inp) return;
+            var show = inp.type === 'password';
+            inp.type = show ? 'text' : 'password';
+            btn.classList.toggle('active', show);
+            btn.innerHTML = show
+                ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>'
+                : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+        }
+        function handleForgotPassword(e) {
+            e.preventDefault();
+            var email = document.getElementById('login-email')?.value?.trim()
+                || document.getElementById('consult-login-email')?.value?.trim();
+            if (!email) { showToast('Please enter your email address first.', 'error'); return; }
+            showToast('If an account exists for ' + email + ', a reset link has been sent.');
+        }
+    </script>
 </body>
 
 </html>

@@ -233,3 +233,68 @@
 .back-link:hover {
     color: var(--blue);
 }
+
+.pass-wrap {
+    position: relative;
+    display: block;
+}
+
+.pass-wrap input {
+    padding-right: 48px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+}
+
+.pass-eye {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #B8C0D8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    transition: color .15s, background .15s;
+    line-height: 1;
+    z-index: 3;
+    flex-shrink: 0;
+    outline: none;
+}
+
+.pass-eye:hover {
+    color: #0D1560;
+    background: rgba(13, 21, 96, 0.06);
+}
+
+.pass-eye.active {
+    color: #0D1560;
+}
+
+.forgot-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -10px;
+    margin-bottom: 18px;
+}
+
+.forgot-link {
+    font-size: 0.78rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #0D1560;
+    opacity: 0.5;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: opacity .15s;
+    padding: 2px 0;
+}
+
+.forgot-link:hover {
+    opacity: 0.9;
+}

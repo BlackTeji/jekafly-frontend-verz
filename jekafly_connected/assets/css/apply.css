@@ -1316,3 +1316,45 @@
     background: white;
     box-shadow: 0 2px 12px rgba(13, 21, 96, 0.05);
 }
+
+.terms-wrap {
+    background: #F8F9FE;
+    border: 1.5px solid #EEF0F8;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+}
+
+.terms-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.terms-checkbox {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    margin-top: 1px;
+    accent-color: #0D1560;
+    cursor: pointer;
+}
+
+.terms-text {
+    font-size: 0.83rem;
+    color: #6B7280;
+    line-height: 1.6;
+    font-family: 'Poppins', sans-serif;
+}
+
+.terms-link {
+    color: #0D1560;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.terms-link:hover {
+    color: #E31E24;
+}

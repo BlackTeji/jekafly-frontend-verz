@@ -117,7 +117,7 @@
             PricingStore.get().then(pr => { if (pr) window._livePricing = pr; }).catch(() => { });
             const urlParams = new URLSearchParams(window.location.search);
             const returnRef = urlParams.get('ref') || urlParams.get('reference') || urlParams.get('trxref');
-        
+
             if (returnRef) {
                 renderProcessing();
                 await Auth.init();

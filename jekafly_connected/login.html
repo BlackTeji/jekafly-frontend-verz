@@ -13,8 +13,7 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
@@ -164,8 +163,20 @@
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" id="login-pass" placeholder="••••••••"
-                                autocomplete="current-password" />
+                            <div class="pass-wrap">
+                                <input type="password" id="login-pass" placeholder="••••••••"
+                                    autocomplete="current-password" />
+                                <button type="button" class="pass-eye" onclick="togglePass('login-pass',this)"
+                                    tabindex="-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg></button>
+                            </div>
+                        </div>
+                        <div class="form-group forgot-row">
+                            <a href="#" class="forgot-link" onclick="handleForgotPassword(event)">Forgot password?</a>
                         </div>
                         <button class="btn-auth" id="btn-login" type="submit">Login to Jekafly <svg width="14"
                                 height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -192,8 +203,17 @@
                         </div>
                         <div class="form-group">
                             <label>Password</label>
-                            <input type="password" id="reg-pass" placeholder="Min. 8 characters"
-                                autocomplete="new-password" />
+                            <div class="pass-wrap">
+                                <input type="password" id="reg-pass" placeholder="Min. 8 characters"
+                                    autocomplete="new-password" />
+                                <button type="button" class="pass-eye" onclick="togglePass('reg-pass',this)"
+                                    tabindex="-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg></button>
+                            </div>
                         </div>
                         <button class="btn-auth" id="btn-register" type="submit">Create Free Account <svg width="14"
                                 height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -218,6 +238,7 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/session.js" defer></script>
 
     <script>
         const params = new URLSearchParams(window.location.search);
@@ -321,6 +342,27 @@
                 init();
             }
         }());
+    </script>
+
+    <script>
+        function togglePass(id, btn) {
+            var inp = document.getElementById(id);
+            if (!inp) return;
+            var show = inp.type === 'password';
+            inp.type = show ? 'text' : 'password';
+            btn.classList.toggle('active', show);
+            btn.innerHTML = show
+                ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>'
+                : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>';
+        }
+        function handleForgotPassword(e) {
+            e.preventDefault();
+            var email = document.getElementById('login-email')?.value?.trim();
+            var msg = document.getElementById('forgot-msg');
+            if (!email) { showToast('Please enter your email address first.', 'error'); return; }
+            if (msg) { msg.style.display = 'block'; msg.textContent = 'If an account exists for ' + email + ', a reset link has been sent.'; }
+            // TODO: wire up Auth.requestPasswordReset(email) when backend endpoint is ready
+        }
     </script>
 </body>
 

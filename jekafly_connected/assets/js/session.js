@@ -134,18 +134,23 @@
         });
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
+    function safeInit() {
+        if (!isLoggedIn()) return;
+        if (typeof Auth !== 'undefined' && typeof Auth.init === 'function') {
+            Auth.init().then(function () {
+                if (isLoggedIn()) init();
+            }).catch(function () {
+                if (isLoggedIn()) init();
+            });
+        } else {
+            init();
+        }
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        setTimeout(function () {
-            if (isLoggedIn() && !document.getElementById('jkf-session-modal')) {
-                init();
-            }
-        }, 1200);
-    });
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', safeInit);
+    } else {
+        safeInit();
+    }
 
 })();
