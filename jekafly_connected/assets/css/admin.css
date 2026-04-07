@@ -932,29 +932,31 @@ tr:hover td {
 }
 
 .aff-app-card {
+    background: #fff;
     border: 1.5px solid #EAECF5;
-    border-radius: 14px;
-    margin-bottom: 12px;
+    border-radius: 18px;
+    margin-bottom: 14px;
     overflow: hidden;
-    box-shadow: 0 1px 6px rgba(13, 21, 96, 0.04);
-    transition: all .18s cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 2px 12px rgba(13, 21, 96, 0.05);
+    transition: box-shadow .2s, border-color .2s, transform .2s;
 }
 
 .aff-app-card:hover {
-    border-color: #C7D4F5;
-    box-shadow: 0 4px 20px rgba(13, 21, 96, 0.08);
-    transform: translateY(-1px);
+    border-color: #C0CFEE;
+    box-shadow: 0 8px 32px rgba(13, 21, 96, 0.1);
+    transform: translateY(-2px);
 }
 
 .aff-app-card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 18px 22px;
+    padding: 20px 24px;
     cursor: pointer;
     user-select: none;
     background: #fff;
     transition: background .14s;
+    gap: 12px;
 }
 
 .aff-app-card-header:hover {
@@ -964,52 +966,86 @@ tr:hover td {
 .aff-app-card-left {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
+    min-width: 0;
 }
 
 .aff-app-avatar {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #0D1560, #1520A0);
+    width: 46px;
+    height: 46px;
+    background: linear-gradient(135deg, #0D1560 0%, #2236C9 100%);
     color: #fff;
-    border-radius: 12px;
+    border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 0.97rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 800;
+    font-size: 1.05rem;
     flex-shrink: 0;
-    box-shadow: 0 3px 10px rgba(13, 21, 96, 0.2);
-}
-
-.aff-app-name {
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: #0D1560;
+    box-shadow: 0 4px 14px rgba(13, 21, 96, 0.28);
     letter-spacing: -0.02em;
 }
 
+.aff-app-name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 0.97rem;
+    color: #0D1560;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .aff-app-meta {
-    font-size: 0.83rem;
-    color: #7480A0;
-    margin-top: 2px;
+    font-size: 0.8rem;
+    color: #8898BB;
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.aff-app-meta-pill {
+    background: #F0F3FF;
+    color: #4A6AD4;
+    border-radius: 100px;
+    padding: 2px 9px;
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
 .aff-app-date {
-    font-size: 0.83rem;
-    color: #9AABCC;
+    font-size: 0.8rem;
+    color: #B0BEDB;
+    white-space: nowrap;
+    font-family: 'Poppins', sans-serif;
 }
 
 .aff-app-chevron {
-    color: #9AABCC;
-    transition: transform .2s;
+    width: 26px;
+    height: 26px;
+    background: #F0F3FF;
+    border-radius: 8px;
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #6680C0;
+    transition: transform .22s, background .18s;
+    flex-shrink: 0;
+}
+
+.aff-app-card.open .aff-app-chevron {
+    transform: rotate(180deg);
+    background: #E4EBFF;
 }
 
 .aff-app-body {
-    padding: 0 22px 22px;
-    background: #FAFBFF;
-    border-top: 1px solid #EAECF5;
+    padding: 0 24px 24px;
+    background: #F8F9FE;
+    border-top: 1.5px solid #EEF0FA;
 }
 
 .aff-app-body.hidden {
@@ -1018,108 +1054,134 @@ tr:hover td {
 
 .aff-app-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 14px;
-    padding-top: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    padding-top: 20px;
     margin-bottom: 16px;
 }
 
 .aff-app-field {
+    background: #fff;
+    border: 1.5px solid #EAECF5;
+    border-radius: 12px;
+    padding: 12px 14px;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 4px;
 }
 
 .aff-app-field span {
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     color: #9AABCC;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.07em;
 }
 
 .aff-app-field strong {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: #0D1560;
     font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    word-break: break-word;
 }
 
 .aff-app-motivation {
     background: #fff;
-    border-radius: 10px;
-    border: 1px solid #EAECF5;
+    border-radius: 12px;
+    border: 1.5px solid #EAECF5;
     padding: 14px 16px;
     margin-bottom: 16px;
 }
 
 .aff-app-motivation span {
-    font-size: 0.78rem;
+    font-size: 0.7rem;
     color: #9AABCC;
+    font-family: 'Poppins', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.07em;
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 7px;
 }
 
 .aff-app-motivation p {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: #4A5580;
-    line-height: 1.65;
+    line-height: 1.7;
+    font-family: 'Poppins', sans-serif;
 }
 
 .aff-app-actions {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
+    padding-top: 8px;
+    width: 100%;
 }
 
 .btn-aff-approve {
-    background: #16a34a;
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
     color: #fff;
     border: none;
-    border-radius: 10px;
-    padding: 10px 22px;
+    border-radius: 14px;
+    padding: 13px 28px;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 700;
     cursor: pointer;
     letter-spacing: -0.01em;
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    box-shadow: 0 3px 10px rgba(22, 163, 74, 0.25);
-    transition: all .18s;
+    justify-content: center;
+    gap: 9px;
+    box-shadow: 0 4px 16px rgba(22, 163, 74, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: box-shadow .2s, transform .18s;
+    flex: 1;
+    min-height: 46px;
 }
 
 .btn-aff-approve:hover {
-    background: #15803d;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(22, 163, 74, 0.35);
+    box-shadow: 0 10px 28px rgba(22, 163, 74, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.btn-aff-approve:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
 }
 
 .btn-aff-reject {
     background: #fff;
-    color: #ef4444;
-    border: 1.5px solid #ef4444;
-    border-radius: 10px;
-    padding: 10px 22px;
+    color: #DC2626;
+    border: 1.5px solid #FECACA;
+    border-radius: 14px;
+    padding: 13px 28px;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 700;
     cursor: pointer;
     letter-spacing: -0.01em;
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    transition: all .18s;
+    justify-content: center;
+    gap: 9px;
+    transition: all .2s;
+    flex: 1;
+    min-height: 46px;
+    box-shadow: 0 1px 4px rgba(220, 38, 38, 0.08);
 }
 
 .btn-aff-reject:hover {
-    background: #ef4444;
-    color: #fff;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.25);
+    background: #FEF2F2;
+    border-color: #FCA5A5;
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.18);
+    transform: translateY(-2px);
+}
+
+.btn-aff-reject:active {
+    transform: translateY(0);
+    background: #FEE2E2;
 }
 
 .delete-modal-overlay {
@@ -1795,4 +1857,42 @@ tr:hover td {
     border-color: #0D1560;
     background: #fff;
     box-shadow: 0 0 0 3px rgba(13, 21, 96, 0.08);
+}
+
+/* Fee search field — contained */
+.fee-search-input {
+    min-width: 0 !important;
+    width: 160px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    .fee-search-input {
+        width: 100%;
+    }
+}
+
+.btn-promote {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    background: linear-gradient(135deg, #0D1560, #1C2FBF);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(13, 21, 96, 0.2);
+    transition: box-shadow .18s, transform .15s;
+    letter-spacing: 0.01em;
+}
+
+.btn-promote:hover {
+    box-shadow: 0 5px 16px rgba(13, 21, 96, 0.32);
+    transform: translateY(-1px);
 }
