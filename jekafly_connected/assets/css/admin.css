@@ -1896,3 +1896,145 @@ tr:hover td {
     box-shadow: 0 5px 16px rgba(13, 21, 96, 0.32);
     transform: translateY(-1px);
 }
+
+.aff-confirm-box {
+    max-width: 480px;
+}
+
+.aff-confirm-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+}
+
+.aff-confirm-icon--approve {
+    background: #ECFDF5;
+    color: #16a34a;
+}
+
+.aff-confirm-icon--reject {
+    background: #FEF2F2;
+    color: #E31E24;
+}
+
+.aff-bank-verify-row {
+    background: #F8F9FE;
+    border: 1.5px solid #EAECF5;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 18px;
+}
+
+.aff-bank-verify-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: #6B7280;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+}
+
+.aff-bank-verify-status {
+    font-size: 0.84rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.aff-verify-pending {
+    background: #EFF6FF;
+    color: #1D4ED8;
+}
+
+.aff-verify-ok {
+    background: #ECFDF5;
+    color: #15803D;
+}
+
+.aff-verify-warn {
+    background: #FFFBEB;
+    color: #B45309;
+}
+
+.aff-verify-fail {
+    background: #FEF2F2;
+    color: #DC2626;
+}
+
+.aff-verify-spinner {
+    width: 13px;
+    height: 13px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    animation: aff-spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes aff-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.aff-verify-table {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.aff-verify-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 5px 0;
+    border-bottom: 1px solid #EEF0F8;
+    gap: 12px;
+}
+
+.aff-verify-row:last-child {
+    border-bottom: none;
+}
+
+.aff-verify-row span {
+    color: #9BA5C0;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.aff-verify-row strong {
+    color: #0D1560;
+    font-weight: 600;
+    text-align: right;
+}
+
+.aff-verify-row--match strong {
+    color: #15803D;
+}
+
+.aff-verify-row--mismatch strong {
+    color: #DC2626;
+}
+
+.aff-verify-row--resolved {
+    background: #F0FDF4;
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin-top: 4px;
+}

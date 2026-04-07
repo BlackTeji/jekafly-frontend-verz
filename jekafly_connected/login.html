@@ -247,7 +247,9 @@
         document.getElementById('btn-login')?.addEventListener('click', async () => {
             const email = document.getElementById('login-email')?.value.trim();
             const pass = document.getElementById('login-pass')?.value;
-            if (!email || !pass) { showToast('Please enter email and password.', 'error'); return; }
+            if (!email && !pass) { showToast('Please enter your email and password.', 'error'); return; }
+            if (!email) { showToast('Please enter your email address.', 'error'); return; }
+            if (!pass) { showToast('Please enter your password.', 'error'); return; }
             const btn = document.getElementById('btn-login');
             btn.disabled = true;
             btn.textContent = 'Logging in...';
@@ -261,7 +263,14 @@
             } else {
                 btn.disabled = false;
                 btn.innerHTML = 'Login to Jekafly <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
-                showToast(res.msg, 'error');
+                const msg = res.msg || '';
+                if (msg.toLowerCase().includes('not found') || msg.toLowerCase().includes('no account')) {
+                    showToast('No account found with that email. Please check or create an account.', 'error');
+                } else if (msg.toLowerCase().includes('password') || msg.toLowerCase().includes('incorrect')) {
+                    showToast('Incorrect password. Please try again or use Forgot Password.', 'error');
+                } else {
+                    showToast('Incorrect email or password. Please check and try again.', 'error');
+                }
             }
         });
 
@@ -282,7 +291,14 @@
             } else {
                 btn.disabled = false;
                 btn.innerHTML = 'Create Free Account <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
-                showToast(res.msg, 'error');
+                const msg = res.msg || '';
+                if (msg.toLowerCase().includes('not found') || msg.toLowerCase().includes('no account')) {
+                    showToast('No account found with that email. Please check or create an account.', 'error');
+                } else if (msg.toLowerCase().includes('password') || msg.toLowerCase().includes('incorrect')) {
+                    showToast('Incorrect password. Please try again or use Forgot Password.', 'error');
+                } else {
+                    showToast('Incorrect email or password. Please check and try again.', 'error');
+                }
             }
         });
 

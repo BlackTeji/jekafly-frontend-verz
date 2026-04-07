@@ -417,35 +417,47 @@
                         <div class="aff-form-step" data-step="3">
                             <div class="aff-step-heading">Bank Details for Payouts</div>
                             <div class="aff-field aff-field-full">
-                                <label>Bank Account Number</label>
-                                <input type="text" id="aff-bank-acct" placeholder="10-digit NUBAN" maxlength="10"
-                                    required />
-                            </div>
-                            <div class="aff-field">
                                 <label>Bank Name</label>
-                                <select id="aff-bank-name" required>
+                                <select id="aff-bank-name" required onchange="onBankFieldChange()">
                                     <option value="">Select your bank</option>
-                                    <option>Access Bank</option>
-                                    <option>First Bank</option>
-                                    <option>GTBank</option>
-                                    <option>Zenith Bank</option>
-                                    <option>UBA</option>
-                                    <option>Fidelity Bank</option>
-                                    <option>Stanbic IBTC</option>
-                                    <option>Sterling Bank</option>
-                                    <option>Union Bank</option>
-                                    <option>Polaris Bank</option>
-                                    <option>Ecobank</option>
-                                    <option>Opay</option>
-                                    <option>Palmpay</option>
-                                    <option>Kuda Bank</option>
-                                    <option>Moniepoint</option>
-                                    <option>Other</option>
+                                    <option value="Access Bank">Access Bank</option>
+                                    <option value="Citibank">Citibank</option>
+                                    <option value="Ecobank">Ecobank</option>
+                                    <option value="Fidelity Bank">Fidelity Bank</option>
+                                    <option value="First Bank">First Bank</option>
+                                    <option value="First City Monument Bank">FCMB</option>
+                                    <option value="Guaranty Trust Bank">GTBank</option>
+                                    <option value="Heritage Bank">Heritage Bank</option>
+                                    <option value="Jaiz Bank">Jaiz Bank</option>
+                                    <option value="Keystone Bank">Keystone Bank</option>
+                                    <option value="Kuda Bank">Kuda Bank</option>
+                                    <option value="Moniepoint">Moniepoint</option>
+                                    <option value="Opay">Opay</option>
+                                    <option value="Palmpay">Palmpay</option>
+                                    <option value="Polaris Bank">Polaris Bank</option>
+                                    <option value="Providus Bank">Providus Bank</option>
+                                    <option value="Stanbic IBTC Bank">Stanbic IBTC</option>
+                                    <option value="Standard Chartered">Standard Chartered</option>
+                                    <option value="Sterling Bank">Sterling Bank</option>
+                                    <option value="Titan Trust Bank">Titan Trust Bank</option>
+                                    <option value="Union Bank">Union Bank</option>
+                                    <option value="United Bank For Africa">UBA</option>
+                                    <option value="Unity Bank">Unity Bank</option>
+                                    <option value="Wema Bank">Wema Bank</option>
+                                    <option value="Zenith Bank">Zenith Bank</option>
                                 </select>
                             </div>
-                            <div class="aff-field">
+                            <div class="aff-field aff-field-full">
+                                <label>Bank Account Number</label>
+                                <input type="text" id="aff-bank-acct" placeholder="10-digit NUBAN" maxlength="10"
+                                    required oninput="onBankFieldChange()" />
+                            </div>
+                            <div class="aff-field aff-field-full" id="aff-bank-verify-wrap" style="display:none">
+                                <div id="aff-user-bank-status" class="aff-user-bank-status"></div>
+                            </div>
+                            <div class="aff-field aff-field-full">
                                 <label>Account Name</label>
-                                <input type="text" id="aff-bank-acct-name" placeholder="Name on bank account"
+                                <input type="text" id="aff-bank-acct-name" placeholder="Auto-filled after verification"
                                     required />
                             </div>
                         </div>
@@ -637,33 +649,59 @@
         async function submitAffiliateApp(e) {
             e.preventDefault();
             const btn = document.getElementById('aff-submit-btn');
+            const get = id => document.getElementById(id);
+
+            const name = get('aff-name').value.trim();
+            const email = get('aff-email').value.trim();
+            const phone = get('aff-phone').value.trim();
+            const location = get('aff-location').value.trim();
+            const channel = get('aff-channel').value;
+            const audienceSize = get('aff-audience').value;
+            const bankAcct = get('aff-bank-acct').value.trim();
+            const bankName = get('aff-bank-name').value;
+            const accountName = get('aff-bank-acct-name').value.trim();
+            const profileUrl = get('aff-url').value.trim();
+
+            const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            const urlOk = !profileUrl || /^https?:\/\/.+/.test(profileUrl);
+
+            if (!name || name.length < 2) { showToast('Please enter your full name (at least 2 characters).', 'error'); get('aff-name').focus(); return; }
+            if (!email) { showToast('Please enter your email address.', 'error'); get('aff-email').focus(); return; }
+            if (!emailOk) { showToast('Please enter a valid email address (e.g. you@example.com).', 'error'); get('aff-email').focus(); return; }
+            if (!phone || phone.length < 7) { showToast('Please enter a valid phone number.', 'error'); get('aff-phone').focus(); return; }
+            if (!location) { showToast('Please enter your state or location.', 'error'); get('aff-location').focus(); return; }
+            if (!channel) { showToast('Please select your promotion channel (WhatsApp, YouTube, etc.).', 'error'); get('aff-channel').focus(); return; }
+            if (!audienceSize) { showToast('Please select your estimated audience size.', 'error'); get('aff-audience').focus(); return; }
+            if (!urlOk) { showToast('Profile URL must start with https:// (e.g. https://instagram.com/yourhandle).', 'error'); get('aff-url').focus(); return; }
+            if (!bankName) { showToast('Please select your bank from the list.', 'error'); get('aff-bank-name').focus(); return; }
+            if (!bankAcct) { showToast('Please enter your 10-digit bank account number.', 'error'); get('aff-bank-acct').focus(); return; }
+            if (bankAcct.length !== 10 || !/^\d+$/.test(bankAcct)) { showToast('Your account number must be exactly 10 digits (NUBAN format).', 'error'); get('aff-bank-acct').focus(); return; }
+            if (!accountName || accountName.length < 2) { showToast('Please enter the account name exactly as it appears on your bank account.', 'error'); get('aff-bank-acct-name').focus(); return; }
+
             btn.disabled = true;
             btn.textContent = 'Submitting...';
-            const bankAcct = document.getElementById('aff-bank-acct').value.trim();
-            if (bankAcct.length !== 10 || !/^\d+$/.test(bankAcct)) {
-                showToast('Please enter a valid 10-digit bank account number.', 'error');
-                btn.disabled = false; btn.textContent = 'Submit Application \u2192'; return;
-            }
+
             const data = {
-                name: document.getElementById('aff-name').value.trim(),
-                email: document.getElementById('aff-email').value.trim(),
-                phone: document.getElementById('aff-phone').value.trim(),
-                location: document.getElementById('aff-location').value.trim(),
-                channel: document.getElementById('aff-channel').value,
-                audienceSize: document.getElementById('aff-audience').value,
-                profileUrl: document.getElementById('aff-url').value.trim() || null,
+                name, email, phone, location, channel, audienceSize,
+                profileUrl: profileUrl || '',
                 bankAccount: bankAcct,
-                bankName: document.getElementById('aff-bank-name').value,
-                accountName: document.getElementById('aff-bank-acct-name').value.trim(),
-                motivation: document.getElementById('aff-why').value.trim() || null,
+                bankName,
+                accountName,
+                motivation: get('aff-why').value.trim() || null,
             };
+
             const res = await AffiliateStore.apply(data);
             if (res && res.ok) {
                 document.getElementById('aff-form').classList.add('hidden');
                 document.getElementById('aff-success').classList.remove('hidden');
                 document.getElementById('aff-form-card').scrollIntoView({ behavior: 'smooth' });
             } else {
-                showToast((res && res.error) || 'Submission failed. Please try again.', 'error');
+                const errMsg = (res && res.error) || 'Submission failed. Please try again.';
+                const firstDetail = res && Array.isArray(res.details) && res.details.length ? res.details[0] : null;
+                const msg = errMsg.toLowerCase().includes('already exists')
+                    ? 'An application with this email already exists. Contact us if you need to update your details.'
+                    : firstDetail || errMsg;
+                showToast(msg, 'error');
                 btn.disabled = false; btn.textContent = 'Submit Application \u2192';
             }
         }
@@ -753,6 +791,85 @@
             if (_affStep > 1) {
                 affShowStep(_affStep - 1);
                 document.getElementById('aff-form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        const AFF_BANK_CODES = {
+            'Access Bank': '044', 'Citibank': '023', 'Ecobank': '050', 'Fidelity Bank': '070',
+            'First Bank': '011', 'First City Monument Bank': '214', 'Guaranty Trust Bank': '058',
+            'Heritage Bank': '030', 'Jaiz Bank': '301', 'Keystone Bank': '082',
+            'Kuda Bank': '090267', 'Moniepoint': '090405', 'Opay': '304', 'Palmpay': '999991',
+            'Polaris Bank': '076', 'Providus Bank': '101', 'Stanbic IBTC Bank': '221',
+            'Standard Chartered': '068', 'Sterling Bank': '232', 'Titan Trust Bank': '102',
+            'Union Bank': '032', 'United Bank For Africa': '033', 'Unity Bank': '215',
+            'Wema Bank': '035', 'Zenith Bank': '057',
+        };
+
+        let _bankVerifyTimer = null, _lastVerifiedAcct = '', _lastVerifiedBank = '';
+
+        function onBankFieldChange() {
+            const acct = document.getElementById('aff-bank-acct').value.trim();
+            const bank = document.getElementById('aff-bank-name').value;
+            if (!acct || !bank || acct.length !== 10 || !/^\d+$/.test(acct)) {
+                document.getElementById('aff-bank-verify-wrap').style.display = 'none';
+                return;
+            }
+            if (acct === _lastVerifiedAcct && bank === _lastVerifiedBank) return;
+            clearTimeout(_bankVerifyTimer);
+            _bankVerifyTimer = setTimeout(() => doUserBankVerify(acct, bank), 700);
+        }
+
+        async function doUserBankVerify(acct, bank) {
+            const wrap = document.getElementById('aff-bank-verify-wrap');
+            const statusEl = document.getElementById('aff-user-bank-status');
+            const nameInput = document.getElementById('aff-bank-acct-name');
+            const bankCode = AFF_BANK_CODES[bank];
+
+            wrap.style.display = 'block';
+
+            if (!bankCode) {
+                statusEl.className = 'aff-user-bank-status aff-ubank-warn';
+                statusEl.textContent = 'Bank not on list? Please type your account name manually.';
+                return;
+            }
+
+            statusEl.className = 'aff-user-bank-status aff-ubank-pending';
+            statusEl.innerHTML = '<span class="aff-verify-spinner"></span> Verifying account...';
+
+            try {
+                const r = await fetch(
+                    'https://api.jekafly.com/api/v1/bank/resolve?account=' + encodeURIComponent(acct) + '&bank_code=' + encodeURIComponent(bankCode)
+                );
+                const data = await r.json();
+
+                if (data.ok && data.data && data.data.account_name) {
+                    const resolvedName = data.data.account_name;
+                    _lastVerifiedAcct = acct;
+                    _lastVerifiedBank = bank;
+
+                    if (!nameInput.value.trim()) {
+                        nameInput.value = resolvedName;
+                    }
+
+                    const entered = nameInput.value.trim().toLowerCase();
+                    const resolved = resolvedName.toLowerCase();
+                    const words = entered.split(' ').filter(function (w) { return w.length > 2; });
+                    const match = words.some(function (w) { return resolved.includes(w); });
+
+                    if (match) {
+                        statusEl.className = 'aff-user-bank-status aff-ubank-ok';
+                        statusEl.innerHTML = '\u2713 Account verified: <strong>' + resolvedName + '</strong>';
+                    } else {
+                        statusEl.className = 'aff-user-bank-status aff-ubank-warn';
+                        statusEl.innerHTML = '\u26a0 Bank shows: <strong>' + resolvedName + '</strong> \u2014 this does not match your account name. Please correct it.';
+                    }
+                } else {
+                    statusEl.className = 'aff-user-bank-status aff-ubank-fail';
+                    statusEl.textContent = '\u2717 Account not found. Please check your account number and bank selection.';
+                }
+            } catch (e) {
+                statusEl.className = 'aff-user-bank-status aff-ubank-warn';
+                statusEl.textContent = 'Verification unavailable. Please enter your account name manually.';
             }
         }
 

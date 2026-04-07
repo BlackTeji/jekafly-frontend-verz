@@ -300,10 +300,22 @@ async function handleLogin() {
     const email = document.getElementById('login-email')?.value?.trim();
     const pass = document.getElementById('login-pass')?.value;
 
-    if (!email || !pass) { showToast('Please fill in all fields.', 'error'); return; }
+    if (!email && !pass) { showToast('Please enter your email and password.', 'error'); return; }
+    if (!email) { showToast('Please enter your email address.', 'error'); return; }
+    if (!pass) { showToast('Please enter your password.', 'error'); return; }
 
     const res = await Auth.login(email, pass);
-    if (!res.ok) { showToast(res.msg, 'error'); return; }
+    if (!res.ok) {
+        const msg = res.msg || '';
+        if (msg.toLowerCase().includes('not found') || msg.toLowerCase().includes('no account')) {
+            showToast('No account found with that email. Please check or create an account.', 'error');
+        } else if (msg.toLowerCase().includes('password') || msg.toLowerCase().includes('incorrect')) {
+            showToast('Incorrect password. Please try again or use Forgot Password.', 'error');
+        } else {
+            showToast('Incorrect email or password. Please check and try again.', 'error');
+        }
+        return;
+    }
 
     closeModal();
     updateNav();

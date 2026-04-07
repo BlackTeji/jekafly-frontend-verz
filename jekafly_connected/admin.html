@@ -334,6 +334,43 @@
                     </div>
                 </div>
 
+                <!-- AFFILIATE CONFIRM MODAL -->
+                <div id="aff-action-overlay" class="delete-modal-overlay" style="display:none">
+                    <div class="delete-modal-box aff-confirm-box">
+                        <div id="aff-confirm-icon" class="aff-confirm-icon aff-confirm-icon--approve">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                <path d="m9 11 3 3L22 4" />
+                            </svg>
+                        </div>
+                        <h3 class="delete-modal-title" id="aff-confirm-title">Approve Application?</h3>
+                        <p class="delete-modal-body" id="aff-confirm-body">The applicant will receive an email with
+                            access to their affiliate dashboard.</p>
+
+                        <div class="aff-bank-verify-row" id="aff-bank-verify-row">
+                            <div class="aff-bank-verify-label">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="5" width="20" height="14" rx="2" />
+                                    <line x1="2" y1="10" x2="22" y2="10" />
+                                </svg>
+                                Bank Account Verification
+                            </div>
+                            <div id="aff-bank-verify-status" class="aff-bank-verify-status aff-verify-pending">
+                                <span class="aff-verify-spinner"></span> Verifying account details...
+                            </div>
+                            <div id="aff-bank-verify-detail" class="aff-bank-verify-detail"></div>
+                        </div>
+
+                        <div class="flex-gap-10" style="margin-top:24px;">
+                            <button id="aff-confirm-btn" class="btn-aff-approve" onclick="executeAffAction()"
+                                style="flex:1;justify-content:center;">Confirm</button>
+                            <button onclick="closeAffModal()" class="btn-delete-cancel" style="flex:1;">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- FEES -->
                 <div id="tab-fees" style="display:none">
                     <div class="admin-title">Manage Fees</div>
@@ -891,14 +928,150 @@
             if (card) card.classList.toggle('open', !isOpen);
         }
 
-        async function affAction(id, status) {
-            const label = status === 'APPROVED' ? 'Approve' : 'Reject';
-            if (!confirm(label + ' this affiliate application?')) return;
-            const res = await AffiliateStore.adminUpdateStatus(id, status);
+        let _affPendingId = null, _affPendingStatus = null;
+
+        function affAction(id, status) {
+            _affPendingId = id;
+            _affPendingStatus = status;
+            const isApprove = status === 'APPROVED';
+            const overlay = document.getElementById('aff-action-overlay');
+            const icon = document.getElementById('aff-confirm-icon');
+            const title = document.getElementById('aff-confirm-title');
+            const body = document.getElementById('aff-confirm-body');
+            const btn = document.getElementById('aff-confirm-btn');
+            const verifyRow = document.getElementById('aff-bank-verify-row');
+
+            icon.className = 'aff-confirm-icon ' + (isApprove ? 'aff-confirm-icon--approve' : 'aff-confirm-icon--reject');
+            icon.innerHTML = isApprove
+                ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>'
+                : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>';
+            title.textContent = isApprove ? 'Approve Application?' : 'Reject Application?';
+            body.textContent = isApprove
+                ? 'The applicant will receive an email with access to their affiliate dashboard and referral link.'
+                : 'The applicant will not be notified unless you contact them manually.';
+            btn.className = isApprove ? 'btn-aff-approve' : 'btn-aff-reject';
+            btn.style.flex = '1';
+            btn.style.justifyContent = 'center';
+            btn.textContent = isApprove ? 'Approve' : 'Reject';
+            verifyRow.style.display = isApprove ? 'block' : 'none';
+            overlay.style.display = 'flex';
+
+            if (isApprove) {
+                const aff = (window._affPending || []).find(a => a.id === id)
+                    || (window._affActive || []).find(a => a.id === id);
+                verifyBankAccount(aff);
+            }
+        }
+
+        function closeAffModal() {
+            document.getElementById('aff-action-overlay').style.display = 'none';
+            _affPendingId = null;
+            _affPendingStatus = null;
+        }
+
+        async function executeAffAction() {
+            if (!_affPendingId || !_affPendingStatus) return;
+            const btn = document.getElementById('aff-confirm-btn');
+            btn.disabled = true;
+            btn.textContent = 'Processing...';
+            const res = await AffiliateStore.adminUpdateStatus(_affPendingId, _affPendingStatus);
             if (res?.ok) {
-                showToast(status === 'APPROVED' ? 'Affiliate approved! They will receive an email.' : 'Application rejected.');
+                closeAffModal();
+                showToast(_affPendingStatus === 'APPROVED' ? 'Affiliate approved! Approval email sent.' : 'Application rejected.');
                 loadAffiliates();
-            } else { showToast(res?.error || 'Action failed.', 'error'); }
+            } else {
+                showToast(res?.error || 'Action failed.', 'error');
+                btn.disabled = false;
+                btn.textContent = _affPendingStatus === 'APPROVED' ? 'Approve' : 'Reject';
+            }
+        }
+
+        const BANK_CODES = {
+            'Access Bank': '044', 'Citibank': '023', 'Ecobank': '050', 'Fidelity Bank': '070',
+            'First Bank': '011', 'First City Monument Bank': '214', 'Globus Bank': '00103',
+            'Guaranty Trust Bank': '058', 'Heritage Bank': '030', 'Jaiz Bank': '301',
+            'Keystone Bank': '082', 'Kuda Bank': '090267', 'Moniepoint': '090405',
+            'Opay': '304', 'Palmpay': '999991', 'Parallex Bank': '526',
+            'Polaris Bank': '076', 'Providus Bank': '101', 'Stanbic IBTC Bank': '221',
+            'Standard Chartered': '068', 'Sterling Bank': '232', 'SunTrust Bank': '100',
+            'Titan Trust Bank': '102', 'Union Bank': '032', 'United Bank For Africa': '033',
+            'Unity Bank': '215', 'VFD Microfinance Bank': '566', 'Wema Bank': '035',
+            'Zenith Bank': '057',
+        };
+
+        async function verifyBankAccount(aff) {
+            const statusEl = document.getElementById('aff-bank-verify-status');
+            const detailEl = document.getElementById('aff-bank-verify-detail');
+            detailEl.innerHTML = '';
+
+            if (!aff) {
+                statusEl.className = 'aff-bank-verify-status aff-verify-warn';
+                statusEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Could not load applicant data.';
+                return;
+            }
+
+            const bankCode = BANK_CODES[aff.bankName];
+            if (!bankCode) {
+                statusEl.className = 'aff-bank-verify-status aff-verify-warn';
+                statusEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Bank not in verification list. Review manually.';
+                detailEl.innerHTML = buildVerifyDetail(aff, null);
+                return;
+            }
+
+            statusEl.className = 'aff-bank-verify-status aff-verify-pending';
+            statusEl.innerHTML = '<span class="aff-verify-spinner"></span> Verifying with Paystack...';
+
+            try {
+                const apiBase = 'https://api.jekafly.com/api/v1';
+                const r = await fetch(`${apiBase}/admin/verify-bank?account=${encodeURIComponent(aff.bankAccount)}&bank_code=${bankCode}`, {
+                    headers: _accessToken ? { Authorization: 'Bearer ' + _accessToken } : {},
+                    credentials: 'include',
+                });
+                const data = await r.json();
+
+                if (data.ok && data.data?.account_name) {
+                    const resolved = data.data.account_name.toLowerCase().trim();
+                    const entered = (aff.accountName || '').toLowerCase().trim();
+                    const applicant = (aff.name || '').toLowerCase().trim();
+                    const enteredWords = entered.split(' ').filter(Boolean);
+                    const applicantWords = applicant.split(' ').filter(Boolean);
+                    const nameMatchesAccount = enteredWords.some(w => resolved.includes(w) && w.length > 2);
+                    const nameMatchesApplicant = applicantWords.some(w => resolved.includes(w) && w.length > 2);
+
+                    if (nameMatchesAccount && nameMatchesApplicant) {
+                        statusEl.className = 'aff-bank-verify-status aff-verify-ok';
+                        statusEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Verified \u2014 account name matches applicant.';
+                    } else if (nameMatchesAccount || nameMatchesApplicant) {
+                        statusEl.className = 'aff-bank-verify-status aff-verify-warn';
+                        statusEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Partial match \u2014 review the names below.';
+                    } else {
+                        statusEl.className = 'aff-bank-verify-status aff-verify-fail';
+                        statusEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg> Mismatch \u2014 names do not match. Verify before approving.';
+                    }
+                    detailEl.innerHTML = buildVerifyDetail(aff, data.data.account_name);
+                } else {
+                    statusEl.className = 'aff-bank-verify-status aff-verify-warn';
+                    statusEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Could not resolve account. Verify manually.';
+                    detailEl.innerHTML = buildVerifyDetail(aff, null);
+                }
+            } catch {
+                statusEl.className = 'aff-bank-verify-status aff-verify-warn';
+                statusEl.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Verification unavailable. Review manually.';
+                detailEl.innerHTML = buildVerifyDetail(aff, null);
+            }
+        }
+
+        function buildVerifyDetail(aff, resolvedName) {
+            const match = resolvedName
+                ? ((aff.name || '').toLowerCase().split(' ').some(w => resolvedName.toLowerCase().includes(w) && w.length > 2) ? 'aff-verify-row--match' : 'aff-verify-row--mismatch')
+                : '';
+            return '<div class="aff-verify-table">'
+                + '<div class="aff-verify-row"><span>Applicant name</span><strong>' + escHtml(aff.name) + '</strong></div>'
+                + '<div class="aff-verify-row"><span>Account number</span><strong>' + escHtml(aff.bankAccount) + '</strong></div>'
+                + '<div class="aff-verify-row"><span>Bank</span><strong>' + escHtml(aff.bankName) + '</strong></div>'
+                + '<div class="aff-verify-row"><span>Entered account name</span><strong>' + escHtml(aff.accountName) + '</strong></div>'
+                + (resolvedName ? '<div class="aff-verify-row ' + match + '"><span>Bank resolved name</span><strong>' + escHtml(resolvedName) + '</strong></div>' : '')
+                + '</div>';
         }
 
         async function affProcessPayout(payoutId) {

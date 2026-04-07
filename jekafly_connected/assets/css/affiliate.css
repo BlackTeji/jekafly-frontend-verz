@@ -1328,3 +1328,54 @@ section#how-it-works {
 .aff-perk-icon svg {
     color: inherit !important;
 }
+
+.aff-user-bank-status {
+    font-size: 0.84rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    padding: 10px 14px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.5;
+}
+
+.aff-ubank-pending {
+    background: #EFF6FF;
+    color: #1D4ED8;
+}
+
+.aff-ubank-ok {
+    background: #ECFDF5;
+    color: #15803D;
+    font-weight: 600;
+}
+
+.aff-ubank-warn {
+    background: #FFFBEB;
+    color: #92400E;
+}
+
+.aff-ubank-fail {
+    background: #FEF2F2;
+    color: #DC2626;
+    font-weight: 600;
+}
+
+.aff-verify-spinner {
+    width: 13px;
+    height: 13px;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    animation: aff-spin 0.7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes aff-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

@@ -26,9 +26,7 @@ async function apiFetch(method, path, body, isFormData = false) {
         const stored = localStorage.getItem('jkf_user');
         if (!stored) {
             _accessToken = null;
-            if (!window.location.pathname.match(/visa\.html|flights\.html|\/$/)) {
-                window.location.href = '/';
-            }
+            window.dispatchEvent(new CustomEvent('jkf:unauthenticated', { detail: { path } }));
         }
         return null;
     }
@@ -120,6 +118,16 @@ var Auth = {
         return post('/auth/change-password', { currentPassword, newPassword, otp });
     },
 
+
+    async magicLogin(token) {
+        const res = await get('/affiliates/magic?token=' + encodeURIComponent(token));
+        if (res?.ok) {
+            _accessToken = res.data.accessToken;
+            localStorage.setItem('jkf_user', JSON.stringify(res.data.user));
+            return { ok: true, user: res.data.user, mustSetPassword: res.data.mustSetPassword };
+        }
+        return { ok: false, msg: res?.error || 'Invalid or expired link.' };
+    },
     async init() {
         const user = this.getCurrent();
         if (!user) return null;
