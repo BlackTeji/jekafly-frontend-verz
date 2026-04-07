@@ -292,10 +292,9 @@
             document.getElementById('pay-processing').classList.add('show');
             try {
                 const user = Auth.getCurrent();
-                const amountKobo = Math.round((pendingPayment.amount || 0) * 100);
                 const res = await PaymentStore.initiate(
                     (pendingPayment.type || 'visa').toUpperCase(),
-                    pendingPayment.ref || null, amountKobo,
+                    pendingPayment.ref || null, pendingPayment.amount,
                     pendingPayment.email || user.email,
                     { destination: pendingPayment.destination || pendingPayment.dest, plan: pendingPayment.plan, date: pendingPayment.date, travelDate: pendingPayment.date, travellers: pendingPayment.travellers }
                 );
@@ -308,7 +307,7 @@
                 const handler = PaystackPop.setup({
                     key: publicKey,
                     email: pendingPayment.email || user.email,
-                    amount: amountKobo,
+                    amount: Math.round((pendingPayment.amount || 0) * 100),
                     access_code: accessCode,
                     ref: reference,
                     onClose: function () { showToast('Payment cancelled.', 'error'); },
@@ -336,17 +335,7 @@
                     '<div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv amount">&#8358;' + (r.amount || 0).toLocaleString() + '</span></div>' +
                     '<div class="receipt-row"><span class="rl">Status</span><span class="rv text-green fw-700">Confirmed</span></div>';
                 // If consultation — route to dashboard Calendly flow
-                const _ptype = (pendingPayment?.type || '');
-                if (_ptype === 'consultation') {
-                    document.querySelector('.success-modal h2').textContent = 'Payment Confirmed!';
-                    document.querySelector('.success-modal p').textContent = 'Your consultation fee has been received. Click below to pick your booking time.';
-                    document.querySelector('.btn-dashboard').textContent = 'Pick a Booking Time →';
-                    document.querySelector('.btn-dashboard').onclick = function () {
-                        window.location.href = 'dashboard.html?tab=documents&consult_ref=' + encodeURIComponent(ref);
-                    };
-                }
-                const _ptype2 = (pendingPayment?.type || '');
-                if (_ptype2 === 'consultation') {
+                if ((pendingPayment?.type || '') === 'consultation') {
                     document.querySelector('.success-modal h2').textContent = 'Payment Confirmed!';
                     document.querySelector('.success-modal p').textContent = 'Your consultation fee has been received. Click below to pick your booking time.';
                     document.querySelector('.btn-dashboard').textContent = 'Pick a Booking Time →';
