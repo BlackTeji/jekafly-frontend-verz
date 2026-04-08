@@ -21,7 +21,6 @@ function closeNavMenu() {
     document.body.style.overflow = '';
 }
 (function initMobileNav() {
-    // Drawer stays open on scroll — user must tap overlay or X to close
 })();
 
 
@@ -143,16 +142,6 @@ function updateNav() {
               <button class="nav-mob-row" onclick="adminTab('affiliates', null);closeNavMenu()">
                 <span class="nav-mob-row-icon" style="background:#FFFDE7;color:#CA8A04"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg></span>
                 <span class="nav-mob-row-label">Affiliates</span>
-                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </button>
-              <button class="nav-mob-row" onclick="adminTab('flights', null);closeNavMenu()">
-                <span class="nav-mob-row-icon" style="background:#E0F2FE;color:#0369A1"><svg width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M185.33,114.21l29.14-27.42.17-.17a32,32,0,0,0-45.26-45.26c0,.06-.11.11-.17.17L141.79,70.67l-83-30.2a8,8,0,0,0-8.39,1.86l-24,24a8,8,0,0,0,1.22,12.31l63.89,42.59L76.69,136H56a8,8,0,0,0-5.65,2.34l-24,24A8,8,0,0,0,29,175.42l36.82,14.73,14.7,36.75.06.16a8,8,0,0,0,13.18,2.47l23.87-23.88A8,8,0,0,0,120,200V179.31l14.76-14.76,42.59,63.89a8,8,0,0,0,12.31,1.22l24-24a8,8,0,0,0,1.86-8.39Z"/></svg></span>
-                <span class="nav-mob-row-label">Flights</span>
-                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-              </button>
-              <button class="nav-mob-row" onclick="adminTab('hotels', null);closeNavMenu()">
-                <span class="nav-mob-row-icon" style="background:#FEF3C7;color:#92400E"><svg width="15" height="15" viewBox="0 0 256 256" fill="currentColor"><path d="M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z"/></svg></span>
-                <span class="nav-mob-row-label">Hotels</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
             </div>
@@ -300,22 +289,10 @@ async function handleLogin() {
     const email = document.getElementById('login-email')?.value?.trim();
     const pass = document.getElementById('login-pass')?.value;
 
-    if (!email && !pass) { showToast('Please enter your email and password.', 'error'); return; }
-    if (!email) { showToast('Please enter your email address.', 'error'); return; }
-    if (!pass) { showToast('Please enter your password.', 'error'); return; }
+    if (!email || !pass) { showToast('Please fill in all fields.', 'error'); return; }
 
     const res = await Auth.login(email, pass);
-    if (!res.ok) {
-        const msg = res.msg || '';
-        if (msg.toLowerCase().includes('not found') || msg.toLowerCase().includes('no account')) {
-            showToast('No account found with that email. Please check or create an account.', 'error');
-        } else if (msg.toLowerCase().includes('password') || msg.toLowerCase().includes('incorrect')) {
-            showToast('Incorrect password. Please try again or use Forgot Password.', 'error');
-        } else {
-            showToast('Incorrect email or password. Please check and try again.', 'error');
-        }
-        return;
-    }
+    if (!res.ok) { showToast(res.msg, 'error'); return; }
 
     closeModal();
     updateNav();
@@ -365,7 +342,6 @@ function handleInsuranceModal() {
     };
     const price = priceMap[plan] || 45000;
 
-    // Save intent first — so it survives the login redirect
     localStorage.setItem('jkf_pending_payment', JSON.stringify({
         type: 'insurance',
         plan,
@@ -378,7 +354,7 @@ function handleInsuranceModal() {
     const user = Auth.getCurrent();
     if (!user) {
         closeModal();
-        // Redirect to payment.html after login — it will read jkf_pending_payment
+
         window.JKF_afterLoginRedirect = function () {
             window.location.href = 'payment.html';
             return true;
@@ -403,7 +379,7 @@ async function handleTrackModal() {
     if (!app) { showToast('No application found with that reference.', 'error'); return; }
 
     const steps = ['received', 'processing', 'embassy', 'approved', 'delivered'];
-    const labels = ['Received', 'Docs Verification', 'Embassy Review', 'Decision', 'Delivered'];
+    const labels = ['Received', 'Docs Verified', 'Embassy Review', 'Decision', 'Delivered'];
     const icons = ['<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>', '✅', '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg>', '⭐', '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012.18 1h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 8.1a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>'];
     const curIdx = steps.indexOf(app.status);
 
@@ -1761,13 +1737,11 @@ function showRequirements() {
     const purpose = (getSelectValue("c-type") || "Tourism").toLowerCase();
     let docs = data.docs || [];
 
-    // Purpose-aware doc filtering
     const isStudy = purpose.includes("study");
     const isBusiness = purpose.includes("business");
     const isMedical = purpose.includes("medical");
     const isFamily = purpose.includes("family");
 
-    // Add purpose-specific docs if not already in list
     const purposeDocs = {
         business: ["Business invitation letter", "Company registration documents", "Business itinerary"],
         study: ["University/school admission letter", "Proof of tuition payment", "Sponsor's bank statements & letter"],
@@ -1781,12 +1755,10 @@ function showRequirements() {
                 : isFamily ? purposeDocs.family
                     : [];
 
-    // Remove generic tourism docs that don't apply to other purposes
     if (!purpose.includes("tourism") && !purpose.includes("holiday")) {
         docs = docs.filter(d => !/(hotel|accommodation|return flight itinerary)/i.test(d));
     }
 
-    // Merge: base docs + purpose-specific, deduplicating
     const allDocs = [...docs];
     toAdd.forEach(d => { if (!allDocs.some(e => e.toLowerCase().includes(d.split(" ")[1]?.toLowerCase() || d))) allDocs.push(d); });
 
