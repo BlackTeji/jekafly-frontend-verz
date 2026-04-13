@@ -939,7 +939,8 @@
                     <div class="form-group">
                         <label>Password</label>
                         <div class="pass-wrap">
-                            <input id="reg-pass" type="password" placeholder="Min. 8 characters" />
+                            <input id="reg-pass" type="password" placeholder="Min. 8 characters"
+                                oninput="modalCheckStrength()" />
                             <button type="button" class="pass-eye" onclick="togglePass('reg-pass',this)"
                                 tabindex="-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -948,6 +949,36 @@
                                     <circle cx="12" cy="12" r="3" />
                                 </svg></button>
                         </div>
+                        <div style="display:flex;gap:4px;margin-top:6px;" id="modal-str-bars">
+                            <div id="modal-str-1"
+                                style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                            </div>
+                            <div id="modal-str-2"
+                                style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                            </div>
+                            <div id="modal-str-3"
+                                style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                            </div>
+                            <div id="modal-str-4"
+                                style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                            </div>
+                        </div>
+                        <div id="modal-str-label" style="font-size:0.72rem;color:#9ca3af;margin-top:3px;"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <div class="pass-wrap">
+                            <input id="reg-confirm" type="password" placeholder="Re-enter password"
+                                oninput="modalCheckConfirm()" />
+                            <button type="button" class="pass-eye" onclick="togglePass('reg-confirm',this)"
+                                tabindex="-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg></button>
+                        </div>
+                        <div id="modal-confirm-msg" style="font-size:0.72rem;margin-top:3px;display:none;"></div>
                     </div>
                     <button class="btn-check btn-check-mt" id="btn-register" type="button"
                         onclick="handleRegister()">Create Free Account</button>
@@ -1131,7 +1162,8 @@
                         <div class="form-group">
                             <label>Password</label>
                             <div class="pass-wrap">
-                                <input id="consult-reg-pass" type="password" placeholder="Min. 8 characters" />
+                                <input id="consult-reg-pass" type="password" placeholder="Min. 8 characters"
+                                    oninput="consultCheckStrength()" />
                                 <button type="button" class="pass-eye" onclick="togglePass('consult-reg-pass',this)"
                                     tabindex="-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -1140,6 +1172,36 @@
                                         <circle cx="12" cy="12" r="3" />
                                     </svg></button>
                             </div>
+                            <div style="display:flex;gap:4px;margin-top:6px;" id="consult-str-bars">
+                                <div id="consult-str-1"
+                                    style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                                </div>
+                                <div id="consult-str-2"
+                                    style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                                </div>
+                                <div id="consult-str-3"
+                                    style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                                </div>
+                                <div id="consult-str-4"
+                                    style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                                </div>
+                            </div>
+                            <div id="consult-str-label" style="font-size:0.72rem;color:#9ca3af;margin-top:3px;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <div class="pass-wrap">
+                                <input id="consult-reg-confirm" type="password" placeholder="Re-enter password"
+                                    oninput="consultCheckConfirm()" />
+                                <button type="button" class="pass-eye" onclick="togglePass('consult-reg-confirm',this)"
+                                    tabindex="-1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                        <circle cx="12" cy="12" r="3" />
+                                    </svg></button>
+                            </div>
+                            <div id="consult-confirm-msg" style="font-size:0.72rem;margin-top:3px;display:none;"></div>
                         </div>
                         <div id="consult-reg-error" class="inline-error"></div>
                         <button class="btn-check btn-check-mt" onclick="consultModalRegister()">Create Account & Pay
@@ -1338,9 +1400,9 @@
                     reviews.slice(0, 9).forEach(r => grid.appendChild(makeCard(r)));
                     setTimeout(initTestiCarousel, 100);
                 } else {
-                    const SWAP_INTERVAL = 3500; 
+                    const SWAP_INTERVAL = 3500;
                     let queue = reviews.slice();
-                    let swapIdx = 0;            
+                    let swapIdx = 0;
 
                     if (!document.getElementById('testi-swap-kf')) {
                         const s = document.createElement('style');
@@ -1652,9 +1714,11 @@
             const email = document.getElementById('consult-reg-email').value.trim();
             const phone = document.getElementById('consult-reg-phone').value.trim();
             const pass = document.getElementById('consult-reg-pass').value;
+            const confirm = document.getElementById('consult-reg-confirm').value;
             const errEl = document.getElementById('consult-reg-error');
             errEl.style.display = 'none';
             if (!name || !email || !pass) { errEl.textContent = 'Please fill in all required fields.'; errEl.style.display = 'block'; return; }
+            if (pass !== confirm) { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return; }
             try {
                 const res = await Auth.register(name, email, pass, phone);
                 if (!res.ok) throw new Error(res.error || 'Registration failed');

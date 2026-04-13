@@ -183,34 +183,7 @@
                 <div id="tab-overview">
                     <div class="admin-title">Admin Dashboard</div>
                     <p class="admin-sub" id="admin-greeting">Welcome back.</p>
-                    <div class="admin-stats" id="admin-stats"></div>
-                    <div class="rev-card">
-                        <div class="rev-card-header">
-                            <div class="rev-card-left">
-                                <div class="rev-card-eyebrow">Revenue — Last 6 Months</div>
-                                <div class="rev-card-total" id="rev-total">₦0</div>
-                                <div class="rev-card-sub" id="rev-sub">Loading...</div>
-                            </div>
-                            <div class="rev-card-badge" id="rev-badge">Live</div>
-                        </div>
-                        <div class="rev-chart-wrap">
-                            <div class="rev-grid-lines">
-                                <div class="rev-grid-line"></div>
-                                <div class="rev-grid-line"></div>
-                                <div class="rev-grid-line"></div>
-                                <div class="rev-grid-line"></div>
-                            </div>
-                            <div class="rev-bars" id="rev-bars"></div>
-                        </div>
-                        <div class="rev-labels" id="rev-labels"></div>
-                        <div class="rev-footer" id="rev-footer"></div>
-                    </div>
-                    <div class="acard">
-                        <div class="acard-header">
-                            <h3>Recent Applications</h3>
-                        </div>
-                        <div id="overview-recent"></div>
-                    </div>
+                    <div id="overview-dynamic"></div>
                 </div>
 
                 <!-- APPLICATIONS -->
@@ -1136,58 +1109,122 @@
         }
 
 
-        async function loadOverview() {
-            allApps = await AppStore.getAll();
-            const approved = allApps.filter(a => ['approved', 'delivered'].includes(a.status)).length;
-            const pending = allApps.filter(a => ['received', 'processing', 'embassy'].includes(a.status)).length;
-            const revenue = allApps.filter(a => a.paid).reduce((s, a) => s + (a.fee || 0), 0);
-            const userList = await AdminStore.getUsers();
-            const users = userList.filter(u => u.role !== 'ADMIN').length;
-
-            document.getElementById('admin-stats').innerHTML = `
-        <div class="astat"><div class="astat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></div><div class="astat-val">${allApps.length}</div><div class="astat-lbl">Total Applications</div></div>
-        <div class="astat"><div class="astat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14M5 21h14M6 3v4l6 5-6 5v4M18 3v4l-6 5 6 5v4"/></svg></div><div class="astat-val">${pending}</div><div class="astat-lbl">Pending</div></div>
-        <div class="astat"><div class="astat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg></div><div class="astat-val">${approved}</div><div class="astat-lbl">Approved</div></div>
-        <div class="astat"><div class="astat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg></div><div class="astat-val">₦${revenue >= 1e6 * 100 ? (revenue / 1e6 / 100).toFixed(1) + 'M' : (revenue / 1e3).toFixed(0) + 'k'}</div><div class="astat-lbl">Revenue</div></div>
-        <div class="astat"><div class="astat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="astat-val">${users}</div><div class="astat-lbl">Users</div></div>`;
-
+        function _fmtRev(v) { return v >= 1e6 ? '₦' + (v / 1e6).toFixed(1) + 'M' : v >= 1e3 ? '₦' + (v / 1e3).toFixed(0) + 'k' : '₦' + v.toLocaleString(); }
+        function _astat(icon, val, lbl) { return `<div class="astat"><div class="astat-icon">${icon}</div><div class="astat-val">${val}</div><div class="astat-lbl">${lbl}</div></div>`; }
+        function _revChart(apps) {
             const now = new Date();
             const monthData = [];
             for (let i = 5; i >= 0; i--) {
                 const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
                 const label = d.toLocaleString('en-NG', { month: 'short' });
-                const yr = d.getFullYear(); const mo = d.getMonth();
-                const rev = allApps.filter(a => a.paid && a.fee > 0 && (() => { const c = new Date(a.createdAt); return c.getFullYear() === yr && c.getMonth() === mo; })()).reduce((s, a) => s + (a.fee || 0), 0);
-                const apps = allApps.filter(a => { const c = new Date(a.createdAt); return c.getFullYear() === yr && c.getMonth() === mo; }).length;
-                monthData.push({ label, rev, apps, isCurrent: i === 0 });
+                const yr = d.getFullYear(), mo = d.getMonth();
+                const rev = apps.filter(a => a.paid && a.fee > 0 && (() => { const c = new Date(a.createdAt); return c.getFullYear() === yr && c.getMonth() === mo; })()).reduce((s, a) => s + (a.fee || 0), 0);
+                const cnt = apps.filter(a => { const c = new Date(a.createdAt); return c.getFullYear() === yr && c.getMonth() === mo; }).length;
+                monthData.push({ label, rev, cnt, isCurrent: i === 0 });
             }
             const mx = Math.max(...monthData.map(m => m.rev), 1);
             const totalRev = monthData.reduce((s, m) => s + m.rev, 0);
-            const thisMonth = monthData[monthData.length - 1];
-            const lastMonth = monthData[monthData.length - 2];
-            const growth = lastMonth.rev > 0 ? Math.round(((thisMonth.rev - lastMonth.rev) / lastMonth.rev) * 100) : null;
+            const cur = monthData[monthData.length - 1], prev = monthData[monthData.length - 2];
+            const growth = prev.rev > 0 ? Math.round(((cur.rev - prev.rev) / prev.rev) * 100) : null;
+            const growthTxt = growth === null ? (cur.rev > 0 ? 'New revenue this month' : 'No data yet') : growth > 0 ? '↑ ' + growth + '% vs last month' : growth < 0 ? '↓ ' + Math.abs(growth) + '% vs last month' : 'Same as last month';
+            const badgeStyle = (growth === null || growth === 0) ? 'background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);' : growth > 0 ? 'background:rgba(22,163,74,0.2);border-color:rgba(22,163,74,0.35);color:#4ade80;' : 'background:rgba(220,38,38,0.2);border-color:rgba(220,38,38,0.35);color:#f87171;';
+            const bars = monthData.map(m => { const h = Math.max(Math.round(m.rev / mx * 100), m.rev > 0 ? 8 : 4); return `<div class="rev-bar-wrap"><div class="rev-bar-val">${m.rev > 0 ? _fmtRev(m.rev) : '—'}</div><div class="rev-bar ${m.isCurrent ? 'current' : ''} ${m.rev === 0 ? 'zero' : ''}" style="height:${h}px"></div></div>`; }).join('');
+            const labels = monthData.map(m => `<div class="rev-label ${m.isCurrent ? 'current' : ''}">${m.label}</div>`).join('');
+            return `<div class="rev-card"><div class="rev-card-header"><div class="rev-card-left"><div class="rev-card-eyebrow">Revenue — Last 6 Months</div><div class="rev-card-total">${_fmtRev(totalRev)}</div><div class="rev-card-sub">Total across last 6 months · ${apps.filter(a => a.paid).length} paid applications</div></div><div class="rev-card-badge" style="${badgeStyle}">${growthTxt}</div></div><div class="rev-chart-wrap"><div class="rev-grid-lines"><div class="rev-grid-line"></div><div class="rev-grid-line"></div><div class="rev-grid-line"></div><div class="rev-grid-line"></div></div><div class="rev-bars">${bars}</div></div><div class="rev-labels">${labels}</div><div class="rev-footer"><div class="rev-foot-item"><div class="rev-foot-label">This Month</div><div class="rev-foot-val">${_fmtRev(cur.rev)}</div></div><div class="rev-foot-item"><div class="rev-foot-label">This Month Apps</div><div class="rev-foot-val">${cur.cnt}</div></div><div class="rev-foot-item"><div class="rev-foot-label">Avg / Month</div><div class="rev-foot-val">${_fmtRev(Math.round(totalRev / 6))}</div></div></div></div>`;
+        }
+        function _barChart(data, labelKey, valKey, title, eyebrow) {
+            const mx = Math.max(...data.map(d => d[valKey]), 1);
+            const bars = data.map(d => { const h = Math.max(Math.round(d[valKey] / mx * 100), d[valKey] > 0 ? 8 : 4); return `<div class="rev-bar-wrap"><div class="rev-bar-val">${d[valKey] || '—'}</div><div class="rev-bar ${d[valKey] === 0 ? 'zero' : ''}" style="height:${h}px"></div></div>`; }).join('');
+            const labels = data.map(d => `<div class="rev-label">${d[labelKey]}</div>`).join('');
+            return `<div class="rev-card"><div class="rev-card-header"><div class="rev-card-left"><div class="rev-card-eyebrow">${eyebrow}</div><div class="rev-card-total">${title}</div></div></div><div class="rev-chart-wrap"><div class="rev-grid-lines"><div class="rev-grid-line"></div><div class="rev-grid-line"></div><div class="rev-grid-line"></div><div class="rev-grid-line"></div></div><div class="rev-bars">${bars}</div></div><div class="rev-labels">${labels}</div></div>`;
+        }
 
-            document.getElementById('rev-total').textContent = '₦' + (totalRev >= 1e6 ? (totalRev / 1e6).toFixed(1) + 'M' : totalRev >= 1e3 ? (totalRev / 1e3).toFixed(0) + 'k' : totalRev.toLocaleString());
-            document.getElementById('rev-sub').textContent = 'Total across last 6 months · ' + allApps.filter(a => a.paid).length + ' paid applications';
-            document.getElementById('rev-badge').textContent = growth === null ? (thisMonth.rev > 0 ? 'New revenue this month' : 'No data yet') : growth > 0 ? '↑ ' + growth + '% vs last month' : growth < 0 ? '↓ ' + Math.abs(growth) + '% vs last month' : 'Same as last month';
-            const badgeEl2 = document.getElementById('rev-badge');
-            if (growth === null || growth === 0) { badgeEl2.style.background = 'rgba(255,255,255,0.1)'; badgeEl2.style.borderColor = 'rgba(255,255,255,0.2)'; badgeEl2.style.color = 'rgba(255,255,255,0.6)'; }
-            else if (growth > 0) { badgeEl2.style.background = 'rgba(22,163,74,0.2)'; badgeEl2.style.borderColor = 'rgba(22,163,74,0.35)'; badgeEl2.style.color = '#4ade80'; }
-            else { badgeEl2.style.background = 'rgba(220,38,38,0.2)'; badgeEl2.style.borderColor = 'rgba(220,38,38,0.35)'; badgeEl2.style.color = '#f87171'; }
+        async function loadOverview() {
+            const el = document.getElementById('overview-dynamic');
+            if (!el) return;
+            el.innerHTML = '<div class="atbl-empty">Loading...</div>';
 
-            document.getElementById('rev-bars').innerHTML = monthData.map(m => {
-                const h = Math.max(Math.round(m.rev / mx * 100), m.rev > 0 ? 8 : 4);
-                const valStr = m.rev >= 1e6 ? '₦' + (m.rev / 1e6).toFixed(1) + 'M' : m.rev >= 1e3 ? '₦' + (m.rev / 1e3).toFixed(0) + 'k' : m.rev > 0 ? '₦' + m.rev.toLocaleString() : '—';
-                return `<div class="rev-bar-wrap"><div class="rev-bar-val">${valStr}</div><div class="rev-bar ${m.isCurrent ? 'current' : ''} ${m.rev === 0 ? 'zero' : ''}" style="height:${h}px"></div></div>`;
-            }).join('');
-            document.getElementById('rev-labels').innerHTML = monthData.map(m => `<div class="rev-label ${m.isCurrent ? 'current' : ''}">${m.label}</div>`).join('');
-            document.getElementById('rev-footer').innerHTML =
-                `<div class="rev-foot-item"><div class="rev-foot-label">This Month</div><div class="rev-foot-val">₦${thisMonth.rev >= 1e3 ? (thisMonth.rev / 1e3).toFixed(0) + 'k' : thisMonth.rev.toLocaleString()}</div></div>` +
-                `<div class="rev-foot-item"><div class="rev-foot-label">This Month Apps</div><div class="rev-foot-val">${thisMonth.apps}</div></div>` +
-                `<div class="rev-foot-item"><div class="rev-foot-label">Avg / Month</div><div class="rev-foot-val">₦${Math.round(totalRev / 6) >= 1e3 ? (Math.round(totalRev / 6) / 1e3).toFixed(0) + 'k' : Math.round(totalRev / 6).toLocaleString()}</div></div>`;
+            const ICON_APP = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>';
+            const ICON_PEND = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14M5 21h14M6 3v4l6 5-6 5v4M18 3v4l-6 5 6 5v4"/></svg>';
+            const ICON_TICK = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
+            const ICON_REV = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg>';
+            const ICON_USR = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+            const ICON_AFF = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+            const ICON_CONSULT = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
 
-            const recent = [...allApps].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
-            document.getElementById('overview-recent').innerHTML = renderTable(recent, false);
+            if (_adminRole === 'applications') {
+                allApps = await AppStore.getAll();
+                const total = allApps.length;
+                const pending = allApps.filter(a => ['received', 'processing', 'embassy'].includes(a.status)).length;
+                const approved = allApps.filter(a => ['approved', 'delivered'].includes(a.status)).length;
+                const rejected = allApps.filter(a => a.status === 'rejected').length;
+                const now = new Date();
+                const monthData = [];
+                for (let i = 5; i >= 0; i--) {
+                    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                    const label = d.toLocaleString('en-NG', { month: 'short' });
+                    const yr = d.getFullYear(), mo = d.getMonth();
+                    const cnt = allApps.filter(a => { const c = new Date(a.createdAt); return c.getFullYear() === yr && c.getMonth() === mo; }).length;
+                    monthData.push({ label, cnt, isCurrent: i === 0 });
+                }
+                const recent = [...allApps].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+                el.innerHTML =
+                    `<div class="admin-stats">${_astat(ICON_APP, total, 'Total Applications')}${_astat(ICON_PEND, pending, 'Pending')}${_astat(ICON_TICK, approved, 'Approved')}${_astat(ICON_REV, rejected, 'Rejected')}</div>` +
+                    _barChart(monthData, 'label', 'cnt', 'Applications — Last 6 Months', 'Submission volume by month') +
+                    `<div class="acard"><div class="acard-header"><h3>Recent Applications</h3></div>${renderTable(recent, false)}</div>`;
+
+            } else if (_adminRole === 'finance') {
+                allApps = await AppStore.getAll();
+                const payments = await AdminStore.getAllPayments();
+                const revenue = allApps.filter(a => a.paid).reduce((s, a) => s + (a.fee || 0), 0);
+                const totalPayments = payments.length;
+                const successPayments = payments.filter(p => p.status === 'SUCCESS').length;
+                const consultRev = payments.filter(p => p.type === 'CONSULTATION' && p.status === 'SUCCESS').reduce((s, p) => s + (p.amount || 0), 0);
+                el.innerHTML =
+                    `<div class="admin-stats">${_astat(ICON_REV, _fmtRev(revenue), 'Visa Revenue')}${_astat(ICON_REV, _fmtRev(consultRev), 'Consultation Revenue')}${_astat(ICON_APP, totalPayments, 'Total Payments')}${_astat(ICON_TICK, successPayments, 'Successful')}</div>` +
+                    _revChart(allApps);
+
+            } else if (_adminRole === 'consultations') {
+                const payments = await AdminStore.getAllPayments();
+                const consults = payments.filter(p => p.type === 'CONSULTATION');
+                const paid = consults.filter(p => p.status === 'SUCCESS').length;
+                const pending = consults.length - paid;
+                const revenue = consults.filter(p => p.status === 'SUCCESS').reduce((s, p) => s + (p.amount || 0), 0);
+                const now = new Date();
+                const monthData = [];
+                for (let i = 5; i >= 0; i--) {
+                    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                    const label = d.toLocaleString('en-NG', { month: 'short' });
+                    const yr = d.getFullYear(), mo = d.getMonth();
+                    const cnt = consults.filter(p => { const c = new Date(p.createdAt); return c.getFullYear() === yr && c.getMonth() === mo; }).length;
+                    monthData.push({ label, cnt });
+                }
+                el.innerHTML =
+                    `<div class="admin-stats">${_astat(ICON_CONSULT, consults.length, 'Total Consultations')}${_astat(ICON_TICK, paid, 'Paid')}${_astat(ICON_PEND, pending, 'Pending')}${_astat(ICON_REV, _fmtRev(revenue), 'Revenue')}</div>` +
+                    _barChart(monthData, 'label', 'cnt', 'Consultations — Last 6 Months', 'Bookings by month');
+
+            } else if (_adminRole === 'affiliates') {
+                const affiliates = await AffiliateStore.adminGetAll();
+                const active = affiliates.filter(a => a.status === 'approved').length;
+                const pending = affiliates.filter(a => a.status === 'pending').length;
+                const rejected = affiliates.filter(a => a.status === 'rejected').length;
+                el.innerHTML =
+                    `<div class="admin-stats">${_astat(ICON_AFF, affiliates.length, 'Total Affiliates')}${_astat(ICON_TICK, active, 'Active')}${_astat(ICON_PEND, pending, 'Pending')}${_astat(ICON_REV, rejected, 'Rejected')}</div>` +
+                    `<div class="acard"><div class="acard-header"><h3>Recent Affiliate Applications</h3></div><table><thead><tr><th>Name</th><th>Channel</th><th>Status</th><th>Joined</th></tr></thead><tbody>${affiliates.slice(0, 8).map(a => `<tr><td>${escHtml(a.name || '—')}</td><td>${escHtml(a.channel || '—')}</td><td><span class="status-pill ${a.status === 'approved' ? 'status-approved' : a.status === 'rejected' ? 'status-rejected' : 'status-received'}">${a.status || 'pending'}</span></td><td>${a.createdAt ? new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td></tr>`).join('')}</tbody></table></div>`;
+
+            } else {
+                allApps = await AppStore.getAll();
+                const approved = allApps.filter(a => ['approved', 'delivered'].includes(a.status)).length;
+                const pending = allApps.filter(a => ['received', 'processing', 'embassy'].includes(a.status)).length;
+                const revenue = allApps.filter(a => a.paid).reduce((s, a) => s + (a.fee || 0), 0);
+                const userList = await AdminStore.getUsers();
+                const users = userList.filter(u => u.role !== 'ADMIN').length;
+                const recent = [...allApps].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+                el.innerHTML =
+                    `<div class="admin-stats">${_astat(ICON_APP, allApps.length, 'Total Applications')}${_astat(ICON_PEND, pending, 'Pending')}${_astat(ICON_TICK, approved, 'Approved')}${_astat(ICON_REV, _fmtRev(revenue), 'Revenue')}${_astat(ICON_USR, users, 'Users')}</div>` +
+                    _revChart(allApps) +
+                    `<div class="acard"><div class="acard-header"><h3>Recent Applications</h3></div>${renderTable(recent, false)}</div>`;
+            }
         }
 
 
@@ -1380,7 +1417,7 @@
                 ${adminLevelCell}
                 <td class="cell-date">${new Date(u.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
                 <td><strong>${n}</strong></td>
-                <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;">${isAdmin ? '<span class="fs-xs text-muted">Protected</span>' : `<button onclick="promoteToAdmin('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}')" class="btn-promote" title="Promote to Admin"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Make Admin</button><button onclick="openDeleteUserModal('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}')" class="badge-pending" title="Delete user"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>`}</td>
+                <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;">${isAdmin ? (isSuperAdmin ? `<button onclick="openDeleteUserModal('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}', true)" class="badge-pending" title="Delete admin"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>` : '<span class="fs-xs text-muted">Protected</span>') : `<button onclick="promoteToAdmin('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}')}" class="btn-promote" title="Promote to Admin"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Make Admin</button><button onclick="openDeleteUserModal('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}')" class="badge-pending" title="Delete user"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>`}</td>
             </tr>`;
             }).join('')}</tbody></table>` + _adminBuildPager(_usersAll.length, _usersPage, 'usersGoPage');
         }
@@ -1403,13 +1440,24 @@
             }
         }
 
-        function openDeleteUserModal(id, name) {
+        let _pendingDeleteIsAdmin = false;
+        function openDeleteUserModal(id, name, isAdmin) {
             _pendingDeleteUserId = id;
+            _pendingDeleteIsAdmin = !!isAdmin;
             document.getElementById('del-user-name').textContent = name;
+            const bodyEl = document.querySelector('#delete-user-overlay .delete-modal-body');
+            if (bodyEl) {
+                if (isAdmin) {
+                    bodyEl.innerHTML = 'This will <strong>permanently remove admin access</strong> for <span class="delete-modal-note">' + name + '</span> and archive their account. This action cannot be undone.';
+                } else {
+                    bodyEl.innerHTML = 'This will <strong>anonymise</strong> <span class="delete-modal-note">' + name + '</span>\'s personal data and archive their applications. This action cannot be undone.';
+                }
+            }
             document.getElementById('delete-user-overlay').style.display = 'flex';
         }
         function closeDeleteUserModal() {
             _pendingDeleteUserId = null;
+            _pendingDeleteIsAdmin = false;
             document.getElementById('delete-user-overlay').style.display = 'none';
         }
         async function confirmDeleteUser() {
