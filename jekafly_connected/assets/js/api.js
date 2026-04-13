@@ -402,7 +402,11 @@ var AffiliateStore = {
     },
     async adminGetAll() {
         const res = await get('/admin/affiliates');
-        return res?.ok ? (res.data?.affiliates || []) : [];
+        if (!res?.ok) return [];
+        if (Array.isArray(res.data)) return res.data;
+        if (Array.isArray(res.data?.affiliates)) return res.data.affiliates;
+        if (Array.isArray(res.data?.data)) return res.data.data;
+        return [];
     },
     async adminUpdateStatus(id, status) {
         return patch(`/admin/affiliates/${id}/status`, { status });

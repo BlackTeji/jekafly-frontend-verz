@@ -815,7 +815,7 @@
             try { affiliates = await AffiliateStore.adminGetAll(); } catch (e) { }
 
             const pending = affiliates.filter(a => a.status === 'pending');
-            const active = affiliates.filter(a => a.status === 'approvedgit');
+            const active = affiliates.filter(a => a.status === 'approved');
             const allPayouts = active.flatMap(a => (a.payouts || []).map(p => ({ ...p, affiliateName: a.name, affiliateEmail: a.email })));
             const pendingPayouts = allPayouts.filter(p => p.status === 'pending');
 

@@ -909,6 +909,7 @@
         const statusColors = { received: 'status-received', processing: 'status-processing', embassy: 'status-embassy', approved: 'status-approved', delivered: 'status-delivered', rejected: 'status-rejected' };
 
         document.addEventListener('DOMContentLoaded', async () => {
+            if (window._magicTokenReady) await window._magicTokenReady;
             await Auth.init();
             currentUser = Auth.getCurrent();
             if (!currentUser) {
@@ -2689,7 +2690,7 @@
         </div>
     </div>
     <script>
-        (async function handleMagicToken() {
+        window._magicTokenReady = (async function handleMagicToken() {
             const params = new URLSearchParams(window.location.search);
             const token = params.get('magic');
             if (!token) return;
