@@ -120,7 +120,7 @@ var Auth = {
 
 
     async magicLogin(token) {
-        const res = await get('/affiliates/magic?token=' + encodeURIComponent(token));
+        const res = await get('/auth/magic?token=' + encodeURIComponent(token));
         if (res?.ok) {
             _accessToken = res.data.accessToken;
             localStorage.setItem('jkf_user', JSON.stringify(res.data.user));
@@ -402,11 +402,7 @@ var AffiliateStore = {
     },
     async adminGetAll() {
         const res = await get('/admin/affiliates');
-        if (!res?.ok) return [];
-        if (Array.isArray(res.data)) return res.data;
-        if (Array.isArray(res.data?.affiliates)) return res.data.affiliates;
-        if (Array.isArray(res.data?.data)) return res.data.data;
-        return [];
+        return res?.ok ? (res.data?.affiliates || []) : [];
     },
     async adminUpdateStatus(id, status) {
         return patch(`/admin/affiliates/${id}/status`, { status });
