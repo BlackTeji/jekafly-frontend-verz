@@ -29,6 +29,12 @@ function updateNav() {
     const ctaEl = document.querySelector('.nav-cta');
     const mCta = document.getElementById('nav-mobile-cta');
 
+    const _href = window.location.href;
+    const isDashboard = _href.includes('dashboard.html') || (window._jekafly_page === 'dashboard');
+    const isAdminPage = _href.includes('admin.html') || (window._jekafly_page === 'admin');
+    const isAffiliatePage = _href.includes('affiliate.html') || (window._jekafly_page === 'affiliate')
+        || _href.includes('affiliate-dashboard.html') || (window._jekafly_page === 'affiliate-dashboard');
+
     let desktopHtml = '', mobileHtml = '';
 
     if (user) {
@@ -40,11 +46,6 @@ function updateNav() {
           <a href="dashboard.html" class="btn-outline btn-outline-link">My Dashboard</a>
           ${isAdmin ? '<a href="admin.html" class="btn-outline btn-outline-link btn-outline-danger">Admin</a>' : ''}
           <button class="btn-primary" onclick="handleLogout()">Logout</button>`;
-
-        const _href = window.location.href;
-        const isDashboard = _href.includes('dashboard.html') || (window._jekafly_page === 'dashboard');
-        const isAdminPage = _href.includes('admin.html') || (window._jekafly_page === 'admin');
-        const isAffiliatePage = _href.includes('affiliate.html') || (window._jekafly_page === 'affiliate');
 
         mobileHtml = `
           <div class="nav-mob-menu">
@@ -311,10 +312,8 @@ async function handleRegister() {
     const email = document.getElementById('reg-email')?.value?.trim();
     const phone = document.getElementById('reg-phone')?.value?.trim();
     const pass = document.getElementById('reg-pass')?.value;
-    const confirm = document.getElementById('reg-confirm')?.value;
 
     if (!name || !email || !phone || !pass) { showToast('Please fill in all fields.', 'error'); return; }
-    if (pass !== confirm) { showToast('Passwords do not match.', 'error'); return; }
 
     const res = await Auth.register(name, email, phone, pass);
     if (!res.ok) { showToast(res.msg, 'error'); return; }
@@ -323,43 +322,11 @@ async function handleRegister() {
     updateNav();
     showToast('Account created! Welcome to Jekafly');
 
+
     if (window.JKF_afterLoginRedirect && window.JKF_afterLoginRedirect()) return;
 
     setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
 }
-
-function _strengthScore(v) {
-    let s = 0;
-    if (v.length >= 8) s++;
-    if (/[A-Z]/.test(v)) s++;
-    if (/[0-9]/.test(v)) s++;
-    if (/[^A-Za-z0-9]/.test(v)) s++;
-    return s;
-}
-function _applyStrength(prefix, v) {
-    const colors = ['#ef4444', '#f97316', '#eab308', '#16a34a'];
-    const labels = ['Weak', 'Fair', 'Good', 'Strong'];
-    const score = _strengthScore(v);
-    [1, 2, 3, 4].forEach(i => {
-        const b = document.getElementById(prefix + '-str-' + i);
-        if (b) b.style.background = i <= score ? colors[score - 1] : '#e5e7eb';
-    });
-    const lbl = document.getElementById(prefix + '-str-label');
-    if (lbl) { lbl.textContent = v.length ? (labels[score - 1] || '') : ''; lbl.style.color = score ? colors[score - 1] : '#9ca3af'; }
-}
-function _applyConfirm(passId, confirmMsgId, v) {
-    const p = document.getElementById(passId)?.value;
-    const msg = document.getElementById(confirmMsgId);
-    if (!msg) return;
-    if (!v) { msg.style.display = 'none'; return; }
-    msg.style.display = 'block';
-    if (p === v) { msg.textContent = '✓ Passwords match'; msg.style.color = '#16a34a'; }
-    else { msg.textContent = '✗ Passwords do not match'; msg.style.color = '#ef4444'; }
-}
-function modalCheckStrength() { _applyStrength('modal', document.getElementById('reg-pass')?.value || ''); modalCheckConfirm(); }
-function modalCheckConfirm() { _applyConfirm('reg-pass', 'modal-confirm-msg', document.getElementById('reg-confirm')?.value || ''); }
-function consultCheckStrength() { _applyStrength('consult', document.getElementById('consult-reg-pass')?.value || ''); consultCheckConfirm(); }
-function consultCheckConfirm() { _applyConfirm('consult-reg-pass', 'consult-confirm-msg', document.getElementById('consult-reg-confirm')?.value || ''); }
 
 function handleInsuranceModal() {
     const dest = document.getElementById('ins-dest')?.value;

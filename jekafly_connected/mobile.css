@@ -1441,6 +1441,38 @@
 
     .doc-name {
         font-size: 0.86rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .doc-slot {
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .doc-slot .fw-600 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
+        display: block;
+    }
+
+    .vault-doc-name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .vault-doc-info {
+        min-width: 0;
+        flex: 1;
+        overflow: hidden;
     }
 
     .review-grid {
@@ -2915,6 +2947,45 @@
 
     .ins-trip-fields {
         grid-template-columns: 1fr;
+    }
+
+    .form-group input[type="date"] {
+        -webkit-appearance: none;
+        appearance: none;
+        display: block;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding-right: 12px;
+    }
+
+    .form-group input[type="date"]::-webkit-date-and-time-value {
+        text-align: left;
+    }
+
+    .strength-bars {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 4px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .strength-bar {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .strength-hint {
+        font-size: 0.72rem;
+        display: block;
+        width: 100%;
+    }
+
+    #pwd-confirm-msg {
+        font-size: 0.72rem;
+        margin-top: 4px;
+        display: block;
     }
 
 }

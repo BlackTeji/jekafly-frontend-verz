@@ -1175,6 +1175,13 @@
 
             if (user) {
                 const draft = readDraft();
+
+                const referralCode = (() => {
+                    try { return sessionStorage.getItem('jkf_ref') || ''; } catch { return ''; }
+                })();
+
+                const agentSubmitted = !!(window._agentMode);
+
                 const appData = {
                     applicantName: ((draft?.personal?.firstName || '') + ' ' + (draft?.personal?.lastName || '')).trim() || user.name,
                     email: draft?.personal?.email || user.email,
@@ -1189,8 +1196,10 @@
                     passportIssueDate: draft?.personal?.passportIssueDate || '',
                     passportExpiry: draft?.personal?.passportExpiry || '',
                     travellers: travellers,
-                    fee: window._computedTotal || (feeMap[appData.destination] || 120000) + JEKAFLY_SERVICE_FEE,
+                    fee: window._computedTotal || (feeMap[dest] || 120000) + JEKAFLY_SERVICE_FEE,
                     hasDocuments: uploadedFiles.length > 0,
+                    referralCode: referralCode || undefined,
+                    agentSubmitted: agentSubmitted || undefined,
                 };
                 const result = await AppStore.create(appData);
                 if (result?.ref) {

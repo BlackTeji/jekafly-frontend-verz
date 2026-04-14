@@ -841,6 +841,199 @@
         </div>
     </div>
 
+    <!-- ── MAGIC LINK OVERLAYS ──────────────────────────────────────────────── -->
+
+    <!-- Flow A: New user — set password -->
+    <div id="afd-setpass-overlay"
+        style="display:none;position:fixed;inset:0;z-index:99996;background:rgba(10,19,60,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px;box-sizing:border-box;">
+        <div
+            style="background:#fff;border-radius:28px;padding:0;max-width:440px;width:100%;box-shadow:0 40px 100px rgba(13,21,96,0.28);overflow:hidden;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);">
+            <div
+                style="background:linear-gradient(135deg,#0D1560 0%,#1C2FBF 100%);padding:28px 32px 24px;position:relative;overflow:hidden;">
+                <div
+                    style="position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:rgba(255,255,255,0.06);border-radius:50%;">
+                </div>
+                <div
+                    style="position:absolute;right:20px;top:20px;width:60px;height:60px;background:rgba(255,255,255,0.06);border-radius:50%;">
+                </div>
+                <div
+                    style="width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;backdrop-filter:blur(4px);">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                </div>
+                <div
+                    style="font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.55);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">
+                    Affiliate Programme</div>
+                <h2
+                    style="font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:-0.03em;margin:0 0 6px;line-height:1.2;">
+                    Welcome aboard, <span id="setpass-name">there</span>! 🎉</h2>
+                <p style="font-size:0.85rem;color:rgba(255,255,255,0.65);margin:0;line-height:1.5;">You've been
+                    approved. Set a password to secure your account and access your affiliate dashboard.</p>
+            </div>
+            <div style="padding:28px 32px 32px;">
+                <div
+                    style="background:#F0F3FF;border-radius:12px;padding:12px 16px;margin-bottom:22px;display:flex;align-items:center;gap:10px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D1560" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 8v4l3 3" />
+                    </svg>
+                    <span style="font-size:0.8rem;color:#0D1560;font-weight:600;">This link expires in 72 hours</span>
+                </div>
+                <div style="margin-bottom:16px;">
+                    <label
+                        style="display:block;font-size:0.7rem;font-weight:700;color:#9AABCC;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">New
+                        Password</label>
+                    <div style="position:relative;">
+                        <input id="sp-new" type="password" placeholder="Min. 8 characters"
+                            style="width:100%;padding:13px 44px 13px 14px;border:1.5px solid #E3E5F5;border-radius:12px;font-family:'Poppins',sans-serif;font-size:0.9rem;color:#0F1124;background:#F8F9FE;outline:none;box-sizing:border-box;transition:border-color .18s;"
+                            onfocus="this.style.borderColor='#0D1560';this.style.background='#fff'"
+                            onblur="this.style.borderColor='#E3E5F5';this.style.background='#F8F9FE'"
+                            oninput="spCheckStrength(this.value)" />
+                        <button type="button"
+                            onclick="var i=document.getElementById('sp-new');i.type=i.type==='password'?'text':'password';"
+                            style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9AABCC;padding:4px;display:flex;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div style="display:flex;gap:4px;margin-top:6px;">
+                        <div id="sp-str-1"
+                            style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                        </div>
+                        <div id="sp-str-2"
+                            style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                        </div>
+                        <div id="sp-str-3"
+                            style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                        </div>
+                        <div id="sp-str-4"
+                            style="height:3px;flex:1;border-radius:2px;background:#e5e7eb;transition:background .2s;">
+                        </div>
+                    </div>
+                    <div id="sp-str-label" style="font-size:0.72rem;color:#9ca3af;margin-top:3px;"></div>
+                </div>
+                <div style="margin-bottom:22px;">
+                    <label
+                        style="display:block;font-size:0.7rem;font-weight:700;color:#9AABCC;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">Confirm
+                        Password</label>
+                    <div style="position:relative;">
+                        <input id="sp-confirm" type="password" placeholder="Repeat password"
+                            style="width:100%;padding:13px 44px 13px 14px;border:1.5px solid #E3E5F5;border-radius:12px;font-family:'Poppins',sans-serif;font-size:0.9rem;color:#0F1124;background:#F8F9FE;outline:none;box-sizing:border-box;transition:border-color .18s;"
+                            onfocus="this.style.borderColor='#0D1560';this.style.background='#fff'"
+                            onblur="this.style.borderColor='#E3E5F5';this.style.background='#F8F9FE'"
+                            oninput="spCheckConfirm()" />
+                        <button type="button"
+                            onclick="var i=document.getElementById('sp-confirm');i.type=i.type==='password'?'text':'password';"
+                            style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9AABCC;padding:4px;display:flex;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div id="sp-confirm-msg" style="font-size:0.72rem;margin-top:4px;display:none;"></div>
+                </div>
+                <p id="sp-err"
+                    style="display:none;color:#E31E24;font-size:0.82rem;margin:0 0 14px;text-align:center;font-family:'Poppins',sans-serif;">
+                </p>
+                <button id="sp-btn" onclick="handleSetPassword()"
+                    style="width:100%;padding:15px;background:linear-gradient(135deg,#0D1560,#1C2FBF);color:#fff;border:none;border-radius:14px;font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(13,21,96,0.28);letter-spacing:-0.01em;transition:opacity .2s;">
+                    Save Password &amp; Enter Dashboard →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flow B: Existing user — sign in to connect -->
+    <div id="afd-existing-overlay"
+        style="display:none;position:fixed;inset:0;z-index:99996;background:rgba(10,19,60,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px;box-sizing:border-box;">
+        <div
+            style="background:#fff;border-radius:28px;padding:0;max-width:440px;width:100%;box-shadow:0 40px 100px rgba(13,21,96,0.28);overflow:hidden;animation:popIn .4s cubic-bezier(.34,1.56,.64,1);">
+            <div
+                style="background:linear-gradient(135deg,#0D1560 0%,#1C2FBF 100%);padding:28px 32px 24px;position:relative;overflow:hidden;">
+                <div
+                    style="position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:rgba(255,255,255,0.06);border-radius:50%;">
+                </div>
+                <div
+                    style="width:48px;height:48px;background:rgba(255,255,255,0.15);border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    </svg>
+                </div>
+                <div
+                    style="font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.55);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">
+                    Affiliate Programme</div>
+                <h2
+                    style="font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:-0.03em;margin:0 0 6px;line-height:1.2;">
+                    You've been approved! 🎉</h2>
+                <p style="font-size:0.85rem;color:rgba(255,255,255,0.65);margin:0;line-height:1.5;">Your existing
+                    Jekafly account now has affiliate access. Sign in below to continue to your dashboard.</p>
+            </div>
+            <div style="padding:28px 32px 32px;">
+                <div
+                    style="background:#F0F2FF;border:1.5px solid #D4DAF8;border-radius:12px;padding:14px 16px;margin-bottom:22px;display:flex;align-items:center;gap:12px;">
+                    <div
+                        style="width:36px;height:36px;background:linear-gradient(135deg,#0D1560,#1C2FBF);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="8" r="5" />
+                            <path d="M3 21a9 9 0 0 1 18 0" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div style="font-size:0.72rem;color:#6B7280;margin-bottom:2px;">Signing in as</div>
+                        <div id="existing-email"
+                            style="font-size:0.88rem;font-weight:700;color:#0D1560;font-family:monospace;letter-spacing:0.02em;">
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom:22px;">
+                    <label
+                        style="display:block;font-size:0.7rem;font-weight:700;color:#9AABCC;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">Your
+                        Password</label>
+                    <div style="position:relative;">
+                        <input id="existing-pass" type="password" placeholder="Enter your Jekafly password"
+                            style="width:100%;padding:13px 44px 13px 14px;border:1.5px solid #E3E5F5;border-radius:12px;font-family:'Poppins',sans-serif;font-size:0.9rem;color:#0F1124;background:#F8F9FE;outline:none;box-sizing:border-box;transition:border-color .18s;"
+                            onfocus="this.style.borderColor='#0D1560';this.style.background='#fff'"
+                            onblur="this.style.borderColor='#E3E5F5';this.style.background='#F8F9FE'"
+                            onkeydown="if(event.key==='Enter')handleExistingSignIn()" />
+                        <button type="button"
+                            onclick="var i=document.getElementById('existing-pass');i.type=i.type==='password'?'text':'password';"
+                            style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9AABCC;padding:4px;display:flex;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <p id="existing-err"
+                    style="display:none;color:#E31E24;font-size:0.82rem;margin:0 0 14px;text-align:center;font-family:'Poppins',sans-serif;">
+                </p>
+                <button id="existing-btn" onclick="handleExistingSignIn()"
+                    style="width:100%;padding:15px;background:linear-gradient(135deg,#0D1560,#1C2FBF);color:#fff;border:none;border-radius:14px;font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(13,21,96,0.28);letter-spacing:-0.01em;transition:opacity .2s;">
+                    Sign In &amp; Enter Dashboard →
+                </button>
+                <div style="text-align:center;margin-top:16px;">
+                    <a href="#" onclick="handleExistingForgotPassword(event)"
+                        style="font-size:0.82rem;color:#0D1560;font-weight:600;text-decoration:none;opacity:0.7;">Forgot
+                        your password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
     <nav id="main-nav">
         <a href="/" class="nav-logo">
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
@@ -950,6 +1143,33 @@
                             <path d="M9 3v18" />
                         </svg></span>
                     My Dashboard
+                </div>
+                <div class="afd-nav-item" onclick="window.location.href='apply.html'">
+                    <span class="ni"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
+                            <rect x="9" y="3" width="6" height="4" rx="1" />
+                            <line x1="9" y1="12" x2="15" y2="12" />
+                            <line x1="9" y1="16" x2="13" y2="16" />
+                        </svg></span>
+                    Apply for Visa
+                </div>
+                <div class="afd-nav-item" onclick="window.location.href='visa.html'">
+                    <span class="ni"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                            <path d="M2 12h20" />
+                        </svg></span>
+                    Visa Requirements
+                </div>
+                <div class="afd-nav-item" onclick="window.location.href='/'">
+                    <span class="ni"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path
+                                d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z" />
+                        </svg></span>
+                    Flights &amp; Hotels
                 </div>
                 <div class="afd-nav-item" onclick="doLogout()">
                     <span class="ni"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1458,14 +1678,47 @@
         function gateLogin() { document.getElementById('afd-gate').style.display = 'none'; openModal('login'); window.JKF_afterLoginRedirect = () => { location.reload(); return true; }; }
         function gateRegister() { document.getElementById('afd-gate').style.display = 'none'; openModal('register'); window.JKF_afterLoginRedirect = () => { location.reload(); return true; }; }
 
+        function _hideLoading() { document.getElementById('afd-loading').style.display = 'none'; }
+        function _showGate() { _hideLoading(); document.getElementById('afd-gate').style.display = 'flex'; }
+        function _showNotAff(status) {
+            _hideLoading();
+            document.getElementById('afd-not-aff').style.display = 'flex';
+            const titleMap = { pending: 'Application Under Review', rejected: 'Application Not Approved' };
+            const bodyMap = {
+                pending: 'Your application is being reviewed. You will hear back within 48 hours.',
+                rejected: 'Your application was not approved. You are welcome to reapply with updated information.',
+            };
+            document.getElementById('not-aff-title').textContent = titleMap[status] || 'Not Yet an Affiliate';
+            document.getElementById('not-aff-body').textContent = bodyMap[status] || 'You don\'t have an approved affiliate account yet.';
+        }
+        function _withTimeout(promise, ms) {
+            return Promise.race([
+                promise,
+                new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), ms)),
+            ]);
+        }
+
+        const _safetyTimer = setTimeout(() => {
+            if (document.getElementById('afd-loading').style.display !== 'none') {
+                _showGate();
+            }
+        }, 12000);
+
         document.addEventListener('DOMContentLoaded', async () => {
-            await Auth.init();
+            if (typeof Auth === 'undefined') {
+                clearTimeout(_safetyTimer);
+                _showGate();
+                return;
+            }
+
+            try { await _withTimeout(Auth.init(), 8000); } catch (e) { }
+
             updateNav();
 
             const user = Auth.getCurrent();
             if (!user) {
-                document.getElementById('afd-loading').style.display = 'none';
-                document.getElementById('afd-gate').style.display = 'flex';
+                clearTimeout(_safetyTimer);
+                _showGate();
                 return;
             }
 
@@ -1479,57 +1732,167 @@
             document.getElementById('afd-greeting').textContent = greet + ', ' + user.name.split(' ')[0];
 
             try {
-                const data = await AffiliateStore.getMe();
+                const data = await _withTimeout(AffiliateStore.getMe(), 8000);
                 if (!data) throw new Error('No affiliate data');
 
                 _aff = data.affiliate || data;
                 const status = _aff.status;
 
                 if (status !== 'approved') {
-                    document.getElementById('afd-loading').style.display = 'none';
-                    const notAff = document.getElementById('afd-not-aff');
-                    notAff.style.display = 'flex';
-
-                    const titleMap = {
-                        pending: 'Application Under Review',
-                        rejected: 'Application Not Approved',
-                    };
-                    const bodyMap = {
-                        pending: 'Your application is being reviewed. You will hear back within 48 hours.',
-                        rejected: 'Your application was not approved. You are welcome to reapply with updated information.',
-                    };
-                    document.getElementById('not-aff-title').textContent = titleMap[status] || 'Not Yet an Affiliate';
-                    document.getElementById('not-aff-body').textContent = bodyMap[status] || 'You don\'t have an approved affiliate account yet.';
+                    clearTimeout(_safetyTimer);
+                    _showNotAff(status);
                     return;
                 }
 
                 _affStats = data.stats || {};
-
                 try {
-                    const pd = await AffiliateStore.getPayouts();
+                    const pd = await _withTimeout(AffiliateStore.getPayouts(), 6000);
                     _affPayouts = pd?.ok ? (pd.data?.payouts || pd.data || []) : [];
                 } catch (e) { _affPayouts = []; }
 
                 _affRefs = _affStats.referrals || _aff.referrals || [];
-
                 renderOverview();
                 renderRefsTable();
                 renderEarningsTable();
                 renderPayoutHistory();
 
             } catch (e) {
-                document.getElementById('afd-loading').style.display = 'none';
-                document.getElementById('afd-not-aff').style.display = 'flex';
+                clearTimeout(_safetyTimer);
+                _showNotAff('pending');
                 return;
             }
 
-            document.getElementById('afd-loading').style.display = 'none';
+            clearTimeout(_safetyTimer);
+            _hideLoading();
         });
     </script>
+
     <script>
         window.addEventListener('scroll', () => {
             document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20);
         });
+    </script>
+
+    <script>
+        // ── Password strength helpers ──────────────────────────────────────────
+        function spCheckStrength(val) {
+            let score = 0;
+            if (val.length >= 8) score++;
+            if (/[A-Z]/.test(val)) score++;
+            if (/[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+            const colors = ['#ef4444', '#f97316', '#eab308', '#16a34a'];
+            const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+            [1, 2, 3, 4].forEach(i => {
+                const b = document.getElementById('sp-str-' + i);
+                if (b) b.style.background = i <= score ? colors[score - 1] : '#e5e7eb';
+            });
+            const lbl = document.getElementById('sp-str-label');
+            if (lbl) { lbl.textContent = val.length ? (labels[score - 1] || '') : ''; lbl.style.color = score ? colors[score - 1] : '#9ca3af'; }
+            spCheckConfirm();
+        }
+        function spCheckConfirm() {
+            const p = document.getElementById('sp-new')?.value;
+            const c = document.getElementById('sp-confirm')?.value;
+            const msg = document.getElementById('sp-confirm-msg');
+            if (!msg || !c) { if (msg) msg.style.display = 'none'; return; }
+            msg.style.display = 'block';
+            if (p === c) { msg.textContent = '✓ Passwords match'; msg.style.color = '#16a34a'; }
+            else { msg.textContent = '✗ Passwords do not match'; msg.style.color = '#ef4444'; }
+        }
+
+        // ── Flow A: New user — set password ───────────────────────────────────
+        async function handleSetPassword() {
+            const newpass = document.getElementById('sp-new').value;
+            const confirm = document.getElementById('sp-confirm').value;
+            const err = document.getElementById('sp-err');
+            const btn = document.getElementById('sp-btn');
+            err.style.display = 'none';
+            if (newpass.length < 8) { err.textContent = 'Password must be at least 8 characters.'; err.style.display = 'block'; return; }
+            if (newpass !== confirm) { err.textContent = 'Passwords do not match.'; err.style.display = 'block'; return; }
+            btn.disabled = true; btn.textContent = 'Saving…';
+            const res = await post('/auth/set-password', { newPassword: newpass });
+            if (res?.ok) {
+                document.getElementById('afd-setpass-overlay').style.display = 'none';
+                document.body.style.overflow = '';
+                showToast('Password set! Welcome to Jekafly Affiliates.');
+                location.reload();
+            } else {
+                err.textContent = res?.error || 'Failed to set password. Please try again.';
+                err.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Save Password & Enter Dashboard →';
+            }
+        }
+
+        // ── Flow B: Existing user — sign in ───────────────────────────────────
+        let _magicEmail = '';
+        async function handleExistingSignIn() {
+            const pass = document.getElementById('existing-pass').value;
+            const err = document.getElementById('existing-err');
+            const btn = document.getElementById('existing-btn');
+            err.style.display = 'none';
+            if (!pass) { err.textContent = 'Please enter your password.'; err.style.display = 'block'; return; }
+            btn.disabled = true; btn.textContent = 'Signing in…';
+            const res = await Auth.login(_magicEmail, pass);
+            if (res?.ok) {
+                document.getElementById('afd-existing-overlay').style.display = 'none';
+                document.body.style.overflow = '';
+                showToast('Welcome back! Your affiliate access is ready.');
+                location.reload();
+            } else {
+                err.textContent = res?.msg || 'Incorrect password. Please try again.';
+                err.style.display = 'block';
+                btn.disabled = false;
+                btn.textContent = 'Sign In & Enter Dashboard →';
+            }
+        }
+        async function handleExistingForgotPassword(e) {
+            e.preventDefault();
+            const btn = e.target;
+            btn.textContent = 'Sending…';
+            await post('/auth/forgot-password', { email: _magicEmail });
+            btn.textContent = 'Reset email sent ✓';
+            setTimeout(() => { btn.textContent = 'Forgot your password?'; }, 4000);
+        }
+
+        // ── Magic token handler ───────────────────────────────────────────────
+        (async function handleMagicToken() {
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('magic');
+            if (!token) return;
+
+            window.history.replaceState({}, '', 'affiliate-dashboard.html');
+
+            let res;
+            try {
+                res = await _withTimeout(Auth.magicLogin(token), 10000);
+            } catch (e) {
+                showToast('Sign-in link expired. Please log in manually.', 'error');
+                return;
+            }
+
+            if (!res || !res.ok) {
+                showToast(res?.msg || 'Sign-in link expired. Please log in manually.', 'error');
+                return;
+            }
+
+            updateNav();
+            document.body.style.overflow = 'hidden';
+
+            if (res.isNewUser) {
+
+                const name = res.user?.name?.split(' ')[0] || 'there';
+                document.getElementById('setpass-name').textContent = name;
+                document.getElementById('afd-setpass-overlay').style.display = 'flex';
+            } else {
+
+                _magicEmail = res.user?.email || '';
+                document.getElementById('existing-email').textContent = _magicEmail;
+                await Auth.logout();
+                document.getElementById('afd-existing-overlay').style.display = 'flex';
+            }
+        })();
     </script>
 </body>
 

@@ -124,7 +124,7 @@ var Auth = {
         if (res?.ok) {
             _accessToken = res.data.accessToken;
             localStorage.setItem('jkf_user', JSON.stringify(res.data.user));
-            return { ok: true, user: res.data.user, mustSetPassword: res.data.mustSetPassword };
+            return { ok: true, user: res.data.user, mustSetPassword: res.data.mustSetPassword, isNewUser: res.data.isNewUser };
         }
         return { ok: false, msg: res?.error || 'Invalid or expired link.' };
     },
