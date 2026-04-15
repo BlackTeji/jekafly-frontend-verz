@@ -1360,31 +1360,44 @@
 
         async function updateStatus() {
             if (!selectedApp) return;
+            const ref = selectedApp.ref;
+            const s = document.getElementById('new-status')?.value;
+            const note = document.getElementById('status-note')?.value?.trim() || 'Status updated by admin.';
             const btn = document.querySelector('.btn-update-status');
-            const resetBtn = () => {
-                if (btn) { btn.disabled = false; btn.innerHTML = 'Update Status <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>'; }
-            };
+
             if (btn) { btn.disabled = true; btn.textContent = 'Updating...'; }
+
+            const resetBtn = () => {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = 'Update Status <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+                }
+            };
+
+            let res = null;
             try {
-                const s = document.getElementById('new-status').value;
-                const note = document.getElementById('status-note').value.trim() || 'Status updated by admin.';
-                const res = await AppStore.updateStatus(selectedApp.ref, s, note);
-                if (!res) {
-                    showToast('Failed to update status.', 'error');
-                    resetBtn();
-                    return;
-                }
-                showToast('Status updated to "' + (SL[s] || s) + '"');
-                closeDetail();
-                try {
-                    allApps = await AppStore.getAll();
-                    renderFiltered();
-                } catch (e) {
-                    console.error('Reload error:', e);
-                }
+                res = await AppStore.updateStatus(ref, s, note);
             } catch (e) {
-                showToast('Something went wrong. Please try again.', 'error');
+                console.error('[updateStatus] Error:', e);
+                showToast('Network error. Please check your connection and try again.', 'error');
                 resetBtn();
+                return;
+            }
+
+            if (!res) {
+                showToast('Failed to update status. Please try again.', 'error');
+                resetBtn();
+                return;
+            }
+
+            showToast('Status updated to "' + (SL[s] || s) + '"');
+            closeDetail();
+
+            try {
+                allApps = await AppStore.getAll();
+                renderFiltered();
+            } catch (e) {
+                console.error('[updateStatus] Reload error:', e);
             }
         }
 

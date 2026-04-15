@@ -7,12 +7,24 @@ async function apiFetch(method, path, body, isFormData = false) {
     if (!isFormData) headers['Content-Type'] = 'application/json';
     if (_accessToken) headers['Authorization'] = `Bearer ${_accessToken}`;
 
-    const res = await fetch(API_BASE + path, {
-        method,
-        credentials: 'include',
-        headers,
-        body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
-    });
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 20000);
+
+    let res;
+    try {
+        res = await fetch(API_BASE + path, {
+            method,
+            credentials: 'include',
+            headers,
+            body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
+            signal: controller.signal,
+        });
+    } catch (err) {
+        clearTimeout(timer);
+        console.error('[apiFetch] Network error:', method, path, err.message);
+        return null;
+    }
+    clearTimeout(timer);
 
     if (res.status === 401 && path !== '/auth/refresh') {
         const refreshed = await fetch(API_BASE + '/auth/refresh', {
@@ -31,7 +43,12 @@ async function apiFetch(method, path, body, isFormData = false) {
         return null;
     }
 
-    return res.json();
+    try {
+        return await res.json();
+    } catch (err) {
+        console.error('[apiFetch] JSON parse error:', method, path, res.status);
+        return null;
+    }
 }
 
 var get = (path) => apiFetch('GET', path);
