@@ -1705,6 +1705,41 @@
         }, 12000);
 
         document.addEventListener('DOMContentLoaded', async () => {
+            // ── Magic token: handle FIRST before any auth gate ────────────────
+            const _magicParams = new URLSearchParams(window.location.search);
+            const _magicToken = _magicParams.get('magic');
+            if (_magicToken) {
+                window.history.replaceState({}, '', '/affiliate-dashboard');
+                clearTimeout(_safetyTimer);
+                document.getElementById('afd-loading').style.display = 'none';
+                let res;
+                try {
+                    res = await _withTimeout(Auth.magicLogin(_magicToken), 10000);
+                } catch (e) {
+                    showToast('Sign-in link expired. Please log in manually.', 'error');
+                    _showGate();
+                    return;
+                }
+                if (!res || !res.ok) {
+                    showToast(res?.msg || 'Sign-in link expired. Please log in manually.', 'error');
+                    _showGate();
+                    return;
+                }
+                updateNav();
+                document.body.style.overflow = 'hidden';
+                if (res.isNewUser) {
+                    const name = res.user?.name?.split(' ')[0] || 'there';
+                    document.getElementById('setpass-name').textContent = name;
+                    document.getElementById('afd-setpass-overlay').style.display = 'flex';
+                } else {
+                    _magicEmail = res.user?.email || '';
+                    document.getElementById('existing-email').textContent = _magicEmail;
+                    await Auth.logout();
+                    document.getElementById('afd-existing-overlay').style.display = 'flex';
+                }
+                return;
+            }
+
             if (typeof Auth === 'undefined') {
                 clearTimeout(_safetyTimer);
                 _showGate();
@@ -1856,43 +1891,7 @@
             setTimeout(() => { btn.textContent = 'Forgot your password?'; }, 4000);
         }
 
-        // ── Magic token handler ───────────────────────────────────────────────
-        (async function handleMagicToken() {
-            const params = new URLSearchParams(window.location.search);
-            const token = params.get('magic');
-            if (!token) return;
 
-            window.history.replaceState({}, '', '/affiliate-dashboard');
-
-            let res;
-            try {
-                res = await _withTimeout(Auth.magicLogin(token), 10000);
-            } catch (e) {
-                showToast('Sign-in link expired. Please log in manually.', 'error');
-                return;
-            }
-
-            if (!res || !res.ok) {
-                showToast(res?.msg || 'Sign-in link expired. Please log in manually.', 'error');
-                return;
-            }
-
-            updateNav();
-            document.body.style.overflow = 'hidden';
-
-            if (res.isNewUser) {
-
-                const name = res.user?.name?.split(' ')[0] || 'there';
-                document.getElementById('setpass-name').textContent = name;
-                document.getElementById('afd-setpass-overlay').style.display = 'flex';
-            } else {
-
-                _magicEmail = res.user?.email || '';
-                document.getElementById('existing-email').textContent = _magicEmail;
-                await Auth.logout();
-                document.getElementById('afd-existing-overlay').style.display = 'flex';
-            }
-        })();
     </script>
 </body>
 
