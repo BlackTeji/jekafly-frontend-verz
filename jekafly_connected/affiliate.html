@@ -46,7 +46,7 @@
         <div class="nav-links">
             <a href="/">Home</a>
             <a href="/#services">Services</a>
-            <a href="visa.html">Visa Application</a>
+            <a href="/visa">Visa Application</a>
         </div>
         <div class="nav-cta" id="nav-cta-area"></div>
         <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
@@ -88,7 +88,7 @@
                     <polyline points="9 18 15 12 9 6" />
                 </svg>
             </a>
-            <a href="visa.html" onclick="closeNavMenu()" class="nav-mob-row">
+            <a href="/visa" onclick="closeNavMenu()" class="nav-mob-row">
                 <span class="nav-mob-row-icon" style="background:#FFF9DB;color:#E67700;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -618,7 +618,7 @@
 
         function buildStatusPanel(aff, stats) {
             const refCode = aff.referralCode || aff.code || '';
-            const refLink = window.location.origin + '/apply.html?ref=' + refCode;
+            const refLink = window.location.origin + '/apply?ref=' + refCode;
             const clicks = stats.clicks || 0;
             const conversions = stats.conversions || 0;
             const earned = stats.totalEarned || 0;

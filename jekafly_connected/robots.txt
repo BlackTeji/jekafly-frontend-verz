@@ -4,10 +4,10 @@ Allow: /visa
 Allow: /hotels
 Allow: /apply
 Allow: /affiliate
-Disallow: /dashboard.html
-Disallow: /admin.html
-Disallow: /payment.html
-Disallow: /survey.html
-Disallow: /assets/css/
-Disallow: /assets/js/
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /payment
+Disallow: /survey
+Disallow: /affiliate-dashboard
+Disallow: /login
 Sitemap: https://jekafly.com/sitemap.xml

@@ -2990,6 +2990,40 @@
 
 }
 
+.dest-card-name {
+    font-size: 0.95rem;
+    line-height: 1.2;
+}
+
+.dest-card-ref {
+    font-size: 0.72rem;
+    line-height: 1.4;
+    white-space: normal;
+}
+
+.dest-card-amount {
+    text-align: left;
+    margin-top: 8px;
+}
+
+#ins-date {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.fees-price-grid {
+    grid-template-columns: 1fr !important;
+}
+
+.fees-pricing-block {
+    overflow: hidden;
+}
+
+.success-modal {
+    padding: 22px 18px 18px !important;
+}
+
 @media (max-width: 390px) {
 
     .hero h1 {
@@ -3102,41 +3136,4 @@
         color: #dc2626;
     }
 
-}
-
-
-.dest-card-name {
-    font-size: 0.95rem;
-    line-height: 1.2;
-}
-
-.dest-card-ref {
-    font-size: 0.72rem;
-    line-height: 1.4;
-    white-space: normal;
-}
-
-.dest-card-amount {
-    text-align: left;
-    margin-top: 8px;
-}
-
-@media (max-width: 768px) {
-    #ins-date {
-        width: 100% !important;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    .fees-price-grid {
-        grid-template-columns: 1fr !important;
-    }
-
-    .fees-pricing-block {
-        overflow: hidden;
-    }
-
-    .success-modal {
-        padding: 22px 18px 18px !important;
-    }
 }

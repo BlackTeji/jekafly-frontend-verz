@@ -77,13 +77,13 @@
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly Logo" />
         </a>
         <div class="nav-links" id="nav-links">
-            <a href="visa.html" class="nav-active" onclick="closeNavMenu()">Visa Application</a>
-            <a href="flights.html" onclick="closeNavMenu()">Flights</a>
-            <a href="hotels.html" onclick="closeNavMenu()">Hotels</a>
+            <a href="/visa" class="nav-active" onclick="closeNavMenu()">Visa Application</a>
+            <a href="/flights" onclick="closeNavMenu()">Flights</a>
+            <a href="/hotels" onclick="closeNavMenu()">Hotels</a>
             <a href="#insurance" onclick="closeNavMenu()">Insurance</a>
             <a href="#track" onclick="closeNavMenu()">Track Visa</a>
             <a href="#" onclick="openConsultModal();closeNavMenu()">Travel Consultation</a>
-            <a href="affiliate.html" class="nav-affiliate-link"><svg xmlns="http://www.w3.org/2000/svg" width="18"
+            <a href="/affiliate" class="nav-affiliate-link"><svg xmlns="http://www.w3.org/2000/svg" width="18"
                     height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="m11 17 2 2a1 1 0 1 0 3-3" />
@@ -110,7 +110,7 @@
 
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
         <div class="nav-mob-list">
-            <a href="visa.html" onclick="closeNavMenu()" class="nav-mob-row nav-mob-row--active">
+            <a href="/visa" onclick="closeNavMenu()" class="nav-mob-row nav-mob-row--active">
                 <span class="nav-mob-row-icon" style="background:#F3F0FF; color:#7048E8;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -124,7 +124,7 @@
                     <polyline points="9 18 15 12 9 6" />
                 </svg>
             </a>
-            <a href="flights.html" onclick="closeNavMenu()" class="nav-mob-row">
+            <a href="/flights" onclick="closeNavMenu()" class="nav-mob-row">
                 <span class="nav-mob-row-icon" style="background:#E0F7FA; color:#0891B2;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -138,7 +138,7 @@
                     <polyline points="9 18 15 12 9 6" />
                 </svg>
             </a>
-            <a href="hotels.html" onclick="closeNavMenu()" class="nav-mob-row">
+            <a href="/hotels" onclick="closeNavMenu()" class="nav-mob-row">
                 <span class="nav-mob-row-icon" style="background:#FFF3E0; color:#E65100;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -196,7 +196,7 @@
             </a>
         </div>
         <div class="nav-mob-footer" id="nav-mobile-cta">
-            <a href="affiliate.html" onclick="closeNavMenu()" class="nav-mob-admin-btn">
+            <a href="/affiliate" onclick="closeNavMenu()" class="nav-mob-admin-btn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -258,7 +258,7 @@
                 <div class="hero-stat"><strong>Fast</strong><span>Processing</span></div>
             </div>
             <div class="hero-actions">
-                <button class="btn-hero btn-hero-primary" onclick="window.location.href='apply.html'">Start Application
+                <button class="btn-hero btn-hero-primary" onclick="window.location.href='/apply'">Start Application
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
@@ -331,7 +331,7 @@
                         <polyline points="12 5 19 12 12 19" />
                     </svg></div>
             </div>
-            <div class="service-card" onclick="window.location.href='hotels.html'">
+            <div class="service-card" onclick="window.location.href='/hotels'">
                 <div class="service-icon-bg">
                     <div class="service-icon"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
                             viewBox="0 0 256 256" fill="currentColor">
@@ -457,7 +457,7 @@
                     <ul class="result-items" id="result-list"></ul>
                     <div class="checker-result-cta">
                         <button class="btn-check btn-check-sm"
-                            onclick="window.location.href='apply.html?dest='+encodeURIComponent(getSelectValue('c-to')||'')">
+                            onclick="window.location.href='/apply?dest='+encodeURIComponent(getSelectValue('c-to')||'')">
                             Apply for This Visa
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -812,7 +812,7 @@
             <p>Join thousands of travellers who simplified their journey with Jekafly.</p>
         </div>
         <div class="cta-actions">
-            <button class="btn-hero btn-hero-primary" onclick="window.location.href='apply.html'">Start Application
+            <button class="btn-hero btn-hero-primary" onclick="window.location.href='/apply'">Start Application
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                     stroke-linecap="round" stroke-linejoin="round">
                     <line x1="5" y1="12" x2="19" y2="12" />
@@ -860,12 +860,12 @@
             </div>
             <div class="footer-col">
                 <h4>Quick Links</h4>
-                <a href="apply.html">Visa Application</a>
+                <a href="/apply">Visa Application</a>
                 <a href="#insurance">Travel Insurance</a>
                 <a href="#track">Track Visa</a>
-                <a href="apply.html">Document Support</a>
+                <a href="/apply">Document Support</a>
                 <a href="/">Flight Booking</a>
-                <a href="hotels.html">Hotel Reservations</a>
+                <a href="/hotels">Hotel Reservations</a>
             </div>
             <div class="footer-col">
                 <h4>Destinations</h4>
@@ -1735,7 +1735,7 @@
                 amount: pkg.amount,
                 email: email,
             }));
-            window.location.href = 'payment.html';
+            window.location.href = '/payment';
         }
     </script>
 

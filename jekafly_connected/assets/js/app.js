@@ -960,7 +960,8 @@ var visaRequirements = window.visaRequirements = {
     "Libya": {
         flag: "🇱🇾", region: "Africa", type: "Visa Required",
         fee: "Varies", processing: "Variable",
-        docs: ["Valid passport (6+ months)", "Visa application form", "Invitation letter from Libya (required)", "Passport photo", "Bank statements", "Return ticket", "⚠️ Travel to Libya is not recommended due to ongoing instability"]
+        warning: "Travel to Libya is not recommended due to ongoing instability.",
+        docs: ["Valid passport (6+ months)", "Visa application form", "Invitation letter from Libya (required)", "Passport photo", "Bank statements", "Return ticket"]
     },
     "Madagascar": {
         flag: "🇲🇬", region: "Africa", type: "Visa on Arrival",
@@ -1035,7 +1036,8 @@ var visaRequirements = window.visaRequirements = {
     "Somalia": {
         flag: "🇸🇴", region: "Africa", type: "Visa on Arrival",
         fee: "$60", processing: "On arrival",
-        docs: ["Valid passport", "Return/onward ticket", "Invitation letter (recommended)", "⚠️ Travel not recommended due to security concerns"]
+        warning: "Travel to Somalia is not recommended due to ongoing security concerns.",
+        docs: ["Valid passport", "Return/onward ticket", "Invitation letter (recommended)"]
     },
     "South Africa": {
         flag: "🇿🇦", region: "Africa", type: "Visa Required",
@@ -1102,7 +1104,8 @@ var visaRequirements = window.visaRequirements = {
     "Israel": {
         flag: "🇮🇱", region: "Middle East", type: "Visa on Arrival",
         fee: "Free", processing: "On arrival",
-        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds", "Evidence of purpose of visit", "⚠️ Entry may be denied at discretion of border officers"]
+        warning: "Entry may be denied at the discretion of border officers.",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds", "Evidence of purpose of visit"]
     },
     "Jordan": {
         flag: "🇯🇴", region: "Middle East", type: "Visa on Arrival",
@@ -1117,7 +1120,8 @@ var visaRequirements = window.visaRequirements = {
     "Lebanon": {
         flag: "🇱🇧", region: "Middle East", type: "Visa on Arrival",
         fee: "$17", processing: "On arrival",
-        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds", "⚠️ Entry conditions variable — check before travel"]
+        warning: "Entry conditions are variable — check current status before travel.",
+        docs: ["Valid passport (6+ months)", "Return/onward ticket", "Proof of accommodation", "Sufficient funds"]
     },
     "Oman": {
         flag: "🇴🇲", region: "Middle East", type: "eVisa Required",
@@ -1127,7 +1131,8 @@ var visaRequirements = window.visaRequirements = {
     "Palestine": {
         flag: "🇵🇸", region: "Middle East", type: "Coordinated via Israel",
         fee: "Varies", processing: "Via Israeli border control",
-        docs: ["Valid passport (6+ months)", "Onward/return ticket", "Proof of accommodation", "⚠️ Entry subject to Israeli border controls"]
+        warning: "Entry is subject to Israeli border controls.",
+        docs: ["Valid passport (6+ months)", "Onward/return ticket", "Proof of accommodation"]
     },
     "Qatar": {
         flag: "🇶🇦", region: "Middle East", type: "Visa on Arrival / eVisa",
@@ -1142,7 +1147,8 @@ var visaRequirements = window.visaRequirements = {
     "Syria": {
         flag: "🇸🇾", region: "Middle East", type: "Visa Required",
         fee: "$70", processing: "Variable",
-        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation or sponsorship letter from Syria", "⚠️ Travel to Syria is not recommended due to ongoing conflict"]
+        warning: "Travel to Syria is not recommended due to ongoing conflict.",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation or sponsorship letter from Syria"]
     },
     "Turkey": {
         flag: "🇹🇷", region: "Middle East / Europe", type: "eVisa Required",
@@ -1157,14 +1163,16 @@ var visaRequirements = window.visaRequirements = {
     "Yemen": {
         flag: "🇾🇪", region: "Middle East", type: "Visa Required",
         fee: "$60", processing: "Variable",
-        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation letter from Yemen", "⚠️ Travel to Yemen not recommended due to ongoing conflict"]
+        warning: "Travel to Yemen is not recommended due to ongoing conflict.",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation letter from Yemen"]
     },
 
     // ── ASIA ─────────────────────────────────────────────────
     "Afghanistan": {
         flag: "🇦🇫", region: "Asia", type: "Visa Required",
         fee: "$50", processing: "Variable",
-        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation letter or proof of purpose", "⚠️ Travel to Afghanistan not recommended"]
+        warning: "Travel to Afghanistan is not recommended.",
+        docs: ["Valid passport (6+ months)", "Application form", "Passport photo", "Invitation letter or proof of purpose"]
     },
     "Armenia": {
         flag: "🇦🇲", region: "Asia", type: "eVisa / Visa on Arrival",
@@ -1264,7 +1272,8 @@ var visaRequirements = window.visaRequirements = {
     "North Korea": {
         flag: "🇰🇵", region: "Asia", type: "Visa Required (via tour only)",
         fee: "Varies", processing: "Via authorized tour operator",
-        docs: ["Valid passport", "Organized tour with authorized operator", "Visa approval from North Korean authorities", "⚠️ Extremely limited tourist access — consult embassy"]
+        warning: "Access is extremely limited — consult the nearest embassy before planning travel.",
+        docs: ["Valid passport", "Organized tour with authorized operator", "Visa approval from North Korean authorities"]
     },
     "Pakistan": {
         flag: "🇵🇰", region: "Asia", type: "eVisa Required",
@@ -2121,4 +2130,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (ret) { window.location.href = decodeURIComponent(ret); return true; }
         return false;
     };
+})();
+
+(function () {
+    try {
+        const ref = new URLSearchParams(window.location.search).get('ref');
+        if (ref) sessionStorage.setItem('jkf_ref', ref);
+    } catch (e) { }
 })();

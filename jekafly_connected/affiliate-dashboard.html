@@ -815,7 +815,7 @@
                 <button class="afd-gate-btn-primary" onclick="gateLogin()">Sign In</button>
                 <button class="afd-gate-btn-secondary" onclick="gateRegister()">Create Account</button>
             </div>
-            <a href="affiliate.html" class="afd-gate-back">← Apply to become an affiliate</a>
+            <a href="/affiliate" class="afd-gate-back">← Apply to become an affiliate</a>
         </div>
     </div>
 
@@ -833,9 +833,9 @@
             <div class="afd-gate-sub" id="not-aff-body">You don't have an approved affiliate account yet. Apply to join
                 the programme and start earning.</div>
             <div class="afd-gate-btns">
-                <a href="affiliate.html#apply" class="afd-gate-btn-primary"
+                <a href="/affiliate#apply" class="afd-gate-btn-primary"
                     style="display:block;text-decoration:none;">Apply Now</a>
-                <a href="dashboard.html" class="afd-gate-btn-secondary" style="display:block;text-decoration:none;">Go
+                <a href="/dashboard" class="afd-gate-btn-secondary" style="display:block;text-decoration:none;">Go
                     to My Dashboard</a>
             </div>
         </div>
@@ -1136,7 +1136,7 @@
                     Tiers &amp; Rates
                 </div>
                 <div class="afd-nav-section">Account</div>
-                <div class="afd-nav-item" onclick="window.location.href='dashboard.html'">
+                <div class="afd-nav-item" onclick="window.location.href='/dashboard'">
                     <span class="ni"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -1144,7 +1144,7 @@
                         </svg></span>
                     My Dashboard
                 </div>
-                <div class="afd-nav-item" onclick="window.location.href='apply.html'">
+                <div class="afd-nav-item" onclick="window.location.href='/apply'">
                     <span class="ni"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2" />
@@ -1154,7 +1154,7 @@
                         </svg></span>
                     Apply for Visa
                 </div>
-                <div class="afd-nav-item" onclick="window.location.href='visa.html'">
+                <div class="afd-nav-item" onclick="window.location.href='/visa'">
                     <span class="ni"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10" />
@@ -1493,7 +1493,7 @@
             const stats = _affStats || {};
             const refs = stats.conversions || stats.totalReferrals || 0;
             const tier = tierInfo(refs);
-            const refLink = window.location.origin + '/apply.html?ref=' + (_aff.referralCode || _aff.code || '');
+            const refLink = window.location.origin + '/apply?ref=' + (_aff.referralCode || _aff.code || '');
             const balance = stats.balance || _aff.balance || 0;
 
             document.getElementById('afd-s-clicks').textContent = stats.clicks || 0;
@@ -1862,7 +1862,7 @@
             const token = params.get('magic');
             if (!token) return;
 
-            window.history.replaceState({}, '', 'affiliate-dashboard.html');
+            window.history.replaceState({}, '', '/affiliate-dashboard');
 
             let res;
             try {

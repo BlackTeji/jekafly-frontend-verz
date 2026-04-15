@@ -24,13 +24,13 @@
 <body>
 
     <nav id="main-nav">
-        <a href="index.html" class="nav-logo">
+        <a href="/" class="nav-logo">
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" />
         </a>
         <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="index.html#visa">Visa Application</a>
-            <a href="apply.html">Apply</a>
+            <a href="/">Home</a>
+            <a href="/visa">Visa Application</a>
+            <a href="/apply">Apply</a>
         </div>
         <div class="nav-cta" id="nav-cta-area"></div>
         <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
@@ -44,7 +44,7 @@
     </nav>
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
         <div class="nav-mob-list">
-            <a href="index.html" onclick="closeNavMenu()" class="nav-mob-row">
+            <a href="/" onclick="closeNavMenu()" class="nav-mob-row">
                 <span class="nav-mob-row-icon" style="background:#EEF2FF;color:#3B5BDB;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -58,7 +58,7 @@
                     <polyline points="9 18 15 12 9 6" />
                 </svg>
             </a>
-            <a href="index.html#visa" onclick="closeNavMenu()" class="nav-mob-row">
+            <a href="/visa" onclick="closeNavMenu()" class="nav-mob-row">
                 <span class="nav-mob-row-icon" style="background:#F3F0FF;color:#7048E8;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -72,7 +72,7 @@
                     <polyline points="9 18 15 12 9 6" />
                 </svg>
             </a>
-            <a href="apply.html" onclick="closeNavMenu()" class="nav-mob-row">
+            <a href="/apply" onclick="closeNavMenu()" class="nav-mob-row">
                 <span class="nav-mob-row-icon" style="background:#EBFBEE;color:#2F9E44;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -272,7 +272,7 @@
 
     <script>
         const params = new URLSearchParams(window.location.search);
-        const returnUrl = params.get('return') || 'dashboard.html';
+        const returnUrl = params.get('return') || '/dashboard';
 
         document.getElementById('btn-login')?.addEventListener('click', async () => {
             const email = document.getElementById('login-email')?.value.trim();
@@ -288,7 +288,7 @@
                 btn.innerHTML = 'Welcome back! <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>';
                 showToast('Welcome back!');
                 setTimeout(() => {
-                    window.location.href = res.user.role === 'ADMIN' ? 'admin.html' : decodeURIComponent(returnUrl);
+                    window.location.href = res.user.role === 'ADMIN' ? '/admin' : decodeURIComponent(returnUrl);
                 }, 600);
             } else {
                 btn.disabled = false;
@@ -364,7 +364,7 @@
             await Auth.init();
             const user = Auth.getCurrent();
             if (user) {
-                window.location.href = user.role === 'ADMIN' ? 'admin.html' : decodeURIComponent(returnUrl);
+                window.location.href = user.role === 'ADMIN' ? '/admin' : decodeURIComponent(returnUrl);
                 return;
             }
             updateNav();

@@ -77,8 +77,8 @@
         </a>
         <div class="nav-links">
             <a href="/" onclick="closeNavMenu()">Home</a>
-            <a href="visa.html" onclick="closeNavMenu()">Visa Application</a>
-            <a href="dashboard.html" onclick="closeNavMenu()">My Applications</a>
+            <a href="/visa" onclick="closeNavMenu()">Visa Application</a>
+            <a href="/dashboard" onclick="closeNavMenu()">My Applications</a>
         </div>
         <div class="nav-cta" id="nav-cta-area"></div>
         <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
@@ -92,8 +92,8 @@
     </nav>
     <div class="nav-mobile-drawer" id="nav-mobile-drawer">
         <a href="/" onclick="closeNavMenu()">Home</a>
-        <a href="visa.html" onclick="closeNavMenu()">Visa Application</a>
-        <a href="dashboard.html" onclick="closeNavMenu()">My Applications</a>
+        <a href="/visa" onclick="closeNavMenu()">Visa Application</a>
+        <a href="/dashboard" onclick="closeNavMenu()">My Applications</a>
         <div class="nav-mob-footer" id="nav-mobile-cta"></div>
     </div>
     <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
@@ -1211,20 +1211,20 @@
                     }));
                     saveApplicantProfile(appData);
                     clearDraft();
-                    window.location.href = 'payment.html';
+                    window.location.href = '/payment';
                 } else { showToast?.('Something went wrong. Please try again.', 'error'); }
                 return;
             }
             const draftId = getDraftId();
             localStorage.setItem(CLAIM_KEY, draftId);
-            const returnUrl = encodeURIComponent(`apply.html?claim=${encodeURIComponent(draftId)}`);
-            window.location.href = `login.html?return=${returnUrl}`;
+            const returnUrl = encodeURIComponent(`/apply?claim=${encodeURIComponent(draftId)}`);
+            window.location.href = `/login?return=${returnUrl}`;
         }
 
         function goToLoginClaim() {
             const draftId = localStorage.getItem(CLAIM_KEY) || getDraftId();
-            const returnUrl = encodeURIComponent(`apply.html?claim=${encodeURIComponent(draftId)}`);
-            window.location.href = `visa.html?return=${returnUrl}`;
+            const returnUrl = encodeURIComponent(`/apply?claim=${encodeURIComponent(draftId)}`);
+            window.location.href = `/visa?return=${returnUrl}`;
         }
 
         function claimIfNeeded() {

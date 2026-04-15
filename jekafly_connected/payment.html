@@ -39,7 +39,7 @@
 
     <nav id="main-nav">
         <a href="/" class="nav-logo"><img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" /></a>
-        <div class="nav-links"><a href="/">Home</a><a href="dashboard.html">My Dashboard</a></div>
+        <div class="nav-links"><a href="/">Home</a><a href="/dashboard">My Dashboard</a></div>
         <div class="nav-cta" id="nav-cta-area"></div>
         <button class="nav-toggle" id="nav-toggle" onclick="toggleNavMenu()" aria-label="Menu">
             <span class="nav-burger" id="nav-burger"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -66,7 +66,7 @@
                     <polyline points="9 18 15 12 9 6" />
                 </svg>
             </a>
-            <a href="dashboard.html" onclick="closeNavMenu()" class="nav-mob-row">
+            <a href="/dashboard" onclick="closeNavMenu()" class="nav-mob-row">
                 <span class="nav-mob-row-icon" style="background:#F3F0FF;color:#7048E8;">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -101,7 +101,7 @@
             <p>Your application is now active and under expert review. A confirmation email has been sent to you.</p>
             <div class="receipt" id="receipt-box"></div>
             <div class="success-actions">
-                <button class="btn-dashboard" onclick="window.location.href='dashboard.html'">Go to My Dashboard
+                <button class="btn-dashboard" onclick="window.location.href='/dashboard'">Go to My Dashboard
                     &rarr;</button>
                 <button class="btn-home" onclick="window.location.href='/'">Back to Home</button>
             </div>
@@ -132,7 +132,7 @@
             try { pendingPayment = JSON.parse(localStorage.getItem('jkf_pending_payment')); } catch { }
             if (!pendingPayment) {
                 document.getElementById('pay-root').innerHTML =
-                    '<div class="pay-box pay-empty"><div class="pay-empty-icon">&#128533;</div><h2>No pending payment</h2><p>Start a new application to proceed to payment.</p><button class="btn-start" onclick="window.location.href=\'apply.html\'">Start Application</button></div>';
+                    '<div class="pay-box pay-empty"><div class="pay-empty-icon">&#128533;</div><h2>No pending payment</h2><p>Start a new application to proceed to payment.</p><button class="btn-start" onclick="window.location.href=\'/apply\'">Start Application</button></div>';
                 return;
             }
             renderLayout();
@@ -274,7 +274,7 @@
                     document.querySelector('.success-modal p').textContent = 'Your consultation fee has been received. Click below to pick your booking time.';
                     document.querySelector('.btn-dashboard').textContent = 'Pick a Booking Time →';
                     document.querySelector('.btn-dashboard').onclick = function () {
-                        window.location.href = 'dashboard.html?tab=documents&consult_ref=' + encodeURIComponent(ref);
+                        window.location.href = '/dashboard?tab=documents&consult_ref=' + encodeURIComponent(ref);
                     };
                 }
                 document.getElementById('pay-success-overlay').classList.add('show');
@@ -340,7 +340,7 @@
                     document.querySelector('.success-modal p').textContent = 'Your consultation fee has been received. Click below to pick your booking time.';
                     document.querySelector('.btn-dashboard').textContent = 'Pick a Booking Time →';
                     document.querySelector('.btn-dashboard').onclick = function () {
-                        window.location.href = 'dashboard.html?tab=documents&consult_ref=' + encodeURIComponent(reference);
+                        window.location.href = '/dashboard?tab=documents&consult_ref=' + encodeURIComponent(reference);
                     };
                 }
                 document.getElementById('pay-success-overlay').classList.add('show');
