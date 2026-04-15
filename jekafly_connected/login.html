@@ -272,7 +272,17 @@
 
     <script>
         const params = new URLSearchParams(window.location.search);
-        const returnUrl = params.get('return') || '/dashboard';
+        const _rawReturn = params.get('return') || '';
+        const returnUrl = (() => {
+            try {
+                const decoded = _rawReturn ? decodeURIComponent(_rawReturn) : '/dashboard';
+                // Only allow same-origin redirects
+                if (decoded.startsWith('/') && !decoded.startsWith('//')) return decoded;
+                const url = new URL(decoded, window.location.origin);
+                if (url.origin === window.location.origin) return url.pathname + url.search;
+            } catch (e) { }
+            return '/dashboard';
+        })();
 
         document.getElementById('btn-login')?.addEventListener('click', async () => {
             const email = document.getElementById('login-email')?.value.trim();
