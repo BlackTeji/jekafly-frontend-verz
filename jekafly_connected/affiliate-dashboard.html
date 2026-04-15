@@ -438,7 +438,7 @@
             border: 1.5px solid var(--border);
             border-radius: var(--radius-sm);
             font-family: 'Poppins', sans-serif;
-            font-size: 0.87rem;
+            font-size: 16px;
             color: var(--text);
             background: var(--off-white);
             transition: border-color .18s, background .18s;
@@ -1881,6 +1881,8 @@
                 _showGate();
             }
         }, 12000);
+
+        window._jekafly_page = 'affiliate-dashboard';
 
         document.addEventListener('DOMContentLoaded', async () => {
             // ── Magic token: handle FIRST before any auth gate ────────────────
