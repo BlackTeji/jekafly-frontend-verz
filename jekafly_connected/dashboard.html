@@ -646,7 +646,10 @@
                         <h3>Personal Information</h3>
                         <div class="form-row">
                             <div class="form-group"><label>Full Name</label><input type="text" id="p-name" /></div>
-                            <div class="form-group"><label>Email Address</label><input type="email" id="p-email" />
+                            <div class="form-group"><label>Email Address <span
+                                        style="font-size:0.7rem;font-weight:600;color:#9AABCC;text-transform:uppercase;letter-spacing:0.06em;margin-left:6px;">Cannot
+                                        be changed</span></label><input type="email" id="p-email" disabled
+                                    class="input-disabled" style="cursor:not-allowed;" />
                             </div>
                         </div>
                         <div class="form-row">
@@ -1875,9 +1878,8 @@
             const phone = document.getElementById('p-phone').value.trim();
             if (!name) { showToast('Name cannot be empty.', 'error'); return; }
             const res = await Auth.updateMe(name, phone);
-            if (res?.ok) { currentUser = Auth.getCurrent(); document.getElementById('user-name').textContent = name; showToast('Profile updated!'); }
+            if (res?.ok) { currentUser = Auth.getCurrent(); document.getElementById('user-name').textContent = name; showToast('Profile updated successfully!'); }
             else { showToast(res?.error || 'Update failed.', 'error'); }
-            showToast('Profile updated successfully!');
         }
 
         function togglePwd(inputId, btnId) {
