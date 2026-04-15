@@ -1431,31 +1431,58 @@
                     <div class="afd-card">
                         <div class="afd-card-title">Request a Payout</div>
                         <p style="font-size:0.84rem;color:var(--text-light);margin-bottom:18px;">
-                            Available balance: <strong id="afd-payout-balance" style="color:var(--blue);">₦0</strong>.
-                            Minimum payout is ₦5,000.
+                            Available balance: <strong id="afd-payout-balance" style="color:var(--blue);">₦0</strong>
                         </p>
                         <div class="afd-payout-form">
+                            <!-- Bank details pre-filled from application — locked -->
+                            <div
+                                style="background:#F0F3FF;border:1.5px solid #D4DAF8;border-radius:12px;padding:16px 18px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px;">
+                                <div
+                                    style="width:36px;height:36px;background:linear-gradient(135deg,#0D1560,#1C2FBF);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="5" width="20" height="14" rx="2" />
+                                        <line x1="2" y1="10" x2="22" y2="10" />
+                                    </svg>
+                                </div>
+                                <div style="flex:1;min-width:0;">
+                                    <div
+                                        style="font-size:0.72rem;font-weight:700;color:#0D1560;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;">
+                                        Payout Account</div>
+                                    <div id="payout-bank-display"
+                                        style="font-size:0.9rem;font-weight:700;color:#0F1124;margin-bottom:2px;">—
+                                    </div>
+                                    <div id="payout-acct-display"
+                                        style="font-size:0.82rem;color:#4B5563;font-family:monospace;letter-spacing:0.05em;">
+                                        —</div>
+                                    <div id="payout-name-display"
+                                        style="font-size:0.78rem;color:#6B7280;margin-top:2px;">—</div>
+                                </div>
+                                <div
+                                    style="font-size:0.72rem;color:#6B7280;white-space:nowrap;text-align:right;line-height:1.5;">
+                                    To change, contact<br>
+                                    <a href="mailto:support@jekafly.com"
+                                        style="color:#0D1560;font-weight:700;text-decoration:none;">support@jekafly.com</a>
+                                </div>
+                            </div>
                             <div class="afd-form-row">
                                 <div class="afd-field">
                                     <label>Amount (₦)</label>
                                     <input type="number" id="payout-amount" placeholder="e.g. 10000" min="5000" />
                                 </div>
-                                <div class="afd-field">
-                                    <label>Bank Name</label>
-                                    <input type="text" id="payout-bank-name" placeholder="e.g. Access Bank" />
+                                <div class="afd-field"
+                                    style="display:flex;flex-direction:column;justify-content:flex-end;">
+                                    <div
+                                        style="font-size:0.75rem;color:var(--text-light);line-height:1.6;padding:11px 0 0;">
+                                        Minimum payout: <strong style="color:var(--blue);">₦5,000</strong><br>
+                                        Payouts processed every Friday.
+                                    </div>
                                 </div>
                             </div>
-                            <div class="afd-form-row">
-                                <div class="afd-field">
-                                    <label>Account Number</label>
-                                    <input type="text" id="payout-acct-no" placeholder="10-digit NUBAN"
-                                        maxlength="10" />
-                                </div>
-                                <div class="afd-field">
-                                    <label>Account Name</label>
-                                    <input type="text" id="payout-acct-name" placeholder="As on your bank account" />
-                                </div>
-                            </div>
+                            <!-- Hidden fields carry the locked bank data -->
+                            <input type="hidden" id="payout-bank-name" />
+                            <input type="hidden" id="payout-acct-no" />
+                            <input type="hidden" id="payout-acct-name" />
                             <div>
                                 <button class="afd-btn" onclick="requestPayout()" id="payout-btn">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1549,7 +1576,7 @@
                                     <div class="afd-tier-name">Growth</div>
                                     <div class="afd-tier-range">6–15 referrals / month</div>
                                 </div>
-                                <div class="afd-tier-rate">8%</div>
+                                <div class="afd-tier-rate">10%</div>
                             </div>
                             <div class="afd-tier-row" id="tier-pro">
                                 <div class="afd-tier-icon" style="background:rgba(139,92,246,.12);">
@@ -1644,6 +1671,21 @@
             document.getElementById('afd-tier-badge-wrap').innerHTML = `<span class="afd-tier-badge ${tier.cls}">${tier.name}</span>`;
 
             window._afdRefLink = refLink;
+
+            // Pre-fill locked payout bank fields from affiliate application data
+            const bankName = _aff.bankName || '';
+            const bankAccount = _aff.bankAccount || _aff.accountNumber || '';
+            const accountName = _aff.accountName || '';
+            document.getElementById('payout-bank-name').value = bankName;
+            document.getElementById('payout-acct-no').value = bankAccount;
+            document.getElementById('payout-acct-name').value = accountName;
+            // Display fields
+            const bankDisp = document.getElementById('payout-bank-display');
+            const acctDisp = document.getElementById('payout-acct-display');
+            const nameDisp = document.getElementById('payout-name-display');
+            if (bankDisp) bankDisp.textContent = bankName || '—';
+            if (acctDisp) acctDisp.textContent = bankAccount || '—';
+            if (nameDisp) nameDisp.textContent = accountName || '—';
 
             renderRecentRefs();
             renderTiersTab(refs, tier);
@@ -1788,9 +1830,9 @@
 
             if (!amount || amount < 5000) { showToast('Minimum payout is ₦5,000.', 'error'); return; }
             if (amount > balance) { showToast('Amount exceeds your available balance.', 'error'); return; }
-            if (!bankName) { showToast('Please enter your bank name.', 'error'); return; }
-            if (!accountNumber || accountNumber.length !== 10 || !/^\d+$/.test(accountNumber)) { showToast('Enter a valid 10-digit account number.', 'error'); return; }
-            if (!accountName || accountName.length < 2) { showToast('Please enter your account name.', 'error'); return; }
+            if (!bankName) { showToast('Bank details not loaded. Please refresh the page.', 'error'); return; }
+            if (!accountNumber) { showToast('Account details not loaded. Please refresh the page.', 'error'); return; }
+            if (!accountName) { showToast('Account name not loaded. Please refresh the page.', 'error'); return; }
 
             const btn = document.getElementById('payout-btn');
             btn.disabled = true; btn.textContent = 'Submitting...';
@@ -1798,7 +1840,7 @@
                 const res = await AffiliateStore.requestPayout(amount, { bankName, accountNumber, accountName });
                 if (res?.ok) {
                     showToast('Payout request submitted! We will process it within 48 hours.');
-                    ['payout-amount', 'payout-bank-name', 'payout-acct-no', 'payout-acct-name'].forEach(id => { document.getElementById(id).value = ''; });
+                    document.getElementById('payout-amount').value = '';
                     const pd = await AffiliateStore.getPayouts();
                     _affPayouts = pd?.ok ? (pd.data?.payouts || pd.data || []) : [];
                     renderPayoutHistory();
