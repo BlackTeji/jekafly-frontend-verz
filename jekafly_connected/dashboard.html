@@ -249,8 +249,8 @@
                                         <path d="m21 21-4.35-4.35" />
                                     </svg>
                                     <input type="text" id="dash-app-search" class="dash-search-input"
-                                        placeholder="Search applications..." oninput="dashFilterApps()"
-                                        autocomplete="off" />
+                                        placeholder="Search ref, name, destination..." oninput="dashFilterApps()"
+                                        autocomplete="nope" name="search-nofill" />
                                 </div>
                                 <button class="btn-sm" onclick="window.location.href='/apply'">+ New</button>
                             </div>
@@ -972,6 +972,11 @@
         }
 
         window._jekafly_page = 'dashboard';
+        // Clear search bar immediately to prevent browser autofill persisting
+        document.addEventListener('DOMContentLoaded', () => {
+            const s = document.getElementById('dash-app-search');
+            if (s) { s.value = ''; }
+        }, { once: true });
         let _allApps = [];
         let _appsPage = 1;
         const DASH_PER_PAGE = 5;

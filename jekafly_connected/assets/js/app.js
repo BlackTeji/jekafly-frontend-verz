@@ -30,10 +30,10 @@ function updateNav() {
     const mCta = document.getElementById('nav-mobile-cta');
 
     const _href = window.location.href;
-    const isDashboard = _href.includes('dashboard.html') || (window._jekafly_page === 'dashboard');
-    const isAdminPage = _href.includes('admin.html') || (window._jekafly_page === 'admin');
-    const isAffiliatePage = _href.includes('affiliate.html') || (window._jekafly_page === 'affiliate')
-        || _href.includes('affiliate-dashboard.html') || (window._jekafly_page === 'affiliate-dashboard');
+    const isDashboard = window.location.pathname === '/dashboard' || (window._jekafly_page === 'dashboard');
+    const isAdminPage = window.location.pathname === '/admin' || (window._jekafly_page === 'admin');
+    const isAffiliatePage = window.location.pathname === '/affiliate' || (window._jekafly_page === 'affiliate')
+        || window.location.pathname === '/affiliate-dashboard' || (window._jekafly_page === 'affiliate-dashboard');
 
     let desktopHtml = '', mobileHtml = '';
 
@@ -43,8 +43,8 @@ function updateNav() {
 
         desktopHtml = `
           <span class="nav-user-hi">Hi, <strong>${first}</strong></span>
-          <a href="dashboard.html" class="btn-outline btn-outline-link">My Dashboard</a>
-          ${isAdmin ? '<a href="admin.html" class="btn-outline btn-outline-link btn-outline-danger">Admin</a>' : ''}
+          <a href="/dashboard" class="btn-outline btn-outline-link">My Dashboard</a>
+          ${isAdmin ? '<a href="/admin" class="btn-outline btn-outline-link btn-outline-danger">Admin</a>' : ''}
           <button class="btn-primary" onclick="handleLogout()">Logout</button>`;
 
         mobileHtml = `
@@ -152,21 +152,21 @@ function updateNav() {
             <div class="nav-mob-footer">
             <div class="nav-mob-footer-inner">
               ${isAdmin && !isAdminPage ? `
-              <a href="admin.html" onclick="closeNavMenu()" class="nav-mob-admin-btn">
+              <a href="/admin" onclick="closeNavMenu()" class="nav-mob-admin-btn">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>
                 Admin Panel
               </a>` : ''}
               <div class="nav-mob-action-row">
                 ${isAdminPage ? `
-                <a href="dashboard.html" onclick="closeNavMenu()" class="nav-mob-cta-btn">
+                <a href="/dashboard" onclick="closeNavMenu()" class="nav-mob-cta-btn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
                   User Dashboard
                 </a>` : isDashboard ? `
-                <a href="apply.html" onclick="closeNavMenu()" class="nav-mob-cta-btn">
+                <a href="/apply" onclick="closeNavMenu()" class="nav-mob-cta-btn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   New Application
                 </a>` : `
-                <a href="dashboard.html" onclick="closeNavMenu()" class="nav-mob-cta-btn">
+                <a href="/dashboard" onclick="closeNavMenu()" class="nav-mob-cta-btn">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
                   My Dashboard
                 </a>`}
@@ -187,7 +187,7 @@ function updateNav() {
         mobileHtml = `
           <div class="nav-mob-footer">
             ${!isAffiliatePage ? `
-            <a href="affiliate.html" onclick="closeNavMenu()" class="nav-mob-admin-btn">
+            <a href="/affiliate" onclick="closeNavMenu()" class="nav-mob-admin-btn">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>
               Become an Affiliate
             </a>` : ''}
@@ -303,7 +303,7 @@ async function handleLogin() {
     if (window.JKF_afterLoginRedirect && window.JKF_afterLoginRedirect()) return;
 
     setTimeout(() => {
-        window.location.href = res.user.role === 'ADMIN' ? 'admin.html' : 'dashboard.html';
+        window.location.href = res.user.role === 'ADMIN' ? '/admin' : '/dashboard';
     }, 900);
 }
 
@@ -325,7 +325,7 @@ async function handleRegister() {
 
     if (window.JKF_afterLoginRedirect && window.JKF_afterLoginRedirect()) return;
 
-    setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
+    setTimeout(() => { window.location.href = '/dashboard'; }, 900);
 }
 
 function handleInsuranceModal() {
@@ -357,7 +357,7 @@ function handleInsuranceModal() {
         closeModal();
 
         window.JKF_afterLoginRedirect = function () {
-            window.location.href = 'payment.html';
+            window.location.href = '/payment';
             return true;
         };
         openModal('login');
@@ -365,7 +365,7 @@ function handleInsuranceModal() {
         return;
     }
 
-    window.location.href = 'payment.html';
+    window.location.href = '/payment';
 }
 
 
@@ -2030,14 +2030,14 @@ function quickSearch() {
             showRequirements();
         }, 500);
     } else {
-        window.location.href = `visa.html?dest=${encodeURIComponent(dest)}`;
+        window.location.href = `/visa?dest=${encodeURIComponent(dest)}`;
     }
 }
 
 function applyWithDest(dest) {
     const d = dest || getSelectValue("s-to") || getSelectValue("c-to") || "";
     try { if (d) sessionStorage.setItem("jkf_hero_dest", d); } catch (e) { }
-    window.location.href = d ? `apply.html?dest=${encodeURIComponent(d)}` : "apply.html";
+    window.location.href = d ? `/apply?dest=${encodeURIComponent(d)}` : '/apply';
 }
 
 function selectDest(country) {
@@ -2137,4 +2137,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         const ref = new URLSearchParams(window.location.search).get('ref');
         if (ref) sessionStorage.setItem('jkf_ref', ref);
     } catch (e) { }
+})();
+
+(function () {
+    window.addEventListener('jkf:unauthenticated', function () {
+        const current = window.location.pathname + window.location.search;
+        const isLoginPage = window.location.pathname === '/login';
+        const isPublicPage = ['/', '/visa', '/flights', '/hotels', '/affiliate', '/404'].includes(window.location.pathname);
+        if (!isLoginPage && !isPublicPage) {
+            window.location.href = '/login?return=' + encodeURIComponent(current);
+        }
+    });
 })();

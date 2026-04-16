@@ -434,6 +434,48 @@
                                 </div>
                             </div>
 
+                            <div class="fees-pricing-block">
+                                <div class="fees-pricing-heading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                                    </svg>
+                                    Payment Processing Fee
+                                </div>
+                                <div class="fees-price-grid">
+                                    <div class="fees-price-item">
+                                        <label class="fees-label">Processing Fee (%)</label>
+                                        <input type="number" id="price-processing-fee" min="0" max="20" step="1"
+                                            class="fees-input" placeholder="5" />
+                                        <div style="font-size:0.72rem;color:#9BA5C0;margin-top:4px;">Added on top of
+                                            visa fee at checkout (e.g. 5 = 5%)</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fees-pricing-block">
+                                <div class="fees-pricing-heading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
+                                        <path d="M12 18V6" />
+                                    </svg>
+                                    Processing Fee
+                                </div>
+                                <div class="fees-price-grid">
+                                    <div class="fees-price-item">
+                                        <label class="fees-label">Processing Fee (%)</label>
+                                        <input type="number" id="price-processing-fee" min="0" max="20" step="1"
+                                            class="fees-input" placeholder="5" />
+                                        <div class="fees-note" style="margin-top:4px;">Added as a percentage on top of
+                                            the visa fee at checkout.</div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="fees-save-row">
                                 <button class="btn-manage" onclick="savePricing()">Save All Prices</button>
                                 <span id="pricing-save-status" class="fees-save-status"></span>
@@ -1364,41 +1406,40 @@
             const s = document.getElementById('new-status')?.value;
             const note = document.getElementById('status-note')?.value?.trim() || 'Status updated by admin.';
             const btn = document.querySelector('.btn-update-status');
+            const originalBtnHTML = 'Update Status <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
 
-            if (btn) { btn.disabled = true; btn.textContent = 'Updating...'; }
+            const setLoading = () => { if (btn) { btn.disabled = true; btn.textContent = 'Updating...'; } };
+            const resetBtn = () => { if (btn) { btn.disabled = false; btn.innerHTML = originalBtnHTML; } };
 
-            const resetBtn = () => {
-                if (btn) {
-                    btn.disabled = false;
-                    btn.innerHTML = 'Update Status <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
-                }
-            };
+            setLoading();
 
             let res = null;
             try {
                 res = await AppStore.updateStatus(ref, s, note);
             } catch (e) {
-                console.error('[updateStatus] Error:', e);
-                showToast('Network error. Please check your connection and try again.', 'error');
+                console.error('[updateStatus] Network error:', e);
+                showToast('Network error. Please check your connection.', 'error');
                 resetBtn();
                 return;
             }
 
             if (!res) {
-                showToast('Failed to update status. Please try again.', 'error');
+                showToast('Update failed — please try again.', 'error');
                 resetBtn();
                 return;
             }
 
-            showToast('Status updated to "' + (SL[s] || s) + '"');
+            // Success — close panel immediately, then reload list in background
+            resetBtn();
             closeDetail();
+            showToast('Status updated to "' + (SL[s] || s) + '"');
 
-            try {
-                allApps = await AppStore.getAll();
+            AppStore.getAll().then(apps => {
+                allApps = apps || allApps;
                 renderFiltered();
-            } catch (e) {
-                console.error('[updateStatus] Reload error:', e);
-            }
+            }).catch(e => {
+                console.error('[updateStatus] List reload error:', e);
+            });
         }
 
 
@@ -1594,6 +1635,7 @@
             document.getElementById('price-ins-basic').value = p.insuranceBasic;
             document.getElementById('price-ins-standard').value = p.insuranceStandard;
             document.getElementById('price-ins-premium').value = p.insurancePremium;
+            document.getElementById('price-processing-fee').value = p.processingFeePercent ?? 5;
         }
 
         async function savePricing() {
@@ -1601,6 +1643,7 @@
             const payload = {
                 consultStandard: n('price-consult-standard'), consultPriority: n('price-consult-priority'), consultVip: n('price-consult-vip'),
                 insuranceBasic: n('price-ins-basic'), insuranceStandard: n('price-ins-standard'), insurancePremium: n('price-ins-premium'),
+                processingFeePercent: n('price-processing-fee'),
             };
             if (Object.values(payload).some(v => v === null || v < 0)) { showToast('Please enter valid amounts for all fields.', 'error'); return; }
             const status = document.getElementById('pricing-save-status');

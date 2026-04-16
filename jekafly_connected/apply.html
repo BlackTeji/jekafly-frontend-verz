@@ -498,9 +498,11 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             FeeStore._cache = null; // Always fetch fresh fees
-            const user = Auth?.getCurrent ? Auth.getCurrent() : null;
 
             makeSearchableSelect('a-destination', '— Select Destination —');
+
+            await Auth.init().catch(() => { });
+            const user = Auth?.getCurrent ? Auth.getCurrent() : null;
 
             if (user) prefillFromSavedProfile();
 
