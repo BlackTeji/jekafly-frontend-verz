@@ -1659,7 +1659,7 @@
             const refLink = window.location.origin + '/apply?ref=' + (_aff.referralCode || _aff.code || '');
             const balance = stats.balance || _aff.balance || 0;
 
-            document.getElementById('afd-s-clicks').textContent = stats.clicks || 0;
+            document.getElementById('afd-s-clicks').textContent = stats.totalClicks || _aff.totalClicks || 0;
             document.getElementById('afd-s-refs').textContent = refs;
             document.getElementById('afd-s-earned').textContent = fmt(stats.totalEarned || _aff.totalEarned);
             document.getElementById('afd-s-balance').textContent = fmt(balance);
@@ -1959,11 +1959,13 @@
                     return;
                 }
 
-                _affStats = data.stats || {};
-                try {
-                    const pd = await _withTimeout(AffiliateStore.getPayouts(), 6000);
-                    _affPayouts = pd?.ok ? (pd.data?.payouts || pd.data || []) : [];
-                } catch (e) { _affPayouts = []; }
+                _affStats = data.stats || {
+                    totalClicks: _aff.totalClicks || 0,
+                    totalReferrals: _aff.totalReferrals || 0,
+                    totalEarned: _aff.totalEarned || 0,
+                    balance: _aff.balance || 0,
+                };
+                _affPayouts = data.payouts || [];
 
                 _affRefs = _affStats.referrals || _aff.referrals || [];
                 renderOverview();
