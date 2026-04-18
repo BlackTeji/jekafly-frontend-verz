@@ -1967,7 +1967,11 @@
                 };
                 _affPayouts = data.payouts || [];
 
-                _affRefs = _affStats.referrals || _aff.referrals || [];
+                // Fetch individual referral records
+                try {
+                    _affRefs = await _withTimeout(AffiliateStore.getReferrals(), 8000);
+                } catch (e) { _affRefs = []; }
+
                 renderOverview();
                 renderRefsTable();
                 renderEarningsTable();

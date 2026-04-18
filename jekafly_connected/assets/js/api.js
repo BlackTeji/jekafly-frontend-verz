@@ -417,6 +417,10 @@ var AffiliateStore = {
     async requestPayout(amount, bankDetails) {
         return post('/affiliates/payouts/request', { amount, bankDetails });
     },
+    async getReferrals() {
+        const res = await get('/affiliates/referrals');
+        return res?.ok ? res.data.referrals : [];
+    },
     async adminGetAll() {
         const res = await get('/admin/affiliates');
         return res?.ok ? (res.data?.affiliates || []) : [];
