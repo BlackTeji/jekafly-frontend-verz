@@ -1770,7 +1770,7 @@
                 ${_affPayouts.map(p => `<tr>
                     <td><strong>${fmt(p.amount)}</strong></td>
                     <td class="fs-xs">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || p.bankAccount || '—')}</td>
-                    <td>${p.createdAt ? new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td>
+                    <td>${(p.requestedAt || p.createdAt) ? new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td>
                     <td><span class="${p.status === 'processed' || p.status === 'PAID' ? 'pill-success' : 'pill-pending'}">${p.status === 'paid' || p.status === 'PAID' ? 'Paid' : 'Pending'}</span></td>
                 </tr>`).join('')}
             </tbody></table>`;
@@ -1841,8 +1841,7 @@
                 if (res?.ok) {
                     showToast('Payout request submitted! We will process it within 48 hours.');
                     document.getElementById('payout-amount').value = '';
-                    const pd = await AffiliateStore.getPayouts();
-                    _affPayouts = pd?.ok ? (pd.data?.payouts || pd.data || []) : [];
+                    _affPayouts = await AffiliateStore.getPayouts();
                     renderPayoutHistory();
                 } else {
                     showToast(res?.error || 'Payout request failed. Please try again.', 'error');

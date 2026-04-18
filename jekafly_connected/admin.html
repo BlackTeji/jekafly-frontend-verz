@@ -781,7 +781,7 @@
             if (!_consultsAll.length) { container.innerHTML = '<div class="atbl-empty">No consultation payments yet.</div>'; return; }
             const paged = _adminPaginate(_consultsAll, _consultsPage);
             container.innerHTML = `<table><thead><tr><th>Date</th><th>Customer</th><th>Package</th><th>Amount</th><th>Status</th></tr></thead><tbody>${paged.map(p => `<tr>
-                <td>${new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
+                <td>${new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
                 <td>${escHtml(p.userName || p.user?.name || p.email || '—')}</td>
                 <td>${escHtml(p.metadata?.packageName || p.metadata?.package || 'Consultation')}</td>
                 <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
@@ -810,7 +810,7 @@
             if (!_insuranceAll.length) { container.innerHTML = '<div class="atbl-empty">No insurance payments yet.</div>'; return; }
             const paged = _adminPaginate(_insuranceAll, _insurancePage);
             container.innerHTML = `<table><thead><tr><th>Date</th><th>Customer</th><th>Plan</th><th>Destination</th><th>Travellers</th><th>Amount</th><th>Status</th></tr></thead><tbody>${paged.map(p => `<tr>
-                <td>${new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
+                <td>${new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
                 <td>${escHtml(p.userName || p.user?.name || p.email || '—')}</td>
                 <td>${escHtml(p.metadata?.plan || '—')}</td>
                 <td>${escHtml(p.metadata?.dest || p.metadata?.destination || '—')}</td>
@@ -837,7 +837,7 @@
 
             const pending = affiliates.filter(a => a.status === 'pending');
             const active = affiliates.filter(a => a.status === 'approved');
-            const allPayouts = active.flatMap(a => (a.payouts || []).map(p => ({ ...p, affiliateName: a.name, affiliateEmail: a.email })));
+            const allPayouts = active.flatMap(a => (a.pendingPayouts || a.payouts || []).map(p => ({ ...p, affiliateName: a.name, affiliateEmail: a.email })));
             const pendingPayouts = allPayouts.filter(p => p.status === 'pending');
 
             const totalEarned = active.reduce((s, a) => s + (a.totalEarned || 0), 0);
@@ -934,7 +934,7 @@
                 <td><strong>${escHtml(p.affiliateName || '—')}</strong><br><span class="fs-xs text-muted">${escHtml(p.affiliateEmail || '')}</span></td>
                 <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
                 <td class="fs-xs">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || '—')}</td>
-                <td>${new Date(p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
+                <td>${new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
                 <td><button onclick="affProcessPayout('${p.id}')" class="btn-sm" style="background:#0d1560;color:#fff;border:none;">Mark Paid</button></td>
             </tr>`).join('')}</tbody></table>` + _adminBuildPager(payouts.length, window._affPayoutPage, 'affPayoutGoPage');
         }
