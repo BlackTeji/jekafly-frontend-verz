@@ -4,6 +4,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jekafly.com/login" />
+    <meta property="og:title" content="Login — Jekafly" />
+    <meta property="og:description"
+        content="Sign in to your Jekafly account to track visa applications, upload documents, and manage your travel plans." />
+    <meta property="og:image" content="https://jekafly.com/assets/images/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://jekafly.com/assets/images/og-image.png" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
@@ -235,7 +244,9 @@
                                         <circle cx="12" cy="12" r="3" />
                                     </svg></button>
                             </div>
-                            <div id="login-confirm-msg" style="font-size:0.72rem;margin-top:3px;display:none;"></div>
+                            <div id="login-confirm-msg"
+                                style="font-size:0.72rem;margin-top:3px;min-height:16px;display:block;visibility:hidden;">
+                            </div>
                         </div>
                         <button class="btn-auth" id="btn-register" type="submit">Create Free Account <svg width="14"
                                 height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -326,10 +337,10 @@
             const c = document.getElementById('reg-confirm')?.value;
             const msg = document.getElementById('login-confirm-msg');
             if (!msg) return;
-            if (!c) { msg.style.display = 'none'; return; }
-            msg.style.display = 'block';
-            if (p === c) { msg.textContent = '✓ Passwords match'; msg.style.color = '#16a34a'; }
-            else { msg.textContent = '✗ Passwords do not match'; msg.style.color = '#ef4444'; }
+            if (!c) { msg.style.visibility = 'hidden'; return; }
+            msg.style.visibility = 'visible';
+            if (p === c) { msg.textContent = 'Passwords match'; msg.style.color = '#16a34a'; }
+            else { msg.textContent = 'Passwords do not match'; msg.style.color = '#ef4444'; }
         }
 
         document.getElementById('btn-register')?.addEventListener('click', async () => {

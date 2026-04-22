@@ -12,6 +12,7 @@
             caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
         }
     </script>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
@@ -1295,8 +1296,8 @@
                 <div class="astat"><div class="astat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11 17 2 2a1 1 0 1 0 3-3"/><path d="m14 14 2.5 2.5a1 1 0 1 0 3-3l-3.88-3.88a3 3 0 0 0-4.24 0l-.88.88a1 1 0 1 1-3-3l2.81-2.81a5.79 5.79 0 0 1 7.06-.87l.47.28a2 2 0 0 0 1.42.25L21 4"/><path d="m21 3 1 11h-2"/><path d="M3 3 2 14l6.5 6.5a1 1 0 1 0 3-3"/><path d="M3 4h8"/></svg></div><div class="astat-val">${active.length}</div><div class="astat-lbl">Active Affiliates</div></div>
                 <div class="astat"><div class="astat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14M5 21h14M6 3v4l6 5-6 5v4M18 3v4l-6 5 6 5v4"/></svg></div><div class="astat-val">${pending.length}</div><div class="astat-lbl">Pending Review</div></div>
                 <div class="astat"><div class="astat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="astat-val">${totalReferrals}</div><div class="astat-lbl">Total Referrals</div></div>
-                <div class="astat"><div class="astat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg></div><div class="astat-val">₦${totalEarned >= 1e6 ? (totalEarned / 1e6).toFixed(1) + 'M' : Math.floor(totalEarned / 1e3) + 'k'}</div><div class="astat-lbl">Total Earned</div></div>
-                <div class="astat"><div class="astat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></div><div class="astat-val">₦${totalPaid >= 1e6 ? (totalPaid / 1e6).toFixed(1) + 'M' : (totalPaid / 1e3).toFixed(0) + 'k'}</div><div class="astat-lbl">Total Paid Out</div></div>`;
+                <div class="astat"><div class="astat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg></div><div class="astat-val">₦${totalEarned >= 1e6 ? (totalEarned / 1e6).toFixed(2) + 'M' : Math.round(totalEarned).toLocaleString()}</div><div class="astat-lbl">Total Earned</div></div>
+                <div class="astat"><div class="astat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></div><div class="astat-val">₦${totalPaid >= 1e6 ? (totalPaid / 1e6).toFixed(2) + 'M' : Math.round(totalPaid).toLocaleString()}</div><div class="astat-lbl">Total Paid Out</div></div>`;
 
             window._affPending = pending; window._affActive = active; window._affPayouts = pendingPayouts;
             window._affPendPage = 1; window._affActivePage = 1; window._affPayoutPage = 1;
@@ -1599,7 +1600,7 @@
         }
 
 
-        function _fmtRev(v) { return v >= 1e6 ? '₦' + (v / 1e6).toFixed(1) + 'M' : v >= 1e3 ? '₦' + Math.floor(v / 1e3) + 'k' : '₦' + v.toLocaleString(); }
+        function _fmtRev(v) { if (!v) return '₦0'; return v >= 1e6 ? '₦' + (v / 1e6).toFixed(2) + 'M' : '₦' + Math.round(v).toLocaleString(); }
         function _astat(icon, val, lbl) { return `<div class="astat"><div class="astat-icon">${icon}</div><div class="astat-val">${val}</div><div class="astat-lbl">${lbl}</div></div>`; }
         function _revChart(apps) {
             const now = new Date();
@@ -1958,7 +1959,13 @@
         }
 
         async function promoteToAdmin(userId, name) {
-            if (!confirm(`Promote ${name} to Admin? You can set their access level after.`)) return;
+            const confirmed = await showConfirmModal(
+                'Promote to Admin',
+                `Promote <strong>${escHtml(name)}</strong> to Admin? You can set their access level after.`,
+                'Promote',
+                '#0D1560'
+            );
+            if (!confirmed) return;
             const res = await patch(`/admin/users/${userId}/role`, { role: 'ADMIN' });
             if (res?.ok) {
                 showToast(name + ' promoted to Admin.');
@@ -2100,9 +2107,8 @@
 
         function _fmtMoney(n) {
             if (!n) return '₦0';
-            if (n >= 1e6) return '₦' + (n / 1e6).toFixed(1) + 'M';
-            if (n >= 1e3) return '₦' + Math.floor(n / 1e3) + 'k';
-            return '₦' + n.toLocaleString();
+            if (n >= 1e6) return '₦' + (n / 1e6).toFixed(2) + 'M';
+            return '₦' + Math.round(n).toLocaleString();
         }
 
         function _anKpi(label, value, sub, accent) {
@@ -2385,6 +2391,26 @@
                 </div>` : '',
 
             ].join('');
+        }
+
+        function showConfirmModal(title, body, confirmLabel, confirmColor) {
+            return new Promise(resolve => {
+                const id = 'jkf-confirm-' + Date.now();
+                const el = document.createElement('div');
+                el.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(10,13,50,.55);display:flex;align-items:center;justify-content:center;padding:20px;';
+                el.innerHTML = `<div style="background:#fff;border-radius:18px;padding:32px 28px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.18);font-family:'Poppins',sans-serif;">
+                    <div style="font-size:1rem;font-weight:700;color:#0D1560;margin-bottom:10px;">${title}</div>
+                    <div style="font-size:0.88rem;color:#4B5563;margin-bottom:24px;line-height:1.6;">${body}</div>
+                    <div style="display:flex;gap:10px;justify-content:flex-end;">
+                        <button id="${id}-cancel" style="padding:10px 20px;border-radius:10px;border:1.5px solid #E5E7EB;background:#fff;font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;color:#6B7280;">Cancel</button>
+                        <button id="${id}-ok" style="padding:10px 20px;border-radius:10px;border:none;background:${confirmColor || '#0D1560'};color:#fff;font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;">${confirmLabel || 'Confirm'}</button>
+                    </div>
+                </div>`;
+                document.body.appendChild(el);
+                el.querySelector('#' + id + '-ok').onclick = () => { document.body.removeChild(el); resolve(true); };
+                el.querySelector('#' + id + '-cancel').onclick = () => { document.body.removeChild(el); resolve(false); };
+                el.onclick = e => { if (e.target === el) { document.body.removeChild(el); resolve(false); } };
+            });
         }
 
         function doLogout() { Auth.logout(); window.location.replace('/'); }

@@ -12,6 +12,7 @@
             caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
         }
     </script>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
@@ -395,37 +396,42 @@
                             </div>
                         </div>
 
-                        <div class="consult-includes">
-                            <div class="consult-includes-item"><svg width="14" height="14" viewBox="0 0 24 24"
-                                    fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg> Personalised visa strategy</div>
-                            <div class="consult-includes-item"><svg width="14" height="14" viewBox="0 0 24 24"
-                                    fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg> Document checklist review</div>
-                            <div class="consult-includes-item"><svg width="14" height="14" viewBox="0 0 24 24"
-                                    fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg> Application form guidance</div>
-                            <div class="consult-includes-item"><svg width="14" height="14" viewBox="0 0 24 24"
-                                    fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <polyline points="20 6 9 17 4 12" />
-                                </svg> Follow-up email summary</div>
+                        <div style="display:flex;align-items:flex-start;gap:20px;flex-wrap:wrap;">
+                            <div class="consult-includes" style="flex:1;min-width:200px;">
+                                <div class="consult-includes-item"><svg width="14" height="14" viewBox="0 0 24 24"
+                                        fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg> Personalised visa strategy</div>
+                                <div class="consult-includes-item"><svg width="14" height="14" viewBox="0 0 24 24"
+                                        fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg> Document checklist review</div>
+                                <div class="consult-includes-item"><svg width="14" height="14" viewBox="0 0 24 24"
+                                        fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg> Application form guidance</div>
+                                <div class="consult-includes-item"><svg width="14" height="14" viewBox="0 0 24 24"
+                                        fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12" />
+                                    </svg> Follow-up email summary</div>
+                            </div>
+                            <div
+                                style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;justify-content:center;">
+                                <div id="consult-pkg-error" class="inline-error" style="display:none">Please select a
+                                    package.</div>
+                                <button class="btn-next" style="white-space:nowrap;padding:12px 22px;"
+                                    onclick="startConsultPayment()">Book Appointment <svg width="14" height="14"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="5" y1="12" x2="19" y2="12" />
+                                        <polyline points="12 5 19 12 12 19" />
+                                    </svg></button>
+                            </div>
                         </div>
-
-                        <div id="consult-pkg-error" class="inline-error" style="display:none">Please select a package.
-                        </div>
-                        <button class="btn-next w-full" onclick="startConsultPayment()">Book Appointment <svg width="14"
-                                height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="5" y1="12" x2="19" y2="12" />
-                                <polyline points="12 5 19 12 12 19" />
-                            </svg></button>
                     </div>
 
                     <div id="consult-step-2" class="hidden">

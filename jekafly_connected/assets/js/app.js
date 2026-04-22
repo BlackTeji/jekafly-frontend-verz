@@ -145,6 +145,11 @@ function updateNav() {
                 <span class="nav-mob-row-label">Affiliates</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
+              <button class="nav-mob-row" onclick="adminTab('analytics', null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#EEF2FF;color:#3B5BDB"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                <span class="nav-mob-row-label">Analytics</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
             </div>
             ` : ''}
 
@@ -263,7 +268,7 @@ function closeModal() {
 }
 
 function closeModalIfBg(e) {
-    if (e.target === document.getElementById("modal")) closeModal();
+    // Modal only closes via the X button — not by clicking outside
 }
 
 function switchTab(tab) {
@@ -2169,9 +2174,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             _retryMs = 3000;
         });
 
+        // Application status changed in real time
         _es.addEventListener('application:status', function (e) {
             try {
                 var data = JSON.parse(e.data);
+                // Update status badge in applications table if visible
                 var row = document.querySelector('[data-ref="' + data.ref + '"]');
                 if (row) {
                     var badge = row.querySelector('.status-badge, .dash-status');
@@ -2181,6 +2188,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         badge.classList.add('status-' + data.status);
                     }
                 }
+                // Show toast notification
                 var labels = {
                     received: 'Received', processing: 'Docs Verification',
                     embassy: 'Embassy Review', approved: '✅ Approved!',
@@ -2189,13 +2197,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (typeof showToast === 'function') {
                     showToast('Application ' + data.ref + ' — ' + (labels[data.status] || data.status));
                 }
-
+                // Refresh dashboard apps list if on dashboard
                 if (window._jekafly_page === 'dashboard' && typeof loadApplications === 'function') {
                     loadApplications();
                 }
             } catch (err) { }
         });
 
+        // Payment confirmed in real time
         _es.addEventListener('payment:confirmed', function (e) {
             try {
                 var data = JSON.parse(e.data);
@@ -2223,16 +2232,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (_es) { _es.close(); _es = null; }
     }
 
+    // Connect after auth is ready
     document.addEventListener('DOMContentLoaded', function () {
         Auth.init().then(function () {
             if (Auth.getCurrent()) connect();
         }).catch(function () { });
     });
 
+    // Reconnect on visibility — handles mobile background/foreground
     document.addEventListener('visibilitychange', function () {
         if (!document.hidden && Auth.getCurrent() && !_es) connect();
     });
 
+    // Disconnect on logout
     window.addEventListener('jkf:unauthenticated', disconnect);
 
     window.JKF_SSE = { connect: connect, disconnect: disconnect };
@@ -2242,10 +2254,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 (function () {
     'use strict';
 
+    // Excluded pages - don't track admin or internal pages
     var EXCLUDED = ['/admin', '/404'];
     var page = window.location.pathname.toLowerCase().replace(/\.html$/, '') || '/';
     if (EXCLUDED.some(function (p) { return page.startsWith(p); })) return;
 
+    // Session ID - persists for the browser session
     var sessionId = sessionStorage.getItem('jkf_sid');
     if (!sessionId) {
         sessionId = Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -2256,6 +2270,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     var _maxScroll = 0;
     var _sent = false;
 
+    // Track scroll depth
     function onScroll() {
         var el = document.documentElement;
         var scrolled = el.scrollTop + el.clientHeight;
@@ -2282,7 +2297,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             duration: duration,
             scrollDepth: _maxScroll,
         });
-    
+        // Use sendBeacon for reliability on page unload
         var url = (window.API_BASE || 'https://api.jekafly.com/api/v1') + '/track';
         if (navigator.sendBeacon) {
             navigator.sendBeacon(url, new Blob([payload], { type: 'application/json' }));
@@ -2291,6 +2306,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
+    // Send on page unload
     window.addEventListener('visibilitychange', function () {
         if (document.hidden) sendTrack();
     });

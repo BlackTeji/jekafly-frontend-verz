@@ -1910,6 +1910,7 @@ footer {
     top: 68px;
     left: 0;
     right: 0;
+    bottom: 0;
     background: rgba(255, 255, 255, 0.99);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -1925,6 +1926,9 @@ footer {
     transform: translateY(-10px);
     transition: opacity .22s ease, transform .22s ease;
     overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(100vh - 68px);
 }
 
 .nav-mobile-drawer.open {
@@ -2486,7 +2490,6 @@ footer {
 }
 
 
-
 .reveal {
     opacity: 0;
     transform: translateY(32px);
@@ -2631,7 +2634,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     margin-left: 4px;
 }
 
-/* ── Password toggle & forgot password ── */
 .pass-wrap {
     position: relative;
     display: block;
