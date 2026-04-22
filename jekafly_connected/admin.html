@@ -1077,7 +1077,7 @@
             if (_adminRole !== 'super' && !ROLE_TABS[_adminRole].includes(tab)) {
                 showToast('You don\'t have access to that section.', 'error'); return;
             }
-            ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates', 'flights', 'hotels']
+            ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates', 'flights', 'hotels', 'analytics']
                 .filter(t => document.getElementById('tab-' + t))
                 .forEach(t => document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none');
             document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
