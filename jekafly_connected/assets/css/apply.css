@@ -1358,3 +1358,454 @@
 .terms-link:hover {
     color: #E31E24;
 }
+
+/* ── Document modal (ToS / Privacy Policy) ──────────────────────────────────── */
+
+.doc-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9990;
+    background: rgba(10, 12, 30, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.doc-modal-overlay.open {
+    display: flex;
+    animation: fadeIn 0.2s ease;
+}
+
+.doc-modal-box {
+    background: white;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 820px;
+    height: 90vh;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 32px 80px rgba(13, 21, 96, 0.22);
+    overflow: hidden;
+    animation: modalIn 0.22s ease;
+}
+
+.doc-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 24px;
+    border-bottom: 1.5px solid var(--border);
+    flex-shrink: 0;
+}
+
+.doc-modal-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+}
+
+.doc-modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.doc-modal-open-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: var(--blue-soft);
+    border: 1.5px solid rgba(13, 21, 96, 0.15);
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--blue);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.doc-modal-open-btn:hover {
+    background: rgba(13, 21, 96, 0.1);
+}
+
+.doc-modal-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--off-white);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.doc-modal-close-btn:hover {
+    background: var(--border);
+    color: var(--text);
+}
+
+.doc-modal-iframe-wrap {
+    flex: 1;
+    overflow: hidden;
+    background: #f5f5f5;
+    min-height: 0;
+}
+
+.doc-modal-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+.doc-modal-unavailable {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 48px 32px;
+    text-align: center;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.doc-modal-unavailable svg {
+    opacity: 0.35;
+}
+
+.doc-modal-footer {
+    padding: 14px 24px;
+    border-top: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.doc-modal-done-btn {
+    padding: 10px 28px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+
+.doc-modal-done-btn:hover {
+    background: var(--blue-dark);
+}
+
+.terms-link--soon {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.terms-link--soon:hover {
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+@media (max-width: 640px) {
+    .doc-modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .doc-modal-box {
+        max-height: 92svh;
+        border-radius: 20px 20px 0 0;
+        max-width: 100%;
+        animation: slideUpSheet .26s cubic-bezier(.32, .72, 0, 1) both;
+    }
+}
+
+/* ── Document modal (ToS / Privacy Policy) — PDF.js viewer ─────────────────── */
+
+.doc-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9990;
+    background: rgba(10, 12, 30, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.doc-modal-overlay.open {
+    display: flex;
+    animation: fadeIn 0.2s ease;
+}
+
+.doc-modal-box {
+    background: white;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 820px;
+    height: 90vh;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 32px 80px rgba(13, 21, 96, 0.22);
+    overflow: hidden;
+    animation: modalIn 0.22s ease;
+}
+
+.doc-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1.5px solid var(--border);
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.doc-modal-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.01em;
+}
+
+.doc-modal-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--off-white);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: 5px 8px;
+}
+
+.doc-modal-nav-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.doc-modal-nav-btn:hover:not(:disabled) {
+    background: white;
+    color: var(--blue);
+}
+
+.doc-modal-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.doc-modal-page-info {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-light);
+    white-space: nowrap;
+    padding: 0 4px;
+    min-width: 52px;
+    text-align: center;
+}
+
+.doc-modal-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.doc-modal-open-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 13px;
+    background: var(--blue-soft);
+    border: 1.5px solid rgba(13, 21, 96, 0.15);
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--blue);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+
+.doc-modal-open-btn:hover {
+    background: rgba(13, 21, 96, 0.1);
+}
+
+.doc-modal-close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--off-white);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-light);
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+}
+
+.doc-modal-close-btn:hover {
+    background: var(--border);
+    color: var(--text);
+}
+
+.doc-modal-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #525659;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+    gap: 16px;
+    scroll-behavior: smooth;
+}
+
+.doc-modal-canvas-wrap {
+    background: white;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.28);
+    border-radius: 3px;
+    flex-shrink: 0;
+    line-height: 0;
+}
+
+.doc-modal-canvas-wrap canvas {
+    display: block;
+    max-width: 100%;
+}
+
+.doc-modal-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85rem;
+    padding: 48px;
+    flex: 1;
+}
+
+.doc-modal-loading svg {
+    animation: spin 1s linear infinite;
+}
+
+.doc-modal-error {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.88rem;
+    padding: 48px 32px;
+    text-align: center;
+    flex: 1;
+}
+
+.doc-modal-footer {
+    padding: 12px 20px;
+    border-top: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.doc-modal-footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.doc-modal-done-btn {
+    padding: 10px 28px;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.18s;
+}
+
+.doc-modal-done-btn:hover {
+    background: var(--blue-dark);
+}
+
+.terms-link--soon {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.terms-link--soon:hover {
+    color: var(--text-light) !important;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 640px) {
+    .doc-modal-overlay {
+        padding: 0;
+        align-items: flex-end;
+    }
+
+    .doc-modal-box {
+        height: 92svh;
+        max-height: 92svh;
+        border-radius: 20px 20px 0 0;
+        max-width: 100%;
+        animation: slideUpSheet .26s cubic-bezier(.32, .72, 0, 1) both;
+    }
+
+    .doc-modal-open-btn span {
+        display: none;
+    }
+
+    .doc-modal-controls {
+        gap: 2px;
+    }
+}
