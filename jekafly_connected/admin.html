@@ -39,6 +39,41 @@
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
+        /* ── Tab refresh button ──────────────────────────── */
+        .tab-refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            transition: all .15s;
+            float: right;
+            margin-top: 2px;
+        }
+
+        .tab-refresh-btn:hover {
+            border-color: #0D1560;
+            color: #0D1560;
+            background: #F0F3FF;
+        }
+
+        .tab-refresh-btn.spinning svg {
+            animation: tab-spin .6s linear infinite;
+        }
+
+        @keyframes tab-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         /* ── Analytics ─────────────────────────────────────── */
         .an-period-btn {
             padding: 6px 14px;
@@ -275,28 +310,45 @@
             text-align: right;
         }
 
-        /* Peak hours heatmap */
-        .an-hours {
-            display: flex;
-            gap: 3px;
-            flex-wrap: wrap;
+        /* Peak activity heatmap */
+        .an-heatmap {
+            overflow-x: auto;
         }
 
-        .an-hour-cell {
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
+        .an-heatmap-grid {
+            display: grid;
+            grid-template-columns: 32px repeat(24, 1fr);
+            gap: 3px;
+            min-width: 620px;
+        }
+
+        .an-hm-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-light);
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 0.6rem;
-            font-weight: 700;
-            cursor: default;
-            transition: transform .1s;
+            white-space: nowrap;
         }
 
-        .an-hour-cell:hover {
-            transform: scale(1.15);
+        .an-hm-col-label {
+            font-size: 0.6rem;
+            color: var(--text-light);
+            text-align: center;
+            padding-bottom: 2px;
+        }
+
+        .an-hm-cell {
+            height: 22px;
+            border-radius: 4px;
+            transition: transform .1s;
+            cursor: default;
+        }
+
+        .an-hm-cell:hover {
+            transform: scale(1.2);
+            z-index: 2;
+            position: relative;
         }
 
         /* Traffic donut */
@@ -481,14 +533,26 @@
 
                 <!-- OVERVIEW -->
                 <div id="tab-overview">
-                    <div class="admin-title">Admin Dashboard</div>
+                    <div class="admin-title">Admin Dashboard<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadOverview();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
                     <p class="admin-sub" id="admin-greeting">Welcome back.</p>
                     <div id="overview-dynamic"></div>
                 </div>
 
                 <!-- APPLICATIONS -->
                 <div id="tab-applications" style="display:none">
-                    <div class="admin-title">All Applications</div>
+                    <div class="admin-title">All Applications<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadApps();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
                     <p class="admin-sub">View, filter, and update status for all visa applications.</p>
                     <div class="app-detail" id="admin-detail">
                         <h3>
@@ -564,7 +628,13 @@
 
                 <!-- USERS -->
                 <div id="tab-users" style="display:none">
-                    <div class="admin-title">Users</div>
+                    <div class="admin-title">Users<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadUsers();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
                     <p class="admin-sub" id="user-count-sub">All registered users on Jekafly.</p>
                     <div class="acard">
                         <div class="acard-header">
@@ -646,7 +716,13 @@
 
                 <!-- FEES -->
                 <div id="tab-fees" style="display:none">
-                    <div class="admin-title">Manage Fees</div>
+                    <div class="admin-title">Manage Fees<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadFeesTab();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
                     <p class="admin-sub">Set Jekafly's service fees per destination. These override the default fees
                         shown to applicants.</p>
 
@@ -813,7 +889,13 @@
 
                 <!-- REVIEWS -->
                 <div id="tab-reviews" style="display:none">
-                    <div class="admin-title">Customer Reviews</div>
+                    <div class="admin-title">Customer Reviews<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadReviews();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
                     <p class="admin-sub">Approve reviews to show them on the homepage. Submitted via post-delivery
                         survey emails.</p>
                     <div class="acard">
@@ -836,7 +918,13 @@
 
                 <!-- CONSULTATIONS -->
                 <div id="tab-consultations" style="display:none">
-                    <div class="admin-title">Consultations</div>
+                    <div class="admin-title">Consultations<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadConsultations();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
                     <p class="admin-sub">View and manage all travel consultation bookings and payments.</p>
                     <div class="acard">
                         <div class="acard-header">
@@ -870,7 +958,13 @@
                 </div>
 
                 <div id="tab-affiliates" style="display:none">
-                    <div class="admin-title">Affiliates</div>
+                    <div class="admin-title">Affiliates<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadAffiliates();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
                     <p class="admin-sub">Manage affiliate partners, approve applications, and process commission
                         payouts.</p>
                     <div class="admin-stats" id="aff-admin-stats"></div>
@@ -908,7 +1002,13 @@
 
                 <!-- FLIGHTS -->
                 <div id="tab-analytics" style="display:none">
-                    <div class="admin-title">Analytics</div>
+                    <div class="admin-title">Analytics<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadAnalytics();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
                     <p class="admin-sub">Business intelligence across applications, revenue, users, and conversions.</p>
 
                     <!-- Period selector -->
@@ -934,7 +1034,13 @@
                 </div>
 
                 <div id="tab-flights" style="display:none">
-                    <div class="admin-title">Flight Orders</div>
+                    <div class="admin-title">Flight Orders<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadFlightOrders();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
                     <p class="admin-sub">All flight bookings made through Jekafly.</p>
                     <div class="acard mt-20">
                         <div class="acard-header">
@@ -950,7 +1056,13 @@
 
                 <!-- HOTELS -->
                 <div id="tab-hotels" style="display:none">
-                    <div class="admin-title">Hotel Orders</div>
+                    <div class="admin-title">Hotel Orders<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadHotelOrders();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
                     <p class="admin-sub">All hotel reservations made through Jekafly.</p>
                     <div class="acard mt-20">
                         <div class="acard-header">
@@ -1904,7 +2016,7 @@
 
         const _renderReviewCard = (r, isPending) => `
             <div class="review-row">
-                <div class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+                <div class="review-stars">${Array.from({ length: 5 }, (_, i) => `<svg width='12' height='12' viewBox='0 0 24 24' fill='${i < r.rating ? '#d97706' : 'none'}' stroke='${i < r.rating ? '#d97706' : '#D0D6F0'}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polygon points='12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2'/></svg>`).join('')}</div>
                 <div class="flex-1 min-w-0">
                     <div class="review-author">${escHtml(r.name)} <span class="fs-xs text-light">· ${escHtml(r.destination)} Visa</span></div>
                     <div class="review-text">"${escHtml(r.text)}"</div>
@@ -1964,18 +2076,25 @@
             loadAnalytics();
         }
 
+        let _anPvData = null;
+
         async function loadAnalytics() {
             const body = document.getElementById('analytics-body');
             if (!body) return;
             body.innerHTML = '<div class="atbl-empty">Loading analytics...</div>';
             try {
-                _anData = await AdminStore.getAnalytics(_anPeriod);
+                const periodDays = { '7d': 7, '30d': 30, '90d': 90, 'all': 90 }[_anPeriod] || 30;
+                [_anData, _anPvData] = await Promise.all([
+                    AdminStore.getAnalytics(_anPeriod),
+                    AdminStore.getPageviews(periodDays),
+                ]);
                 if (!_anData) { body.innerHTML = '<div class="atbl-empty">Failed to load analytics.</div>'; return; }
                 const genEl = document.getElementById('an-generated');
                 if (genEl) genEl.textContent = 'Updated ' + new Date(_anData.generatedAt).toLocaleTimeString('en-NG', { timeStyle: 'short' });
-                renderAnalytics(_anData);
+                renderAnalytics(_anData, _anPvData);
             } catch (e) {
                 body.innerHTML = '<div class="atbl-empty">Error loading analytics.</div>';
+                console.error(e);
             }
         }
 
@@ -2045,27 +2164,42 @@
             </div>`;
         }
 
-        function _anPeakHours(hours) {
-            const max = Math.max(...hours.map(h => h.count), 1);
-            return `<div class="an-card">
-                <div class="an-card-title">Activity by Hour <span style="font-size:0.72rem;font-weight:400;color:var(--text-light);">darker = more activity</span></div>
-                <div class="an-hours">
-                    ${hours.map(h => {
-                const intensity = max > 0 ? Math.round((h.count / max) * 100) : 0;
-                const bg = intensity === 0 ? '#F0F2F8'
-                    : intensity < 25 ? '#C7D2F5'
-                        : intensity < 50 ? '#8FA3E8'
-                            : intensity < 75 ? '#4B6BDF'
-                                : '#0D1560';
-                const fg = intensity > 40 ? '#fff' : '#0D1560';
-                return `<div class="an-hour-cell" style="background:${bg};color:${fg};" title="${h.hour}: ${h.count} events">${h.hour.replace('am', '').replace('pm', '')}</div>`;
-            }).join('')}
+        function _anPeakHours(days) {
+            // days = [{day:'Mon', hours:[{hour:0,count:3},...24]},...]
+            const allCounts = days.flatMap(d => d.hours.map(h => h.count));
+            const max = Math.max(...allCounts, 1);
+            const COLORS = ['#F0F2F8', '#C7D2F5', '#8FA3E8', '#4B6BDF', '#1C2FBF', '#0D1560'];
+            function cellColor(count) {
+                if (count === 0) return COLORS[0];
+                const i = Math.ceil((count / max) * (COLORS.length - 1));
+                return COLORS[Math.min(i, COLORS.length - 1)];
+            }
+            const hourLabels = Array.from({ length: 24 }, (_, h) =>
+                h === 0 ? '12a' : h < 12 ? h + 'a' : h === 12 ? '12p' : (h - 12) + 'p'
+            );
+            const gridRows = days.map(d => {
+                const cells = d.hours.map(h => {
+                    const bg = cellColor(h.count);
+                    const fg = h.count / max > 0.5 ? '#fff' : 'transparent';
+                    return `<div class="an-hm-cell" style="background:${bg};" title="${d.day} ${hourLabels[h.hour]}: ${h.count} events"></div>`;
+                }).join('');
+                return `<div class="an-hm-label">${d.day}</div>${cells}`;
+            }).join('');
+            const colHeaders = `<div></div>${hourLabels.map((l, i) => i % 3 === 0 ? `<div class="an-hm-col-label">${l}</div>` : '<div></div>').join('')}`;
+            return `<div class="an-card" style="grid-column:1/-1;">
+                <div class="an-card-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Activity Heatmap <span style="font-size:0.72rem;font-weight:400;color:var(--text-light);">day × hour — darker = more activity</span>
                 </div>
-                <div style="display:flex;align-items:center;gap:6px;margin-top:12px;font-size:0.72rem;color:var(--text-light);">
+                <div class="an-heatmap">
+                    <div class="an-heatmap-grid">
+                        ${colHeaders}
+                        ${gridRows}
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:14px;font-size:0.72rem;color:var(--text-light);">
                     <span>Less</span>
-                    ${['#F0F2F8', '#C7D2F5', '#8FA3E8', '#4B6BDF', '#0D1560'].map(c =>
-                `<div style="width:16px;height:16px;border-radius:3px;background:${c};"></div>`
-            ).join('')}
+                    ${COLORS.map(c => `<div style="width:14px;height:14px;border-radius:3px;background:${c};"></div>`).join('')}
                     <span>More</span>
                 </div>
             </div>`;
@@ -2101,7 +2235,67 @@
             </div>`;
         }
 
-        function renderAnalytics(d) {
+        function _anPageTable(pv) {
+            if (!pv || !pv.pages || pv.pages.length === 0) {
+                return `<div class="an-card" style="grid-column:1/-1;">
+                    <div class="an-card-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Page Behaviour</div>
+                    <div class="atbl-empty" style="padding:20px 0;">No page view data yet — tracking begins once users visit the site.</div>
+                </div>`;
+            }
+            const maxViews = Math.max(...pv.pages.map(p => p.views), 1);
+            const rows = pv.pages.map(p => {
+                const barW = Math.round((p.views / maxViews) * 100);
+                const dur = p.avgDuration != null
+                    ? (p.avgDuration < 60 ? p.avgDuration + 's' : Math.round(p.avgDuration / 60) + 'm ' + (p.avgDuration % 60) + 's')
+                    : '—';
+                const scroll = p.avgScroll != null ? p.avgScroll + '%' : '—';
+                const exitCls = p.exitRate > 60 ? 'color:#E31E24;font-weight:700;' : p.exitRate > 30 ? 'color:#d97706;font-weight:600;' : 'color:#16a34a;font-weight:600;';
+                return `<tr>
+                    <td style="font-weight:600;">
+                        ${escHtml(p.page)}
+                        <div style="height:4px;background:#F0F2F8;border-radius:2px;margin-top:4px;">
+                            <div style="height:100%;width:${barW}%;background:#0D1560;border-radius:2px;"></div>
+                        </div>
+                    </td>
+                    <td style="font-weight:700;">${p.views.toLocaleString()}</td>
+                    <td>${p.sessions.toLocaleString()}</td>
+                    <td>${p.uniqueUsers.toLocaleString()}</td>
+                    <td>${dur}</td>
+                    <td>${scroll}</td>
+                    <td style="${exitCls}">${p.exitRate}%</td>
+                    <td style="color:#1C2FBF;font-weight:600;">${p.entryRate}%</td>
+                </tr>`;
+            }).join('');
+            return `<div class="an-card" style="grid-column:1/-1;">
+                <div class="an-card-title" style="margin-bottom:14px;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+                    Page Behaviour
+                    <span style="font-size:0.72rem;font-weight:400;color:var(--text-light);margin-left:8px;">${pv.totalViews.toLocaleString()} views · ${pv.uniqueSessions.toLocaleString()} sessions · ${pv.uniqueUsers.toLocaleString()} users</span>
+                </div>
+                <div style="overflow-x:auto;">
+                <table style="min-width:700px;">
+                    <thead><tr>
+                        <th>Page</th>
+                        <th>Views</th>
+                        <th>Sessions</th>
+                        <th>Users</th>
+                        <th>Avg Time</th>
+                        <th>Avg Scroll</th>
+                        <th title="% of sessions that ended on this page">Exit Rate</th>
+                        <th title="% of sessions that started on this page">Entry Rate</th>
+                    </tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+                </div>
+            </div>`;
+        }
+
+        function _anDailyChart(pv) {
+            if (!pv || !pv.daily || pv.daily.length === 0) return '';
+            return _anBarChart(pv.daily, 'label', 'count', 'Daily Page Views', '#1C2FBF');
+        }
+
+        function renderAnalytics(d, pv) {
             const body = document.getElementById('analytics-body');
             const k = d.kpis;
             const periodLabel = { '7d': 'last 7 days', '30d': 'last 30 days', '90d': 'last 90 days', 'all': 'all time' }[d.period] || d.period;
@@ -2121,8 +2315,8 @@
 
                 // Row 2: Monthly charts
                 `<div class="an-grid-2">
-                    ${_anBarChart(d.monthly.applications, 'label', 'count', '📋 Applications by Month', '#0D1560')}
-                    ${_anBarChart(d.monthly.revenue.map(m => ({ ...m, rev: Math.floor(m.revenue / 1000) })), 'label', 'rev', '💰 Revenue by Month (₦k)', '#16a34a')}
+                    ${_anBarChart(d.monthly.applications, 'label', 'count', 'Applications by Month', '#0D1560')}
+                    ${_anBarChart(d.monthly.revenue.map(m => ({ ...m, rev: Math.floor(m.revenue / 1000) })), 'label', 'rev', 'Revenue by Month (₦k)', '#16a34a')}
                 </div>`,
 
                 // Row 3: Funnel + Traffic + Revenue breakdown
@@ -2135,12 +2329,20 @@
                 // Row 4: Destinations + Users chart
                 `<div class="an-grid-2">
                     ${_anDestinations(d.destinations)}
-                    ${_anBarChart(d.monthly.users, 'label', 'count', '👤 New Users by Month', '#1C2FBF')}
+                    ${_anBarChart(d.monthly.users, 'label', 'count', 'New Users by Month', '#1C2FBF')}
                 </div>`,
 
-                // Row 5: Peak hours + Affiliate stats
+                // Row 5: Page behaviour table (full-width)
+                _anPageTable(pv),
+
+                // Row 5b: Daily views + heatmap
+                `<div class="an-grid-2" style="margin-bottom:16px;">
+                    ${pv && pv.daily && pv.daily.length ? _anDailyChart(pv) : '<div></div>'}
+                    ${_anPeakHours(pv && pv.heatmap ? pv.heatmap : d.peakHours)}
+                </div>`,
+
+                // Row 6: Affiliate stats
                 `<div class="an-grid-2">
-                    ${_anPeakHours(d.peakHours)}
                     <div class="an-card">
                         <div class="an-card-title">Affiliate Programme</div>
                         ${[
@@ -2158,7 +2360,7 @@
                         <div style="margin-top:14px;padding-top:14px;border-top:1px solid #F0F2F8;">
                             <div class="an-card-title" style="margin-bottom:10px;">Reviews</div>
                             ${[
-                        ['Avg Rating', '⭐ ' + d.reviews.avgRating + ' / 5'],
+                        ['Avg Rating', d.reviews.avgRating + ' / 5'],
                         ['Total Reviews', d.reviews.total],
                         ['Approval Rate', d.reviews.approvalRate + '%'],
                     ].map(([l, v]) => `
@@ -2232,8 +2434,8 @@
             const status = document.getElementById('pricing-save-status');
             status.textContent = 'Saving…';
             const res = await PricingStore.update(payload);
-            if (res?.ok) { status.textContent = '✓ Saved'; showToast('Service prices updated.'); setTimeout(() => status.textContent = '', 3000); }
-            else { status.textContent = '✗ Failed'; showToast('Failed to save prices.', 'error'); }
+            if (res?.ok) { status.textContent = 'Saved'; showToast('Service prices updated.'); setTimeout(() => status.textContent = '', 3000); }
+            else { status.textContent = 'Failed'; showToast('Failed to save prices.', 'error'); }
         }
 
         async function saveServiceFee() {
@@ -2241,7 +2443,7 @@
             if (isNaN(val) || val < 0) { showToast('Enter a valid amount.', 'error'); return; }
             await FeeStore.setServiceFee(val);
             _cachedFees = null;
-            document.getElementById('service-fee-current').textContent = `Saved: ₦${val.toLocaleString()} per application ✓`;
+            document.getElementById('service-fee-current').textContent = `Saved: ₦${val.toLocaleString()} per application`;
             showToast('Service fee updated to ₦' + val.toLocaleString());
         }
 

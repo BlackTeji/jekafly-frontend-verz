@@ -2189,6 +2189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (typeof showToast === 'function') {
                     showToast('Application ' + data.ref + ' — ' + (labels[data.status] || data.status));
                 }
+
                 if (window._jekafly_page === 'dashboard' && typeof loadApplications === 'function') {
                     loadApplications();
                 }
@@ -2235,4 +2236,77 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.addEventListener('jkf:unauthenticated', disconnect);
 
     window.JKF_SSE = { connect: connect, disconnect: disconnect };
+})();
+
+// ─── Page behaviour tracking ──────────────────────────────────────────────────
+(function () {
+    'use strict';
+
+    var EXCLUDED = ['/admin', '/404'];
+    var page = window.location.pathname.toLowerCase().replace(/\.html$/, '') || '/';
+    if (EXCLUDED.some(function (p) { return page.startsWith(p); })) return;
+
+    var sessionId = sessionStorage.getItem('jkf_sid');
+    if (!sessionId) {
+        sessionId = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        sessionStorage.setItem('jkf_sid', sessionId);
+    }
+
+    var _startTime = Date.now();
+    var _maxScroll = 0;
+    var _sent = false;
+
+    function onScroll() {
+        var el = document.documentElement;
+        var scrolled = el.scrollTop + el.clientHeight;
+        var total = el.scrollHeight;
+        if (total > 0) {
+            var pct = Math.round((scrolled / total) * 100);
+            if (pct > _maxScroll) _maxScroll = Math.min(pct, 100);
+        }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    function sendTrack() {
+        if (_sent) return;
+        _sent = true;
+        var duration = Math.round((Date.now() - _startTime) / 1000);
+        var ref = document.referrer
+            ? (new URL(document.referrer).hostname !== location.hostname
+                ? document.referrer : null)
+            : null;
+        var payload = JSON.stringify({
+            page: page,
+            ref: ref,
+            sessionId: sessionId,
+            duration: duration,
+            scrollDepth: _maxScroll,
+        });
+    
+        var url = (window.API_BASE || 'https://api.jekafly.com/api/v1') + '/track';
+        if (navigator.sendBeacon) {
+            navigator.sendBeacon(url, new Blob([payload], { type: 'application/json' }));
+        } else {
+            fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload, keepalive: true }).catch(function () { });
+        }
+    }
+
+    window.addEventListener('visibilitychange', function () {
+        if (document.hidden) sendTrack();
+    });
+    window.addEventListener('pagehide', sendTrack);
+    window.addEventListener('beforeunload', sendTrack);
+
+    setTimeout(function () {
+        if (!_sent) {
+            var duration = Math.round((Date.now() - _startTime) / 1000);
+            var url = (window.API_BASE || 'https://api.jekafly.com/api/v1') + '/track';
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ page: page, sessionId: sessionId, duration: duration, scrollDepth: _maxScroll }),
+                keepalive: true,
+            }).catch(function () { });
+        }
+    }, 30000);
 })();

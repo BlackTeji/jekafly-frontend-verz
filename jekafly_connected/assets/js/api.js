@@ -373,6 +373,11 @@ var AdminStore = {
         return del(`/admin/users/${id}`);
     },
 
+    async getPageviews(days = 30) {
+        const res = await get('/admin/pageviews?days=' + days);
+        return res?.ok ? res.data : null;
+    },
+
     async getAnalytics(period = '30d') {
         const res = await get('/admin/analytics?period=' + period);
         return res?.ok ? res.data : null;
