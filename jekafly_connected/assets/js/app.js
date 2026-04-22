@@ -61,42 +61,42 @@ function updateNav() {
             ${isDashboard ? `
             <div class="nav-mob-divider"></div>
             <div class="nav-mob-list">
-              <button class="nav-mob-row" onclick="showTab('applications',null);closeNavMenu()">
+              <button class="nav-mob-row" data-tab="applications" onclick="showTab('applications',null);closeNavMenu()">
                 <span class="nav-mob-row-icon" style="background:#EEF2FF;color:#3B5BDB"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg></span>
                 <span class="nav-mob-row-label">Applications</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
-              <button class="nav-mob-row" onclick="showTab('track',null);closeNavMenu()">
+              <button class="nav-mob-row" data-tab="track" onclick="showTab('track',null);closeNavMenu()">
                 <span class="nav-mob-row-icon" style="background:#F3F0FF;color:#7048E8"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></span>
                 <span class="nav-mob-row-label">Track Visa</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
-              <button class="nav-mob-row" onclick="showTab('insurance',null);closeNavMenu()">
+              <button class="nav-mob-row" data-tab="insurance" onclick="showTab('insurance',null);closeNavMenu()">
                 <span class="nav-mob-row-icon" style="background:#FFF0F6;color:#C2255C"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span>
                 <span class="nav-mob-row-label">Insurance</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
-              <button class="nav-mob-row" onclick="showTab('mydocs',null);closeNavMenu()">
+              <button class="nav-mob-row" data-tab="mydocs" onclick="showTab('mydocs',null);closeNavMenu()">
                 <span class="nav-mob-row-icon" style="background:#FFF9DB;color:#E67700"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></span>
                 <span class="nav-mob-row-label">My Documents</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
-              <button class="nav-mob-row" onclick="showTab('documents',null);closeNavMenu()">
+              <button class="nav-mob-row" data-tab="documents" onclick="showTab('documents',null);closeNavMenu()">
                 <span class="nav-mob-row-icon" style="background:#EBFBEE;color:#2F9E44"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/></svg></span>
                 <span class="nav-mob-row-label">Consultation</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
-              <button class="nav-mob-row" onclick="showTab('flights',null);closeNavMenu()">
+              <button class="nav-mob-row" data-tab="flights" onclick="showTab('flights',null);closeNavMenu()">
                 <span class="nav-mob-row-icon" style="background:#E0F7FA;color:#0891B2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z"/></svg></span>
                 <span class="nav-mob-row-label">Flights</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
-              <button class="nav-mob-row" onclick="showTab('hotels',null);closeNavMenu()">
+              <button class="nav-mob-row" data-tab="hotels" onclick="showTab('hotels',null);closeNavMenu()">
                 <span class="nav-mob-row-icon" style="background:#FFFDE7;color:#CA8A04"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/><path d="m9 16 .348-.24 8-5.5A2 2 0 0 0 18 8.5V8H6v.5a2 2 0 0 0 .652 1.76l8 5.5L15 16"/></svg></span>
                 <span class="nav-mob-row-label">Hotels</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
-              <button class="nav-mob-row" onclick="showTab('profile',null);closeNavMenu()">
+              <button class="nav-mob-row" data-tab="profile" onclick="showTab('profile',null);closeNavMenu()">
                 <span class="nav-mob-row-icon" style="background:#E7F5FF;color:#1C7ED6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21a9 9 0 0 1 18 0"/></svg></span>
                 <span class="nav-mob-row-label">My Profile</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
@@ -2148,4 +2148,91 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.href = '/login?return=' + encodeURIComponent(current);
         }
     });
+})();
+// ─── Real-time SSE client ──────────────────────────────────────────────────────
+(function () {
+    'use strict';
+
+    var _es = null;
+    var _retryMs = 3000;
+    var _retryTimer = null;
+    var _maxRetry = 30000;
+
+    function connect() {
+        if (_es) return;
+        var user = Auth.getCurrent();
+        if (!user) return;
+
+        _es = new EventSource(API_BASE + '/events', { withCredentials: true });
+
+        _es.addEventListener('connected', function () {
+            _retryMs = 3000;
+        });
+
+        _es.addEventListener('application:status', function (e) {
+            try {
+                var data = JSON.parse(e.data);
+                var row = document.querySelector('[data-ref="' + data.ref + '"]');
+                if (row) {
+                    var badge = row.querySelector('.status-badge, .dash-status');
+                    if (badge) {
+                        badge.textContent = data.status.replace(/_/g, ' ');
+                        badge.className = badge.className.replace(/status-\S+/g, '');
+                        badge.classList.add('status-' + data.status);
+                    }
+                }
+                var labels = {
+                    received: 'Received', processing: 'Docs Verification',
+                    embassy: 'Embassy Review', approved: '✅ Approved!',
+                    delivered: '🎉 Visa Delivered!', rejected: 'Update on your application'
+                };
+                if (typeof showToast === 'function') {
+                    showToast('Application ' + data.ref + ' — ' + (labels[data.status] || data.status));
+                }
+                if (window._jekafly_page === 'dashboard' && typeof loadApplications === 'function') {
+                    loadApplications();
+                }
+            } catch (err) { }
+        });
+
+        _es.addEventListener('payment:confirmed', function (e) {
+            try {
+                var data = JSON.parse(e.data);
+                if (typeof showToast === 'function') {
+                    showToast('Payment confirmed for ' + data.ref + ' ✓');
+                }
+                if (window._jekafly_page === 'dashboard' && typeof loadApplications === 'function') {
+                    loadApplications();
+                }
+            } catch (err) { }
+        });
+
+        _es.onerror = function () {
+            _es.close();
+            _es = null;
+            _retryTimer = setTimeout(function () {
+                _retryMs = Math.min(_retryMs * 2, _maxRetry);
+                connect();
+            }, _retryMs);
+        };
+    }
+
+    function disconnect() {
+        if (_retryTimer) { clearTimeout(_retryTimer); _retryTimer = null; }
+        if (_es) { _es.close(); _es = null; }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        Auth.init().then(function () {
+            if (Auth.getCurrent()) connect();
+        }).catch(function () { });
+    });
+
+    document.addEventListener('visibilitychange', function () {
+        if (!document.hidden && Auth.getCurrent() && !_es) connect();
+    });
+
+    window.addEventListener('jkf:unauthenticated', disconnect);
+
+    window.JKF_SSE = { connect: connect, disconnect: disconnect };
 })();

@@ -39,6 +39,12 @@ async function apiFetch(method, path, body, isFormData = false) {
         if (!stored) {
             _accessToken = null;
             window.dispatchEvent(new CustomEvent('jkf:unauthenticated', { detail: { path } }));
+            // Redirect to login with return path after short delay
+            setTimeout(function () {
+                if (!window.location.pathname.startsWith('/login') && !window.location.pathname.startsWith('/')) {
+                    window.location.href = '/login?return=' + encodeURIComponent(window.location.pathname);
+                }
+            }, 2000);
         }
         return null;
     }
@@ -365,6 +371,11 @@ var AdminStore = {
 
     async deleteUser(id) {
         return del(`/admin/users/${id}`);
+    },
+
+    async getAnalytics(period = '30d') {
+        const res = await get('/admin/analytics?period=' + period);
+        return res?.ok ? res.data : null;
     },
 
     async getAllPayments() {

@@ -1,9 +1,12 @@
-.dash-mobile-tabbar,
 .dash-more-overlay,
 .dash-more-drawer,
 .dash-mob-steps,
 .mob-sticky-cta {
     display: none !important;
+}
+
+.dash-mobile-tabbar {
+    display: none;
 }
 
 .dash-page {
@@ -1093,10 +1096,6 @@ tr:hover td {
     cursor: default;
 }
 
-.dash-mobile-tabbar {
-    display: none !important;
-}
-
 @media (max-width: 900px) {
     .dash-wrap {
         grid-template-columns: 220px 1fr;
@@ -1118,6 +1117,30 @@ tr:hover td {
 
     .dash-sidebar {
         display: none;
+    }
+
+    /* Mobile tabbar intentionally disabled - side drawer used instead */
+    .dash-mobile-tabbar {
+        display: none !important;
+    }
+
+    .dash-main {
+        padding: 18px 14px 24px;
+    }
+
+    .stat-cards {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .dash-section-header {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .dash-section-header .btn-sm {
+        font-size: 0.78rem;
+        padding: 7px 14px;
     }
 }
 
@@ -2753,4 +2776,10 @@ tr:hover td {
     top: -1.5px;
     left: -1.5px;
     right: -1.5px;
+}
+
+@media (max-width: 640px) {
+    .dash-onboard-grid {
+        grid-template-columns: 1fr !important;
+    }
 }

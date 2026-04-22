@@ -38,6 +38,307 @@
         h4 {
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
         }
+
+        /* ── Analytics ─────────────────────────────────────── */
+        .an-period-btn {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1.5px solid var(--border);
+            background: #fff;
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            transition: all .15s;
+        }
+
+        .an-period-btn.active,
+        .an-period-btn:hover {
+            background: #0D1560;
+            color: #fff;
+            border-color: #0D1560;
+        }
+
+        .an-kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .an-kpi {
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 20px 18px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .an-kpi-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .an-kpi-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #0D1560;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .an-kpi-sub {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .an-kpi-accent {
+            border-top: 3px solid #0D1560;
+        }
+
+        .an-kpi-green {
+            border-top: 3px solid #16a34a;
+        }
+
+        .an-kpi-red {
+            border-top: 3px solid #E31E24;
+        }
+
+        .an-kpi-amber {
+            border-top: 3px solid #d97706;
+        }
+
+        .an-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .an-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .an-card {
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .an-card-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Bar chart */
+        .an-bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 6px;
+            height: 120px;
+            margin-bottom: 8px;
+        }
+
+        .an-bar-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            height: 100%;
+            justify-content: flex-end;
+        }
+
+        .an-bar {
+            width: 100%;
+            border-radius: 4px 4px 0 0;
+            transition: opacity .15s;
+            min-height: 2px;
+        }
+
+        .an-bar:hover {
+            opacity: .75;
+        }
+
+        .an-bar-label {
+            font-size: 0.62rem;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+
+        .an-bar-val {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        /* Funnel */
+        .an-funnel {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .an-funnel-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .an-funnel-bar-wrap {
+            flex: 1;
+            background: #F0F2F8;
+            border-radius: 6px;
+            height: 28px;
+            overflow: hidden;
+        }
+
+        .an-funnel-bar {
+            height: 100%;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: #fff;
+            transition: width .4s ease;
+        }
+
+        .an-funnel-label {
+            font-size: 0.78rem;
+            color: var(--text);
+            min-width: 160px;
+        }
+
+        .an-funnel-pct {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--text);
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Destination table */
+        .an-dest-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #F0F2F8;
+        }
+
+        .an-dest-row:last-child {
+            border-bottom: none;
+        }
+
+        .an-dest-name {
+            flex: 1;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .an-dest-bar-wrap {
+            width: 80px;
+            background: #F0F2F8;
+            border-radius: 4px;
+            height: 6px;
+        }
+
+        .an-dest-bar {
+            height: 100%;
+            border-radius: 4px;
+            background: #0D1560;
+        }
+
+        .an-dest-count {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text);
+            min-width: 28px;
+            text-align: right;
+        }
+
+        /* Peak hours heatmap */
+        .an-hours {
+            display: flex;
+            gap: 3px;
+            flex-wrap: wrap;
+        }
+
+        .an-hour-cell {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 700;
+            cursor: default;
+            transition: transform .1s;
+        }
+
+        .an-hour-cell:hover {
+            transform: scale(1.15);
+        }
+
+        /* Traffic donut */
+        .an-traffic-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .an-traffic-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .an-traffic-label {
+            flex: 1;
+            font-size: 0.82rem;
+        }
+
+        .an-traffic-val {
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .an-kpi-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .an-grid-2,
+            .an-grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .an-funnel-label {
+                min-width: 100px;
+                font-size: 0.7rem;
+            }
+        }
     </style>
 </head>
 
@@ -160,14 +461,13 @@
                             <path
                                 d="M24,104H48v64H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16H208V104h24a8,8,0,0,0,4.19-14.81l-104-64a8,8,0,0,0-8.38,0l-104,64A8,8,0,0,0,24,104Zm40,0H96v64H64Zm80,0v64H112V104Zm48,64H160V104h32ZM128,41.39,203.74,88H52.26ZM248,208a8,8,0,0,1-8,8H16a8,8,0,0,1,0-16H240A8,8,0,0,1,248,208Z" />
                         </svg></span>Hotels</div>
-                <div class="admin-nav-section">Quick Links</div>
-                <div class="admin-nav-item" onclick="location.href='/'"><span class="ni"><svg
-                            xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                            <path d="M2 12h20" />
-                        </svg></span>View Website</div>
+                <div class="admin-nav-item" onclick="adminTab('analytics',this)" data-roles="super"><span
+                        class="ni"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="20" x2="18" y2="10" />
+                            <line x1="12" y1="20" x2="12" y2="4" />
+                            <line x1="6" y1="20" x2="6" y2="14" />
+                        </svg></span>Analytics</div>
                 <div class="admin-nav-item" onclick="doLogout()"><span class="ni"><svg width="18" height="18"
                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round">
@@ -607,6 +907,32 @@
                 </div>
 
                 <!-- FLIGHTS -->
+                <div id="tab-analytics" style="display:none">
+                    <div class="admin-title">Analytics</div>
+                    <p class="admin-sub">Business intelligence across applications, revenue, users, and conversions.</p>
+
+                    <!-- Period selector -->
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
+                        <span style="font-size:0.82rem;font-weight:600;color:var(--text-light);">Period:</span>
+                        <div style="display:flex;gap:6px;">
+                            <button class="an-period-btn active" data-period="7d"
+                                onclick="setAnalyticsPeriod('7d',this)">7 days</button>
+                            <button class="an-period-btn" data-period="30d" onclick="setAnalyticsPeriod('30d',this)">30
+                                days</button>
+                            <button class="an-period-btn" data-period="90d" onclick="setAnalyticsPeriod('90d',this)">90
+                                days</button>
+                            <button class="an-period-btn" data-period="all" onclick="setAnalyticsPeriod('all',this)">All
+                                time</button>
+                        </div>
+                        <span id="an-generated"
+                            style="font-size:0.75rem;color:var(--text-light);margin-left:auto;"></span>
+                    </div>
+
+                    <div id="analytics-body">
+                        <div class="atbl-empty">Loading analytics...</div>
+                    </div>
+                </div>
+
                 <div id="tab-flights" style="display:none">
                     <div class="admin-title">Flight Orders</div>
                     <p class="admin-sub">All flight bookings made through Jekafly.</p>
@@ -691,7 +1017,7 @@
 
         window._jekafly_page = 'admin';
         const ROLE_TABS = {
-            super: ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates', 'flights', 'hotels'],
+            super: ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates', 'flights', 'hotels', 'analytics'],
             applications: ['overview', 'applications'],
             finance: ['overview', 'fees', 'insurance', 'flights', 'hotels'],
             consultations: ['overview', 'consultations'],
@@ -699,6 +1025,15 @@
         };
 
         let _adminRole = 'super';
+
+        // Keyboard shortcut: Cmd/Ctrl+K focuses the search bar
+        document.addEventListener('keydown', function (e) {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                const s = document.getElementById('app-search');
+                if (s) { s.focus(); s.select(); }
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', async () => {
             await Auth.init();
@@ -756,6 +1091,7 @@
             if (tab === 'consultations') loadConsultations();
             if (tab === 'insurance') loadInsurance();
             if (tab === 'affiliates') loadAffiliates();
+            if (tab === 'analytics') loadAnalytics();
             if (tab === 'flights') loadFlightOrders();
             if (tab === 'hotels') loadHotelOrders();
         }
@@ -1279,16 +1615,30 @@
             renderFiltered(true);
         }
 
-        function filterApps() { renderFiltered(true); }
+        let _filterDebounce = null;
+        function filterApps() {
+            clearTimeout(_filterDebounce);
+            _filterDebounce = setTimeout(() => renderFiltered(true), 180);
+        }
 
         function renderFiltered(resetPage = false) {
             if (resetPage) _appsPage = 1;
-            const q = (document.getElementById('app-search')?.value || '').toLowerCase();
+            const q = (document.getElementById('app-search')?.value || '').toLowerCase().trim();
             let apps = appFilter === 'all' ? allApps : allApps.filter(a => a.status === appFilter);
-            if (q) apps = apps.filter(a => {
-                const travelDateStr = a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }).toLowerCase() : '';
-                return (a.ref + a.applicantName + a.destination + a.email + travelDateStr).toLowerCase().includes(q);
-            });
+            if (q) {
+                const terms = q.split(/\s+/).filter(Boolean);
+                apps = apps.filter(a => {
+                    const travelDateStr = a.travelDate ? new Date(a.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }).toLowerCase() : '';
+                    const createdDateStr = a.createdAt ? new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }).toLowerCase() : '';
+                    const haystack = [
+                        a.ref, a.applicantName, a.destination, a.email,
+                        a.purpose, a.passportNumber, a.phone,
+                        travelDateStr, createdDateStr,
+                        a.status, a.referralCode || '',
+                    ].join(' ').toLowerCase();
+                    return terms.every(t => haystack.includes(t));
+                });
+            }
             const total = apps.length;
             const totalPages = Math.max(1, Math.ceil(total / APPS_PER_PAGE));
             _appsPage = Math.min(_appsPage, totalPages);
@@ -1601,6 +1951,239 @@
             loadReviews();
         }
 
+
+
+        // ── Analytics ─────────────────────────────────────────────────────────
+        let _anPeriod = '30d';
+        let _anData = null;
+
+        function setAnalyticsPeriod(period, btn) {
+            _anPeriod = period;
+            document.querySelectorAll('.an-period-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            loadAnalytics();
+        }
+
+        async function loadAnalytics() {
+            const body = document.getElementById('analytics-body');
+            if (!body) return;
+            body.innerHTML = '<div class="atbl-empty">Loading analytics...</div>';
+            try {
+                _anData = await AdminStore.getAnalytics(_anPeriod);
+                if (!_anData) { body.innerHTML = '<div class="atbl-empty">Failed to load analytics.</div>'; return; }
+                const genEl = document.getElementById('an-generated');
+                if (genEl) genEl.textContent = 'Updated ' + new Date(_anData.generatedAt).toLocaleTimeString('en-NG', { timeStyle: 'short' });
+                renderAnalytics(_anData);
+            } catch (e) {
+                body.innerHTML = '<div class="atbl-empty">Error loading analytics.</div>';
+            }
+        }
+
+        function _fmtMoney(n) {
+            if (!n) return '₦0';
+            if (n >= 1e6) return '₦' + (n / 1e6).toFixed(1) + 'M';
+            if (n >= 1e3) return '₦' + Math.floor(n / 1e3) + 'k';
+            return '₦' + n.toLocaleString();
+        }
+
+        function _anKpi(label, value, sub, accent) {
+            return `<div class="an-kpi an-kpi-${accent || 'accent'}">
+                <div class="an-kpi-label">${label}</div>
+                <div class="an-kpi-value">${value}</div>
+                ${sub ? `<div class="an-kpi-sub">${sub}</div>` : ''}
+            </div>`;
+        }
+
+        function _anBarChart(data, labelKey, valueKey, title, color = '#0D1560') {
+            const max = Math.max(...data.map(d => d[valueKey]), 1);
+            const bars = data.map(d => {
+                const h = Math.round((d[valueKey] / max) * 100);
+                return `<div class="an-bar-col">
+                    <div class="an-bar-val">${d[valueKey] || ''}</div>
+                    <div class="an-bar" style="height:${h}%;background:${color};" title="${d[labelKey]}: ${d[valueKey]}"></div>
+                    <div class="an-bar-label">${d[labelKey]}</div>
+                </div>`;
+            }).join('');
+            return `<div class="an-card">
+                <div class="an-card-title">${title}</div>
+                <div class="an-bar-chart">${bars}</div>
+            </div>`;
+        }
+
+        function _anFunnel(funnel) {
+            const colors = ['#0D1560', '#1C2FBF', '#4B6BDF', '#9BA5C0'];
+            return `<div class="an-card">
+                <div class="an-card-title">Conversion Funnel</div>
+                <div class="an-funnel">
+                    ${funnel.map((f, i) => `
+                    <div class="an-funnel-row">
+                        <div class="an-funnel-label">${f.stage}</div>
+                        <div class="an-funnel-bar-wrap">
+                            <div class="an-funnel-bar" style="width:${f.pct}%;background:${colors[i]};">
+                                ${f.pct > 15 ? f.count : ''}
+                            </div>
+                        </div>
+                        <div class="an-funnel-pct">${f.pct}%</div>
+                    </div>`).join('')}
+                </div>
+            </div>`;
+        }
+
+        function _anDestinations(dests) {
+            const max = Math.max(...dests.map(d => d.count), 1);
+            return `<div class="an-card">
+                <div class="an-card-title">Top Destinations</div>
+                ${dests.map(d => `
+                <div class="an-dest-row">
+                    <div class="an-dest-name">${escHtml(d.name)}</div>
+                    <div class="an-dest-bar-wrap">
+                        <div class="an-dest-bar" style="width:${Math.round(d.count / max * 100)}%"></div>
+                    </div>
+                    <div class="an-dest-count">${d.count}</div>
+                    <div style="font-size:0.75rem;color:var(--text-light);min-width:60px;text-align:right;">${_fmtMoney(d.revenue)}</div>
+                </div>`).join('')}
+            </div>`;
+        }
+
+        function _anPeakHours(hours) {
+            const max = Math.max(...hours.map(h => h.count), 1);
+            return `<div class="an-card">
+                <div class="an-card-title">Activity by Hour <span style="font-size:0.72rem;font-weight:400;color:var(--text-light);">darker = more activity</span></div>
+                <div class="an-hours">
+                    ${hours.map(h => {
+                const intensity = max > 0 ? Math.round((h.count / max) * 100) : 0;
+                const bg = intensity === 0 ? '#F0F2F8'
+                    : intensity < 25 ? '#C7D2F5'
+                        : intensity < 50 ? '#8FA3E8'
+                            : intensity < 75 ? '#4B6BDF'
+                                : '#0D1560';
+                const fg = intensity > 40 ? '#fff' : '#0D1560';
+                return `<div class="an-hour-cell" style="background:${bg};color:${fg};" title="${h.hour}: ${h.count} events">${h.hour.replace('am', '').replace('pm', '')}</div>`;
+            }).join('')}
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:12px;font-size:0.72rem;color:var(--text-light);">
+                    <span>Less</span>
+                    ${['#F0F2F8', '#C7D2F5', '#8FA3E8', '#4B6BDF', '#0D1560'].map(c =>
+                `<div style="width:16px;height:16px;border-radius:3px;background:${c};"></div>`
+            ).join('')}
+                    <span>More</span>
+                </div>
+            </div>`;
+        }
+
+        function _anTraffic(traffic) {
+            const total = traffic.total || 1;
+            const items = [
+                { label: 'Direct', count: traffic.direct, color: '#0D1560' },
+                { label: 'Via Affiliate Link', count: traffic.viaAffiliate, color: '#E31E24' },
+                { label: 'Via Agent', count: traffic.viaAgent, color: '#d97706' },
+            ];
+            return `<div class="an-card">
+                <div class="an-card-title">Application Sources</div>
+                ${items.map(i => `
+                <div class="an-traffic-row">
+                    <div class="an-traffic-dot" style="background:${i.color}"></div>
+                    <div class="an-traffic-label">${i.label}</div>
+                    <div class="an-traffic-val">${i.count} <span style="font-weight:400;color:var(--text-light);">(${total > 0 ? Math.round(i.count / total * 100) : 0}%)</span></div>
+                </div>`).join('')}
+            </div>`;
+        }
+
+        function _anRevenueByType(types) {
+            return `<div class="an-card">
+                <div class="an-card-title">Revenue Breakdown</div>
+                ${types.map(t => `
+                <div class="an-traffic-row">
+                    <div class="an-traffic-dot" style="background:#0D1560"></div>
+                    <div class="an-traffic-label">${t.type}</div>
+                    <div class="an-traffic-val">${_fmtMoney(t.amount)}</div>
+                </div>`).join('')}
+            </div>`;
+        }
+
+        function renderAnalytics(d) {
+            const body = document.getElementById('analytics-body');
+            const k = d.kpis;
+            const periodLabel = { '7d': 'last 7 days', '30d': 'last 30 days', '90d': 'last 90 days', 'all': 'all time' }[d.period] || d.period;
+
+            body.innerHTML = [
+                // Row 1: KPIs
+                `<div class="an-kpi-grid">
+                    ${_anKpi('Applications', k.totalApplications, periodLabel, 'accent')}
+                    ${_anKpi('Revenue', _fmtMoney(k.revenue), periodLabel, 'green')}
+                    ${_anKpi('Conversion Rate', k.conversionRate + '%', 'Submitted → Delivered', 'accent')}
+                    ${_anKpi('New Users', k.newUsers, periodLabel, 'amber')}
+                    ${_anKpi('Visa Delivered', k.delivered, periodLabel, 'green')}
+                    ${_anKpi('In Progress', k.pending, 'Active pipeline', 'amber')}
+                    ${_anKpi('Rejected', k.rejected, periodLabel, 'red')}
+                    ${_anKpi('Avg Processing', k.avgProcessingDays !== null ? k.avgProcessingDays + ' days' : '—', 'Submit → Deliver', 'accent')}
+                </div>`,
+
+                // Row 2: Monthly charts
+                `<div class="an-grid-2">
+                    ${_anBarChart(d.monthly.applications, 'label', 'count', '📋 Applications by Month', '#0D1560')}
+                    ${_anBarChart(d.monthly.revenue.map(m => ({ ...m, rev: Math.floor(m.revenue / 1000) })), 'label', 'rev', '💰 Revenue by Month (₦k)', '#16a34a')}
+                </div>`,
+
+                // Row 3: Funnel + Traffic + Revenue breakdown
+                `<div class="an-grid-3">
+                    ${_anFunnel(d.funnel)}
+                    ${_anTraffic(d.traffic)}
+                    ${d.revenue.byType.length ? _anRevenueByType(d.revenue.byType) : ''}
+                </div>`,
+
+                // Row 4: Destinations + Users chart
+                `<div class="an-grid-2">
+                    ${_anDestinations(d.destinations)}
+                    ${_anBarChart(d.monthly.users, 'label', 'count', '👤 New Users by Month', '#1C2FBF')}
+                </div>`,
+
+                // Row 5: Peak hours + Affiliate stats
+                `<div class="an-grid-2">
+                    ${_anPeakHours(d.peakHours)}
+                    <div class="an-card">
+                        <div class="an-card-title">Affiliate Programme</div>
+                        ${[
+                    ['Active Affiliates', d.affiliates.active + ' of ' + d.affiliates.total],
+                    ['Total Link Clicks', d.affiliates.clicks.toLocaleString()],
+                    ['Conversions', d.affiliates.conversions.toLocaleString()],
+                    ['Click-to-Conversion', d.affiliates.ctr + '%'],
+                    ['Commission Paid Out', _fmtMoney(d.affiliates.revenue)],
+                ].map(([l, v]) => `
+                        <div class="an-traffic-row">
+                            <div class="an-traffic-label">${l}</div>
+                            <div class="an-traffic-val">${v}</div>
+                        </div>`).join('')}
+                        ${d.reviews.avgRating ? `
+                        <div style="margin-top:14px;padding-top:14px;border-top:1px solid #F0F2F8;">
+                            <div class="an-card-title" style="margin-bottom:10px;">Reviews</div>
+                            ${[
+                        ['Avg Rating', '⭐ ' + d.reviews.avgRating + ' / 5'],
+                        ['Total Reviews', d.reviews.total],
+                        ['Approval Rate', d.reviews.approvalRate + '%'],
+                    ].map(([l, v]) => `
+                            <div class="an-traffic-row">
+                                <div class="an-traffic-label">${l}</div>
+                                <div class="an-traffic-val">${v}</div>
+                            </div>`).join('')}
+                        </div>` : ''}
+                    </div>
+                </div>`,
+
+                // Row 6: Purposes
+                d.purposes.length ? `<div class="an-card" style="margin-bottom:16px;">
+                    <div class="an-card-title">Application Purpose Breakdown</div>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                        ${d.purposes.map(p => `
+                        <div style="display:flex;align-items:center;gap:6px;background:#F0F2F8;border-radius:20px;padding:5px 12px;">
+                            <span style="font-size:0.82rem;font-weight:600;">${escHtml(p.name)}</span>
+                            <span style="font-size:0.75rem;color:var(--text-light);">${p.count}</span>
+                        </div>`).join('')}
+                    </div>
+                </div>` : '',
+
+            ].join('');
+        }
 
         function doLogout() { Auth.logout(); window.location.replace('/'); }
 

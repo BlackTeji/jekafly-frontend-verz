@@ -1091,8 +1091,8 @@ section#how-it-works {
     }
 
     .aff-tiers {
-        grid-template-columns: 1fr;
-        max-width: 380px;
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 600px;
     }
 
     .aff-tier-featured {
@@ -1146,6 +1146,11 @@ section#how-it-works {
 
     .aff-field-full {
         grid-column: span 1;
+    }
+
+    .aff-tiers {
+        grid-template-columns: 1fr;
+        max-width: 360px;
     }
 
     .aff-form-divider {
