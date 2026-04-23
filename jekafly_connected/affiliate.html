@@ -438,6 +438,7 @@
                             <div class="aff-step-heading">Bank Details for Payouts</div>
                             <div class="aff-field aff-field-full">
                                 <label>Bank Name</label>
+
                                 <select id="aff-bank-name" required onchange="onBankFieldChange()">
                                     <option value="">Select your bank</option>
                                     <option value="Access Bank">Access Bank</option>
@@ -452,8 +453,6 @@
                                     <option value="Keystone Bank">Keystone Bank</option>
                                     <option value="Kuda Bank">Kuda Bank</option>
                                     <option value="Moniepoint">Moniepoint</option>
-                                    <option value="Opay">Opay</option>
-                                    <option value="Palmpay">Palmpay</option>
                                     <option value="Polaris Bank">Polaris Bank</option>
                                     <option value="Providus Bank">Providus Bank</option>
                                     <option value="Stanbic IBTC Bank">Stanbic IBTC</option>
@@ -818,7 +817,7 @@
             'Access Bank': '044', 'Citibank': '023', 'Ecobank': '050', 'Fidelity Bank': '070',
             'First Bank': '011', 'First City Monument Bank': '214', 'Guaranty Trust Bank': '058',
             'Heritage Bank': '030', 'Jaiz Bank': '301', 'Keystone Bank': '082',
-            'Kuda Bank': '090267', 'Moniepoint': '090405', 'Opay': '304', 'Palmpay': '999991',
+            'Kuda Bank': '090267', 'Moniepoint': '090405',
             'Polaris Bank': '076', 'Providus Bank': '101', 'Stanbic IBTC Bank': '221',
             'Standard Chartered': '068', 'Sterling Bank': '232', 'Titan Trust Bank': '102',
             'Union Bank': '032', 'United Bank For Africa': '033', 'Unity Bank': '215',
@@ -900,14 +899,12 @@
             if (affIsMobile()) {
                 affShowStep(_affStep);
             } else {
-
                 document.querySelectorAll('.aff-form-step').forEach(el => el.style.display = '');
             }
         });
     </script>
     <script src="mobile.js" defer></script>
     <script>
-
         if (window.innerWidth <= 768) {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(e => {
@@ -920,13 +917,8 @@
 
             document.addEventListener('DOMContentLoaded', () => {
                 const targets = [
-                    '.aff-step',
-                    '.aff-tier',
-                    '.aff-perk',
-                    '.aff-faq-item',
-                    '.aff-stat',
-                    '.aff-section-header',
-                    '.aff-form-card',
+                    '.aff-step', '.aff-tier', '.aff-perk', '.aff-faq-item',
+                    '.aff-stat', '.aff-section-header', '.aff-form-card',
                 ];
                 targets.forEach(sel => {
                     document.querySelectorAll(sel).forEach((el, i) => {

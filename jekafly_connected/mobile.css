@@ -3024,6 +3024,133 @@
     padding: 22px 18px 18px !important;
 }
 
+.testi-grid {
+    display: flex !important;
+    flex-direction: row !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    gap: 14px !important;
+    padding: 4px 5% 16px !important;
+    margin: 0 -5% !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+    grid-template-columns: unset !important;
+}
+
+.testi-grid::-webkit-scrollbar {
+    display: none !important;
+}
+
+.testi-card {
+    flex: 0 0 82vw !important;
+    max-width: 340px !important;
+    scroll-snap-align: start !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.analytics-kpi-row,
+.analytics-stats-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+    overflow: visible !important;
+}
+
+.analytics-kpi-card,
+.analytics-stat-card,
+.astat {
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+.analytics-charts-row,
+.analytics-row,
+.admin-analytics-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+    overflow: visible !important;
+}
+
+.analytics-chart-card,
+.analytics-card,
+.admin-chart-wrap {
+    width: 100% !important;
+    min-width: 0 !important;
+    overflow-x: auto !important;
+}
+
+.analytics-heatmap-wrap,
+.heatmap-container,
+#analytics-heatmap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+}
+
+.analytics-page-table-wrap,
+.page-table-scroll {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    display: block !important;
+}
+
+.analytics-page-table-wrap table,
+.page-table-scroll table {
+    min-width: 560px !important;
+}
+
+.analytics-sources-row,
+.analytics-aff-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+}
+
+.analytics-sources-card,
+.analytics-aff-card {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.tab-refresh-btn {
+    padding: 5px 10px !important;
+    font-size: 0.72rem !important;
+    gap: 4px !important;
+    border-radius: 7px !important;
+}
+
+.tab-refresh-btn svg {
+    width: 12px !important;
+    height: 12px !important;
+}
+
+.admin-title,
+.dash-title {
+    font-size: 1.1rem !important;
+    gap: 8px !important;
+    flex-wrap: wrap !important;
+}
+
+.admin-table-wrap,
+.dash-table-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    display: block !important;
+    border-radius: 0 0 var(--radius) var(--radius) !important;
+}
+
+.admin-table-wrap table,
+.dash-table-wrap table {
+    min-width: 580px !important;
+}
+
+.admin-section,
+.dash-section {
+    padding: 16px !important;
+}
+
 @media (max-width: 390px) {
 
     .hero h1 {
@@ -3057,7 +3184,6 @@
         justify-content: center;
         min-height: 50px;
     }
-
 
 
     .service-card:nth-child(1) .service-icon-bg {
