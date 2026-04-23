@@ -126,8 +126,8 @@
     width: 100%;
     height: auto;
     display: block;
-    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 58%, rgba(0, 0, 0, 0.4) 82%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 0%, black 58%, rgba(0, 0, 0, 0.4) 82%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 72%, rgba(0, 0, 0, 0.3) 90%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 0%, black 72%, rgba(0, 0, 0, 0.3) 90%, transparent 100%);
     animation: planeSlide 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -167,7 +167,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 16px 40px 48px;
+    padding: 0 40px 48px;
     background: #fff;
     opacity: 0;
     animation: contentIn 0.7s ease 1.2s forwards;
@@ -279,7 +279,7 @@
 
 @media (max-width: 640px) {
     .nf-content {
-        padding: 12px 32px 36px;
+        padding: 0 32px 36px;
     }
 
     .nf-heading {
@@ -303,7 +303,7 @@
 
 @media (max-width: 360px) {
     .nf-content {
-        padding: 10px 24px 28px;
+        padding: 0 24px 28px;
     }
 
     .nf-btn-primary,
