@@ -27,6 +27,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -36,14 +37,20 @@
             min-height: 100vh;
         }
 
-        /* ── Nav ── */
+        body.drawer-open {
+            overflow: hidden;
+        }
+
+        /* ════════════════════════════════════
+           NAV
+        ════════════════════════════════════ */
         nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.96);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid #E3E5F5;
@@ -65,7 +72,8 @@
             display: block;
         }
 
-        .nav-right {
+        /* Desktop nav */
+        .nav-desktop {
             display: flex;
             gap: 8px;
             align-items: center;
@@ -106,7 +114,106 @@
             transform: translateY(-1px);
         }
 
-        /* ── Full-page layout: image top, content centred below ── */
+        /* Hamburger — mobile only */
+        .nav-toggle {
+            display: none;
+            background: transparent;
+            border: 1.5px solid #E3E5F5;
+            border-radius: 9px;
+            padding: 8px 10px;
+            cursor: pointer;
+            color: #0D1560;
+        }
+
+        /* ════════════════════════════════════
+           MOBILE DRAWER
+        ════════════════════════════════════ */
+        .nav-drawer-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 19, 60, 0.42);
+            z-index: 998;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            opacity: 0;
+            transition: opacity 0.22s ease;
+        }
+
+        .nav-drawer-overlay.open {
+            display: block;
+            opacity: 1;
+        }
+
+        .nav-drawer {
+            position: fixed;
+            top: 68px;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            background: rgba(255, 255, 255, 0.99);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1.5px solid #E3E5F5;
+            padding: 8px 5% 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            box-shadow: 0 16px 40px rgba(10, 31, 68, 0.1);
+            transform: translateY(-10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.22s ease, opacity 0.22s ease;
+        }
+
+        .nav-drawer.open {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .drawer-link {
+            display: block;
+            padding: 14px 2px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #0F1124;
+            text-decoration: none;
+            border-bottom: 1px solid #F0F1F8;
+            transition: color 0.15s;
+        }
+
+        .drawer-link:last-of-type {
+            border-bottom: none;
+        }
+
+        .drawer-link:hover {
+            color: #0D1560;
+        }
+
+        .drawer-cta {
+            margin-top: 14px;
+            display: block;
+            padding: 14px;
+            background: #0D1560;
+            color: white;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.97rem;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.18s;
+        }
+
+        .drawer-cta:hover {
+            background: #090F4A;
+        }
+
+        /* ════════════════════════════════════
+           PAGE LAYOUT
+        ════════════════════════════════════ */
         .nf-page {
             display: flex;
             flex-direction: column;
@@ -117,7 +224,6 @@
         /* ── Plane hero image ── */
         .nf-hero {
             width: 100%;
-            position: relative;
             line-height: 0;
             flex-shrink: 0;
         }
@@ -126,16 +232,16 @@
             width: 100%;
             height: auto;
             display: block;
-            /* Dissolve bottom edge into white */
+            /* Fade bottom into white */
             -webkit-mask-image: linear-gradient(to bottom,
                     black 0%,
-                    black 50%,
-                    rgba(0, 0, 0, 0.4) 78%,
+                    black 52%,
+                    rgba(0, 0, 0, 0.35) 80%,
                     transparent 100%);
             mask-image: linear-gradient(to bottom,
                     black 0%,
-                    black 50%,
-                    rgba(0, 0, 0, 0.4) 78%,
+                    black 52%,
+                    rgba(0, 0, 0, 0.35) 80%,
                     transparent 100%);
             animation: planeSlide 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
@@ -152,7 +258,6 @@
             }
         }
 
-        /* Gentle float after entry */
         .nf-hero-img.loaded {
             animation:
                 planeSlide 1.8s cubic-bezier(0.16, 1, 0.3, 1) both,
@@ -171,7 +276,7 @@
             }
         }
 
-        /* ── Text content ── */
+        /* ── Content ── */
         .nf-content {
             flex: 1;
             display: flex;
@@ -197,9 +302,8 @@
             }
         }
 
-        /* Red rule — sole 404 echo, small and tasteful */
         .nf-rule {
-            width: 56px;
+            width: 52px;
             height: 4px;
             border-radius: 2px;
             background: #E31E24;
@@ -207,7 +311,7 @@
         }
 
         .nf-heading {
-            font-size: clamp(1.4rem, 3.5vw, 2rem);
+            font-size: clamp(1.4rem, 4vw, 2rem);
             font-weight: 700;
             color: #0D1560;
             letter-spacing: -0.03em;
@@ -217,38 +321,43 @@
         }
 
         .nf-sub {
-            font-size: clamp(0.88rem, 1.8vw, 1rem);
+            font-size: clamp(0.88rem, 2vw, 1rem);
             color: #7480A0;
             line-height: 1.75;
             max-width: 400px;
             font-weight: 400;
-            margin-bottom: 40px;
+            margin-bottom: 36px;
         }
 
-        /* Buttons */
+        /* ── Buttons — always side by side ── */
         .nf-actions {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
+            gap: 10px;
+            flex-wrap: nowrap;
+            width: 100%;
+            max-width: 480px;
         }
 
         .btn-primary-404 {
+            flex: 1;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 15px 40px;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 20px;
             background: #0D1560;
             color: white;
             border: none;
             border-radius: 12px;
             font-family: 'Poppins', sans-serif;
-            font-size: 0.97rem;
+            font-size: clamp(0.82rem, 2.2vw, 0.97rem);
             font-weight: 700;
             text-decoration: none;
             letter-spacing: -0.01em;
             cursor: pointer;
+            white-space: nowrap;
             transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
             box-shadow: 0 4px 18px rgba(13, 21, 96, 0.28);
         }
@@ -264,19 +373,22 @@
         }
 
         .btn-ghost-404 {
+            flex: 1;
             display: inline-flex;
             align-items: center;
-            padding: 14px 36px;
+            justify-content: center;
+            padding: 14px 20px;
             background: transparent;
             color: #0D1560;
             border: 2px solid #E3E5F5;
             border-radius: 12px;
             font-family: 'Poppins', sans-serif;
-            font-size: 0.97rem;
+            font-size: clamp(0.82rem, 2.2vw, 0.97rem);
             font-weight: 700;
             text-decoration: none;
             letter-spacing: -0.01em;
             cursor: pointer;
+            white-space: nowrap;
             transition: border-color 0.18s, background 0.18s;
         }
 
@@ -285,33 +397,55 @@
             background: #F5F6FC;
         }
 
-        /* ── Mobile ── */
+        /* ════════════════════════════════════
+           RESPONSIVE
+        ════════════════════════════════════ */
         @media (max-width: 640px) {
-            .nav-link {
+
+            /* Show hamburger, hide desktop nav */
+            .nav-desktop {
                 display: none;
             }
 
+            .nav-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Image: let it render at natural aspect ratio (3:2)
+               so the full plane + banner is always visible */
             .nf-hero-img {
-                object-fit: cover;
-                height: 54vw;
-                min-height: 200px;
-                object-position: center top;
+                width: 100%;
+                height: auto;
+                /* Override object-fit — not needed, natural ratio is fine */
+                object-fit: unset;
             }
 
             .nf-content {
                 padding: 4px 20px 56px;
             }
 
+            /* Buttons: side by side but smaller text, equal width */
             .nf-actions {
-                flex-direction: column;
-                align-items: stretch;
-                max-width: 290px;
+                max-width: 100%;
+                gap: 8px;
             }
 
             .btn-primary-404,
             .btn-ghost-404 {
-                justify-content: center;
-                padding: 15px 20px;
+                padding: 13px 12px;
+                font-size: 0.82rem;
+                border-radius: 10px;
+            }
+        }
+
+        @media (max-width: 360px) {
+
+            .btn-primary-404,
+            .btn-ghost-404 {
+                padding: 12px 8px;
+                font-size: 0.78rem;
             }
         }
     </style>
@@ -319,25 +453,49 @@
 
 <body>
 
+    <!-- Nav drawer overlay -->
+    <div class="nav-drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+    <!-- Mobile nav drawer -->
+    <div class="nav-drawer" id="nav-drawer">
+        <a href="/" class="drawer-link" onclick="closeDrawer()">Home</a>
+        <a href="/visa" class="drawer-link" onclick="closeDrawer()">Visa Requirements</a>
+        <a href="/apply" class="drawer-link" onclick="closeDrawer()">Apply for Visa</a>
+        <a href="/dashboard" class="drawer-link" onclick="closeDrawer()">My Dashboard</a>
+        <a href="/apply" class="drawer-cta" onclick="closeDrawer()">Apply Now →</a>
+    </div>
+
     <nav id="main-nav">
         <a href="/" class="nav-logo">
             <img src="assets/images/JEKAFLY LOGO B-R 2.png" alt="Jekafly" />
         </a>
-        <div class="nav-right">
+
+        <!-- Desktop links -->
+        <div class="nav-desktop">
             <a href="/" class="nav-link">Home</a>
             <a href="/apply" class="nav-cta-btn">Apply Now</a>
         </div>
+
+        <!-- Mobile hamburger -->
+        <button class="nav-toggle" id="nav-toggle" onclick="toggleDrawer()" aria-label="Menu">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round">
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <line x1="3" y1="12" x2="21" y2="12" />
+                <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+        </button>
     </nav>
 
     <div class="nf-page">
 
-        <!-- Plane + 404 banner image — this IS the 404, no number repeated below -->
+        <!-- Plane + 404 banner image — full natural aspect ratio on all screens -->
         <div class="nf-hero">
             <img src="assets/images/404-plane.png" alt="Jekafly aircraft towing a banner reading 404 — page not found"
                 class="nf-hero-img" id="nf-plane-img" onload="this.classList.add('loaded')" />
         </div>
 
-        <!-- Copy only — no 404 number here -->
+        <!-- Text content — no 404 number, banner handles it -->
         <div class="nf-content">
             <div class="nf-rule"></div>
             <h1 class="nf-heading">Page Not Found</h1>
@@ -346,7 +504,7 @@
             <div class="nf-actions">
                 <a href="/" class="btn-primary-404">
                     Back to Home
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
@@ -364,6 +522,29 @@
     <script>
         window.addEventListener('scroll', () => {
             document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20);
+        });
+
+        function toggleDrawer() {
+            const drawer = document.getElementById('nav-drawer');
+            const overlay = document.getElementById('drawer-overlay');
+            const isOpen = drawer.classList.contains('open');
+            if (isOpen) {
+                closeDrawer();
+            } else {
+                drawer.classList.add('open');
+                overlay.classList.add('open');
+                document.body.classList.add('drawer-open');
+            }
+        }
+
+        function closeDrawer() {
+            document.getElementById('nav-drawer').classList.remove('open');
+            document.getElementById('drawer-overlay').classList.remove('open');
+            document.body.classList.remove('drawer-open');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDrawer();
         });
     </script>
 
