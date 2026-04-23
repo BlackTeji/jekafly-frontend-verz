@@ -21,13 +21,6 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/404.css" />
     <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
-    <style>
-        html,
-        body {
-            min-height: 0 !important;
-            height: auto !important;
-        }
-    </style>
 </head>
 
 <body>
@@ -41,8 +34,11 @@
     <div class="nf-page">
 
         <div class="nf-hero">
-            <img src="assets/images/404-plane.png" alt="Jekafly aircraft towing a 404 banner" class="nf-hero-img"
-                onload="this.classList.add('loaded')" />
+            <picture>
+                <source media="(max-width: 640px)" srcset="assets/images/404-plane-mobile.png" />
+                <img src="assets/images/404-plane.png" alt="Jekafly aircraft towing a 404 banner" class="nf-hero-img"
+                    onload="this.classList.add('loaded')" />
+            </picture>
         </div>
 
         <div class="nf-content">
