@@ -38,20 +38,13 @@ body:has(.nf-page) {
     object-position: center center;
     display: block;
     animation: planeSlide 1.8s cubic-bezier(0.16, 1, 0.3, 1) both;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 30%, black 55%, black 85%, rgba(0, 0, 0, 0.3) 95%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.3) 30%, black 55%, black 85%, rgba(0, 0, 0, 0.3) 95%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 30%, black 55%, black 85%, rgba(0,0,0,0.3) 95%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 30%, black 55%, black 85%, rgba(0,0,0,0.3) 95%, transparent 100%);
 }
 
 @keyframes planeSlide {
-    from {
-        opacity: 0;
-        transform: translateX(48px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(48px); }
+    to   { opacity: 1; transform: translateX(0); }
 }
 
 .nf-hero-img.loaded {
@@ -61,15 +54,8 @@ body:has(.nf-page) {
 }
 
 @keyframes planeFloat {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-7px);
-    }
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-7px); }
 }
 
 /* Content sits below the image — fixed height, no shrinking */
@@ -87,15 +73,8 @@ body:has(.nf-page) {
 }
 
 @keyframes contentIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .nf-rule {
@@ -162,9 +141,7 @@ body:has(.nf-page) {
     box-shadow: 0 6px 20px rgba(13, 21, 96, 0.32);
 }
 
-.nf-btn-primary:active {
-    transform: translateY(0);
-}
+.nf-btn-primary:active { transform: translateY(0); }
 
 .nf-btn-outline {
     flex: 1;
@@ -191,39 +168,84 @@ body:has(.nf-page) {
 }
 
 @media (max-width: 640px) {
-    .nf-hero {
-        /* Cap hero so content always stays visible */
-        max-height: 62vh;
-        flex: none;
-        height: 62vh;
+    /* Stack nf-page normally, hero fills most of screen */
+    .nf-page {
+        padding-top: 68px;
+        height: 100vh;
+        max-height: 100vh;
+        overflow: hidden;
+        position: relative;
+        display: block;
     }
-
+    .nf-hero {
+        position: absolute;
+        inset: 68px 0 0 0;
+        height: calc(100vh - 68px);
+        flex: none;
+        overflow: hidden;
+    }
     .nf-hero-img {
-        object-fit: cover;
-        object-position: center 30%;
         width: 100%;
         height: 100%;
+        object-fit:fill;
+        object-position: 0%;
         margin-left: 0;
         transform: none;
+        -webkit-mask-image: none;
+        mask-image: none;
     }
-
+    .nf-hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            to bottom,
+            transparent 40%,
+            rgba(5, 8, 40, 0.5) 65%,
+            rgba(5, 8, 40, 0.88) 100%
+        );
+        pointer-events: none;
+    }
+    .nf-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: transparent;
+        padding: 0 28px 48px;
+        z-index: 2;
+        opacity: 1;
+        animation: contentIn 0.7s ease 1.2s both;
+    }
+    .nf-rule { background: #E31E24; }
+    .nf-heading {
+        color: #ffffff;
+        font-size: 1.5rem;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    .nf-sub {
+        color: rgba(255,255,255,0.82);
+        font-size: 0.85rem;
+        margin-bottom: 20px;
+    }
+    .nf-btn-primary {
+        background: #ffffff;
+        color: var(--blue);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+    .nf-btn-outline {
+        background: rgba(255,255,255,0.15);
+        color: #ffffff;
+        border-color: rgba(255,255,255,0.5);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
     .nf-content {
         padding: 20px 28px 28px;
     }
-
-    .nf-heading {
-        max-width: 260px;
-    }
-
-    .nf-sub {
-        max-width: 260px;
-        margin-bottom: 16px;
-    }
-
-    .nf-actions {
-        max-width: 300px;
-    }
-
+    .nf-heading { max-width: 260px; }
+    .nf-sub     { max-width: 260px; margin-bottom: 16px; }
+    .nf-actions { max-width: 300px; }
     .nf-btn-primary,
     .nf-btn-outline {
         padding: 11px 10px;
@@ -232,10 +254,7 @@ body:has(.nf-page) {
 }
 
 @media (max-width: 360px) {
-    .nf-content {
-        padding: 16px 20px 24px;
-    }
-
+    .nf-content { padding: 16px 20px 24px; }
     .nf-btn-primary,
     .nf-btn-outline {
         padding: 10px 8px;
