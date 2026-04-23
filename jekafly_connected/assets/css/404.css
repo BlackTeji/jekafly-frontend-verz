@@ -191,10 +191,16 @@ body:has(.nf-page) {
 }
 
 @media (max-width: 640px) {
+    .nf-hero {
+        /* Cap hero so content always stays visible */
+        max-height: 62vh;
+        flex: none;
+        height: 62vh;
+    }
+
     .nf-hero-img {
-        /* Portrait image on mobile — just cover the box cleanly */
         object-fit: cover;
-        object-position: center top;
+        object-position: center 30%;
         width: 100%;
         height: 100%;
         margin-left: 0;
