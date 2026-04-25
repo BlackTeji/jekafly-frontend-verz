@@ -2775,15 +2775,13 @@ h4 {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 18px 0 10px;
+    padding: 20px 24px 10px;
     border-top: 1.5px solid #EEF0F8;
-    margin-top: 4px;
 }
 
 .aff-payout-section-label:first-child {
     border-top: none;
-    padding-top: 0;
-    margin-top: 0;
+    padding-top: 20px;
 }
 
 .aff-payout-section-badge {
@@ -2795,7 +2793,7 @@ h4 {
 
 .aff-payout-empty {
     text-align: center;
-    padding: 20px 0 8px;
+    padding: 20px 24px 28px;
     font-size: 0.85rem;
     color: #B8C0D8;
 }
@@ -2804,6 +2802,7 @@ h4 {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    padding: 0 24px 24px;
 }
 
 /* Match aff-app-card style */
