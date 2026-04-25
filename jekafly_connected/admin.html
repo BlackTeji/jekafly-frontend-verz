@@ -377,6 +377,12 @@
             font-weight: 700;
         }
 
+        .an-chart-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 4px;
+        }
+
         @media (max-width: 768px) {
             .an-kpi-grid {
                 grid-template-columns: 1fr 1fr;
@@ -390,6 +396,20 @@
             .an-funnel-label {
                 min-width: 100px;
                 font-size: 0.7rem;
+            }
+
+            .an-heatmap {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .an-chart-scroll {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .an-bar-chart {
+                min-width: 320px;
             }
         }
     </style>
@@ -1286,8 +1306,8 @@
 
             const pending = affiliates.filter(a => a.status === 'pending');
             const active = affiliates.filter(a => a.status === 'approved');
-            const allPayouts = active.flatMap(a => (a.pendingPayouts || a.payouts || []).map(p => ({ ...p, affiliateName: a.name, affiliateEmail: a.email })));
-            const pendingPayouts = allPayouts.filter(p => p.status === 'pending');
+            const allPayouts = active.flatMap(a => (a.pendingPayouts || a.payouts || a.allPayouts || []).map(p => ({ ...p, affiliateName: a.name, affiliateEmail: a.email })));
+            const pendingPayouts = allPayouts.filter(p => p.status === 'pending' || p.status === 'PENDING');
 
             const totalEarned = active.reduce((s, a) => s + (a.totalEarned || 0), 0);
             const totalPaid = active.reduce((s, a) => s + (a.totalPaid || 0), 0);
@@ -1299,7 +1319,7 @@
                 <div class="astat"><div class="astat-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg></div><div class="astat-val">₦${totalEarned >= 1e6 ? (totalEarned / 1e6).toFixed(2) + 'M' : Math.round(totalEarned).toLocaleString()}</div><div class="astat-lbl">Total Earned</div></div>
                 <div class="astat"><div class="astat-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></div><div class="astat-val">₦${totalPaid >= 1e6 ? (totalPaid / 1e6).toFixed(2) + 'M' : Math.round(totalPaid).toLocaleString()}</div><div class="astat-lbl">Total Paid Out</div></div>`;
 
-            window._affPending = pending; window._affActive = active; window._affPayouts = pendingPayouts;
+            window._affPending = pending; window._affActive = active; window._affPayouts = pendingPayouts; window._affAllPayouts = allPayouts;
             window._affPendPage = 1; window._affActivePage = 1; window._affPayoutPage = 1;
             if (pendCnt) pendCnt.textContent = pending.length + ' awaiting review';
             if (activeCnt) activeCnt.textContent = active.length + ' affiliates';
@@ -1376,16 +1396,33 @@
         function renderAffPayouts() {
             const el = document.getElementById('aff-payouts-table');
             if (!el) return;
-            const payouts = window._affPayouts || [];
-            if (!payouts.length) { el.innerHTML = '<div class="atbl-empty">No pending payout requests.</div>'; return; }
-            const paged = _adminPaginate(payouts, window._affPayoutPage);
-            el.innerHTML = `<table><thead><tr><th>Affiliate</th><th>Amount</th><th>Bank</th><th>Requested</th><th>Action</th></tr></thead><tbody>${paged.map(p => `<tr>
-                <td><strong>${escHtml(p.affiliateName || '—')}</strong><br><span class="fs-xs text-muted">${escHtml(p.affiliateEmail || '')}</span></td>
-                <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
-                <td class="fs-xs">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || '—')}</td>
-                <td>${new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
-                <td><button onclick="affProcessPayout('${p.id}')" class="btn-sm" style="background:#0d1560;color:#fff;border:none;">Mark Paid</button></td>
-            </tr>`).join('')}</tbody></table>` + _adminBuildPager(payouts.length, window._affPayoutPage, 'affPayoutGoPage');
+            const all = window._affAllPayouts || [];
+            const pending = all.filter(p => p.status === 'pending' || p.status === 'PENDING');
+            const history = all.filter(p => p.status !== 'pending' && p.status !== 'PENDING');
+            if (!all.length) { el.innerHTML = '<div class="atbl-empty">No payout requests yet.</div>'; return; }
+            const pendingHtml = pending.length ? `
+                <div class="acard-section-label" style="margin-bottom:10px;">Pending (${pending.length})</div>
+                <table><thead><tr><th>Affiliate</th><th>Amount</th><th>Bank</th><th>Requested</th><th>Action</th></tr></thead><tbody>
+                ${pending.map(p => `<tr>
+                    <td><strong>${escHtml(p.affiliateName || '—')}</strong><br><span class="fs-xs text-muted">${escHtml(p.affiliateEmail || '')}</span></td>
+                    <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
+                    <td class="fs-xs">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || '—')}</td>
+                    <td>${new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: '2-digit' })}</td>
+                    <td><button onclick="affProcessPayout('${p.id}')" class="btn-sm" style="background:#0d1560;color:#fff;border:none;border-radius:8px;padding:6px 14px;">Mark Paid</button></td>
+                </tr>`).join('')}
+                </tbody></table>` : '<div class="atbl-empty" style="margin-bottom:16px;">No pending requests.</div>';
+            const historyHtml = history.length ? `
+                <div class="acard-section-label" style="margin:18px 0 10px;">History (${history.length})</div>
+                <table><thead><tr><th>Affiliate</th><th>Amount</th><th>Bank</th><th>Date</th><th>Status</th></tr></thead><tbody>
+                ${history.map(p => `<tr>
+                    <td><strong>${escHtml(p.affiliateName || '—')}</strong><br><span class="fs-xs text-muted">${escHtml(p.affiliateEmail || '')}</span></td>
+                    <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
+                    <td class="fs-xs">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || '—')}</td>
+                    <td>${new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: '2-digit' })}</td>
+                    <td><span class="status-pill status-approved">Paid</span></td>
+                </tr>`).join('')}
+                </tbody></table>` : '';
+            el.innerHTML = pendingHtml + historyHtml;
         }
         function affPayoutGoPage(p) { const t = Math.ceil((window._affPayouts || []).length / APPS_PER_PAGE); if (p < 1 || p > t) return; window._affPayoutPage = p; renderAffPayouts(); }
 
@@ -2121,6 +2158,7 @@
 
         function _anBarChart(data, labelKey, valueKey, title, color = '#0D1560') {
             const max = Math.max(...data.map(d => d[valueKey]), 1);
+            const minW = Math.max(data.length * 44, 280);
             const bars = data.map(d => {
                 const h = Math.round((d[valueKey] / max) * 100);
                 return `<div class="an-bar-col">
@@ -2131,7 +2169,9 @@
             }).join('');
             return `<div class="an-card">
                 <div class="an-card-title">${title}</div>
-                <div class="an-bar-chart">${bars}</div>
+                <div class="an-chart-scroll">
+                    <div class="an-bar-chart" style="min-width:${minW}px">${bars}</div>
+                </div>
             </div>`;
         }
 

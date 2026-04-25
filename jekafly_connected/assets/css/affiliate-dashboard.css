@@ -401,20 +401,30 @@ body {
 
 .afd-table th {
     text-align: left;
-    font-size: 0.72rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: var(--text-light);
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    padding: 0 0 10px;
+    padding: 0 14px 10px 0;
     border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.afd-table th:last-child {
+    padding-right: 0;
 }
 
 .afd-table td {
-    padding: 12px 0;
+    padding: 12px 14px 12px 0;
     font-size: 0.85rem;
     border-bottom: 1px solid var(--border);
     color: var(--text);
+    vertical-align: middle;
+}
+
+.afd-table td:last-child {
+    padding-right: 0;
 }
 
 .afd-table tr:last-child td {
@@ -1277,12 +1287,14 @@ body {
         left: 0;
         right: 0;
         z-index: 900;
-        background: #fff;
-        border-top: 1px solid var(--border);
-        box-shadow: 0 -4px 20px rgba(13, 21, 96, 0.08);
-        padding: 8px 0 max(8px, env(safe-area-inset-bottom));
-        justify-content: space-around;
-        align-items: center;
+        background: rgba(255, 255, 255, 0.97);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-top: 1.5px solid var(--border);
+        box-shadow: 0 -4px 24px rgba(13, 21, 96, 0.10);
+        padding: 4px 4px max(4px, env(safe-area-inset-bottom));
+        justify-content: stretch;
+        align-items: stretch;
     }
 
     .afd-mob-nav-item {
@@ -1290,22 +1302,26 @@ body {
         flex-direction: column;
         align-items: center;
         gap: 3px;
-        padding: 4px 12px;
+        padding: 6px 10px;
         cursor: pointer;
         color: var(--text-light);
-        font-size: 0.62rem;
+        font-size: 0.6rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.04em;
         transition: color .15s;
         border: none;
+        border-top: 2.5px solid transparent;
         background: none;
         font-family: 'Poppins', sans-serif;
         -webkit-tap-highlight-color: transparent;
+        flex: 1;
+        justify-content: center;
     }
 
     .afd-mob-nav-item.active {
         color: var(--blue);
+        border-top-color: var(--red);
     }
 
     .afd-mob-nav-item svg {
@@ -1313,7 +1329,7 @@ body {
     }
 
     .afd-mob-nav-item:active svg {
-        transform: scale(0.9);
+        transform: scale(0.88);
     }
 
     .afd-page {
@@ -1418,4 +1434,45 @@ body {
     padding: 2px 6px;
     border-radius: 4px;
     font-family: monospace;
+}
+
+/* ── Payout history card rows ── */
+.afd-payout-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid #F0F2F8;
+}
+
+.afd-payout-row:last-child {
+    border-bottom: none;
+}
+
+.afd-payout-row-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.afd-payout-row-amount {
+    font-size: 0.97rem;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: -0.02em;
+    margin-bottom: 3px;
+}
+
+.afd-payout-row-bank {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 2px;
+}
+
+.afd-payout-row-date {
+    font-size: 0.75rem;
+    color: #9BA5C0;
 }
