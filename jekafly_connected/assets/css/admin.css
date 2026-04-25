@@ -2131,6 +2131,23 @@ tr:hover td {
     border-radius: 14px;
     padding: 22px;
     box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+/* Flush variant: no padding — scroll containers fill edge-to-edge */
+.an-card--flush {
+    padding: 0;
+}
+
+.an-card--flush .an-card-title {
+    margin-bottom: 0;
+    padding: 18px 22px 14px;
+}
+
+.an-card-padded {
+    padding-left: 22px;
+    padding-right: 22px;
+    padding-bottom: 18px;
 }
 
 .an-card-title {
@@ -2147,12 +2164,7 @@ tr:hover td {
 .an-chart-scroll {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    /* Bleed out of card padding on mobile */
-    margin-left: -22px;
-    margin-right: -22px;
-    padding-left: 22px;
-    padding-right: 22px;
-    padding-bottom: 6px;
+    padding: 0 22px 16px;
 }
 
 .an-bar-chart {
@@ -2287,11 +2299,7 @@ tr:hover td {
 .an-heatmap {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    margin-left: -22px;
-    margin-right: -22px;
-    padding-left: 22px;
-    padding-right: 22px;
-    padding-bottom: 6px;
+    padding: 0 22px 4px;
 }
 
 .an-heatmap-grid {
@@ -2371,11 +2379,8 @@ tr:hover td {
         font-size: 0.7rem;
     }
 
-    /* On mobile, cards have less padding — adjust bleed */
     .an-chart-scroll,
     .an-heatmap {
-        margin-left: -16px;
-        margin-right: -16px;
         padding-left: 16px;
         padding-right: 16px;
     }
@@ -2798,19 +2803,37 @@ h4 {
 .aff-payout-list {
     display: flex;
     flex-direction: column;
+    gap: 12px;
 }
 
+/* Match aff-app-card style */
 .aff-payout-row {
     display: flex;
     align-items: flex-start;
     gap: 14px;
-    padding: 14px 0;
-    border-bottom: 1px solid #F5F6FB;
-    transition: background .12s;
+    padding: 18px 20px;
+    background: #fff;
+    border: 1.5px solid #EAECF5;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(13, 21, 96, 0.04);
+    transition: box-shadow .18s, border-color .18s, transform .18s;
 }
 
-.aff-payout-row:last-child {
-    border-bottom: none;
+.aff-payout-row:hover {
+    border-color: #C0CFEE;
+    box-shadow: 0 6px 20px rgba(13, 21, 96, 0.09);
+    transform: translateY(-1px);
+}
+
+.aff-payout-row--paid {
+    opacity: 1;
+    background: #FAFBFF;
+    border-color: #EAECF5;
+}
+
+.aff-payout-row--paid:hover {
+    transform: none;
+    box-shadow: 0 2px 8px rgba(13, 21, 96, 0.04);
 }
 
 .aff-payout-row--paid {
@@ -2818,18 +2841,19 @@ h4 {
 }
 
 .aff-payout-avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #0D1560, #1C2FBF);
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #0D1560, #2236C9);
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 700;
-    font-size: 0.85rem;
+    font-weight: 800;
+    font-size: 1rem;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(13, 21, 96, 0.2);
+    box-shadow: 0 4px 14px rgba(13, 21, 96, 0.28);
+    letter-spacing: -0.02em;
 }
 
 .aff-payout-row--paid .aff-payout-avatar {
@@ -2844,16 +2868,16 @@ h4 {
 
 .aff-payout-name {
     font-weight: 700;
-    font-size: 0.9rem;
-    color: #0F1124;
-    margin-bottom: 1px;
-    letter-spacing: -0.01em;
+    font-size: 0.97rem;
+    color: #0D1560;
+    margin-bottom: 3px;
+    letter-spacing: -0.02em;
 }
 
 .aff-payout-email {
-    font-size: 0.74rem;
-    color: #9BA5C0;
-    margin-bottom: 8px;
+    font-size: 0.78rem;
+    color: #8898BB;
+    margin-bottom: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2901,23 +2925,23 @@ h4 {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 16px;
-    background: linear-gradient(135deg, #0D1560, #1C2FBF);
+    padding: 9px 18px;
+    background: linear-gradient(135deg, #0D1560, #1520A0);
     color: #fff;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-family: 'Poppins', sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 700;
     cursor: pointer;
     white-space: nowrap;
     box-shadow: 0 4px 14px rgba(13, 21, 96, 0.28);
-    transition: transform .15s, box-shadow .15s;
+    transition: transform .18s, box-shadow .18s;
 }
 
 .aff-payout-mark-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(13, 21, 96, 0.36);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(13, 21, 96, 0.36);
 }
 
 .aff-payout-paid-pill {

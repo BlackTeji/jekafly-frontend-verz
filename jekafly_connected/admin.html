@@ -1818,8 +1818,8 @@
                     <div class="an-bar-label">${d[labelKey]}</div>
                 </div>`;
             }).join('');
-            return `<div class="an-card">
-                <div class="an-card-title">${title}</div>
+            return `<div class="an-card an-card--flush">
+                <div class="an-card-title an-card-padded">${title}</div>
                 <div class="an-chart-scroll">
                     <div class="an-bar-chart" style="min-width:${minW}px">${bars}</div>
                 </div>
@@ -1883,8 +1883,8 @@
                 return `<div class="an-hm-label">${d.day}</div>${cells}`;
             }).join('');
             const colHeaders = `<div></div>${hourLabels.map((l, i) => i % 3 === 0 ? `<div class="an-hm-col-label">${l}</div>` : '<div></div>').join('')}`;
-            return `<div class="an-card" style="grid-column:1/-1;">
-                <div class="an-card-title">
+            return `<div class="an-card an-card--flush">
+                <div class="an-card-title an-card-padded">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                     Activity Heatmap <span style="font-size:0.72rem;font-weight:400;color:var(--text-light);">day × hour — darker = more activity</span>
                 </div>
@@ -1894,7 +1894,7 @@
                         ${gridRows}
                     </div>
                 </div>
-                <div style="display:flex;align-items:center;gap:6px;margin-top:14px;font-size:0.72rem;color:var(--text-light);">
+                <div class="an-card-padded" style="display:flex;align-items:center;gap:6px;padding-top:12px;font-size:0.72rem;color:var(--text-light);">
                     <span>Less</span>
                     ${COLORS.map(c => `<div style="width:14px;height:14px;border-radius:3px;background:${c};"></div>`).join('')}
                     <span>More</span>
@@ -2032,11 +2032,9 @@
                 // Row 5: Page behaviour table (full-width)
                 _anPageTable(pv),
 
-                // Row 5b: Daily views + heatmap
-                `<div class="an-grid-2" style="margin-bottom:16px;">
-                    ${pv && pv.daily && pv.daily.length ? _anDailyChart(pv) : '<div></div>'}
-                    ${_anPeakHours(pv && pv.heatmap ? pv.heatmap : d.peakHours)}
-                </div>`,
+                // Row 5b: Daily views + heatmap (standalone, full-width)
+                pv && pv.daily && pv.daily.length ? _anDailyChart(pv) : '',
+                _anPeakHours(pv && pv.heatmap ? pv.heatmap : d.peakHours),
 
                 // Row 6: Affiliate stats
                 `<div class="an-grid-2">
