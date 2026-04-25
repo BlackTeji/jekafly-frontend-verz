@@ -742,15 +742,22 @@
                 el.innerHTML = `<div class="afd-empty"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div>No referrals yet. Share your link to get started!</div></div>`;
                 return;
             }
-            el.innerHTML = `<table class="afd-table"><thead><tr><th>Applicant</th><th>Dest.</th><th>Date</th><th>Commission</th><th>Status</th></tr></thead><tbody>
-                ${recent.map(r => `<tr>
-                    <td><strong>${escHtml(abbrName(r.name || r.applicantName))}</strong></td>
-                    <td>${escHtml(abbr(r.destination, 10))}</td>
-                    <td style="white-space:nowrap">${fmtDate(r)}</td>
-                    <td><strong>${fmt(r.commission || r.amount)}</strong></td>
-                    <td><span class="${r.paid ? 'pill-success' : 'pill-pending'}">${r.paid ? 'Paid' : 'Pending'}</span></td>
-                </tr>`).join('')}
-            </tbody></table>`;
+            el.innerHTML = recent.map(r => {
+                const isPaid = r.paid || r.status === 'paid';
+                const initials = (r.name || r.applicantName || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+                return `<div class="afd-ref-card">
+                    <div class="afd-ref-card-avatar">${escHtml(initials)}</div>
+                    <div class="afd-ref-card-body">
+                        <div class="afd-ref-card-name">${escHtml(abbrName(r.name || r.applicantName))}</div>
+                        <div class="afd-ref-card-dest">${escHtml(r.destination || '—')}</div>
+                    </div>
+                    <div class="afd-ref-card-right">
+                        <div class="afd-ref-card-amount">${fmt(r.commission || r.amount)}</div>
+                        <div class="afd-ref-card-date">${fmtDate(r)}</div>
+                        <span class="${isPaid ? 'pill-success' : 'pill-pending'}">${isPaid ? '✓ Paid' : 'Pending'}</span>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function renderRefsTable() {
@@ -762,16 +769,25 @@
                 return;
             }
             if (countEl) countEl.textContent = _affRefs.length + ' referral' + (_affRefs.length !== 1 ? 's' : '');
-            el.innerHTML = `<table class="afd-table"><thead><tr><th>Applicant</th><th>Dest.</th><th>Ref</th><th>Date</th><th>Commission</th><th>Status</th></tr></thead><tbody>
-                ${_affRefs.map(r => `<tr>
-                    <td><strong>${escHtml(abbrName(r.name || r.applicantName))}</strong></td>
-                    <td>${escHtml(abbr(r.destination, 10))}</td>
-                    <td><code class="afd-table-code">${escHtml(abbrRef(r.ref))}</code></td>
-                    <td style="white-space:nowrap">${fmtDate(r)}</td>
-                    <td><strong>${fmt(r.commission)}</strong></td>
-                    <td><span class="${r.paid ? 'pill-success' : 'pill-pending'}">${r.paid ? 'Paid' : 'Pending'}</span></td>
-                </tr>`).join('')}
-            </tbody></table>`;
+            el.innerHTML = _affRefs.map(r => {
+                const isPaid = r.paid || r.status === 'paid';
+                const initials = (r.name || r.applicantName || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+                return `<div class="afd-ref-card">
+                    <div class="afd-ref-card-avatar">${escHtml(initials)}</div>
+                    <div class="afd-ref-card-body">
+                        <div class="afd-ref-card-name">${escHtml(abbrName(r.name || r.applicantName))}</div>
+                        <div class="afd-ref-card-dest">
+                            ${escHtml(r.destination || '—')}
+                            <span class="afd-ref-card-ref">${escHtml(r.ref || '—')}</span>
+                        </div>
+                    </div>
+                    <div class="afd-ref-card-right">
+                        <div class="afd-ref-card-amount">${fmt(r.commission || r.amount)}</div>
+                        <div class="afd-ref-card-date">${fmtDate(r)}</div>
+                        <span class="${isPaid ? 'pill-success' : 'pill-pending'}">${isPaid ? '✓ Paid' : 'Pending'}</span>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function renderEarningsTable() {
@@ -782,25 +798,36 @@
                 return;
             }
             const total = earned.reduce((s, r) => s + (r.commission || r.amount || 0), 0);
-            el.innerHTML = `<div class="afd-earnings-summary">
-                <div class="afd-earnings-cell afd-earnings-cell--blue">
-                    <div class="afd-earnings-val">${fmt(total)}</div>
-                    <div class="afd-earnings-lbl">Total Earned</div>
+            const balance = _affStats?.balance ?? _aff?.balance ?? 0;
+            const paid = earned.filter(r => r.paid || r.status === 'paid').reduce((s, r) => s + (r.commission || r.amount || 0), 0);
+            el.innerHTML = `
+                <div class="afd-earnings-summary">
+                    <div class="afd-earnings-cell afd-earnings-cell--blue">
+                        <div class="afd-earnings-val">${fmt(total)}</div>
+                        <div class="afd-earnings-lbl">Total Earned</div>
+                    </div>
+                    <div class="afd-earnings-cell afd-earnings-cell--green">
+                        <div class="afd-earnings-val">${fmt(balance)}</div>
+                        <div class="afd-earnings-lbl">Available Balance</div>
+                    </div>
                 </div>
-                <div class="afd-earnings-cell afd-earnings-cell--green">
-                    <div class="afd-earnings-val">${fmt(_affStats?.balance || _aff?.balance)}</div>
-                    <div class="afd-earnings-lbl">Available Balance</div>
-                </div>
-            </div>
-            <table class="afd-table"><thead><tr><th>Applicant</th><th>Destination</th><th>Commission</th><th>Date</th><th>Status</th></tr></thead><tbody>
-                ${earned.map(r => `<tr>
-                    <td>${escHtml(abbrName(r.applicantName || r.name))}</td>
-                    <td>${escHtml(abbr(r.destination, 10))}</td>
-                    <td><strong class="afd-amount-blue">${fmt(r.commission || r.amount)}</strong></td>
-                    <td style="white-space:nowrap">${fmtDate(r)}</td>
-                    <td><span class="${r.paid || r.status === 'paid' ? 'pill-success' : 'pill-pending'}">${r.paid || r.status === 'paid' ? 'Paid' : 'Pending'}</span></td>
-                </tr>`).join('')}
-            </tbody></table>`;
+                <div class="afd-section-divider">Breakdown</div>
+                ${earned.map(r => {
+                const isPaid = r.paid || r.status === 'paid';
+                const initials = (r.applicantName || r.name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+                return `<div class="afd-ref-card">
+                        <div class="afd-ref-card-avatar">${escHtml(initials)}</div>
+                        <div class="afd-ref-card-body">
+                            <div class="afd-ref-card-name">${escHtml(abbrName(r.applicantName || r.name))}</div>
+                            <div class="afd-ref-card-dest">${escHtml(r.destination || '—')}</div>
+                        </div>
+                        <div class="afd-ref-card-right">
+                            <div class="afd-ref-card-amount">${fmt(r.commission || r.amount)}</div>
+                            <div class="afd-ref-card-date">${fmtDate(r)}</div>
+                            <span class="${isPaid ? 'pill-success' : 'pill-pending'}">${isPaid ? '✓ Paid' : 'Pending'}</span>
+                        </div>
+                    </div>`;
+            }).join('')}`;
         }
 
         function renderPayoutHistory() {
