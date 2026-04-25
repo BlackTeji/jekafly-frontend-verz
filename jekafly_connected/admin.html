@@ -314,6 +314,8 @@
         /* Peak activity heatmap */
         .an-heatmap {
             overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 4px;
         }
 
         .an-heatmap-grid {
@@ -1397,8 +1399,8 @@
             const el = document.getElementById('aff-payouts-table');
             if (!el) return;
             const all = window._affAllPayouts || [];
-            const pending = all.filter(p => p.status === 'pending' || p.status === 'PENDING');
-            const history = all.filter(p => p.status !== 'pending' && p.status !== 'PENDING');
+            const pending = all.filter(p => p.status === 'pending');
+            const history = all.filter(p => p.status === 'processed');
             if (!all.length) { el.innerHTML = '<div class="atbl-empty">No payout requests yet.</div>'; return; }
             const pendingHtml = pending.length ? `
                 <div class="acard-section-label" style="margin-bottom:10px;">Pending (${pending.length})</div>
@@ -1407,7 +1409,7 @@
                     <td><strong>${escHtml(p.affiliateName || '—')}</strong><br><span class="fs-xs text-muted">${escHtml(p.affiliateEmail || '')}</span></td>
                     <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
                     <td class="fs-xs">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || '—')}</td>
-                    <td>${new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: '2-digit' })}</td>
+                    <td style="white-space:nowrap">${p.requestedAt ? new Date(p.requestedAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: '2-digit' }) : '—'}</td>
                     <td><button onclick="affProcessPayout('${p.id}')" class="btn-sm" style="background:#0d1560;color:#fff;border:none;border-radius:8px;padding:6px 14px;">Mark Paid</button></td>
                 </tr>`).join('')}
                 </tbody></table>` : '<div class="atbl-empty" style="margin-bottom:16px;">No pending requests.</div>';
@@ -1418,7 +1420,7 @@
                     <td><strong>${escHtml(p.affiliateName || '—')}</strong><br><span class="fs-xs text-muted">${escHtml(p.affiliateEmail || '')}</span></td>
                     <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
                     <td class="fs-xs">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || '—')}</td>
-                    <td>${new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: '2-digit' })}</td>
+                    <td style="white-space:nowrap">${p.requestedAt ? new Date(p.requestedAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: '2-digit' }) : '—'}</td>
                     <td><span class="status-pill status-approved">Paid</span></td>
                 </tr>`).join('')}
                 </tbody></table>` : '';

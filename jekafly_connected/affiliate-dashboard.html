@@ -714,7 +714,7 @@
         }
 
         function fmtDate(r) {
-            const raw = r.createdAt || r.date || r.appliedAt || r.submittedAt || r.updatedAt;
+            const raw = r.date || r.createdAt || r.requestedAt || r.appliedAt || r.submittedAt;
             if (!raw) return '—';
             const d = new Date(raw);
             if (isNaN(d)) return '—';
@@ -744,11 +744,11 @@
             }
             el.innerHTML = `<table class="afd-table"><thead><tr><th>Applicant</th><th>Dest.</th><th>Date</th><th>Commission</th><th>Status</th></tr></thead><tbody>
                 ${recent.map(r => `<tr>
-                    <td><strong>${escHtml(abbrName(r.applicantName || r.name))}</strong></td>
+                    <td><strong>${escHtml(abbrName(r.name || r.applicantName))}</strong></td>
                     <td>${escHtml(abbr(r.destination, 10))}</td>
                     <td style="white-space:nowrap">${fmtDate(r)}</td>
                     <td><strong>${fmt(r.commission || r.amount)}</strong></td>
-                    <td><span class="${r.paid || r.status === 'paid' ? 'pill-success' : 'pill-pending'}">${r.paid || r.status === 'paid' ? 'Paid' : 'Pending'}</span></td>
+                    <td><span class="${r.paid ? 'pill-success' : 'pill-pending'}">${r.paid ? 'Paid' : 'Pending'}</span></td>
                 </tr>`).join('')}
             </tbody></table>`;
         }
@@ -762,17 +762,14 @@
                 return;
             }
             if (countEl) countEl.textContent = _affRefs.length + ' referral' + (_affRefs.length !== 1 ? 's' : '');
-            el.innerHTML = `<table class="afd-table"><thead><tr><th>Applicant</th><th>Dest.</th><th>Ref</th><th>Date</th><th>Amount</th><th>Status</th></tr></thead><tbody>
+            el.innerHTML = `<table class="afd-table"><thead><tr><th>Applicant</th><th>Dest.</th><th>Ref</th><th>Date</th><th>Commission</th><th>Status</th></tr></thead><tbody>
                 ${_affRefs.map(r => `<tr>
-                    <td>
-                        <strong>${escHtml(abbrName(r.applicantName || r.name))}</strong>
-                        ${r.email ? `<br><span class="afd-table-email">${escHtml(abbr(r.email, 20))}</span>` : ''}
-                    </td>
+                    <td><strong>${escHtml(abbrName(r.name || r.applicantName))}</strong></td>
                     <td>${escHtml(abbr(r.destination, 10))}</td>
-                    <td><code class="afd-table-code">${escHtml(abbrRef(r.ref || r.referralCode || r.applicationRef))}</code></td>
+                    <td><code class="afd-table-code">${escHtml(abbrRef(r.ref))}</code></td>
                     <td style="white-space:nowrap">${fmtDate(r)}</td>
-                    <td><strong>${fmt(r.commission || r.amount)}</strong></td>
-                    <td><span class="${r.paid || r.status === 'paid' ? 'pill-success' : 'pill-pending'}">${r.paid || r.status === 'paid' ? 'Paid' : 'Pending'}</span></td>
+                    <td><strong>${fmt(r.commission)}</strong></td>
+                    <td><span class="${r.paid ? 'pill-success' : 'pill-pending'}">${r.paid ? 'Paid' : 'Pending'}</span></td>
                 </tr>`).join('')}
             </tbody></table>`;
         }
@@ -813,10 +810,10 @@
                 return;
             }
             el.innerHTML = _affPayouts.map(p => {
-                const isPaid = p.status === 'processed' || p.status === 'PAID' || p.status === 'paid';
+                const isPaid = p.status === 'processed';
                 const date = (p.requestedAt || p.createdAt) ? new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
                 const bank = escHtml(p.bankName || '—');
-                const acct = escHtml(p.accountNumber || p.bankAccount || '—');
+                const acct = escHtml(p.accountNumber || '—');
                 return `<div class="afd-payout-row">
                     <div class="afd-payout-row-main">
                         <div class="afd-payout-row-amount">${fmt(p.amount)}</div>
@@ -1032,6 +1029,11 @@
                     balance: _aff.balance || 0,
                 };
                 _affPayouts = data.payouts || [];
+                // Also fetch full payout history separately
+                try {
+                    const fullPayouts = await AffiliateStore.getPayouts();
+                    if (fullPayouts.length > _affPayouts.length) _affPayouts = fullPayouts;
+                } catch (e) { }
 
                 // Fetch individual referral records
                 try {
