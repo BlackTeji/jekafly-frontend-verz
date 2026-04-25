@@ -444,6 +444,10 @@ var AffiliateStore = {
     async adminUpdateStatus(id, status) {
         return patch(`/admin/affiliates/${id}/status`, { status });
     },
+    async adminGetAllPayouts() {
+        const res = await get('/admin/affiliates/payouts');
+        return res?.ok ? (res.data?.payouts || []) : [];
+    },
     async adminProcessPayout(payoutId) {
         return patch(`/admin/affiliates/payouts/${payoutId}/process`, {});
     },

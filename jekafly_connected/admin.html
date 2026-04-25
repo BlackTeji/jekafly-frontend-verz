@@ -192,7 +192,7 @@
         }
 
         .an-bar-col {
-            flex: 1;
+            flex: 0 0 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -202,7 +202,7 @@
         }
 
         .an-bar {
-            width: 100%;
+            width: 28px;
             border-radius: 4px 4px 0 0;
             transition: opacity .15s;
             min-height: 2px;
@@ -411,7 +411,7 @@
             }
 
             .an-bar-chart {
-                min-width: 320px;
+                min-width: unset;
             }
         }
     </style>
@@ -1303,13 +1303,13 @@
             const payoutCnt = document.getElementById('aff-payouts-count');
             [pendEl, activeEl, payoutEl].forEach(el => { if (el) el.innerHTML = '<div class="atbl-empty">Loading...</div>'; });
 
-            let affiliates = [];
+            let affiliates = [], allPayouts = [];
             try { affiliates = await AffiliateStore.adminGetAll(); } catch (e) { }
+            try { allPayouts = await AffiliateStore.adminGetAllPayouts(); } catch (e) { }
 
             const pending = affiliates.filter(a => a.status === 'pending');
             const active = affiliates.filter(a => a.status === 'approved');
-            const allPayouts = active.flatMap(a => (a.pendingPayouts || a.payouts || a.allPayouts || []).map(p => ({ ...p, affiliateName: a.name, affiliateEmail: a.email })));
-            const pendingPayouts = allPayouts.filter(p => p.status === 'pending' || p.status === 'PENDING');
+            const pendingPayouts = allPayouts.filter(p => p.status === 'pending');
 
             const totalEarned = active.reduce((s, a) => s + (a.totalEarned || 0), 0);
             const totalPaid = active.reduce((s, a) => s + (a.totalPaid || 0), 0);
