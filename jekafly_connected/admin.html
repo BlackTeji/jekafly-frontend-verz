@@ -1028,29 +1028,39 @@
             function payoutRow(p, showAction) {
                 const initials = (p.affiliateName || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
                 const isPending = showAction;
+                const cardId = 'payout-card-' + p.id;
+                const bodyId = 'payout-body-' + p.id;
                 return `
-                <div class="aff-payout-row ${isPending ? 'aff-payout-row--pending' : 'aff-payout-row--paid'}">
-                    <div class="aff-payout-avatar">${escHtml(initials)}</div>
-                    <div class="aff-payout-body">
-                        <div class="aff-payout-name">${escHtml(p.affiliateName || '—')}</div>
-                        <div class="aff-payout-email">${escHtml(p.affiliateEmail || '')}</div>
-                        <div class="aff-payout-meta">
+                <div class="aff-payout-row ${isPending ? 'aff-payout-row--pending' : 'aff-payout-row--paid'}" id="${cardId}">
+                    <div class="aff-payout-header" onclick="togglePayoutCard('${p.id}')">
+                        <div class="aff-payout-avatar">${escHtml(initials)}</div>
+                        <div class="aff-payout-body">
+                            <div class="aff-payout-name">${escHtml(p.affiliateName || '—')}</div>
+                            <div class="aff-payout-email">${escHtml(p.affiliateEmail || '')}</div>
+                        </div>
+                        <div class="aff-payout-header-right">
                             <span class="aff-payout-amount">₦${(p.amount || 0).toLocaleString()}</span>
-                            <span class="aff-payout-bank">${escHtml(p.bankName || '—')} &middot; ${escHtml(p.accountNumber || '—')}</span>
-                            <span class="aff-payout-date">${fmtD(p.requestedAt)}</span>
+                            ${isPending
+                        ? `<span class="aff-payout-paid-pill aff-payout-paid-pill--pending">Pending</span>`
+                        : `<span class="aff-payout-paid-pill">✓ Paid</span>`
+                    }
+                            <span class="aff-app-chevron" id="payout-chev-${p.id}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
                         </div>
                     </div>
-                    <div class="aff-payout-action">
-                        ${showAction
-                        ? `<button class="aff-payout-mark-btn" onclick="affProcessPayout('${p.id}')">
+                    <div class="aff-payout-detail hidden" id="${bodyId}">
+                        <div class="aff-payout-detail-grid">
+                            <div class="aff-app-field"><span>Bank</span><strong>${escHtml(p.bankName || '—')}</strong></div>
+                            <div class="aff-app-field"><span>Account No.</span><strong>${escHtml(p.accountNumber || '—')}</strong></div>
+                            <div class="aff-app-field"><span>Requested</span><strong>${fmtD(p.requestedAt)}</strong></div>
+                            ${p.processedAt ? `<div class="aff-app-field"><span>Processed</span><strong>${fmtD(p.processedAt)}</strong></div>` : ''}
+                        </div>
+                        ${showAction ? `
+                        <div class="aff-payout-detail-action">
+                            <button class="aff-payout-mark-btn" onclick="affProcessPayout('${p.id}')">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
-                                Mark Paid
-                               </button>`
-                        : `<span class="aff-payout-paid-pill">
-                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/></svg>
-                                Paid
-                               </span>`
-                    }
+                                Mark as Paid
+                            </button>
+                        </div>` : ''}
                     </div>
                 </div>`;
             }
@@ -1076,6 +1086,17 @@
             el.innerHTML = html;
         }
         function affPayoutGoPage(p) { const t = Math.ceil((window._affPayouts || []).length / APPS_PER_PAGE); if (p < 1 || p > t) return; window._affPayoutPage = p; renderAffPayouts(); }
+
+        function togglePayoutCard(id) {
+            const body = document.getElementById('payout-body-' + id);
+            const card = document.getElementById('payout-card-' + id);
+            const chev = document.getElementById('payout-chev-' + id);
+            if (!body) return;
+            const isOpen = !body.classList.contains('hidden');
+            body.classList.toggle('hidden', isOpen);
+            if (card) card.classList.toggle('open', !isOpen);
+            if (chev) chev.style.transform = isOpen ? '' : 'rotate(180deg)';
+        }
 
         function toggleAffCard(id) {
             const body = document.getElementById('aff-body-' + id);

@@ -2801,38 +2801,78 @@ h4 {
 .aff-payout-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     padding: 0 24px 24px;
 }
 
-/* Match aff-app-card style */
+/* Collapsible payout cards */
 .aff-payout-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 18px 20px;
     background: #fff;
     border: 1.5px solid #EAECF5;
     border-radius: 16px;
     box-shadow: 0 2px 8px rgba(13, 21, 96, 0.04);
+    overflow: hidden;
     transition: box-shadow .18s, border-color .18s, transform .18s;
 }
 
 .aff-payout-row:hover {
     border-color: #C0CFEE;
     box-shadow: 0 6px 20px rgba(13, 21, 96, 0.09);
-    transform: translateY(-1px);
+}
+
+.aff-payout-row.open {
+    border-color: #A8BAE8;
+    box-shadow: 0 8px 28px rgba(13, 21, 96, 0.11);
 }
 
 .aff-payout-row--paid {
-    opacity: 1;
     background: #FAFBFF;
-    border-color: #EAECF5;
 }
 
-.aff-payout-row--paid:hover {
-    transform: none;
-    box-shadow: 0 2px 8px rgba(13, 21, 96, 0.04);
+/* Collapsed header — always visible */
+.aff-payout-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+    transition: background .14s;
+}
+
+.aff-payout-header:hover {
+    background: #F8F9FE;
+}
+
+.aff-payout-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* Expanded detail */
+.aff-payout-detail {
+    padding: 0 18px 16px;
+    border-top: 1.5px solid #EEF0F8;
+    background: #F8F9FE;
+}
+
+.aff-payout-detail.hidden {
+    display: none;
+}
+
+.aff-payout-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding-top: 14px;
+    margin-bottom: 14px;
+}
+
+.aff-payout-detail-action {
+    display: flex;
 }
 
 .aff-payout-row--paid {
@@ -2840,19 +2880,19 @@ h4 {
 }
 
 .aff-payout-avatar {
-    width: 46px;
-    height: 46px;
-    border-radius: 14px;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
     background: linear-gradient(135deg, #0D1560, #2236C9);
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 800;
-    font-size: 1rem;
+    font-size: 0.82rem;
     flex-shrink: 0;
-    box-shadow: 0 4px 14px rgba(13, 21, 96, 0.28);
-    letter-spacing: -0.02em;
+    box-shadow: 0 3px 10px rgba(13, 21, 96, 0.22);
+    letter-spacing: -0.01em;
 }
 
 .aff-payout-row--paid .aff-payout-avatar {
@@ -2867,16 +2907,15 @@ h4 {
 
 .aff-payout-name {
     font-weight: 700;
-    font-size: 0.97rem;
+    font-size: 0.9rem;
     color: #0D1560;
-    margin-bottom: 3px;
     letter-spacing: -0.02em;
+    line-height: 1.3;
 }
 
 .aff-payout-email {
-    font-size: 0.78rem;
+    font-size: 0.74rem;
     color: #8898BB;
-    margin-bottom: 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2892,11 +2931,12 @@ h4 {
 .aff-payout-amount {
     background: #EEF2FF;
     color: #0D1560;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     font-weight: 800;
     padding: 3px 10px;
     border-radius: 20px;
     letter-spacing: -0.01em;
+    white-space: nowrap;
 }
 
 .aff-payout-row--paid .aff-payout-amount {
@@ -2946,11 +2986,17 @@ h4 {
 .aff-payout-paid-pill {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 6px 14px;
+    gap: 4px;
+    padding: 3px 10px;
     background: rgba(12, 175, 96, .1);
     color: #0caf60;
     border-radius: 20px;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     font-weight: 700;
+    white-space: nowrap;
+}
+
+.aff-payout-paid-pill--pending {
+    background: #FEF3C7;
+    color: #B45309;
 }
