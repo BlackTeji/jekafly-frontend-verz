@@ -102,6 +102,45 @@ function updateNav() {
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
             </div>
+            ` : isAffiliatePage ? `
+            <div class="nav-mob-divider"></div>
+            <div class="nav-mob-list">
+              <button class="nav-mob-row" onclick="showAfdTab('overview',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#EEF2FF;color:#3B5BDB"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+                <span class="nav-mob-row-label">Overview</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showAfdTab('referrals',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#EBFBEE;color:#2F9E44"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+                <span class="nav-mob-row-label">Referrals</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showAfdTab('earnings',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFF9DB;color:#E67700"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/></svg></span>
+                <span class="nav-mob-row-label">Earnings</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showAfdTab('payouts',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#F3F0FF;color:#7048E8"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><line x1="6" y1="18" x2="6" y2="11"/><line x1="10" y1="18" x2="10" y2="11"/><line x1="14" y1="18" x2="14" y2="11"/><line x1="18" y1="18" x2="18" y2="11"/><polygon points="12 2 20 7 4 7"/></svg></span>
+                <span class="nav-mob-row-label">Payouts</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showAfdTab('share',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFF0F6;color:#C2255C"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
+                <span class="nav-mob-row-label">Share &amp; Promote</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="showAfdTab('tiers',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#E0F7FA;color:#0891B2"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+                <span class="nav-mob-row-label">Tiers &amp; Rates</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+              <button class="nav-mob-row" onclick="window.location.href='/dashboard';closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#E7F5FF;color:#1C7ED6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg></span>
+                <span class="nav-mob-row-label">My Dashboard</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
             ` : isAdminPage ? `
             <div class="nav-mob-divider"></div>
             <div class="nav-mob-list">
@@ -2154,7 +2193,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 })();
-// ─── Real-time SSE client ──────────────────────────────────────────────────────
+
 (function () {
     'use strict';
 
@@ -2174,11 +2213,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             _retryMs = 3000;
         });
 
-        // Application status changed in real time
         _es.addEventListener('application:status', function (e) {
             try {
                 var data = JSON.parse(e.data);
-                // Update status badge in applications table if visible
+
                 var row = document.querySelector('[data-ref="' + data.ref + '"]');
                 if (row) {
                     var badge = row.querySelector('.status-badge, .dash-status');
@@ -2188,7 +2226,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         badge.classList.add('status-' + data.status);
                     }
                 }
-                // Show toast notification
+        
                 var labels = {
                     received: 'Received', processing: 'Docs Verification',
                     embassy: 'Embassy Review', approved: '✅ Approved!',
@@ -2197,14 +2235,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (typeof showToast === 'function') {
                     showToast('Application ' + data.ref + ' — ' + (labels[data.status] || data.status));
                 }
-                // Refresh dashboard apps list if on dashboard
+    
                 if (window._jekafly_page === 'dashboard' && typeof loadApplications === 'function') {
                     loadApplications();
                 }
             } catch (err) { }
         });
 
-        // Payment confirmed in real time
         _es.addEventListener('payment:confirmed', function (e) {
             try {
                 var data = JSON.parse(e.data);
@@ -2232,34 +2269,28 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (_es) { _es.close(); _es = null; }
     }
 
-    // Connect after auth is ready
     document.addEventListener('DOMContentLoaded', function () {
         Auth.init().then(function () {
             if (Auth.getCurrent()) connect();
         }).catch(function () { });
     });
 
-    // Reconnect on visibility — handles mobile background/foreground
     document.addEventListener('visibilitychange', function () {
         if (!document.hidden && Auth.getCurrent() && !_es) connect();
     });
 
-    // Disconnect on logout
     window.addEventListener('jkf:unauthenticated', disconnect);
 
     window.JKF_SSE = { connect: connect, disconnect: disconnect };
 })();
 
-// ─── Page behaviour tracking ──────────────────────────────────────────────────
 (function () {
     'use strict';
 
-    // Excluded pages - don't track admin or internal pages
     var EXCLUDED = ['/admin', '/404'];
     var page = window.location.pathname.toLowerCase().replace(/\.html$/, '') || '/';
     if (EXCLUDED.some(function (p) { return page.startsWith(p); })) return;
 
-    // Session ID - persists for the browser session
     var sessionId = sessionStorage.getItem('jkf_sid');
     if (!sessionId) {
         sessionId = Math.random().toString(36).slice(2) + Date.now().toString(36);
@@ -2270,7 +2301,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     var _maxScroll = 0;
     var _sent = false;
 
-    // Track scroll depth
     function onScroll() {
         var el = document.documentElement;
         var scrolled = el.scrollTop + el.clientHeight;
@@ -2297,7 +2327,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             duration: duration,
             scrollDepth: _maxScroll,
         });
-        // Use sendBeacon for reliability on page unload
+
         var url = (window.API_BASE || 'https://api.jekafly.com/api/v1') + '/track';
         if (navigator.sendBeacon) {
             navigator.sendBeacon(url, new Blob([payload], { type: 'application/json' }));
@@ -2306,7 +2336,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // Send on page unload
     window.addEventListener('visibilitychange', function () {
         if (document.hidden) sendTrack();
     });

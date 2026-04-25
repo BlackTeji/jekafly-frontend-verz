@@ -224,6 +224,7 @@
     <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
 
     <div class="afd-page">
+
         <div class="afd-wrap">
 
             <div class="afd-sidebar">
@@ -471,7 +472,6 @@
                                 class="afd-payout-balance-val">₦0</strong>
                         </p>
                         <div class="afd-payout-form">
-                            <!-- Bank details pre-filled from application — locked -->
                             <div class="afd-payout-bank-notice">
                                 <div
                                     style="width:36px;height:36px;background:linear-gradient(135deg,#0D1560,#1C2FBF);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
@@ -504,7 +504,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Hidden fields carry the locked bank data -->
                             <input type="hidden" id="payout-bank-name" />
                             <input type="hidden" id="payout-acct-no" />
                             <input type="hidden" id="payout-acct-name" />
@@ -527,7 +526,6 @@
                     </div>
                 </div>
 
-                <!-- SHARE TAB -->
                 <div id="tab-share" class="tab-panel-hidden">
                     <div class="afd-greeting">Share &amp; Promote</div>
                     <div class="afd-sub">Share your referral link and start earning on every successful application.
@@ -559,7 +557,6 @@
                     </div>
                 </div>
 
-                <!-- TIERS TAB -->
                 <div id="tab-tiers" class="tab-panel-hidden">
                     <div class="afd-greeting">Commission Tiers</div>
                     <div class="afd-sub">Your rate increases automatically as your referral volume grows.</div>
@@ -656,6 +653,7 @@
             });
             document.querySelectorAll('.afd-nav-item').forEach(i => i.classList.remove('active'));
             if (el) el.classList.add('active');
+            setMobNav(tab);
         }
 
         function escHtml(s) {
@@ -691,14 +689,13 @@
 
             window._afdRefLink = refLink;
 
-            // Pre-fill locked payout bank fields from affiliate application data
             const bankName = _aff.bankName || '';
             const bankAccount = _aff.bankAccount || _aff.accountNumber || '';
             const accountName = _aff.accountName || '';
             document.getElementById('payout-bank-name').value = bankName;
             document.getElementById('payout-acct-no').value = bankAccount;
             document.getElementById('payout-acct-name').value = accountName;
-            // Display fields
+        
             const bankDisp = document.getElementById('payout-bank-display');
             const acctDisp = document.getElementById('payout-acct-display');
             const nameDisp = document.getElementById('payout-name-display');
@@ -903,7 +900,7 @@
         window._jekafly_page = 'affiliate-dashboard';
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // ── Magic token: handle FIRST before any auth gate ────────────────
+
             const _magicParams = new URLSearchParams(window.location.search);
             const _magicToken = _magicParams.get('magic');
             if (_magicToken) {
@@ -985,7 +982,6 @@
                 };
                 _affPayouts = data.payouts || [];
 
-                // Fetch individual referral records
                 try {
                     _affRefs = await _withTimeout(AffiliateStore.getReferrals(), 8000);
                 } catch (e) { _affRefs = []; }
@@ -1013,7 +1009,7 @@
     </script>
 
     <script>
-        // ── Password strength helpers ──────────────────────────────────────────
+
         function spCheckStrength(val) {
             let score = 0;
             if (val.length >= 8) score++;
@@ -1040,7 +1036,6 @@
             else { msg.textContent = '✗ Passwords do not match'; msg.style.color = '#ef4444'; }
         }
 
-        // ── Flow A: New user — set password ───────────────────────────────────
         async function handleSetPassword() {
             const newpass = document.getElementById('sp-new').value;
             const confirm = document.getElementById('sp-confirm').value;
@@ -1064,7 +1059,6 @@
             }
         }
 
-        // ── Flow B: Existing user — sign in ───────────────────────────────────
         let _magicEmail = '';
         async function handleExistingSignIn() {
             const pass = document.getElementById('existing-pass').value;
