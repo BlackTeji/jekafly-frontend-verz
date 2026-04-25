@@ -144,7 +144,6 @@ body {
     padding: 38px 44px;
     min-width: 0;
     min-height: calc(100vh - 68px);
-    overflow-x: hidden;
     background: #F5F7FC;
 }
 
@@ -1420,7 +1419,6 @@ tr:hover td {
         display: block;
         padding-bottom: 72px;
         width: 100%;
-        overflow-x: hidden;
     }
 
     .admin-sidebar {
@@ -1431,7 +1429,6 @@ tr:hover td {
         padding: 20px 16px 24px;
         width: 100%;
         box-sizing: border-box;
-        overflow-x: hidden;
     }
 
     .admin-title {
@@ -2134,7 +2131,6 @@ tr:hover td {
     border-radius: 14px;
     padding: 22px;
     box-shadow: var(--shadow-sm);
-    overflow: hidden;
 }
 
 .an-card-title {
@@ -2774,10 +2770,14 @@ h4 {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin: 20px 0 12px;
+    padding: 18px 0 10px;
+    border-top: 1.5px solid #EEF0F8;
+    margin-top: 4px;
 }
 
 .aff-payout-section-label:first-child {
+    border-top: none;
+    padding-top: 0;
     margin-top: 0;
 }
 
@@ -2790,7 +2790,7 @@ h4 {
 
 .aff-payout-empty {
     text-align: center;
-    padding: 16px 0;
+    padding: 20px 0 8px;
     font-size: 0.85rem;
     color: #B8C0D8;
 }
@@ -2798,21 +2798,19 @@ h4 {
 .aff-payout-list {
     display: flex;
     flex-direction: column;
-    gap: 0;
 }
 
 .aff-payout-row {
     display: flex;
     align-items: flex-start;
     gap: 14px;
-    padding: 16px 0;
-    border-bottom: 1px solid #F0F2F8;
+    padding: 14px 0;
+    border-bottom: 1px solid #F5F6FB;
     transition: background .12s;
 }
 
 .aff-payout-row:last-child {
     border-bottom: none;
-    padding-bottom: 0;
 }
 
 .aff-payout-row--paid {
