@@ -555,6 +555,16 @@ body {
     padding: 11px 0 0;
 }
 
+.afd-payout-balance-line {
+    font-size: 0.84rem;
+    color: var(--text-light);
+    margin-bottom: 18px;
+}
+
+.afd-payout-balance-val {
+    color: var(--blue);
+}
+
 .afd-btn {
     background: linear-gradient(135deg, var(--blue), #1C2FBF);
     color: #fff;
@@ -633,6 +643,22 @@ body {
     flex-shrink: 0;
 }
 
+.afd-tier-icon--starter {
+    background: rgba(148, 163, 184, .12);
+}
+
+.afd-tier-icon--growth {
+    background: rgba(245, 158, 11, .12);
+}
+
+.afd-tier-icon--pro {
+    background: rgba(139, 92, 246, .12);
+}
+
+.afd-tier-icon--elite {
+    background: rgba(16, 185, 129, .12);
+}
+
 .afd-tier-info {
     flex: 1;
 }
@@ -652,6 +678,16 @@ body {
     font-weight: 700;
     font-size: 0.88rem;
     color: var(--blue);
+}
+
+.afd-tier-current-msg {
+    font-size: 0.87rem;
+    color: var(--text-light);
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: var(--blue-soft);
+    border-radius: 10px;
+    border-left: 3px solid var(--blue);
 }
 
 .afd-share-grid {
@@ -715,6 +751,18 @@ body {
     color: var(--text);
 }
 
+.afd-share-hint {
+    font-size: 0.82rem;
+    color: var(--text-light);
+}
+
+.afd-code-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
 .afd-code-display {
     font-size: 1.4rem;
     font-weight: 700;
@@ -725,6 +773,69 @@ body {
     border-radius: 10px;
 }
 
+.afd-code-hint {
+    font-size: 0.82rem;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.afd-card-title-meta {
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--text-light);
+}
+
+.afd-earnings-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.afd-earnings-cell {
+    border-radius: 14px;
+    padding: 18px 20px;
+}
+
+.afd-earnings-cell--blue {
+    background: var(--blue-soft);
+    border: 1.5px solid #D4DAF8;
+}
+
+.afd-earnings-cell--green {
+    background: #F0FDF4;
+    border: 1.5px solid #BBF7D0;
+}
+
+.afd-earnings-val {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: -0.03em;
+    margin-bottom: 4px;
+}
+
+.afd-earnings-cell--green .afd-earnings-val {
+    color: #16a34a;
+}
+
+.afd-earnings-lbl {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-light);
+}
+
+.afd-amount-blue {
+    color: var(--blue);
+}
+
+.afd-table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .pill-success {
     background: rgba(12, 175, 96, .1);
     color: #0caf60;
@@ -732,6 +843,7 @@ body {
     border-radius: 20px;
     font-size: 0.72rem;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .pill-pending {
@@ -741,6 +853,7 @@ body {
     border-radius: 20px;
     font-size: 0.72rem;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .pill-rejected {
@@ -750,6 +863,7 @@ body {
     border-radius: 20px;
     font-size: 0.72rem;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 #afd-loading {
@@ -774,7 +888,8 @@ body {
     }
 }
 
-#afd-gate {
+#afd-gate,
+#afd-not-aff {
     display: none;
     position: fixed;
     inset: 0;
@@ -797,6 +912,18 @@ body {
     animation: popIn .38s cubic-bezier(.34, 1.56, .64, 1);
 }
 
+@keyframes popIn {
+    from {
+        transform: scale(.88);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 .afd-gate-icon {
     width: 56px;
     height: 56px;
@@ -807,6 +934,11 @@ body {
     justify-content: center;
     margin: 0 auto 20px;
     box-shadow: 0 6px 20px rgba(13, 21, 96, .28);
+}
+
+.afd-gate-icon--warning {
+    background: linear-gradient(135deg, #d97706, #f59e0b);
+    box-shadow: 0 6px 20px rgba(217, 119, 6, .28);
 }
 
 .afd-gate-title {
@@ -842,6 +974,9 @@ body {
     cursor: pointer;
     box-shadow: 0 6px 20px rgba(13, 21, 96, .28);
     letter-spacing: -0.01em;
+    text-decoration: none;
+    display: block;
+    text-align: center;
 }
 
 .afd-gate-btn-secondary {
@@ -856,6 +991,9 @@ body {
     font-weight: 700;
     cursor: pointer;
     letter-spacing: -0.01em;
+    text-decoration: none;
+    display: block;
+    text-align: center;
 }
 
 .afd-gate-back {
@@ -864,30 +1002,6 @@ body {
     font-size: 0.82rem;
     color: var(--text-light);
     text-decoration: none;
-}
-
-#afd-not-aff {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    background: rgba(10, 19, 60, .72);
-    backdrop-filter: blur(8px);
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-@keyframes popIn {
-    from {
-        transform: scale(.88);
-        opacity: 0;
-    }
-
-    to {
-        transform: scale(1);
-        opacity: 1;
-    }
 }
 
 .afd-setpass-overlay,
@@ -908,7 +1022,6 @@ body {
 .afd-overlay-box {
     background: #fff;
     border-radius: 28px;
-    padding: 0;
     max-width: 440px;
     width: 100%;
     box-shadow: 0 40px 100px rgba(13, 21, 96, 0.28);
@@ -1286,4 +1399,23 @@ body {
     .afd-quick-grid {
         grid-template-columns: 1fr;
     }
+}
+
+.afd-field--end {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.afd-table-email {
+    font-size: 0.75rem;
+    color: var(--text-light);
+}
+
+.afd-table-code {
+    font-size: 0.78rem;
+    background: var(--off-white);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
 }

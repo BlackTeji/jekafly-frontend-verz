@@ -68,9 +68,8 @@
             <div class="afd-gate-sub" id="not-aff-body">You don't have an approved affiliate account yet. Apply to
                 join the programme and start earning.</div>
             <div class="afd-gate-btns">
-                <a href="/affiliate#apply" class="afd-gate-btn-primary afd-gate-btn-primary--block">Apply Now</a>
-                <a href="/dashboard" class="afd-gate-btn-secondary afd-gate-btn-secondary--block">Go to My
-                    Dashboard</a>
+                <a href="/affiliate#apply" class="afd-gate-btn-primary">Apply Now</a>
+                <a href="/dashboard" class="afd-gate-btn-secondary">Go to My Dashboard</a>
             </div>
         </div>
     </div>
@@ -88,7 +87,7 @@
                     </svg>
                 </div>
                 <div class="afd-overlay-header-eyebrow">Affiliate Programme</div>
-                <h2 class="afd-overlay-header-title">Welcome aboard, <span id="setpass-name">there</span>! 🎉</h2>
+                <h2 class="afd-overlay-header-title">Welcome aboard, <span id="setpass-name">there</span>!</h2>
                 <p class="afd-overlay-header-sub">You've been approved. Set a password to secure your account and
                     access your affiliate dashboard.</p>
             </div>
@@ -123,7 +122,7 @@
                     </div>
                     <div id="sp-str-label" class="afd-str-label"></div>
                 </div>
-                <div class="afd-overlay-field" style="margin-bottom:22px;">
+                <div class="afd-overlay-field">
                     <label>Confirm Password</label>
                     <div class="afd-overlay-input-wrap">
                         <input id="sp-confirm" type="password" placeholder="Repeat password" class="afd-overlay-input"
@@ -159,7 +158,7 @@
                     </svg>
                 </div>
                 <div class="afd-overlay-header-eyebrow">Affiliate Programme</div>
-                <h2 class="afd-overlay-header-title">You've been approved! 🎉</h2>
+                <h2 class="afd-overlay-header-title">You've been approved!</h2>
                 <p class="afd-overlay-header-sub">Your existing Jekafly account now has affiliate access. Sign in
                     below to continue to your dashboard.</p>
             </div>
@@ -177,7 +176,7 @@
                         <div id="existing-email" class="afd-overlay-existing-email"></div>
                     </div>
                 </div>
-                <div class="afd-overlay-field" style="margin-bottom:22px;">
+                <div class="afd-overlay-field">
                     <label>Your Password</label>
                     <div class="afd-overlay-input-wrap">
                         <input id="existing-pass" type="password" placeholder="Enter your Jekafly password"
@@ -366,6 +365,7 @@
                                 </div>
                                 <div id="afd-tier-badge-wrap"></div>
                             </div>
+
                             <div class="afd-stats-grid">
                                 <div class="afd-stat-cell">
                                     <span class="afd-stat-val" id="afd-s-clicks">—</span>
@@ -384,6 +384,7 @@
                                     <span class="afd-stat-lbl">Available Balance</span>
                                 </div>
                             </div>
+
                             <div class="afd-ref-row">
                                 <span class="afd-ref-label">Your referral link</span>
                                 <span class="afd-ref-code" id="afd-ref-link">Loading...</span>
@@ -444,7 +445,7 @@
                     <div class="afd-card">
                         <div class="afd-card-title">All Referrals <span id="afd-refs-count"
                                 class="afd-card-title-meta"></span></div>
-                        <div id="afd-refs-table"></div>
+                        <div class="afd-table-scroll" id="afd-refs-table"></div>
                     </div>
                 </div>
 
@@ -470,8 +471,10 @@
                                 class="afd-payout-balance-val">₦0</strong>
                         </p>
                         <div class="afd-payout-form">
+                            <!-- Bank details pre-filled from application — locked -->
                             <div class="afd-payout-bank-notice">
-                                <div class="afd-payout-bank-icon">
+                                <div
+                                    style="width:36px;height:36px;background:linear-gradient(135deg,#0D1560,#1C2FBF);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <rect x="2" y="5" width="20" height="14" rx="2" />
@@ -494,13 +497,14 @@
                                     <label>Amount (₦)</label>
                                     <input type="number" id="payout-amount" placeholder="e.g. 10000" min="5000" />
                                 </div>
-                                <div class="afd-field">
+                                <div class="afd-field afd-field--end">
                                     <div class="afd-payout-min-note">
                                         Minimum payout: <strong>₦5,000</strong><br>
                                         Payouts processed every Friday.
                                     </div>
                                 </div>
                             </div>
+                            <!-- Hidden fields carry the locked bank data -->
                             <input type="hidden" id="payout-bank-name" />
                             <input type="hidden" id="payout-acct-no" />
                             <input type="hidden" id="payout-acct-name" />
@@ -533,10 +537,11 @@
                         <div class="afd-card-title">Your Referral Link</div>
                         <div class="afd-ref-display">
                             <span class="afd-ref-display-code" id="afd-ref-link-2">Loading...</span>
-                            <button class="afd-btn" onclick="copyRefLink()" style="padding:9px 18px;">Copy</button>
+                            <button class="afd-btn" onclick="copyRefLink()">Copy</button>
                         </div>
-                        <p class="afd-share-hint">Share this link on WhatsApp, Instagram, YouTube, or any platform
-                            where your audience is. Anyone who applies through your link earns you a commission.</p>
+                        <p class="afd-share-hint">Share this link on WhatsApp, Instagram,
+                            YouTube, or any platform where your audience is. Anyone who applies through your link earns
+                            you a commission.</p>
                     </div>
 
                     <div class="afd-card">
@@ -548,8 +553,8 @@
                         <div class="afd-card-title">Your Referral Code</div>
                         <div class="afd-code-row">
                             <code class="afd-code-display" id="afd-code-display">—</code>
-                            <div class="afd-code-hint">Customers can also enter this code manually on the application
-                                form.</div>
+                            <div class="afd-code-hint">Customers can also enter this code
+                                manually on the application form.</div>
                         </div>
                     </div>
                 </div>
@@ -686,15 +691,20 @@
 
             window._afdRefLink = refLink;
 
+            // Pre-fill locked payout bank fields from affiliate application data
             const bankName = _aff.bankName || '';
             const bankAccount = _aff.bankAccount || _aff.accountNumber || '';
             const accountName = _aff.accountName || '';
             document.getElementById('payout-bank-name').value = bankName;
             document.getElementById('payout-acct-no').value = bankAccount;
             document.getElementById('payout-acct-name').value = accountName;
-            document.getElementById('payout-bank-display').textContent = bankName || '—';
-            document.getElementById('payout-acct-display').textContent = bankAccount || '—';
-            document.getElementById('payout-name-display').textContent = accountName || '—';
+            // Display fields
+            const bankDisp = document.getElementById('payout-bank-display');
+            const acctDisp = document.getElementById('payout-acct-display');
+            const nameDisp = document.getElementById('payout-name-display');
+            if (bankDisp) bankDisp.textContent = bankName || '—';
+            if (acctDisp) acctDisp.textContent = bankAccount || '—';
+            if (nameDisp) nameDisp.textContent = accountName || '—';
 
             renderRecentRefs();
             renderTiersTab(refs, tier);
@@ -730,9 +740,9 @@
             if (countEl) countEl.textContent = _affRefs.length + ' referral' + (_affRefs.length !== 1 ? 's' : '');
             el.innerHTML = `<table class="afd-table"><thead><tr><th>Applicant</th><th>Destination</th><th>Ref</th><th>Date</th><th>Commission</th><th>Status</th></tr></thead><tbody>
                 ${_affRefs.map(r => `<tr>
-                    <td><strong>${escHtml(r.applicantName || r.name || '—')}</strong><br><span style="font-size:.75rem;color:var(--text-light);">${escHtml(r.email || '')}</span></td>
+                    <td><strong>${escHtml(r.applicantName || r.name || '—')}</strong><br><span class="afd-table-email">${escHtml(r.email || '')}</span></td>
                     <td>${escHtml(r.destination || '—')}</td>
-                    <td><code style="font-size:.78rem;background:var(--off-white);padding:2px 6px;border-radius:4px;">${escHtml(r.ref || '—')}</code></td>
+                    <td><code class="afd-table-code">${escHtml(r.ref || '—')}</code></td>
                     <td>${r.createdAt ? new Date(r.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td>
                     <td><strong>${fmt(r.commission || r.amount)}</strong></td>
                     <td><span class="${r.paid || r.status === 'paid' ? 'pill-success' : 'pill-pending'}">${r.paid || r.status === 'paid' ? 'Paid' : 'Pending'}</span></td>
@@ -778,7 +788,7 @@
             el.innerHTML = `<table class="afd-table"><thead><tr><th>Amount</th><th>Bank</th><th>Requested</th><th>Status</th></tr></thead><tbody>
                 ${_affPayouts.map(p => `<tr>
                     <td><strong>${fmt(p.amount)}</strong></td>
-                    <td>${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || p.bankAccount || '—')}</td>
+                    <td class="fs-xs">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || p.bankAccount || '—')}</td>
                     <td>${(p.requestedAt || p.createdAt) ? new Date(p.requestedAt || p.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—'}</td>
                     <td><span class="${p.status === 'processed' || p.status === 'PAID' ? 'pill-success' : 'pill-pending'}">${p.status === 'paid' || p.status === 'PAID' ? 'Paid' : 'Pending'}</span></td>
                 </tr>`).join('')}
@@ -795,9 +805,11 @@
             const next = nextMap[currentTier.name.toLowerCase()];
             const msgEl = document.getElementById('afd-current-tier-msg');
             if (msgEl) {
-                msgEl.textContent = next
-                    ? `You are on the ${currentTier.name} tier (${currentTier.rate}% rate). Reach ${next.need} referrals to unlock ${next.name} tier.`
-                    : `You are on the Elite tier — maximum commission rate of 15%. Keep it up!`;
+                if (next) {
+                    msgEl.textContent = `You are on the ${currentTier.name} tier (${currentTier.rate}% rate). Reach ${next.need} referrals to unlock ${next.name} tier.`;
+                } else {
+                    msgEl.textContent = `You are on the Elite tier — maximum commission rate of 15%. Keep it up!`;
+                }
             }
         }
 
@@ -805,12 +817,12 @@
             const encoded = encodeURIComponent(refLink);
             const msg = encodeURIComponent(`Apply for your visa through Jekafly — fast, easy, and reliable. Use my referral link: ${refLink}`);
             const btns = [
-                { label: 'WhatsApp', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>', url: `https://wa.me/?text=${msg}` },
-                { label: 'Twitter / X', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>', url: `https://twitter.com/intent/tweet?text=${msg}` },
-                { label: 'Facebook', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>', url: `https://www.facebook.com/sharer/sharer.php?u=${encoded}` },
-                { label: 'LinkedIn', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>', url: `https://www.linkedin.com/shareArticle?mini=true&url=${encoded}` },
-                { label: 'Copy Link', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D1560" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>', onclick: 'copyRefLink()' },
-                { label: 'Send Email', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E31E24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>', url: `mailto:?subject=Apply%20for%20your%20visa%20through%20Jekafly&body=${msg}` },
+                { label: 'WhatsApp', color: '#25D366', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>', url: `https://wa.me/?text=${msg}` },
+                { label: 'Twitter / X', color: '#000', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.259 5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>', url: `https://twitter.com/intent/tweet?text=${msg}` },
+                { label: 'Facebook', color: '#1877F2', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>', url: `https://www.facebook.com/sharer/sharer.php?u=${encoded}` },
+                { label: 'LinkedIn', color: '#0A66C2', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="#0A66C2"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>', url: `https://www.linkedin.com/shareArticle?mini=true&url=${encoded}` },
+                { label: 'Copy Link', color: '#0D1560', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0D1560" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>', onclick: 'copyRefLink()' },
+                { label: 'Send Email', color: '#E31E24', icon: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E31E24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>', url: `mailto:?subject=Apply%20for%20your%20visa%20through%20Jekafly&body=${msg}` },
             ];
             document.getElementById('afd-share-btns').innerHTML = btns.map(b => b.onclick
                 ? `<button class="afd-share-btn" onclick="${b.onclick}"><div class="afd-share-icon">${b.icon}</div>${b.label}</button>`
@@ -891,6 +903,7 @@
         window._jekafly_page = 'affiliate-dashboard';
 
         document.addEventListener('DOMContentLoaded', async () => {
+            // ── Magic token: handle FIRST before any auth gate ────────────────
             const _magicParams = new URLSearchParams(window.location.search);
             const _magicToken = _magicParams.get('magic');
             if (_magicToken) {
@@ -972,6 +985,7 @@
                 };
                 _affPayouts = data.payouts || [];
 
+                // Fetch individual referral records
                 try {
                     _affRefs = await _withTimeout(AffiliateStore.getReferrals(), 8000);
                 } catch (e) { _affRefs = []; }
@@ -999,6 +1013,7 @@
     </script>
 
     <script>
+        // ── Password strength helpers ──────────────────────────────────────────
         function spCheckStrength(val) {
             let score = 0;
             if (val.length >= 8) score++;
@@ -1015,7 +1030,6 @@
             if (lbl) { lbl.textContent = val.length ? (labels[score - 1] || '') : ''; lbl.style.color = score ? colors[score - 1] : '#9ca3af'; }
             spCheckConfirm();
         }
-
         function spCheckConfirm() {
             const p = document.getElementById('sp-new')?.value;
             const c = document.getElementById('sp-confirm')?.value;
@@ -1026,6 +1040,7 @@
             else { msg.textContent = '✗ Passwords do not match'; msg.style.color = '#ef4444'; }
         }
 
+        // ── Flow A: New user — set password ───────────────────────────────────
         async function handleSetPassword() {
             const newpass = document.getElementById('sp-new').value;
             const confirm = document.getElementById('sp-confirm').value;
@@ -1049,8 +1064,8 @@
             }
         }
 
+        // ── Flow B: Existing user — sign in ───────────────────────────────────
         let _magicEmail = '';
-
         async function handleExistingSignIn() {
             const pass = document.getElementById('existing-pass').value;
             const err = document.getElementById('existing-err');
@@ -1071,7 +1086,6 @@
                 btn.textContent = 'Sign In & Enter Dashboard →';
             }
         }
-
         async function handleExistingForgotPassword(e) {
             e.preventDefault();
             const btn = e.target;
@@ -1080,7 +1094,10 @@
             btn.textContent = 'Reset email sent ✓';
             setTimeout(() => { btn.textContent = 'Forgot your password?'; }, 4000);
         }
+
+
     </script>
 </body>
+
 
 </html>
