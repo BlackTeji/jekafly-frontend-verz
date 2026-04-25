@@ -39,381 +39,6 @@
         h4 {
             font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
         }
-
-        /* ── Tab refresh button ──────────────────────────── */
-        .tab-refresh-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1.5px solid var(--border);
-            background: #fff;
-            color: var(--text-light);
-            font-family: 'Poppins', sans-serif;
-            transition: all .15s;
-            float: right;
-            margin-top: 2px;
-        }
-
-        .tab-refresh-btn:hover {
-            border-color: #0D1560;
-            color: #0D1560;
-            background: #F0F3FF;
-        }
-
-        .tab-refresh-btn.spinning svg {
-            animation: tab-spin .6s linear infinite;
-        }
-
-        @keyframes tab-spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* ── Analytics ─────────────────────────────────────── */
-        .an-period-btn {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.78rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: 1.5px solid var(--border);
-            background: #fff;
-            color: var(--text-light);
-            font-family: 'Poppins', sans-serif;
-            transition: all .15s;
-        }
-
-        .an-period-btn.active,
-        .an-period-btn:hover {
-            background: #0D1560;
-            color: #fff;
-            border-color: #0D1560;
-        }
-
-        .an-kpi-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-
-        .an-kpi {
-            background: #fff;
-            border: 1.5px solid var(--border);
-            border-radius: 14px;
-            padding: 20px 18px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .an-kpi-label {
-            font-size: 0.72rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.07em;
-            color: var(--text-light);
-            margin-bottom: 8px;
-        }
-
-        .an-kpi-value {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #0D1560;
-            letter-spacing: -0.03em;
-            line-height: 1;
-        }
-
-        .an-kpi-sub {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            margin-top: 4px;
-        }
-
-        .an-kpi-accent {
-            border-top: 3px solid #0D1560;
-        }
-
-        .an-kpi-green {
-            border-top: 3px solid #16a34a;
-        }
-
-        .an-kpi-red {
-            border-top: 3px solid #E31E24;
-        }
-
-        .an-kpi-amber {
-            border-top: 3px solid #d97706;
-        }
-
-        .an-grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
-        .an-grid-3 {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
-        .an-card {
-            background: #fff;
-            border: 1.5px solid var(--border);
-            border-radius: 14px;
-            padding: 22px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .an-card-title {
-            font-size: 0.88rem;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Bar chart */
-        .an-bar-chart {
-            display: flex;
-            align-items: flex-end;
-            gap: 6px;
-            height: 120px;
-            margin-bottom: 8px;
-        }
-
-        .an-bar-col {
-            flex: 0 0 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            height: 100%;
-            justify-content: flex-end;
-        }
-
-        .an-bar {
-            width: 28px;
-            border-radius: 4px 4px 0 0;
-            transition: opacity .15s;
-            min-height: 2px;
-        }
-
-        .an-bar:hover {
-            opacity: .75;
-        }
-
-        .an-bar-label {
-            font-size: 0.62rem;
-            color: var(--text-light);
-            white-space: nowrap;
-        }
-
-        .an-bar-val {
-            font-size: 0.68rem;
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        /* Funnel */
-        .an-funnel {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .an-funnel-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .an-funnel-bar-wrap {
-            flex: 1;
-            background: #F0F2F8;
-            border-radius: 6px;
-            height: 28px;
-            overflow: hidden;
-        }
-
-        .an-funnel-bar {
-            height: 100%;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            padding-left: 10px;
-            font-size: 0.72rem;
-            font-weight: 700;
-            color: #fff;
-            transition: width .4s ease;
-        }
-
-        .an-funnel-label {
-            font-size: 0.78rem;
-            color: var(--text);
-            min-width: 160px;
-        }
-
-        .an-funnel-pct {
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--text);
-            min-width: 40px;
-            text-align: right;
-        }
-
-        /* Destination table */
-        .an-dest-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 8px 0;
-            border-bottom: 1px solid #F0F2F8;
-        }
-
-        .an-dest-row:last-child {
-            border-bottom: none;
-        }
-
-        .an-dest-name {
-            flex: 1;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .an-dest-bar-wrap {
-            width: 80px;
-            background: #F0F2F8;
-            border-radius: 4px;
-            height: 6px;
-        }
-
-        .an-dest-bar {
-            height: 100%;
-            border-radius: 4px;
-            background: #0D1560;
-        }
-
-        .an-dest-count {
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: var(--text);
-            min-width: 28px;
-            text-align: right;
-        }
-
-        /* Peak activity heatmap */
-        .an-heatmap {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 4px;
-        }
-
-        .an-heatmap-grid {
-            display: grid;
-            grid-template-columns: 32px repeat(24, 1fr);
-            gap: 3px;
-            min-width: 620px;
-        }
-
-        .an-hm-label {
-            font-size: 0.65rem;
-            font-weight: 600;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            white-space: nowrap;
-        }
-
-        .an-hm-col-label {
-            font-size: 0.6rem;
-            color: var(--text-light);
-            text-align: center;
-            padding-bottom: 2px;
-        }
-
-        .an-hm-cell {
-            height: 22px;
-            border-radius: 4px;
-            transition: transform .1s;
-            cursor: default;
-        }
-
-        .an-hm-cell:hover {
-            transform: scale(1.2);
-            z-index: 2;
-            position: relative;
-        }
-
-        /* Traffic donut */
-        .an-traffic-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .an-traffic-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .an-traffic-label {
-            flex: 1;
-            font-size: 0.82rem;
-        }
-
-        .an-traffic-val {
-            font-size: 0.82rem;
-            font-weight: 700;
-        }
-
-        .an-chart-scroll {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 4px;
-        }
-
-        @media (max-width: 768px) {
-            .an-kpi-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .an-grid-2,
-            .an-grid-3 {
-                grid-template-columns: 1fr;
-            }
-
-            .an-funnel-label {
-                min-width: 100px;
-                font-size: 0.7rem;
-            }
-
-            .an-heatmap {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .an-chart-scroll {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .an-bar-chart {
-                min-width: unset;
-            }
-        }
     </style>
 </head>
 
@@ -1402,28 +1027,46 @@
             const pending = all.filter(p => p.status === 'pending');
             const history = all.filter(p => p.status === 'processed');
             if (!all.length) { el.innerHTML = '<div class="atbl-empty">No payout requests yet.</div>'; return; }
-            const pendingHtml = pending.length ? `
-                <div class="acard-section-label" style="margin-bottom:10px;">Pending (${pending.length})</div>
-                <table><thead><tr><th>Affiliate</th><th>Amount</th><th>Bank</th><th>Requested</th><th>Action</th></tr></thead><tbody>
-                ${pending.map(p => `<tr>
-                    <td><strong>${escHtml(p.affiliateName || '—')}</strong><br><span class="fs-xs text-muted">${escHtml(p.affiliateEmail || '')}</span></td>
-                    <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
-                    <td class="fs-xs">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || '—')}</td>
-                    <td style="white-space:nowrap">${p.requestedAt ? new Date(p.requestedAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: '2-digit' }) : '—'}</td>
-                    <td><button onclick="affProcessPayout('${p.id}')" class="btn-sm" style="background:#0d1560;color:#fff;border:none;border-radius:8px;padding:6px 14px;">Mark Paid</button></td>
-                </tr>`).join('')}
-                </tbody></table>` : '<div class="atbl-empty" style="margin-bottom:16px;">No pending requests.</div>';
+
+            function payoutCard(p, showAction) {
+                const date = p.requestedAt ? new Date(p.requestedAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+                const initials = (p.affiliateName || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+                return `<div style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid #F0F2F8;">
+                    <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0D1560,#1C2FBF);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.82rem;flex-shrink:0;">${escHtml(initials)}</div>
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-weight:700;font-size:0.9rem;color:#0F1124;margin-bottom:2px;">${escHtml(p.affiliateName || '—')}</div>
+                        <div style="font-size:0.76rem;color:#9BA5C0;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escHtml(p.affiliateEmail || '')}</div>
+                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                            <span style="background:#EEF2FF;color:#0D1560;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">₦${(p.amount || 0).toLocaleString()}</span>
+                            <span style="font-size:0.75rem;color:#6B7280;">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || '—')}</span>
+                            <span style="font-size:0.72rem;color:#9BA5C0;">${date}</span>
+                        </div>
+                    </div>
+                    <div style="flex-shrink:0;margin-left:auto;">
+                        ${showAction
+                        ? `<button onclick="affProcessPayout('${p.id}')" style="padding:8px 16px;background:linear-gradient(135deg,#0D1560,#1C2FBF);color:#fff;border:none;border-radius:10px;font-family:'Poppins',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(13,21,96,0.25);white-space:nowrap;">Mark Paid</button>`
+                        : `<span style="background:rgba(12,175,96,.1);color:#0caf60;padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;">Paid</span>`
+                    }
+                    </div>
+                </div>`;
+            }
+
+            const pendingHtml = `
+                <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#9BA5C0;margin-bottom:4px;">
+                    Pending ${pending.length ? `<span style="background:#FEF3C7;color:#D97706;padding:2px 8px;border-radius:10px;margin-left:6px;">${pending.length}</span>` : ''}
+                </div>
+                ${pending.length
+                    ? pending.map(p => payoutCard(p, true)).join('')
+                    : '<div style="padding:20px 0;color:#9BA5C0;font-size:0.85rem;text-align:center;">No pending requests.</div>'
+                }`;
+
             const historyHtml = history.length ? `
-                <div class="acard-section-label" style="margin:18px 0 10px;">History (${history.length})</div>
-                <table><thead><tr><th>Affiliate</th><th>Amount</th><th>Bank</th><th>Date</th><th>Status</th></tr></thead><tbody>
-                ${history.map(p => `<tr>
-                    <td><strong>${escHtml(p.affiliateName || '—')}</strong><br><span class="fs-xs text-muted">${escHtml(p.affiliateEmail || '')}</span></td>
-                    <td><strong>₦${(p.amount || 0).toLocaleString()}</strong></td>
-                    <td class="fs-xs">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || '—')}</td>
-                    <td style="white-space:nowrap">${p.requestedAt ? new Date(p.requestedAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: '2-digit' }) : '—'}</td>
-                    <td><span class="status-pill status-approved">Paid</span></td>
-                </tr>`).join('')}
-                </tbody></table>` : '';
+                <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#9BA5C0;margin-top:24px;margin-bottom:4px;">
+                    History <span style="background:#F0F2F8;color:#6B7280;padding:2px 8px;border-radius:10px;margin-left:6px;">${history.length}</span>
+                </div>
+                ${history.map(p => payoutCard(p, false)).join('')}
+            ` : '';
+
             el.innerHTML = pendingHtml + historyHtml;
         }
         function affPayoutGoPage(p) { const t = Math.ceil((window._affPayouts || []).length / APPS_PER_PAGE); if (p < 1 || p > t) return; window._affPayoutPage = p; renderAffPayouts(); }
