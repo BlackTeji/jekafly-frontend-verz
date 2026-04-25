@@ -28,18 +28,6 @@
     <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="assets/css/admin.css" />
     <link rel="stylesheet" href="mobile.css" media="(max-width: 768px)" />
-    <style>
-        body {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-
-        h1,
-        h2,
-        h3,
-        h4 {
-            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-    </style>
 </head>
 
 <body>
@@ -1026,48 +1014,66 @@
             const all = window._affAllPayouts || [];
             const pending = all.filter(p => p.status === 'pending');
             const history = all.filter(p => p.status === 'processed');
-            if (!all.length) { el.innerHTML = '<div class="atbl-empty">No payout requests yet.</div>'; return; }
 
-            function payoutCard(p, showAction) {
-                const date = p.requestedAt ? new Date(p.requestedAt).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+            if (!all.length) {
+                el.innerHTML = `<div class="atbl-empty">No payout requests yet.</div>`;
+                return;
+            }
+
+            function fmtD(iso) {
+                if (!iso) return '—';
+                return new Date(iso).toLocaleDateString('en-NG', { day: 'numeric', month: 'short', year: 'numeric' });
+            }
+
+            function payoutRow(p, showAction) {
                 const initials = (p.affiliateName || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-                return `<div style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid #F0F2F8;">
-                    <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#0D1560,#1C2FBF);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.82rem;flex-shrink:0;">${escHtml(initials)}</div>
-                    <div style="flex:1;min-width:0;">
-                        <div style="font-weight:700;font-size:0.9rem;color:#0F1124;margin-bottom:2px;">${escHtml(p.affiliateName || '—')}</div>
-                        <div style="font-size:0.76rem;color:#9BA5C0;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escHtml(p.affiliateEmail || '')}</div>
-                        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-                            <span style="background:#EEF2FF;color:#0D1560;font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;">₦${(p.amount || 0).toLocaleString()}</span>
-                            <span style="font-size:0.75rem;color:#6B7280;">${escHtml(p.bankName || '—')} · ${escHtml(p.accountNumber || '—')}</span>
-                            <span style="font-size:0.72rem;color:#9BA5C0;">${date}</span>
+                const isPending = showAction;
+                return `
+                <div class="aff-payout-row ${isPending ? 'aff-payout-row--pending' : 'aff-payout-row--paid'}">
+                    <div class="aff-payout-avatar">${escHtml(initials)}</div>
+                    <div class="aff-payout-body">
+                        <div class="aff-payout-name">${escHtml(p.affiliateName || '—')}</div>
+                        <div class="aff-payout-email">${escHtml(p.affiliateEmail || '')}</div>
+                        <div class="aff-payout-meta">
+                            <span class="aff-payout-amount">₦${(p.amount || 0).toLocaleString()}</span>
+                            <span class="aff-payout-bank">${escHtml(p.bankName || '—')} &middot; ${escHtml(p.accountNumber || '—')}</span>
+                            <span class="aff-payout-date">${fmtD(p.requestedAt)}</span>
                         </div>
                     </div>
-                    <div style="flex-shrink:0;margin-left:auto;">
+                    <div class="aff-payout-action">
                         ${showAction
-                        ? `<button onclick="affProcessPayout('${p.id}')" style="padding:8px 16px;background:linear-gradient(135deg,#0D1560,#1C2FBF);color:#fff;border:none;border-radius:10px;font-family:'Poppins',sans-serif;font-size:0.8rem;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(13,21,96,0.25);white-space:nowrap;">Mark Paid</button>`
-                        : `<span style="background:rgba(12,175,96,.1);color:#0caf60;padding:4px 12px;border-radius:20px;font-size:0.72rem;font-weight:700;">Paid</span>`
+                        ? `<button class="aff-payout-mark-btn" onclick="affProcessPayout('${p.id}')">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                                Mark Paid
+                               </button>`
+                        : `<span class="aff-payout-paid-pill">
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11 3 3L22 4"/></svg>
+                                Paid
+                               </span>`
                     }
                     </div>
                 </div>`;
             }
 
-            const pendingHtml = `
-                <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#9BA5C0;margin-bottom:4px;">
-                    Pending ${pending.length ? `<span style="background:#FEF3C7;color:#D97706;padding:2px 8px;border-radius:10px;margin-left:6px;">${pending.length}</span>` : ''}
-                </div>
-                ${pending.length
-                    ? pending.map(p => payoutCard(p, true)).join('')
-                    : '<div style="padding:20px 0;color:#9BA5C0;font-size:0.85rem;text-align:center;">No pending requests.</div>'
-                }`;
+            const sectionLabel = (text, count, color) => `
+                <div class="aff-payout-section-label">
+                    ${text}
+                    ${count > 0 ? `<span class="aff-payout-section-badge" style="background:${color.bg};color:${color.text};">${count}</span>` : ''}
+                </div>`;
 
-            const historyHtml = history.length ? `
-                <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#9BA5C0;margin-top:24px;margin-bottom:4px;">
-                    History <span style="background:#F0F2F8;color:#6B7280;padding:2px 8px;border-radius:10px;margin-left:6px;">${history.length}</span>
-                </div>
-                ${history.map(p => payoutCard(p, false)).join('')}
-            ` : '';
+            let html = sectionLabel('Pending Requests', pending.length, { bg: '#FFF0C2', text: '#B45309' });
+            if (pending.length) {
+                html += `<div class="aff-payout-list">${pending.map(p => payoutRow(p, true)).join('')}</div>`;
+            } else {
+                html += `<div class="aff-payout-empty">No pending payout requests.</div>`;
+            }
 
-            el.innerHTML = pendingHtml + historyHtml;
+            if (history.length) {
+                html += sectionLabel('Paid History', history.length, { bg: '#D1FAE5', text: '#065F46' });
+                html += `<div class="aff-payout-list">${history.map(p => payoutRow(p, false)).join('')}</div>`;
+            }
+
+            el.innerHTML = html;
         }
         function affPayoutGoPage(p) { const t = Math.ceil((window._affPayouts || []).length / APPS_PER_PAGE); if (p < 1 || p > t) return; window._affPayoutPage = p; renderAffPayouts(); }
 
