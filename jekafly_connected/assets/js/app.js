@@ -24,6 +24,10 @@ function closeNavMenu() {
 })();
 
 
+function _esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
 function updateNav() {
     const user = Auth.getCurrent();
     const ctaEl = document.querySelector('.nav-cta');
@@ -42,7 +46,7 @@ function updateNav() {
         const isAdmin = user.role === 'ADMIN' || user.role === 'admin';
 
         desktopHtml = `
-          <span class="nav-user-hi">Hi, <strong>${first}</strong></span>
+          <span class="nav-user-hi">Hi, <strong>${_esc(first)}</strong></span>
           <a href="/dashboard" class="btn-outline btn-outline-link">My Dashboard</a>
           ${isAdmin ? '<a href="/admin" class="btn-outline btn-outline-link btn-outline-danger">Admin</a>' : ''}
           <button class="btn-primary" onclick="handleLogout()">Logout</button>`;
@@ -53,8 +57,8 @@ function updateNav() {
             <div class="nav-mob-user-row">
               <div class="nav-mob-avatar">${(user.name || 'U').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase()}</div>
               <div class="nav-mob-user-text">
-                <div class="nav-mob-name">${user.name || first}</div>
-                <div class="nav-mob-email">${user.email || ''}</div>
+                <div class="nav-mob-name">${_esc(user.name || first)}</div>
+                <div class="nav-mob-email">${_esc(user.email || '')}</div>
               </div>
             </div>
 
@@ -2226,7 +2230,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                         badge.classList.add('status-' + data.status);
                     }
                 }
-        
+
                 var labels = {
                     received: 'Received', processing: 'Docs Verification',
                     embassy: 'Embassy Review', approved: '✅ Approved!',
@@ -2235,7 +2239,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (typeof showToast === 'function') {
                     showToast('Application ' + data.ref + ' — ' + (labels[data.status] || data.status));
                 }
-    
+
                 if (window._jekafly_page === 'dashboard' && typeof loadApplications === 'function') {
                     loadApplications();
                 }
