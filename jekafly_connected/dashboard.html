@@ -935,7 +935,7 @@
 
             const hour = new Date().getHours();
             const greet = hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening';
-            document.getElementById('dash-greeting').innerHTML = greet + ', ' + currentUser.name.split(' ')[0];
+            document.getElementById('dash-greeting').textContent = greet + ', ' + currentUser.name.split(' ')[0];
 
             loadApplications();
             loadProfile();
@@ -1462,7 +1462,7 @@
                             const btn = document.getElementById('dreq-btn-' + idx);
                             if (item) {
                                 item.classList.add('dreq-done');
-                                if (fileEl) fileEl.innerHTML = `<span class="status-uploaded" style="font-size:0.78rem;color:#16a34a;display:flex;align-items:center;gap:4px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>${doc.name}</span>`;
+                                if (fileEl) fileEl.innerHTML = `<span class="status-uploaded" style="font-size:0.78rem;color:#16a34a;display:flex;align-items:center;gap:4px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>${escHtml(doc.name)}</span>`;
                                 if (btn) btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Replace';
                                 uploadedCount++;
                             }
@@ -1663,7 +1663,7 @@
                     return `<div class="vault-doc-row">
                         <div class="vault-doc-icon ${isPdf ? 'vault-doc-icon--pdf' : 'vault-doc-icon--img'}">${icon}</div>
                         <div class="vault-doc-info">
-                            <div class="vault-doc-name">${f.name}</div>
+                            <div class="vault-doc-name">${escHtml(f.name)}</div>
                             <div class="vault-doc-meta">${f.ref || 'General'}</div>
                         </div>
                         <button class="vault-doc-remove" onclick="removeVaultFile('${f.id}')">

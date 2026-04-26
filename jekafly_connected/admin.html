@@ -975,7 +975,7 @@
                             <div class="aff-app-field"><span>Bank</span><strong>${escHtml(a.bankName || '—')}</strong></div>
                             <div class="aff-app-field"><span>Account Number</span><strong>${escHtml(a.bankAccount || '—')}</strong></div>
                             <div class="aff-app-field"><span>Account Name</span><strong>${escHtml(a.accountName || '—')}</strong></div>
-                            <div class="aff-app-field"><span>Profile URL</span><strong>${a.profileUrl ? `<a href="${escHtml(a.profileUrl)}" target="_blank" class="text-brand">View Profile ↗</a>` : '—'}</strong></div>
+                            <div class="aff-app-field"><span>Profile URL</span><strong>${a.profileUrl && /^https?:\/\//i.test(a.profileUrl) ? `<a href="${escHtml(a.profileUrl)}" target="_blank" rel="noopener noreferrer" class="text-brand">View Profile ↗</a>` : '—'}</strong></div>
                         </div>
                         ${a.motivation ? `<div class="aff-app-motivation"><span>Why they want to join:</span><p>${escHtml(a.motivation)}</p></div>` : ''}
                         <div class="aff-app-actions">
@@ -1497,13 +1497,13 @@
                 <div class="app-mob-card" onclick="${actions ? `viewApp('${a.ref}')` : ''}">
                     <div class="app-mob-card-content">
                         <div class="app-mob-card-top">
-                            <span class="app-mob-dest">${a.destination}</span>
+                            <span class="app-mob-dest">${escHtml(a.destination)}</span>
                             ${a.paid ? '<span class="paid-yes" style="font-size:0.7rem;white-space:nowrap"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span>' : '<span class="paid-no" style="font-size:0.7rem;white-space:nowrap"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Unpaid</span>'}
                         </div>
                         <div class="app-mob-ref">${a.ref}</div>
                         <div class="app-mob-card-bottom">
                             <span class="status-pill ${SC[a.status]}" style="font-size:0.65rem;padding:3px 8px">${SL[a.status] || a.status}</span>
-                            <span class="app-mob-date" style="white-space:nowrap">${a.applicantName ? a.applicantName.split(' ')[0] : ''} · ${new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</span>
+                            <span class="app-mob-date" style="white-space:nowrap">${a.applicantName ? escHtml(a.applicantName.split(' ')[0]) : ''} · ${new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</span>
                         </div>
                     </div>
                 </div>`).join('');
@@ -1511,8 +1511,8 @@
             return `<table><thead><tr><th>Reference</th><th>Applicant</th><th>Destination</th><th>Date</th><th>Status</th><th>Payment</th>${actions ? '<th></th>' : ''}</tr></thead>
             <tbody>${apps.map(a => `<tr>
                 <td><span class="cell-mono">${a.ref}</span></td>
-                <td><strong>${a.applicantName}</strong><br><span class="cell-sub">${a.email}</span></td>
-                <td>${a.destination}</td>
+                <td><strong>${escHtml(a.applicantName)}</strong><br><span class="cell-sub">${escHtml(a.email)}</span></td>
+                <td>${escHtml(a.destination)}</td>
                 <td class="cell-date">${new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
                 <td><span class="status-pill ${SC[a.status]}">${SL[a.status] || a.status}</span></td>
                 <td>${a.paid ? '<span class="paid-yes"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span>' : '<span class="paid-no"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Unpaid</span>'}</td>
@@ -1526,8 +1526,8 @@
             selectedApp = app;
             document.getElementById('detail-title').textContent = app.ref + ' — ' + app.applicantName;
             document.getElementById('detail-grid').innerHTML = [
-                { l: 'Applicant', v: app.applicantName }, { l: 'Email', v: app.email }, { l: 'Phone', v: app.phone || '—' },
-                { l: 'Nationality', v: app.nationality || '—' }, { l: 'Destination', v: app.destination }, { l: 'Purpose', v: app.purpose || '—' },
+                { l: 'Applicant', v: escHtml(app.applicantName) }, { l: 'Email', v: escHtml(app.email) }, { l: 'Phone', v: escHtml(app.phone || '—') },
+                { l: 'Nationality', v: escHtml(app.nationality || '—') }, { l: 'Destination', v: escHtml(app.destination) }, { l: 'Purpose', v: escHtml(app.purpose || '—') },
                 { l: 'Travel Date', v: app.travelDate ? new Date(app.travelDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—' },
                 { l: 'Return Date', v: app.returnDate ? new Date(app.returnDate).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—' },
                 { l: 'Passport No.', v: app.passportNumber || '—' },
