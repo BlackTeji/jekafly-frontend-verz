@@ -700,7 +700,7 @@
             const content = document.getElementById('doc-preview-content');
             const modal = document.getElementById('doc-preview-modal');
             if (f.type.includes('pdf')) {
-                content.innerHTML = `<iframe src="${f.dataUrl}#toolbar=1&navpanes=0" ...></iframe>`;
+                content.innerHTML = `<iframe src="${f.dataUrl}" class="doc-iframe"></iframe>`;
             } else {
                 content.innerHTML = `<img src="${f.dataUrl}" class="doc-img" alt="${escapeHtml(f.name)}" />`;
             }
@@ -1315,235 +1315,38 @@
         }());
     </script>
 
-    <style>
-        .doc-modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            background: rgba(10, 15, 50, 0.72);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            box-sizing: border-box;
-        }
-
-        .doc-modal-overlay.open {
-            display: flex;
-        }
-
-        .doc-modal-box {
-            background: #1a1f3a;
-            border-radius: 18px;
-            width: 100%;
-            max-width: 720px;
-            max-height: 92vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
-        }
-
-        .doc-modal-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 18px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            flex-shrink: 0;
-        }
-
-        .doc-modal-title {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 0.92rem;
-            color: #fff;
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .doc-modal-page-badge {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.5);
-            white-space: nowrap;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .doc-modal-open-btn {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.55);
-            text-decoration: none;
-            font-family: 'Poppins', sans-serif;
-            white-space: nowrap;
-            transition: color 0.15s;
-        }
-
-        .doc-modal-open-btn:hover {
-            color: #fff;
-        }
-
-        .doc-modal-close-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: none;
-            border-radius: 8px;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: rgba(255, 255, 255, 0.7);
-            flex-shrink: 0;
-            transition: background 0.15s;
-        }
-
-        .doc-modal-close-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-        }
-
-        .doc-modal-body {
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden;
-            background: #f0f2f8;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 16px;
-            gap: 12px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .doc-modal-canvas-page {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
-            max-width: 100%;
-            display: block;
-        }
-
-        .doc-modal-loading-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 14px;
-            color: rgba(255, 255, 255, 0.6);
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            padding: 60px 20px;
-        }
-
-        .doc-modal-loading-state svg {
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .doc-modal-error-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            color: rgba(255, 255, 255, 0.5);
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            text-align: center;
-            padding: 60px 20px;
-        }
-
-        .doc-modal-error-state a {
-            color: #7c9ff5;
-            text-decoration: underline;
-        }
-
-        .doc-modal-footer {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 18px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            flex-shrink: 0;
-            gap: 10px;
-        }
-
-        .doc-modal-done-btn {
-            background: linear-gradient(135deg, #0D1560, #1C2FBF);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            padding: 9px 22px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 700;
-            cursor: pointer;
-            margin-left: auto;
-        }
-
-        @media (max-width: 768px) {
-            .doc-modal-overlay {
-                padding: 10px;
-                align-items: flex-end;
-            }
-
-            .doc-modal-box {
-                max-height: 88vh;
-                border-radius: 18px 18px 14px 14px;
-                max-width: 100%;
-            }
-
-            .doc-modal-body {
-                padding: 12px 8px;
-                gap: 8px;
-            }
-
-            .doc-modal-open-btn span {
-                display: none;
-            }
-        }
-    </style>
-
     <div id="doc-modal" class="doc-modal-overlay" onclick="if(event.target===this)closeDocModal()">
         <div class="doc-modal-box">
             <div class="doc-modal-header">
                 <span class="doc-modal-title" id="doc-modal-title">Document</span>
-                <span class="doc-modal-page-badge" id="doc-page-badge"></span>
-                <a id="doc-modal-open-link" class="doc-modal-open-btn" href="#" target="_blank" rel="noopener">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                        <polyline points="15 3 21 3 21 9" />
-                        <line x1="10" y1="14" x2="21" y2="3" />
-                    </svg>
-                    <span>Open PDF</span>
-                </a>
-                <button class="doc-modal-close-btn" onclick="closeDocModal()" aria-label="Close">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round">
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                    </svg>
-                </button>
+                <div class="doc-modal-header-actions">
+                    <a id="doc-modal-open-link" class="doc-modal-open-btn" href="#" target="_blank" rel="noopener">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                        <span>Open</span>
+                    </a>
+                    <button class="doc-modal-close-btn" onclick="closeDocModal()" aria-label="Close">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round">
+                            <line x1="18" y1="6" x2="6" y2="18" />
+                            <line x1="6" y1="6" x2="18" y2="18" />
+                        </svg>
+                    </button>
+                </div>
             </div>
             <div class="doc-modal-body" id="doc-modal-body"></div>
             <div class="doc-modal-footer">
-                <span class="doc-modal-page-badge" id="doc-page-info"
-                    style="color:rgba(255,255,255,0.4);font-family:Poppins,sans-serif;font-size:0.78rem;"></span>
+                <span class="doc-modal-footer-nav" id="doc-page-info"></span>
                 <button class="doc-modal-done-btn" onclick="closeDocModal()">Done</button>
             </div>
         </div>
     </div>
+
+
 
     <script>
         (function () {
