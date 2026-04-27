@@ -484,8 +484,9 @@
 
     <div id="doc-preview-modal" class="doc-preview-modal" onclick="closePreview(event)">
         <div class="doc-preview-inner">
-            <button class="doc-preview-close" onclick="closeDocModal()"><svg width="14" height="14" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <button class="doc-preview-close"
+                onclick="document.getElementById('doc-preview-modal').style.display='none'"><svg width="14" height="14"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                     <line x1="18" y1="6" x2="6" y2="18" />
                     <line x1="6" y1="6" x2="18" y2="18" />
                 </svg></button>
@@ -497,28 +498,6 @@
     <script src="assets/js/app.js"></script>
     <script src="assets/js/session.js" defer></script>
     <script>
-        function openDocModal(file, title) {
-            const modal = document.getElementById("doc-preview-modal");
-            const content = document.getElementById("doc-preview-content");
-
-            content.innerHTML = `
-        <div style="padding:10px; font-weight:600;">${title}</div>
-        <iframe src="${file}" width="100%" height="500px" style="border:none;"></iframe>
-    `;
-
-            modal.style.display = "flex";
-        }
-
-        function closeDocModal() {
-            document.getElementById("doc-preview-modal").style.display = "none";
-        }
-
-        function closePreview(e) {
-            if (e.target.id === "doc-preview-modal") {
-                closeDocModal();
-            }
-        }
-
         let currentStep = 1;
         let travellers = [];
         let uploadedFiles = [];
@@ -1336,296 +1315,338 @@
         }());
     </script>
 
+    <style>
+        .doc-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(10, 15, 50, 0.72);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .doc-modal-overlay.open {
+            display: flex;
+        }
+
+        .doc-modal-box {
+            background: #1a1f3a;
+            border-radius: 18px;
+            width: 100%;
+            max-width: 720px;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .doc-modal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        .doc-modal-title {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.92rem;
+            color: #fff;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .doc-modal-page-badge {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            white-space: nowrap;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .doc-modal-open-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.55);
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            white-space: nowrap;
+            transition: color 0.15s;
+        }
+
+        .doc-modal-open-btn:hover {
+            color: #fff;
+        }
+
+        .doc-modal-close-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.7);
+            flex-shrink: 0;
+            transition: background 0.15s;
+        }
+
+        .doc-modal-close-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        .doc-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            background: #f0f2f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 16px;
+            gap: 12px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .doc-modal-canvas-page {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+            max-width: 100%;
+            display: block;
+        }
+
+        .doc-modal-loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            padding: 60px 20px;
+        }
+
+        .doc-modal-loading-state svg {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .doc-modal-error-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .doc-modal-error-state a {
+            color: #7c9ff5;
+            text-decoration: underline;
+        }
+
+        .doc-modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+            gap: 10px;
+        }
+
+        .doc-modal-done-btn {
+            background: linear-gradient(135deg, #0D1560, #1C2FBF);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 9px 22px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        @media (max-width: 768px) {
+            .doc-modal-overlay {
+                padding: 10px;
+                align-items: flex-end;
+            }
+
+            .doc-modal-box {
+                max-height: 88vh;
+                border-radius: 18px 18px 14px 14px;
+                max-width: 100%;
+            }
+
+            .doc-modal-body {
+                padding: 12px 8px;
+                gap: 8px;
+            }
+
+            .doc-modal-open-btn span {
+                display: none;
+            }
+        }
+    </style>
+
     <div id="doc-modal" class="doc-modal-overlay" onclick="if(event.target===this)closeDocModal()">
         <div class="doc-modal-box">
-
             <div class="doc-modal-header">
                 <span class="doc-modal-title" id="doc-modal-title">Document</span>
-
-                <div class="doc-modal-controls">
-                    <button class="doc-modal-nav-btn" id="doc-prev-btn" onclick="docPrevPage()" disabled
-                        aria-label="Previous page">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="15 18 9 12 15 6" />
-                        </svg>
-                    </button>
-                    <span class="doc-modal-page-info" id="doc-page-info">— / —</span>
-                    <button class="doc-modal-nav-btn" id="doc-next-btn" onclick="docNextPage()" disabled
-                        aria-label="Next page">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="doc-modal-header-actions">
-                    <a id="doc-modal-open-link" class="doc-modal-open-btn" href="#" target="_blank" rel="noopener">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                            <polyline points="15 3 21 3 21 9" />
-                            <line x1="10" y1="14" x2="21" y2="3" />
-                        </svg>
-                        <span>Open in new tab</span>
-                    </a>
-                    <button class="doc-modal-close-btn" onclick="closeDocModal()" aria-label="Close">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round">
-                            <line x1="18" y1="6" x2="6" y2="18" />
-                            <line x1="6" y1="6" x2="18" y2="18" />
-                        </svg>
-                    </button>
-                </div>
-            </div>
-
-            <div class="doc-modal-body" id="doc-modal-body">
-                <div class="doc-modal-loading" id="doc-modal-loading">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)"
-                        stroke-width="2.5" stroke-linecap="round">
-                        <path
-                            d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
-                    </svg>
-                    Loading document...
-                </div>
-                <div class="doc-modal-error" id="doc-modal-error">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                <span class="doc-modal-page-badge" id="doc-page-badge"></span>
+                <a id="doc-modal-open-link" class="doc-modal-open-btn" href="#" target="_blank" rel="noopener">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10" />
-                        <line x1="12" y1="8" x2="12" y2="12" />
-                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
                     </svg>
-                    Could not load the document.<br>
-                    <a id="doc-error-link" href="#" target="_blank" rel="noopener"
-                        style="color:rgba(255,255,255,0.8);margin-top:4px;display:inline-block;">Open directly instead
-                        →</a>
-                </div>
+                    <span>Open PDF</span>
+                </a>
+                <button class="doc-modal-close-btn" onclick="closeDocModal()" aria-label="Close">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
             </div>
-
+            <div class="doc-modal-body" id="doc-modal-body"></div>
             <div class="doc-modal-footer">
-                <div class="doc-modal-footer-nav" id="doc-footer-nav" style="visibility:hidden;">
-                    Page <strong id="doc-footer-page">1</strong> of <strong id="doc-footer-total">—</strong>
-                </div>
+                <span class="doc-modal-page-badge" id="doc-page-info"
+                    style="color:rgba(255,255,255,0.4);font-family:Poppins,sans-serif;font-size:0.78rem;"></span>
                 <button class="doc-modal-done-btn" onclick="closeDocModal()">Done</button>
             </div>
-
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
         (function () {
-            if (typeof pdfjsLib === 'undefined') return;
-            pdfjsLib.GlobalWorkerOptions.workerSrc =
-                'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            var _pdfjs = null;
+            var _loading = false;
 
-            let _pdfDoc = null;
-            let _currentPage = 1;
-            let _totalPages = 0;
-            let _rendering = false;
-            let _pendingPage = null;
-            let _currentSrc = '';
-
-            function _getScale() {
-                const body = document.getElementById('doc-modal-body');
-                if (!body) return 1.5;
-                const availW = body.clientWidth - 32;
-                return Math.min(2, Math.max(1, availW / 595));
+            function _loadPdfJs(cb) {
+                if (window.pdfjsLib) { cb(window.pdfjsLib); return; }
+                var s = document.createElement('script');
+                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+                s.onload = function () {
+                    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+                        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                    cb(window.pdfjsLib);
+                };
+                s.onerror = function () { cb(null); };
+                document.head.appendChild(s);
             }
 
-            async function _renderPage(num) {
-                if (_rendering) { _pendingPage = num; return; }
-                _rendering = true;
-                _currentPage = num;
-                _updateNav();
-
-                const page = await _pdfDoc.getPage(num);
-                const scale = _getScale();
-                const viewport = page.getViewport({ scale });
-
-                let wrap = document.getElementById('doc-canvas-wrap-' + num);
-                if (!wrap) {
-                    wrap = document.createElement('div');
-                    wrap.className = 'doc-modal-canvas-wrap';
-                    wrap.id = 'doc-canvas-wrap-' + num;
-                    const canvas = document.createElement('canvas');
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
-                    wrap.appendChild(canvas);
-                    document.getElementById('doc-modal-body').appendChild(wrap);
-                }
-
-                const canvas = wrap.querySelector('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = viewport.width;
-                canvas.height = viewport.height;
-                await page.render({ canvasContext: ctx, viewport }).promise;
-
-                _rendering = false;
-                if (_pendingPage !== null) {
-                    const next = _pendingPage;
-                    _pendingPage = null;
-                    _renderPage(next);
-                }
-            }
-
-            async function _loadAllPages() {
-                for (let i = 1; i <= _totalPages; i++) {
-                    await _renderPage(i);
-                }
-            }
-
-            function _updateNav() {
-                const prev = document.getElementById('doc-prev-btn');
-                const next = document.getElementById('doc-next-btn');
-                const info = document.getElementById('doc-page-info');
-                const fPage = document.getElementById('doc-footer-page');
-                const fTotal = document.getElementById('doc-footer-total');
-                const fNav = document.getElementById('doc-footer-nav');
-
-                if (prev) prev.disabled = _currentPage <= 1;
-                if (next) next.disabled = _currentPage >= _totalPages;
-                if (info) info.textContent = _totalPages ? `${_currentPage} / ${_totalPages}` : '— / —';
-                if (fPage) fPage.textContent = _currentPage;
-                if (fTotal) fTotal.textContent = _totalPages || '—';
-                if (fNav) fNav.style.visibility = _totalPages ? 'visible' : 'hidden';
-            }
-
-            function _scrollToPage(num) {
-                const wrap = document.getElementById('doc-canvas-wrap-' + num);
-                if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                _currentPage = num;
-                _updateNav();
-            }
-
-            function _showLoading(show) {
-                const el = document.getElementById('doc-modal-loading');
-                if (el) el.style.display = show ? 'flex' : 'none';
-            }
-
-            function _showError(src) {
-                const el = document.getElementById('doc-modal-error');
-                const link = document.getElementById('doc-error-link');
-                if (el) el.style.display = 'flex';
-                if (link) link.href = src;
-                _showLoading(false);
-            }
-
-            window.openDocModal = async function (src, title) {
-                _currentSrc = src;
-                _pdfDoc = null;
-                _currentPage = 1;
-                _totalPages = 0;
-                _rendering = false;
-                _pendingPage = null;
-
-                document.getElementById('doc-modal-title').textContent = title;
-                document.getElementById('doc-modal-open-link').href = src;
-                document.getElementById('doc-modal').classList.add('open');
-                document.body.classList.add('modal-open');
-
-                const body = document.getElementById('doc-modal-body');
+            function _setLoading(body) {
                 body.innerHTML = '';
-
-                const loadingEl = document.createElement('div');
-                loadingEl.className = 'doc-modal-loading';
-                loadingEl.id = 'doc-modal-loading';
-                loadingEl.innerHTML = `
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-linecap="round">
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-            </svg>
-            Loading document...`;
-                body.appendChild(loadingEl);
-
-                const errorEl = document.createElement('div');
-                errorEl.className = 'doc-modal-error';
-                errorEl.id = 'doc-modal-error';
-                errorEl.innerHTML = `
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-            Could not load the document.<br>
-            <a href="${src}" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.8);margin-top:4px;display:inline-block;">Open directly instead →</a>`;
-                body.appendChild(errorEl);
-
-                _updateNav();
-
-                try {
-                    _pdfDoc = await pdfjsLib.getDocument(src).promise;
-                    _totalPages = _pdfDoc.numPages;
-                    _showLoading(false);
-                    _updateNav();
-
-                    const prevBtn = document.getElementById('doc-prev-btn');
-                    const nextBtn = document.getElementById('doc-next-btn');
-                    if (prevBtn) prevBtn.disabled = false;
-                    if (nextBtn) nextBtn.disabled = false;
-
-                    await _loadAllPages();
-
-                    const firstWrap = document.getElementById('doc-canvas-wrap-1');
-                    if (firstWrap) firstWrap.scrollIntoView({ block: 'start' });
-
-                    const scrollBody = document.getElementById('doc-modal-body');
-                    if (scrollBody) {
-                        scrollBody.addEventListener('scroll', _onScroll, { passive: true });
-                    }
-                } catch (e) {
-                    _showError(src);
-                }
-            };
-
-            function _onScroll() {
-                const body = document.getElementById('doc-modal-body');
-                if (!body || !_totalPages) return;
-                const bodyTop = body.getBoundingClientRect().top;
-                let closest = 1;
-                let closestDist = Infinity;
-                for (let i = 1; i <= _totalPages; i++) {
-                    const wrap = document.getElementById('doc-canvas-wrap-' + i);
-                    if (!wrap) continue;
-                    const dist = Math.abs(wrap.getBoundingClientRect().top - bodyTop);
-                    if (dist < closestDist) { closestDist = dist; closest = i; }
-                }
-                if (closest !== _currentPage) {
-                    _currentPage = closest;
-                    _updateNav();
-                }
+                var el = document.createElement('div');
+                el.className = 'doc-modal-loading-state';
+                el.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>Loading document...';
+                body.appendChild(el);
             }
+
+            function _setError(body, src) {
+                body.innerHTML = '';
+                var el = document.createElement('div');
+                el.className = 'doc-modal-error-state';
+                el.innerHTML = '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div>Could not render document.<br><a href="' + src + '" target="_blank" rel="noopener">Open PDF directly →</a></div>';
+                body.appendChild(el);
+            }
+
+            async function _renderPdf(src, body, badgeEl, infoEl) {
+                _setLoading(body);
+                _loadPdfJs(async function (pdfjs) {
+                    if (!pdfjs) { _setError(body, src); return; }
+                    try {
+                        var pdf = await pdfjs.getDocument(src).promise;
+                        var total = pdf.numPages;
+                        body.innerHTML = '';
+                        if (badgeEl) badgeEl.textContent = total + ' page' + (total > 1 ? 's' : '');
+                        if (infoEl) infoEl.textContent = total + ' page' + (total > 1 ? 's' : '');
+
+                        var bodyW = body.clientWidth - 32;
+                        for (var i = 1; i <= total; i++) {
+                            var page = await pdf.getPage(i);
+                            var scale = Math.min(2, Math.max(1, bodyW / 595));
+                            var vp = page.getViewport({ scale: scale });
+                            var canvas = document.createElement('canvas');
+                            canvas.className = 'doc-modal-canvas-page';
+                            canvas.width = vp.width;
+                            canvas.height = vp.height;
+                            canvas.style.width = Math.min(vp.width, bodyW) + 'px';
+                            body.appendChild(canvas);
+                            await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+                        }
+                    } catch (e) {
+                        _setError(body, src);
+                    }
+                });
+            }
+
+            window.openDocModal = function (src, title) {
+                if (_loading) return;
+                var modal = document.getElementById('doc-modal');
+                var body = document.getElementById('doc-modal-body');
+                var titleEl = document.getElementById('doc-modal-title');
+                var openLink = document.getElementById('doc-modal-open-link');
+                var badge = document.getElementById('doc-page-badge');
+                var info = document.getElementById('doc-page-info');
+                if (!modal || !body) return;
+                if (titleEl) titleEl.textContent = title || 'Document';
+                if (openLink) openLink.href = src;
+                if (badge) badge.textContent = '';
+                if (info) info.textContent = '';
+                modal.classList.add('open');
+                document.body.classList.add('modal-open');
+                _renderPdf(src, body, badge, info);
+            };
 
             window.closeDocModal = function () {
-                document.getElementById('doc-modal').classList.remove('open');
+                var modal = document.getElementById('doc-modal');
+                var body = document.getElementById('doc-modal-body');
+                if (modal) modal.classList.remove('open');
                 document.body.classList.remove('modal-open');
-                const body = document.getElementById('doc-modal-body');
-                if (body) {
-                    body.removeEventListener('scroll', _onScroll);
-                    body.innerHTML = '';
-                }
-                _pdfDoc = null;
-                _currentPage = 1;
-                _totalPages = 0;
-                _updateNav();
+                if (body) body.innerHTML = '';
             };
 
-            window.docPrevPage = function () {
-                if (_currentPage <= 1) return;
-                _scrollToPage(_currentPage - 1);
-            };
-
-            window.docNextPage = function () {
-                if (_currentPage >= _totalPages) return;
-                _scrollToPage(_currentPage + 1);
-            };
+            window.docPrevPage = function () { };
+            window.docNextPage = function () { };
 
             document.addEventListener('keydown', function (e) {
                 if (!document.getElementById('doc-modal')?.classList.contains('open')) return;
                 if (e.key === 'Escape') closeDocModal();
-                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') docNextPage();
-                if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') docPrevPage();
             });
         }());
     </script>
+
+
+
 
 </body>
 
