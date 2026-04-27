@@ -421,9 +421,13 @@
                     <label class="terms-label">
                         <input type="checkbox" id="terms-check" class="terms-checkbox" />
                         I confirm all information is accurate and I agree to Jekafly's
-                        <a href="#" class="terms-link" onclick="openTosModal(event)">Terms of Service</a>
+                        <a href="#" class="terms-link"
+                            onclick="event.preventDefault();openDocModal('assets/docs/terms.pdf','Terms of Service')">Terms
+                            of Service</a>
                         and
-                        <a href="#" class="terms-link" onclick="openPrivacyModal(event)">Privacy Policy</a>.
+                        <a href="#" class="terms-link"
+                            onclick="event.preventDefault();openDocModal('assets/docs/privacy.pdf','Privacy Policy')">Privacy
+                            Policy</a>.
                     </label>
                 </div>
 
@@ -1602,97 +1606,8 @@
         }());
     </script>
 
-    <div id="tos-modal"
-        style="display:none;position:fixed;inset:0;background:rgba(10,13,50,0.6);z-index:9999;align-items:center;justify-content:center;padding:20px;">
-        <div
-            style="background:white;border-radius:20px;padding:36px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;position:relative;">
-            <button onclick="document.getElementById('tos-modal').style.display='none'"
-                style="position:absolute;top:14px;right:14px;background:#F4F6FB;border:none;border-radius:8px;width:34px;height:34px;font-size:1rem;cursor:pointer;">✕</button>
-            <h2 style="font-family:'Syne',sans-serif;font-size:1.4rem;color:#0D1560;margin-bottom:16px;">Terms of
-                Service</h2>
-            <div style="font-size:0.88rem;color:#3A4060;line-height:1.75;">
-                <p style="margin-bottom:12px;"><strong>Last updated:</strong> January 2025</p>
-                <p style="margin-bottom:12px;">By using Jekafly's visa application services, you agree to the following
-                    terms.</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">1. Services</p>
-                <p style="margin-bottom:12px;">Jekafly provides visa application assistance, document preparation, and
-                    related travel services. We are a facilitator — final visa decisions rest solely with the relevant
-                    embassy or consulate.</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">2. Accuracy of Information</p>
-                <p style="margin-bottom:12px;">You confirm that all information submitted in your application is true
-                    and accurate. Jekafly is not liable for rejections caused by incorrect or misleading information
-                    provided by the applicant.</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">3. Fees & Payments</p>
-                <p style="margin-bottom:12px;">Jekafly's service fees are non-refundable once an application has been
-                    submitted. Embassy fees are subject to change and are collected as stated by the relevant embassy at
-                    the time of submission.</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">4. Document Privacy</p>
-                <p style="margin-bottom:12px;">Your documents are stored securely and used only for the purpose of your
-                    visa application. We do not sell or share your data with third parties outside of the visa
-                    processing workflow.</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">5. No Guarantee of Approval</p>
-                <p style="margin-bottom:12px;">Jekafly cannot guarantee visa approval. Our 95% success rate reflects our
-                    quality of service but does not constitute a promise of outcome.</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">6. Contact</p>
-                <p>For any queries, contact us at <strong>support@jekafly.com</strong> or via WhatsApp.</p>
-            </div>
-            <button onclick="document.getElementById('tos-modal').style.display='none'"
-                style="margin-top:24px;width:100%;padding:13px;background:#0D1560;color:white;border:none;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">
-                I Understand →
-            </button>
-        </div>
-    </div>
 
-    <div id="privacy-modal"
-        style="display:none;position:fixed;inset:0;background:rgba(10,13,50,0.6);z-index:9999;align-items:center;justify-content:center;padding:20px;">
-        <div
-            style="background:white;border-radius:20px;padding:36px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto;position:relative;">
-            <button onclick="document.getElementById('privacy-modal').style.display='none'"
-                style="position:absolute;top:14px;right:14px;background:#F4F6FB;border:none;border-radius:8px;width:34px;height:34px;font-size:1rem;cursor:pointer;">✕</button>
-            <h2 style="font-family:'Syne',sans-serif;font-size:1.4rem;color:#0D1560;margin-bottom:16px;">Privacy Policy
-            </h2>
-            <div style="font-size:0.88rem;color:#3A4060;line-height:1.75;">
-                <p style="margin-bottom:12px;"><strong>Last updated:</strong> January 2025</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">Information We Collect</p>
-                <p style="margin-bottom:12px;">We collect personal information you provide during visa applications
-                    (name, passport details, contact information) and documents you upload (passport scans, bank
-                    statements, etc.).</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">How We Use It</p>
-                <p style="margin-bottom:12px;">Your information is used exclusively to process your visa application,
-                    communicate status updates, and comply with embassy requirements. We do not use your data for
-                    marketing without your consent.</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">Data Security</p>
-                <p style="margin-bottom:12px;">All data is encrypted in transit (TLS) and at rest. Documents are stored
-                    in a secure cloud environment with access controls. Only authorised Jekafly staff can access your
-                    documents.</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">Data Retention</p>
-                <p style="margin-bottom:12px;">We retain your application data for 12 months after your application is
-                    concluded. You may request deletion at any time by contacting support.</p>
-                <p style="margin-bottom:8px;font-weight:700;color:#0D1560;">Your Rights</p>
-                <p>You have the right to access, correct, or request deletion of your personal data. Contact
-                    <strong>privacy@jekafly.com</strong> for any data requests.</p>
-            </div>
-            <button onclick="document.getElementById('privacy-modal').style.display='none'"
-                style="margin-top:24px;width:100%;padding:13px;background:#0D1560;color:white;border:none;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">
-                I Understand →
-            </button>
-        </div>
-    </div>
 
-    <script>
-        function openTosModal(e) {
-            e.preventDefault();
-            const m = document.getElementById('tos-modal');
-            m.style.display = 'flex';
-            m.onclick = (ev) => { if (ev.target === m) m.style.display = 'none'; };
-        }
-        function openPrivacyModal(e) {
-            e.preventDefault();
-            const m = document.getElementById('privacy-modal');
-            m.style.display = 'flex';
-            m.onclick = (ev) => { if (ev.target === m) m.style.display = 'none'; };
-        }
-    </script>
 
 </body>
 
