@@ -1552,15 +1552,26 @@
 
             function _loadPdfJs(cb) {
                 if (window.pdfjsLib) { cb(window.pdfjsLib); return; }
-                var s = document.createElement('script');
-                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-                s.onload = function () {
-                    window.pdfjsLib.GlobalWorkerOptions.workerSrc =
-                        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-                    cb(window.pdfjsLib);
-                };
-                s.onerror = function () { cb(null); };
-                document.head.appendChild(s);
+                // Load via fetch as blob URL — works on Safari iOS without CSP dynamic script issues
+                fetch('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js')
+                    .then(function (r) { return r.text(); })
+                    .then(function (code) {
+                        var blob = new Blob([code], { type: 'application/javascript' });
+                        var url = URL.createObjectURL(blob);
+                        var s = document.createElement('script');
+                        s.src = url;
+                        s.onload = function () {
+                            URL.revokeObjectURL(url);
+                            if (window.pdfjsLib) {
+                                window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+                                    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                            }
+                            cb(window.pdfjsLib || null);
+                        };
+                        s.onerror = function () { cb(null); };
+                        document.head.appendChild(s);
+                    })
+                    .catch(function () { cb(null); });
             }
 
             function _setLoading(body) {
