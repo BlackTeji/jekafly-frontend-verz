@@ -700,7 +700,7 @@
             const content = document.getElementById('doc-preview-content');
             const modal = document.getElementById('doc-preview-modal');
             if (f.type.includes('pdf')) {
-                content.innerHTML = `<iframe src="${f.dataUrl}" class="doc-iframe"></iframe>`;
+                content.innerHTML = `<iframe src="${f.dataUrl}#toolbar=1&navpanes=0" ...></iframe>`;
             } else {
                 content.innerHTML = `<img src="${f.dataUrl}" class="doc-img" alt="${escapeHtml(f.name)}" />`;
             }

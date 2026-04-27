@@ -24,14 +24,6 @@
       "source": "/assets/docs/(.*)",
       "headers": [
         {
-          "key": "Content-Type",
-          "value": "application/pdf"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        },
-        {
           "key": "Content-Disposition",
           "value": "inline"
         }
@@ -43,10 +35,6 @@
         {
           "key": "X-Content-Type-Options",
           "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
         },
         {
           "key": "X-XSS-Protection",
