@@ -452,3 +452,156 @@ var AffiliateStore = {
         return patch(`/admin/affiliates/payouts/${payoutId}/process`, {});
     },
 };
+
+(function () {
+    'use strict';
+
+    var IDLE_MS = 5 * 60 * 1000;
+    var WARN_MS = 4 * 60 * 1000;
+    var _warnEl = null;
+    var _warnCountdown = null;
+    var _idleTimer = null;
+    var _warnTimer = null;
+    var _active = false;
+    var _lastActivity = Date.now();
+
+    function _isLoggedIn() {
+        try { return !!localStorage.getItem('jkf_user'); } catch { return false; }
+    }
+
+    function _removeWarn() {
+        if (_warnEl) { _warnEl.remove(); _warnEl = null; }
+        if (_warnCountdown) { clearInterval(_warnCountdown); _warnCountdown = null; }
+    }
+
+    function _showWarn() {
+        _removeWarn();
+        var secs = 60;
+        _warnEl = document.createElement('div');
+        _warnEl.id = 'jkf-idle-warn';
+        _warnEl.style.cssText = [
+            'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99999;',
+            'background:#0D1560;color:#fff;border-radius:14px;padding:16px 24px;',
+            'font-family:Poppins,sans-serif;font-size:0.9rem;font-weight:600;',
+            'box-shadow:0 8px 32px rgba(0,0,0,0.28);display:flex;align-items:center;gap:16px;',
+            'max-width:92vw;',
+        ].join('');
+        _warnEl.innerHTML =
+            '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31E24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' +
+            '<span>Session expiring in <strong id="jkf-idle-secs">60</strong>s due to inactivity.</span>' +
+            '<button onclick="window.__jkfIdleReset && window.__jkfIdleReset()" style="' +
+            'background:#E31E24;border:none;color:#fff;padding:8px 16px;border-radius:8px;' +
+            'font-family:Poppins,sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;white-space:nowrap;' +
+            '">Stay Logged In</button>';
+        document.body.appendChild(_warnEl);
+
+        _warnCountdown = setInterval(function () {
+            secs--;
+            var el = document.getElementById('jkf-idle-secs');
+            if (el) el.textContent = secs;
+            if (secs <= 0) { clearInterval(_warnCountdown); _warnCountdown = null; }
+        }, 1000);
+    }
+
+    function _logout() {
+        _removeWarn();
+        _active = false;
+        _clearTimers();
+        if (typeof Auth !== 'undefined') {
+            Auth.logout().catch(function () { }).finally(function () {
+                window.location.replace('/');
+            });
+        } else {
+            localStorage.removeItem('jkf_user');
+            window.location.replace('/');
+        }
+    }
+
+    function _clearTimers() {
+        if (_idleTimer) { clearTimeout(_idleTimer); _idleTimer = null; }
+        if (_warnTimer) { clearTimeout(_warnTimer); _warnTimer = null; }
+    }
+
+    function _reset() {
+        if (!_active) return;
+        _lastActivity = Date.now();
+        _removeWarn();
+        _clearTimers();
+        _warnTimer = setTimeout(_showWarn, WARN_MS);
+        _idleTimer = setTimeout(_logout, IDLE_MS);
+    }
+
+    function _start() {
+        if (_active) return;
+        if (!_isLoggedIn()) return;
+        _active = true;
+        _lastActivity = Date.now();
+        _reset();
+    }
+
+    function _stop() {
+        _active = false;
+        _clearTimers();
+        _removeWarn();
+    }
+
+    document.addEventListener('visibilitychange', function () {
+        if (!_active) return;
+        if (document.hidden) return;
+
+        var elapsed = Date.now() - _lastActivity;
+
+        if (elapsed >= IDLE_MS) {
+            _logout();
+        } else if (elapsed >= WARN_MS) {
+            var remaining = Math.ceil((IDLE_MS - elapsed) / 1000);
+            _removeWarn();
+            _showWarn();
+            var el = document.getElementById('jkf-idle-secs');
+            if (el) el.textContent = remaining;
+            _clearTimers();
+            _idleTimer = setTimeout(_logout, IDLE_MS - elapsed);
+        } else {
+            _clearTimers();
+            var timeLeft = IDLE_MS - elapsed;
+            var warnLeft = WARN_MS - elapsed;
+            if (warnLeft > 0) _warnTimer = setTimeout(_showWarn, warnLeft);
+            _idleTimer = setTimeout(_logout, timeLeft);
+        }
+    });
+
+    window.addEventListener('focus', function () {
+        if (!_active) return;
+        var elapsed = Date.now() - _lastActivity;
+        if (elapsed >= IDLE_MS) _logout();
+    });
+
+    window.__jkfIdleReset = function () { _reset(); };
+
+    var EVENTS = ['mousedown', 'mousemove', 'keydown', 'touchstart', 'scroll', 'click', 'wheel'];
+    var _throttle = null;
+    function _onActivity() {
+        if (!_active) return;
+        if (_throttle) return;
+        _throttle = setTimeout(function () { _throttle = null; }, 500);
+        _reset();
+    }
+    EVENTS.forEach(function (ev) {
+        document.addEventListener(ev, _onActivity, { passive: true, capture: true });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        if (_isLoggedIn()) _start();
+    });
+
+    window.addEventListener('storage', function (e) {
+        if (e.key === 'jkf_user') {
+            if (e.newValue) { _start(); }
+            else { _stop(); }
+        }
+    });
+
+    window.addEventListener('jkf:unauthenticated', _stop);
+
+    window.JKF_IdleSession = { start: _start, stop: _stop, reset: _reset };
+})();
