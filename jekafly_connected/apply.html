@@ -1392,215 +1392,49 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
         (function () {
-            if (typeof pdfjsLib === 'undefined') return;
-            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            window.openDocModal = function (src, title) {
+                var modal = document.getElementById('doc-modal');
+                var titleEl = document.getElementById('doc-modal-title');
+                var body = document.getElementById('doc-modal-body');
+                var openLink = document.getElementById('doc-modal-open-link');
 
-            let _pdfDoc = null;
-            let _currentPage = 1;
-            let _totalPages = 0;
-            let _rendering = false;
-            let _pendingPage = null;
-            let _currentSrc = '';
+                if (!modal || !body) return;
 
-            function _getScale() {
-                const body = document.getElementById('doc-modal-body');
-                if (!body) return 1.5;
-                const availW = body.clientWidth - 32;
-                return Math.min(2, Math.max(1, availW / 595));
-            }
+                if (titleEl) titleEl.textContent = title;
+                if (openLink) openLink.href = src;
 
-            async function _renderPage(num) {
-                if (_rendering) { _pendingPage = num; return; }
-                _rendering = true;
-                _currentPage = num;
-                _updateNav();
-
-                const page = await _pdfDoc.getPage(num);
-                const scale = _getScale();
-                const viewport = page.getViewport({ scale });
-
-                let wrap = document.getElementById('doc-canvas-wrap-' + num);
-                if (!wrap) {
-                    wrap = document.createElement('div');
-                    wrap.className = 'doc-modal-canvas-wrap';
-                    wrap.id = 'doc-canvas-wrap-' + num;
-                    const canvas = document.createElement('canvas');
-                    canvas.width = viewport.width;
-                    canvas.height = viewport.height;
-                    wrap.appendChild(canvas);
-                    document.getElementById('doc-modal-body').appendChild(wrap);
-                }
-
-                const canvas = wrap.querySelector('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = viewport.width;
-                canvas.height = viewport.height;
-                await page.render({ canvasContext: ctx, viewport }).promise;
-
-                _rendering = false;
-                if (_pendingPage !== null) {
-                    const next = _pendingPage;
-                    _pendingPage = null;
-                    _renderPage(next);
-                }
-            }
-
-            async function _loadAllPages() {
-                for (let i = 1; i <= _totalPages; i++) {
-                    await _renderPage(i);
-                }
-            }
-
-            function _updateNav() {
-                const prev = document.getElementById('doc-prev-btn');
-                const next = document.getElementById('doc-next-btn');
-                const info = document.getElementById('doc-page-info');
-                const fPage = document.getElementById('doc-footer-page');
-                const fTotal = document.getElementById('doc-footer-total');
-                const fNav = document.getElementById('doc-footer-nav');
-
-                if (prev) prev.disabled = _currentPage <= 1;
-                if (next) next.disabled = _currentPage >= _totalPages;
-                if (info) info.textContent = _totalPages ? `${_currentPage} / ${_totalPages}` : '— / —';
-                if (fPage) fPage.textContent = _currentPage;
-                if (fTotal) fTotal.textContent = _totalPages || '—';
-                if (fNav) fNav.style.visibility = _totalPages ? 'visible' : 'hidden';
-            }
-
-            function _scrollToPage(num) {
-                const wrap = document.getElementById('doc-canvas-wrap-' + num);
-                if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                _currentPage = num;
-                _updateNav();
-            }
-
-            function _showLoading(show) {
-                const el = document.getElementById('doc-modal-loading');
-                if (el) el.style.display = show ? 'flex' : 'none';
-            }
-
-            function _showError(src) {
-                const el = document.getElementById('doc-modal-error');
-                const link = document.getElementById('doc-error-link');
-                if (el) el.style.display = 'flex';
-                if (link) link.href = src;
-                _showLoading(false);
-            }
-
-            window.openDocModal = async function (src, title) {
-                _currentSrc = src;
-                _pdfDoc = null;
-                _currentPage = 1;
-                _totalPages = 0;
-                _rendering = false;
-                _pendingPage = null;
-
-                document.getElementById('doc-modal-title').textContent = title;
-                document.getElementById('doc-modal-open-link').href = src;
-                document.getElementById('doc-modal').classList.add('open');
+                body.innerHTML = '';
+                modal.classList.add('open');
                 document.body.classList.add('modal-open');
 
-                const body = document.getElementById('doc-modal-body');
-                body.innerHTML = '';
+                var iframe = document.createElement('iframe');
+                iframe.src = src;
+                iframe.style.cssText = 'width:100%;height:100%;min-height:70vh;border:none;border-radius:8px;background:#fff;';
+                iframe.title = title;
+                body.appendChild(iframe);
 
-                const loadingEl = document.createElement('div');
-                loadingEl.className = 'doc-modal-loading';
-                loadingEl.id = 'doc-modal-loading';
-                loadingEl.innerHTML = `
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.5" stroke-linecap="round">
-                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-            </svg>
-            Loading document...`;
-                body.appendChild(loadingEl);
-
-                const errorEl = document.createElement('div');
-                errorEl.className = 'doc-modal-error';
-                errorEl.id = 'doc-modal-error';
-                errorEl.innerHTML = `
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-            Could not load the document.<br>
-            <a href="${src}" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.8);margin-top:4px;display:inline-block;">Open directly instead →</a>`;
-                body.appendChild(errorEl);
-
-                _updateNav();
-
-                try {
-                    _pdfDoc = await pdfjsLib.getDocument(src).promise;
-                    _totalPages = _pdfDoc.numPages;
-                    _showLoading(false);
-                    _updateNav();
-
-                    const prevBtn = document.getElementById('doc-prev-btn');
-                    const nextBtn = document.getElementById('doc-next-btn');
-                    if (prevBtn) prevBtn.disabled = false;
-                    if (nextBtn) nextBtn.disabled = false;
-
-                    await _loadAllPages();
-
-                    const firstWrap = document.getElementById('doc-canvas-wrap-1');
-                    if (firstWrap) firstWrap.scrollIntoView({ block: 'start' });
-
-                    const scrollBody = document.getElementById('doc-modal-body');
-                    if (scrollBody) {
-                        scrollBody.addEventListener('scroll', _onScroll, { passive: true });
-                    }
-                } catch (e) {
-                    _showError(src);
-                }
+                var footer = document.getElementById('doc-footer-nav');
+                var info = document.getElementById('doc-page-info');
+                if (footer) footer.style.visibility = 'hidden';
+                if (info) info.textContent = '— / —';
             };
-
-            function _onScroll() {
-                const body = document.getElementById('doc-modal-body');
-                if (!body || !_totalPages) return;
-                const bodyTop = body.getBoundingClientRect().top;
-                let closest = 1;
-                let closestDist = Infinity;
-                for (let i = 1; i <= _totalPages; i++) {
-                    const wrap = document.getElementById('doc-canvas-wrap-' + i);
-                    if (!wrap) continue;
-                    const dist = Math.abs(wrap.getBoundingClientRect().top - bodyTop);
-                    if (dist < closestDist) { closestDist = dist; closest = i; }
-                }
-                if (closest !== _currentPage) {
-                    _currentPage = closest;
-                    _updateNav();
-                }
-            }
 
             window.closeDocModal = function () {
-                document.getElementById('doc-modal').classList.remove('open');
+                var modal = document.getElementById('doc-modal');
+                var body = document.getElementById('doc-modal-body');
+                if (modal) modal.classList.remove('open');
                 document.body.classList.remove('modal-open');
-                const body = document.getElementById('doc-modal-body');
-                if (body) {
-                    body.removeEventListener('scroll', _onScroll);
-                    body.innerHTML = '';
-                }
-                _pdfDoc = null;
-                _currentPage = 1;
-                _totalPages = 0;
-                _updateNav();
+                if (body) body.innerHTML = '';
             };
 
-            window.docPrevPage = function () {
-                if (_currentPage <= 1) return;
-                _scrollToPage(_currentPage - 1);
-            };
-
-            window.docNextPage = function () {
-                if (_currentPage >= _totalPages) return;
-                _scrollToPage(_currentPage + 1);
-            };
+            window.docPrevPage = function () { };
+            window.docNextPage = function () { };
 
             document.addEventListener('keydown', function (e) {
                 if (!document.getElementById('doc-modal')?.classList.contains('open')) return;
                 if (e.key === 'Escape') closeDocModal();
-                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') docNextPage();
-                if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') docPrevPage();
             });
         }());
     </script>
