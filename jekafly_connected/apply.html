@@ -1348,8 +1348,59 @@
 
 
 
+    <script src="assets/vendor/pdfjs/pdf.min.js"></script>
     <script>
         (function () {
+            if (window.pdfjsLib) {
+                window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'assets/vendor/pdfjs/pdf.worker.min.js';
+            }
+
+            function _setLoading(body) {
+                body.innerHTML = '<div class="doc-modal-loading"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>Loading document...</div>';
+            }
+
+            function _setError(body, src) {
+                body.innerHTML = '<div class="doc-modal-error" style="display:flex"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><div>Could not render document.<br><a href="' + src + '" target="_blank" rel="noopener" style="color:#7c9ff5;text-decoration:underline;">Open PDF directly &rarr;</a></div></div>';
+            }
+
+            async function _renderPdf(src, body, infoEl) {
+                _setLoading(body);
+                if (!window.pdfjsLib) { _setError(body, src); return; }
+                try {
+                    var pdf = await window.pdfjsLib.getDocument(src).promise;
+                    var total = pdf.numPages;
+                    body.innerHTML = '';
+                    if (infoEl) infoEl.textContent = total + ' page' + (total > 1 ? 's' : '');
+
+                    var bodyW = body.clientWidth - 32;
+                    var dpr = window.devicePixelRatio || 1;
+
+                    for (var i = 1; i <= total; i++) {
+                        var page = await pdf.getPage(i);
+                        var unscaledVp = page.getViewport({ scale: 1 });
+                        var displayScale = Math.min(2, bodyW / unscaledVp.width);
+                        var vp = page.getViewport({ scale: displayScale * dpr });
+
+                        var wrap = document.createElement('div');
+                        wrap.className = 'doc-modal-canvas-wrap';
+                        var canvas = document.createElement('canvas');
+                        canvas.width = vp.width;
+                        canvas.height = vp.height;
+                        canvas.style.width = (unscaledVp.width * displayScale) + 'px';
+                        canvas.style.height = (unscaledVp.height * displayScale) + 'px';
+                        canvas.style.display = 'block';
+                        canvas.style.maxWidth = '100%';
+                        wrap.appendChild(canvas);
+                        body.appendChild(wrap);
+
+                        await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+                    }
+                } catch (e) {
+                    console.error('PDF render error:', e);
+                    _setError(body, src);
+                }
+            }
+
             window.openDocModal = function (src, title) {
                 var modal = document.getElementById('doc-modal');
                 var body = document.getElementById('doc-modal-body');
@@ -1360,12 +1411,10 @@
                 if (titleEl) titleEl.textContent = title || 'Document';
                 if (openLink) openLink.href = src;
                 if (info) info.textContent = '';
-
-                body.innerHTML = '<iframe src="' + src + '" class="doc-modal-iframe" title="' + (title || 'Document') + '"></iframe>';
-
                 modal.classList.add('open');
                 modal.style.display = 'flex';
                 document.body.classList.add('modal-open');
+                _renderPdf(src, body, info);
             };
 
             window.closeDocModal = function () {
