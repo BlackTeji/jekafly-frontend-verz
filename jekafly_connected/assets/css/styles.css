@@ -61,15 +61,6 @@ body.modal-open {
     overflow: hidden;
 }
 
-html,
-body {
-    overflow-x: hidden;
-}
-
-body:not(.modal-open) {
-    overflow-y: auto !important;
-}
-
 input,
 textarea,
 select,
@@ -158,10 +149,6 @@ nav {
     display: flex;
     align-items: center;
     gap: 4px;
-    flex-wrap: nowrap;
-    flex: 1;
-    min-width: 0;
-    overflow: hidden;
 }
 
 .nav-links a {
@@ -172,8 +159,6 @@ nav {
     padding: 7px 13px;
     border-radius: 8px;
     transition: all 0.15s;
-    white-space: nowrap;
-    flex-shrink: 1;
 }
 
 .nav-links a:hover {
@@ -313,7 +298,6 @@ nav {
     max-width: 600px;
     z-index: 1;
     position: relative;
-    min-width: 0;
 }
 
 .hero-badge {
@@ -392,7 +376,6 @@ nav {
     display: flex;
     gap: 36px;
     margin-bottom: 40px;
-    flex-wrap: wrap;
 }
 
 .hero-stat strong {
