@@ -2606,11 +2606,6 @@
                 const pkg = CONSULT_PACKAGES[paymentData?.metadata?.package] || {};
                 document.getElementById('consult-paid-msg').textContent =
                     `₦${(paymentData?.amount || 0).toLocaleString()} received for ${pkg.name || 'consultation'}. Pick a time below.`;
-                const user = Auth.getCurrent();
-                const base = CALENDLY_URL;
-                const params = user ? `?name=${encodeURIComponent(user.name)}&email=${encodeURIComponent(user.email)}` : '';
-                document.getElementById('calendly-iframe').src = base + params;
-                document.querySelectorAll('[href*="YOUR_CALENDLY_LINK"]').forEach(el => el.href = base);
                 const consultNavItem = document.querySelector('.dash-nav-item[onclick*="documents"]');
                 showTab('documents', consultNavItem);
             }
@@ -2618,7 +2613,6 @@
             function resetConsultStep() {
                 document.getElementById('consult-step-2').classList.add('hidden');
                 document.getElementById('consult-step-1').classList.remove('hidden');
-                document.getElementById('calendly-iframe').src = '';
                 loadConsultHistory();
             }
 
