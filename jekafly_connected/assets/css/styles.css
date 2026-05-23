@@ -172,6 +172,14 @@ nav {
     align-items: center;
 }
 
+#nav-cta-area {
+    visibility: hidden;
+}
+
+#nav-cta-area.auth-ready {
+    visibility: visible;
+}
+
 .nav-user-hi {
     font-size: 0.875rem;
     color: var(--text-light);

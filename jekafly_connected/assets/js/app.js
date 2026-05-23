@@ -248,6 +248,7 @@ function updateNav() {
 
     if (ctaEl) ctaEl.innerHTML = desktopHtml;
     if (mCta) mCta.innerHTML = mobileHtml;
+    if (ctaEl) ctaEl.classList.add('auth-ready');
 }
 
 async function handleLogout() {
