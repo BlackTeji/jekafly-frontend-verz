@@ -467,20 +467,35 @@
                                 Book a one-on-one session with a Jekafly visa expert.
                                 The calendar will open in a new tab.
                             </p>
-                            <a href="https://calendly.com/jekaflynigeria/30min" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;padding:13px 28px;
-              background:#0D1560;color:white;border-radius:12px;
-              font-family:'Poppins',sans-serif;font-weight:700;
-              font-size:0.9rem;text-decoration:none;">
-                                Open Booking Calendar
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                                    <polyline points="15 3 21 3 21 9" />
-                                    <line x1="10" y1="14" x2="21" y2="3" />
-                                </svg>
-                            </a>
+                            <div id="cal-booking" style="min-width:320px;height:630px;overflow:scroll;"></div>
+                            <script>
+                                (function (C, A, L) {
+                                    let p = function (a, ar) { a.q.push(ar) };
+                                    let d = C.document;
+                                    C.Cal = C.Cal || function () {
+                                        let cal = C.Cal; let ar = arguments;
+                                        if (!cal.loaded) {
+                                            cal.ns = {}; cal.q = cal.q || [];
+                                            d.head.appendChild(d.createElement("script")).src = A;
+                                            cal.loaded = true
+                                        } if (ar[0] === L) {
+                                            const api = function () { p(api, arguments) };
+                                            const namespace = ar[1]; api.q = api.q || [];
+                                            typeof namespace === "string" ?
+                                                (cal.ns[namespace] = api) && p(api, ar) : p(cal, ar); return
+                                        } p(cal, ar)
+                                    };
+                                })(window, "https://app.cal.com/embed/embed.js", "init");
+                                Cal("init", { origin: "https://app.cal.com" });
+                                Cal("inline", {
+                                    elementOrSelector: "#cal-booking",
+                                    calLink: "jekafly/30min",
+                                    config: { theme: "light" }
+                                });
+                            </script>
                             <p class="consult-cal-fallback" style="margin-top:16px;">
-                                Having trouble? <a href="mailto:support@jekafly.com">Contact us directly</a>
+                                Can't see the calendar?
+                                <a href="https://cal.com/jekafly/30min" target="_blank">Open in new tab ↗</a>
                             </p>
                         </div>
 
