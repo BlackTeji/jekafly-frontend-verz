@@ -2715,3 +2715,506 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         font-size: 16px !important;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   EXPLORE WITH JEKAFLY — styles for styles.css (append)
+   ═══════════════════════════════════════════════════════════════ */
+
+.explore-jkf {
+    padding: 88px 0;
+    background: #0C1008;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    overflow: hidden;
+    position: relative;
+}
+
+.explore-jkf::before {
+    content: '';
+    position: absolute;
+    top: -120px;
+    left: -80px;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196, 131, 50, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.explore-jkf-inner {
+    max-width: 100%;
+}
+
+.explore-jkf-header {
+    padding: 0 5%;
+    margin-bottom: 40px;
+}
+
+.explore-jkf-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #C48332;
+    margin-bottom: 14px;
+}
+
+.explore-jkf-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C48332;
+    animation: blink 2s ease-in-out infinite;
+}
+
+.explore-jkf-heading-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 12px;
+}
+
+.explore-jkf-heading {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    margin: 0;
+}
+
+.explore-jkf-heading em {
+    font-style: normal;
+    background: linear-gradient(135deg, #C48332 0%, #E8A84A 50%, #C48332 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer-gold 3s linear infinite;
+}
+
+@keyframes shimmer-gold {
+    0% {
+        background-position: 0% center;
+    }
+
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.explore-jkf-see-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #C48332;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(196, 131, 50, 0.3);
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.explore-jkf-see-all:hover {
+    color: #E8A84A;
+    border-color: #E8A84A;
+}
+
+.explore-jkf-sub {
+    color: rgba(255, 255, 255, 0.48);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    max-width: 480px;
+    margin: 0;
+}
+
+/* ── Card track ── */
+.explore-jkf-track-wrap {
+    overflow: hidden;
+}
+
+.explore-jkf-track {
+    display: flex;
+    gap: 16px;
+    padding: 0 5% 4px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    scroll-snap-type: x mandatory;
+    cursor: grab;
+}
+
+.explore-jkf-track::-webkit-scrollbar {
+    display: none;
+}
+
+.explore-jkf-track:active {
+    cursor: grabbing;
+}
+
+/* ── Individual card ── */
+.ejkf-card {
+    flex: 0 0 300px;
+    height: 420px;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    scroll-snap-align: start;
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s;
+    background: #1A1A1A;
+    flex-shrink: 0;
+}
+
+.ejkf-card:hover {
+    transform: translateY(-6px) scale(1.015);
+    box-shadow: 0 24px 56px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(196, 131, 50, 0.2);
+}
+
+.ejkf-card--featured {
+    flex: 0 0 340px;
+    height: 460px;
+    margin-top: -20px;
+}
+
+.ejkf-card-img {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+}
+
+.ejkf-card:hover .ejkf-card-img {
+    transform: scale(1.05);
+}
+
+.ejkf-card-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0.08) 0%,
+            rgba(0, 0, 0, 0.15) 30%,
+            rgba(0, 0, 0, 0.72) 65%,
+            rgba(0, 0, 0, 0.92) 100%);
+}
+
+.ejkf-card-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: #C48332;
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 100px;
+    z-index: 3;
+}
+
+.ejkf-card-tier {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 100px;
+    z-index: 3;
+}
+
+.ejkf-card-body {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 22px 20px 20px;
+    z-index: 2;
+}
+
+.ejkf-card-state {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #C48332;
+    margin-bottom: 5px;
+}
+
+.ejkf-card-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin: 0 0 4px;
+}
+
+.ejkf-card-tag {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0 0 14px;
+    line-height: 1.4;
+    font-style: italic;
+}
+
+.ejkf-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.ejkf-meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 100px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+}
+
+.ejkf-pill-price {
+    background: rgba(196, 131, 50, 0.18);
+    border-color: rgba(196, 131, 50, 0.35);
+    color: #E8A84A;
+    font-weight: 700;
+}
+
+/* ── Tiers strip ── */
+.explore-jkf-tiers {
+    margin-top: 48px;
+    padding: 28px 5%;
+    background: rgba(255, 255, 255, 0.03);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+}
+
+.ejkf-tier {
+    flex: 1;
+    min-width: 180px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 4px 24px 4px 0;
+}
+
+.ejkf-tier-divider {
+    width: 1px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-right: 24px;
+    flex-shrink: 0;
+}
+
+.ejkf-tier-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(196, 131, 50, 0.12);
+    border: 1px solid rgba(196, 131, 50, 0.2);
+    color: #C48332;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ejkf-tier-icon--sig {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ejkf-tier-icon--exec {
+    background: rgba(196, 131, 50, 0.18);
+    border-color: rgba(196, 131, 50, 0.3);
+    color: #E8A84A;
+}
+
+.ejkf-tier-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: -0.01em;
+}
+
+.ejkf-tier-desc {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+.ejkf-tiers-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: #C48332;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: auto;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.01em;
+}
+
+.ejkf-tiers-cta:hover {
+    background: #B5721F;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(196, 131, 50, 0.35);
+}
+
+/* ── Mobile ── */
+@media (max-width: 1024px) {
+    .explore-jkf {
+        padding: 52px 0 40px;
+    }
+
+    .explore-jkf-header {
+        padding: 0 var(--mob-pad, 18px);
+        margin-bottom: 24px;
+    }
+
+    .explore-jkf-heading {
+        font-size: 1.45rem;
+        letter-spacing: -0.025em;
+    }
+
+    .explore-jkf-heading-row {
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .explore-jkf-see-all {
+        font-size: 0.75rem;
+        padding-bottom: 4px;
+    }
+
+    .explore-jkf-sub {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.42);
+    }
+
+    .explore-jkf-track {
+        padding: 4px var(--mob-pad, 18px) 16px;
+        gap: 12px;
+        scroll-padding-left: var(--mob-pad, 18px);
+    }
+
+    .ejkf-card {
+        flex: 0 0 240px;
+        height: 340px;
+        border-radius: 16px;
+    }
+
+    .ejkf-card--featured {
+        flex: 0 0 260px;
+        height: 368px;
+        margin-top: -14px;
+    }
+
+    .ejkf-card:hover {
+        transform: none;
+    }
+
+    .ejkf-card:active {
+        opacity: 0.92;
+        transform: scale(0.98);
+        transition: transform 0.1s, opacity 0.1s;
+    }
+
+    .ejkf-card-name {
+        font-size: 0.97rem;
+    }
+
+    .ejkf-card-tag {
+        font-size: 0.7rem;
+        margin-bottom: 10px;
+    }
+
+    .ejkf-card-body {
+        padding: 16px 14px 14px;
+    }
+
+    .ejkf-meta-pill {
+        font-size: 0.6rem;
+        padding: 3px 8px;
+    }
+
+    .explore-jkf-tiers {
+        margin-top: 32px;
+        padding: 20px var(--mob-pad, 18px);
+        gap: 0;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ejkf-tier {
+        padding: 10px 0;
+        min-width: unset;
+        width: 100%;
+    }
+
+    .ejkf-tier-divider {
+        width: 100%;
+        height: 1px;
+        margin: 0;
+    }
+
+    .ejkf-tier-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+    }
+
+    .ejkf-tier-name {
+        font-size: 0.82rem;
+    }
+
+    .ejkf-tier-desc {
+        font-size: 0.7rem;
+    }
+
+    .ejkf-tiers-cta {
+        margin-left: 0;
+        margin-top: 20px;
+        width: 100%;
+        justify-content: center;
+        padding: 14px;
+        border-radius: 14px;
+        font-size: 0.92rem;
+        min-height: 52px;
+    }
+}

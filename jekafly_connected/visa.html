@@ -54,7 +54,8 @@
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/hero-animation.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
-<link rel="stylesheet" href="mobile.css" media="(max-width: 1024px)" />    <style>
+    <link rel="stylesheet" href="mobile.css" media="(max-width: 1024px)" />
+    <style>
         body {
             font-family: 'Poppins', Georgia, Helvetica, sans-serif;
         }
@@ -163,6 +164,22 @@
                     <polyline points="9 18 15 12 9 6" />
                 </svg>
             </a>
+
+            <a href="/holidays" onclick="closeNavMenu()" class="nav-mob-row">
+                <span class="nav-mob-row-icon" style="background:#2A1F0A; color:#C48332;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                        <path d="M9 22V12h6v10" />
+                    </svg>
+                </span>
+                <span class="nav-mob-row-label">Holidays</span>
+                <svg class="nav-mob-row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                </svg>
+            </a>
+
         </div>
         <div class="nav-mob-footer" id="nav-mobile-cta">
             <a href="/affiliate" onclick="closeNavMenu()" class="nav-mob-admin-btn">
@@ -960,6 +977,249 @@
                         onclick="handleRegister()">Create Free Account</button>
                 </div>
             </div>
+
+            <!-- EXPLORE WITH JEKAFLY -->
+
+            <section class="explore-jkf" id="explore">
+                <div class="explore-jkf-inner">
+                    <div class="explore-jkf-header">
+                        <div class="explore-jkf-eyebrow">
+                            <span class="explore-jkf-dot"></span>
+                            Jekafly Holidays
+                        </div>
+                        <div class="explore-jkf-heading-row">
+                            <h2 class="explore-jkf-heading">Explore with <em>Jekafly</em></h2>
+                            <a href="/holidays" class="explore-jkf-see-all">
+                                View all destinations
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                    <polyline points="12 5 19 12 12 19" />
+                                </svg>
+                            </a>
+                        </div>
+                        <p class="explore-jkf-sub">Curated holiday experiences across Southwest Nigeria — heritage,
+                            nature, adventure, and luxury, all handled for you.</p>
+                    </div>
+
+                    <div class="explore-jkf-track-wrap">
+                        <div class="explore-jkf-track" id="explore-jkf-track">
+
+                            <!-- Lagos -->
+                            <article class="ejkf-card" onclick="window.location.href='/holidays'">
+                                <div class="ejkf-card-img"
+                                    style="background-image:url('https://images.unsplash.com/photo-1600618523853-9f5a7f2d03a3?w=800&q=80&fit=crop')">
+                                </div>
+                                <div class="ejkf-card-gradient"></div>
+                                <div class="ejkf-card-tier">Signature</div>
+                                <div class="ejkf-card-body">
+                                    <div class="ejkf-card-state">Lagos State</div>
+                                    <h3 class="ejkf-card-name">The Eko Experience</h3>
+                                    <p class="ejkf-card-tag">Where Energy Meets Luxury</p>
+                                    <div class="ejkf-card-meta">
+                                        <span class="ejkf-meta-pill">
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <polyline points="12 6 12 12 16 14" />
+                                            </svg>
+                                            2 Days / 1 Night
+                                        </span>
+                                        <span class="ejkf-meta-pill ejkf-pill-price">From ₦350,000</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <!-- Ekiti -->
+                            <article class="ejkf-card ejkf-card--featured" onclick="window.location.href='/holidays'">
+                                <div class="ejkf-card-img"
+                                    style="background-image:url('https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&q=80&fit=crop')">
+                                </div>
+                                <div class="ejkf-card-gradient"></div>
+                                <div class="ejkf-card-badge">Editor's Pick</div>
+                                <div class="ejkf-card-tier">Explorer</div>
+                                <div class="ejkf-card-body">
+                                    <div class="ejkf-card-state">Ekiti State</div>
+                                    <h3 class="ejkf-card-name">The Hidden Gem Escape</h3>
+                                    <p class="ejkf-card-tag">Nigeria's Best-Kept Secret</p>
+                                    <div class="ejkf-card-meta">
+                                        <span class="ejkf-meta-pill">
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <polyline points="12 6 12 12 16 14" />
+                                            </svg>
+                                            3 Days / 2 Nights
+                                        </span>
+                                        <span class="ejkf-meta-pill ejkf-pill-price">From ₦300,000</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <!-- Osun -->
+                            <article class="ejkf-card" onclick="window.location.href='/holidays'">
+                                <div class="ejkf-card-img"
+                                    style="background-image:url('https://images.unsplash.com/photo-1504019347908-b45f9b0b8dd5?w=800&q=80&fit=crop')">
+                                </div>
+                                <div class="ejkf-card-gradient"></div>
+                                <div class="ejkf-card-tier">Signature</div>
+                                <div class="ejkf-card-body">
+                                    <div class="ejkf-card-state">Osun State</div>
+                                    <h3 class="ejkf-card-name">Sacred Osun Journey</h3>
+                                    <p class="ejkf-card-tag">Experience the Spirit of Heritage</p>
+                                    <div class="ejkf-card-meta">
+                                        <span class="ejkf-meta-pill">
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <polyline points="12 6 12 12 16 14" />
+                                            </svg>
+                                            2 Days / 1 Night
+                                        </span>
+                                        <span class="ejkf-meta-pill ejkf-pill-price">From ₦280,000</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <!-- Ondo -->
+                            <article class="ejkf-card" onclick="window.location.href='/holidays'">
+                                <div class="ejkf-card-img"
+                                    style="background-image:url('https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80&fit=crop')">
+                                </div>
+                                <div class="ejkf-card-gradient"></div>
+                                <div class="ejkf-card-tier">Explorer</div>
+                                <div class="ejkf-card-body">
+                                    <div class="ejkf-card-state">Ondo State</div>
+                                    <h3 class="ejkf-card-name">Sunrise Coast Escape</h3>
+                                    <p class="ejkf-card-tag">Where Nature Meets Serenity</p>
+                                    <div class="ejkf-card-meta">
+                                        <span class="ejkf-meta-pill">
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <polyline points="12 6 12 12 16 14" />
+                                            </svg>
+                                            3 Days / 2 Nights
+                                        </span>
+                                        <span class="ejkf-meta-pill ejkf-pill-price">From ₦300,000</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <!-- Oyo -->
+                            <article class="ejkf-card" onclick="window.location.href='/holidays'">
+                                <div class="ejkf-card-img"
+                                    style="background-image:url('https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&q=80&fit=crop')">
+                                </div>
+                                <div class="ejkf-card-gradient"></div>
+                                <div class="ejkf-card-tier">Signature</div>
+                                <div class="ejkf-card-body">
+                                    <div class="ejkf-card-state">Oyo State</div>
+                                    <h3 class="ejkf-card-name">The Alaafin Legacy</h3>
+                                    <p class="ejkf-card-tag">Walk Through the Kingdom of Legends</p>
+                                    <div class="ejkf-card-meta">
+                                        <span class="ejkf-meta-pill">
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <polyline points="12 6 12 12 16 14" />
+                                            </svg>
+                                            2 Days / 2 Nights
+                                        </span>
+                                        <span class="ejkf-meta-pill ejkf-pill-price">From ₦280,000</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <!-- Ogun -->
+                            <article class="ejkf-card" onclick="window.location.href='/holidays'">
+                                <div class="ejkf-card-img"
+                                    style="background-image:url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80&fit=crop')">
+                                </div>
+                                <div class="ejkf-card-gradient"></div>
+                                <div class="ejkf-card-tier">Explorer</div>
+                                <div class="ejkf-card-body">
+                                    <div class="ejkf-card-state">Ogun State</div>
+                                    <h3 class="ejkf-card-name">Gateway Trails</h3>
+                                    <p class="ejkf-card-tag">Discover Heritage Beyond the Horizon</p>
+                                    <div class="ejkf-card-meta">
+                                        <span class="ejkf-meta-pill">
+                                            <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="10" />
+                                                <polyline points="12 6 12 12 16 14" />
+                                            </svg>
+                                            2 Days / 1 Night
+                                        </span>
+                                        <span class="ejkf-meta-pill ejkf-pill-price">From ₦280,000</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                        </div>
+                    </div>
+
+                    <!-- Tiers strip -->
+                    <div class="explore-jkf-tiers">
+                        <div class="ejkf-tier">
+                            <div class="ejkf-tier-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="ejkf-tier-name">Explorer</div>
+                                <div class="ejkf-tier-desc">From ₦150,000 · Budget-smart adventures</div>
+                            </div>
+                        </div>
+                        <div class="ejkf-tier-divider"></div>
+                        <div class="ejkf-tier">
+                            <div class="ejkf-tier-icon ejkf-tier-icon--sig">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" />
+                                    <path d="M5 21h14" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="ejkf-tier-name">Signature</div>
+                                <div class="ejkf-tier-desc">From ₦250,000 · Premium curated</div>
+                            </div>
+                        </div>
+                        <div class="ejkf-tier-divider"></div>
+                        <div class="ejkf-tier">
+                            <div class="ejkf-tier-icon ejkf-tier-icon--exec">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon
+                                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="ejkf-tier-name">Executive</div>
+                                <div class="ejkf-tier-desc">From ₦500,000 · Luxury &amp; concierge</div>
+                            </div>
+                        </div>
+                        <a href="/holidays" class="ejkf-tiers-cta">
+                            Explore All Packages
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                                <polyline points="12 5 19 12 12 19" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </section>
 
             <!-- INSURANCE -->
             <div id="modal-insurance" class="modal-section-hidden">
