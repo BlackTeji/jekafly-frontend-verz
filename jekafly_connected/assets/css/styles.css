@@ -2717,7 +2717,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   EXPLORE WITH JEKAFLY — styles for styles.css (append)
+   EXPLORE WITH JEKAFLY 
    ═══════════════════════════════════════════════════════════════ */
 
 .explore-jkf {
@@ -2838,6 +2838,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 /* ── Card track ── */
 .explore-jkf-track-wrap {
     overflow: hidden;
+    padding-top: 24px;
+    margin-top: -24px;
 }
 
 .explore-jkf-track {
@@ -3143,6 +3145,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         flex: 0 0 260px;
         height: 368px;
         margin-top: -14px;
+    }
+
+    .explore-jkf-track-wrap {
+        padding-top: 16px;
+        margin-top: -16px;
     }
 
     .ejkf-card:hover {

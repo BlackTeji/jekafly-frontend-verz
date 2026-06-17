@@ -2988,6 +2988,152 @@
         display: block;
     }
 
+
+    .explore-jkf {
+        padding: 48px 0 36px;
+    }
+
+    .explore-jkf-header {
+        padding: 0 var(--mob-pad);
+        margin-bottom: 22px;
+    }
+
+    .explore-jkf-eyebrow {
+        font-size: 0.65rem;
+        margin-bottom: 10px;
+    }
+
+    .explore-jkf-heading {
+        font-size: 1.45rem;
+        letter-spacing: -0.025em;
+    }
+
+    .explore-jkf-heading-row {
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+    .explore-jkf-see-all {
+        font-size: 0.72rem;
+        padding-bottom: 4px;
+        gap: 4px;
+        flex-shrink: 0;
+    }
+
+    .explore-jkf-sub {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .explore-jkf-track {
+        padding: 4px var(--mob-pad) 16px;
+        gap: 12px;
+        scroll-padding-left: var(--mob-pad);
+    }
+
+    .ejkf-card {
+        flex: 0 0 238px;
+        height: 336px;
+        border-radius: 16px;
+        transition: opacity 0.1s, transform 0.1s;
+    }
+
+    .ejkf-card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .ejkf-card:active {
+        opacity: 0.9;
+        transform: scale(0.97);
+    }
+
+    .ejkf-card--featured {
+        flex: 0 0 258px;
+        height: 364px;
+        margin-top: -14px;
+    }
+
+    .ejkf-card-name {
+        font-size: 0.95rem;
+        margin-bottom: 3px;
+    }
+
+    .ejkf-card-tag {
+        font-size: 0.68rem;
+        margin-bottom: 10px;
+    }
+
+    .ejkf-card-body {
+        padding: 14px 13px 13px;
+    }
+
+    .ejkf-meta-pill {
+        font-size: 0.6rem;
+        padding: 3px 8px;
+        gap: 3px;
+    }
+
+    .ejkf-card-badge {
+        font-size: 0.55rem;
+        padding: 3px 8px;
+        top: 12px;
+        left: 12px;
+    }
+
+    .ejkf-card-tier {
+        font-size: 0.55rem;
+        padding: 3px 8px;
+        top: 12px;
+        right: 12px;
+    }
+
+    .explore-jkf-tiers {
+        margin-top: 28px;
+        padding: 18px var(--mob-pad);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+
+    .ejkf-tier {
+        padding: 12px 0;
+        min-width: unset;
+        width: 100%;
+        gap: 12px;
+    }
+
+    .ejkf-tier-divider {
+        width: 100%;
+        height: 1px;
+        margin: 0;
+    }
+
+    .ejkf-tier-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+    }
+
+    .ejkf-tier-name {
+        font-size: 0.82rem;
+    }
+
+    .ejkf-tier-desc {
+        font-size: 0.7rem;
+    }
+
+    .ejkf-tiers-cta {
+        margin-left: 0;
+        margin-top: 20px;
+        width: 100%;
+        justify-content: center;
+        padding: 14px;
+        border-radius: 14px;
+        font-size: 0.92rem;
+        min-height: 52px;
+        letter-spacing: 0.01em;
+    }
 }
 
 .dest-card-name {
@@ -3262,150 +3408,6 @@
         color: #dc2626;
     }
 
-    .explore-jkf {
-        padding: 48px 0 36px;
-    }
 
-    .explore-jkf-header {
-        padding: 0 var(--mob-pad);
-        margin-bottom: 22px;
-    }
-
-    .explore-jkf-eyebrow {
-        font-size: 0.65rem;
-        margin-bottom: 10px;
-    }
-
-    .explore-jkf-heading {
-        font-size: 1.45rem;
-        letter-spacing: -0.025em;
-    }
-
-    .explore-jkf-heading-row {
-        align-items: center;
-        margin-bottom: 8px;
-    }
-
-    .explore-jkf-see-all {
-        font-size: 0.72rem;
-        padding-bottom: 4px;
-        gap: 4px;
-        flex-shrink: 0;
-    }
-
-    .explore-jkf-sub {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.4);
-    }
-
-    .explore-jkf-track {
-        padding: 4px var(--mob-pad) 16px;
-        gap: 12px;
-        scroll-padding-left: var(--mob-pad);
-    }
-
-    .ejkf-card {
-        flex: 0 0 238px;
-        height: 336px;
-        border-radius: 16px;
-        transition: opacity 0.1s, transform 0.1s;
-    }
-
-    .ejkf-card:hover {
-        transform: none;
-        box-shadow: none;
-    }
-
-    .ejkf-card:active {
-        opacity: 0.9;
-        transform: scale(0.97);
-    }
-
-    .ejkf-card--featured {
-        flex: 0 0 258px;
-        height: 364px;
-        margin-top: -14px;
-    }
-
-    .ejkf-card-name {
-        font-size: 0.95rem;
-        margin-bottom: 3px;
-    }
-
-    .ejkf-card-tag {
-        font-size: 0.68rem;
-        margin-bottom: 10px;
-    }
-
-    .ejkf-card-body {
-        padding: 14px 13px 13px;
-    }
-
-    .ejkf-meta-pill {
-        font-size: 0.6rem;
-        padding: 3px 8px;
-        gap: 3px;
-    }
-
-    .ejkf-card-badge {
-        font-size: 0.55rem;
-        padding: 3px 8px;
-        top: 12px;
-        left: 12px;
-    }
-
-    .ejkf-card-tier {
-        font-size: 0.55rem;
-        padding: 3px 8px;
-        top: 12px;
-        right: 12px;
-    }
-
-    .explore-jkf-tiers {
-        margin-top: 28px;
-        padding: 18px var(--mob-pad);
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0;
-    }
-
-    .ejkf-tier {
-        padding: 12px 0;
-        min-width: unset;
-        width: 100%;
-        gap: 12px;
-    }
-
-    .ejkf-tier-divider {
-        width: 100%;
-        height: 1px;
-        margin: 0;
-    }
-
-    .ejkf-tier-icon {
-        width: 34px;
-        height: 34px;
-        border-radius: 9px;
-    }
-
-    .ejkf-tier-name {
-        font-size: 0.82rem;
-    }
-
-    .ejkf-tier-desc {
-        font-size: 0.7rem;
-    }
-
-    .ejkf-tiers-cta {
-        margin-left: 0;
-        margin-top: 20px;
-        width: 100%;
-        justify-content: center;
-        padding: 14px;
-        border-radius: 14px;
-        font-size: 0.92rem;
-        min-height: 52px;
-        letter-spacing: 0.01em;
-    }
 
 }
