@@ -485,13 +485,25 @@
                                                 (cal.ns[namespace] = api) && p(api, ar) : p(cal, ar); return
                                         } p(cal, ar)
                                     };
-                                })(window, "https://app.cal.com/embed/embed.js", "init");
+                               })(window, "https://app.cal.com/embed/embed.js", "init");
                                 Cal("init", { origin: "https://app.cal.com" });
-                                Cal("inline", {
-                                    elementOrSelector: "#cal-booking",
-                                    calLink: "jekafly/30min",
-                                    config: { theme: "light" }
-                                });
+
+                                window._calInlineMounted = false;
+                                function mountCalBooking() {
+                                    if (window._calInlineMounted) return;
+                                    window._calInlineMounted = true;
+                                    Cal("inline", {
+                                        elementOrSelector: "#cal-booking",
+                                        calLink: "jekafly/30min",
+                                        config: { theme: "light" }
+                                    });
+                                    Cal("on", {
+                                        action: "bookingSuccessfulV2",
+                                        callback: function () {
+                                            setTimeout(resetConsultStep, 1200);
+                                        }
+                                    });
+                                }
                             </script>
                             <p class="consult-cal-fallback" style="margin-top:16px;">
                                 Can't see the calendar?
@@ -506,16 +518,6 @@
                             <div id="consult-history"></div>
                         </div>
                     </div>
-
-                    <script>
-                        window.addEventListener('message', function (e) {
-                            if (e.data && e.data.event && e.data.event.indexOf('calendly') === 0) {
-                                if (e.data.event === 'calendly.event_scheduled') {
-                                    setTimeout(resetConsultStep, 1200);
-                                }
-                            }
-                        });
-                    </script>
 
                     <!-- ── INSURANCE TAB ────────────────────────────────── -->
                     <div id="tab-insurance" class="tab-panel-hidden">
@@ -2603,6 +2605,7 @@
             function unlockCalendly(paymentData) {
                 document.getElementById('consult-step-1').classList.add('hidden');
                 document.getElementById('consult-step-2').classList.remove('hidden');
+                mountCalBooking();
                 const pkg = CONSULT_PACKAGES[paymentData?.metadata?.package] || {};
                 document.getElementById('consult-paid-msg').textContent =
                     `₦${(paymentData?.amount || 0).toLocaleString()} received for ${pkg.name || 'consultation'}. Pick a time below.`;
