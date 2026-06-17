@@ -655,7 +655,6 @@
                         <div class="ejkf-card-img" style="background-image:url('assets/images/ekiti.jpg')">
                         </div>
                         <div class="ejkf-card-gradient"></div>
-                        <div class="ejkf-card-badge">Editor's Pick</div>
                         <div class="ejkf-card-tier">Explorer</div>
                         <div class="ejkf-card-body">
                             <div class="ejkf-card-state">Ekiti State</div>
@@ -889,21 +888,21 @@
                             <div class="ins-plan-name">Basic Plan</div>
                             <div class="ins-plan-desc">Medical emergencies + Baggage loss</div>
                         </div>
-                        <div class="ins-plan-price" data-ins-preview="basic">From 25,000</div>
+                        <div class="ins-plan-price" data-ins-preview="basic">From &#8358;25,000</div>
                     </div>
                     <div class="ins-plan" onclick="selectPlan(this)">
                         <div>
                             <div class="ins-plan-name">Standard Plan</div>
                             <div class="ins-plan-desc">Basic + Trip cancellation + Delays</div>
                         </div>
-                        <div class="ins-plan-price" data-ins-preview="standard">From 45,000</div>
+                        <div class="ins-plan-price" data-ins-preview="standard">From &#8358;45,000</div>
                     </div>
                     <div class="ins-plan" onclick="selectPlan(this)">
                         <div>
                             <div class="ins-plan-name">Premium Plan</div>
                             <div class="ins-plan-desc">All coverage + Adventure sports + COVID</div>
                         </div>
-                        <div class="ins-plan-price" data-ins-preview="premium">From 80,000</div>
+                        <div class="ins-plan-price" data-ins-preview="premium">From &#8358;80,000</div>
                     </div>
                 </div>
                 <div class="ins-cta-wrap">
@@ -1561,8 +1560,8 @@
     <script>
         const CONSULT_PACKAGES = { standard: { name: 'Standard Consultation', amount: 15000 }, priority: { name: 'Priority Consultation', amount: 25000 }, vip: { name: 'VIP Consultation', amount: 50000 } };
         let _cModalPkg = 'priority';
-        function applyConsultPricing(p) { CONSULT_PACKAGES.standard.amount = p.consultStandard; CONSULT_PACKAGES.priority.amount = p.consultPriority; CONSULT_PACKAGES.vip.amount = p.consultVip; const fmt = v => '&#8358;' + Number(v).toLocaleString(); const standardEl = document.querySelector('#mpkg-standard [data-pkg-price]'); const priorityEl = document.querySelector('#mpkg-priority [data-pkg-price]'); const vipEl = document.querySelector('#mpkg-vip [data-pkg-price]'); if (standardEl) standardEl.textContent = fmt(p.consultStandard); if (priorityEl) priorityEl.textContent = fmt(p.consultPriority); if (vipEl) vipEl.textContent = fmt(p.consultVip); document.getElementById('mpkg-standard')?.setAttribute('onclick', `selectModalPkg('standard',${p.consultStandard})`); document.getElementById('mpkg-priority')?.setAttribute('onclick', `selectModalPkg('priority',${p.consultPriority})`); document.getElementById('mpkg-vip')?.setAttribute('onclick', `selectModalPkg('vip',${p.consultVip})`); }
-        function applyInsPricing(p) { const fmt = v => '&#8358;' + Number(v).toLocaleString(); document.querySelectorAll('[data-ins-price]').forEach(el => { const plan = el.getAttribute('data-ins-price'); if (plan === 'basic') el.textContent = `${fmt(p.insuranceBasic)}/person`; if (plan === 'standard') el.textContent = `${fmt(p.insuranceStandard)}/person`; if (plan === 'premium') el.textContent = `${fmt(p.insurancePremium)}/person`; }); document.querySelectorAll('[data-ins-preview]').forEach(el => { const plan = el.getAttribute('data-ins-preview'); if (plan === 'basic') el.textContent = `From ${fmt(p.insuranceBasic)}`; if (plan === 'standard') el.textContent = `From ${fmt(p.insuranceStandard)}`; if (plan === 'premium') el.textContent = `From ${fmt(p.insurancePremium)}`; }); }
+        function applyConsultPricing(p) { CONSULT_PACKAGES.standard.amount = p.consultStandard; CONSULT_PACKAGES.priority.amount = p.consultPriority; CONSULT_PACKAGES.vip.amount = p.consultVip; const fmt = v => '₦' + Number(v).toLocaleString(); const standardEl = document.querySelector('#mpkg-standard [data-pkg-price]'); const priorityEl = document.querySelector('#mpkg-priority [data-pkg-price]'); const vipEl = document.querySelector('#mpkg-vip [data-pkg-price]'); if (standardEl) standardEl.textContent = fmt(p.consultStandard); if (priorityEl) priorityEl.textContent = fmt(p.consultPriority); if (vipEl) vipEl.textContent = fmt(p.consultVip); document.getElementById('mpkg-standard')?.setAttribute('onclick', `selectModalPkg('standard',${p.consultStandard})`); document.getElementById('mpkg-priority')?.setAttribute('onclick', `selectModalPkg('priority',${p.consultPriority})`); document.getElementById('mpkg-vip')?.setAttribute('onclick', `selectModalPkg('vip',${p.consultVip})`); }
+        function applyInsPricing(p) { const fmt = v => '₦' + Number(v).toLocaleString(); document.querySelectorAll('[data-ins-price]').forEach(el => { const plan = el.getAttribute('data-ins-price'); if (plan === 'basic') el.textContent = `${fmt(p.insuranceBasic)}/person`; if (plan === 'standard') el.textContent = `${fmt(p.insuranceStandard)}/person`; if (plan === 'premium') el.textContent = `${fmt(p.insurancePremium)}/person`; }); document.querySelectorAll('[data-ins-preview]').forEach(el => { const plan = el.getAttribute('data-ins-preview'); if (plan === 'basic') el.textContent = `From ${fmt(p.insuranceBasic)}`; if (plan === 'standard') el.textContent = `From ${fmt(p.insuranceStandard)}`; if (plan === 'premium') el.textContent = `From ${fmt(p.insurancePremium)}`; }); }
         function openConsultModal() { openModal('consultation'); selectModalPkg('priority', 25000); }
         function selectModalPkg(pkg, amount) { _cModalPkg = pkg; document.querySelectorAll('.consult-modal-pkg').forEach(el => el.classList.remove('ins-option--selected')); document.getElementById('mpkg-' + pkg)?.classList.add('ins-option--selected'); document.getElementById('consult-modal-pkg-error').style.display = 'none'; }
         function consultModalNext() { if (!_cModalPkg) { document.getElementById('consult-modal-pkg-error').style.display = 'block'; return; } const user = typeof Auth !== 'undefined' ? Auth.getCurrent() : null; if (user) { consultPay(user.email); } else { document.getElementById('consult-modal-step-1').style.display = 'none'; document.getElementById('consult-modal-step-2').style.display = 'block'; const modal = document.querySelector('.modal'); if (modal) modal.scrollTop = 0; } }
