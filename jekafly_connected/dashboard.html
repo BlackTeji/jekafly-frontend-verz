@@ -148,6 +148,14 @@
                             <line x1="15" x2="15" y1="8" y2="12" />
                         </svg></span>My Hotel
                     Bookings</div>
+
+                <div class="dash-nav-item" onclick="showTab('holidays',this)"><span class="icon"><svg
+                            xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                            <path d="M9 22V12h6v10" />
+                        </svg></span>My Holidays</div>
+
                 <div class="dash-nav-section">Actions</div>
                 <div class="dash-nav-item" onclick="window.location.href='/apply'"><span class="icon"><svg
                             xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -485,7 +493,7 @@
                                                 (cal.ns[namespace] = api) && p(api, ar) : p(cal, ar); return
                                         } p(cal, ar)
                                     };
-                               })(window, "https://app.cal.com/embed/embed.js", "init");
+                                })(window, "https://app.cal.com/embed/embed.js", "init");
                                 Cal("init", { origin: "https://app.cal.com" });
 
                                 window._calInlineMounted = false;
@@ -913,6 +921,13 @@
                         <div id="hotels-content"></div>
                     </div>
 
+                    <div id="tab-holidays" class="tab-panel-hidden">
+                        <div class="dash-title">My Holiday Bookings</div>
+                        <p class="dash-subtitle">Your curated holiday experiences booked through Jekafly Destinations.
+                        </p>
+                        <div id="holidays-dash-content"></div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -1006,7 +1021,7 @@
 
             function showTab(tab, el) {
                 window._dashTabUserClick = !!(el && el.classList && el.classList.contains('dash-nav-item'));
-                ['applications', 'documents', 'insurance', 'track', 'profile', 'mydocs', 'flights', 'hotels'].forEach(t => {
+                ['applications', 'documents', 'insurance', 'track', 'profile', 'mydocs', 'flights', 'hotels', 'holidays'].forEach(t => {
                     const panel = document.getElementById('tab-' + t);
                     if (!panel) return;
                     if (t === tab) {
@@ -1031,6 +1046,7 @@
                 if (tab === 'mydocs') { loadMyDocsApps(); }
                 if (tab === 'flights') loadFlightBookings();
                 if (tab === 'hotels') loadHotelBookings();
+                if (tab === 'holidays') loadHolidayBookings();
             }
 
             window._jekafly_page = 'dashboard';
@@ -2527,6 +2543,69 @@
                 </div>`;
                 }
             }
+
+            async function loadHolidayBookings() {
+                const container = document.getElementById('holidays-dash-content');
+                if (!container) return;
+                container.innerHTML = `<div class="empty-state" style="padding:48px 0;">
+        <div class="icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/>
+            </svg>
+        </div>
+        <div class="spin-loader" style="margin:12px auto;"></div>
+        <div>Loading your holiday bookings...</div>
+    </div>`;
+                try {
+                    const res = await fetch('https://api.jekafly.com/api/v1/holidays/my-bookings', {
+                        headers: { 'Authorization': 'Bearer ' + (Auth.getToken ? Auth.getToken() : '') }
+                    });
+                    const data = await res.json();
+                    const bookings = data?.data?.bookings || [];
+                    if (!bookings.length) {
+                        container.innerHTML = `<div class="empty-state">
+                <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
+                <h3>No holiday bookings yet</h3>
+                <p>Browse our curated destinations and book your next experience.</p>
+                <a href="/holidays" class="btn-save" style="display:inline-flex;align-items:center;gap:8px;margin-top:16px;text-decoration:none;">
+                    Explore Destinations
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>`;
+                        return;
+                    }
+                    const tierColors = { EXPLORER: '#3B5BDB', SIGNATURE: '#C48332', EXECUTIVE: '#7048E8' };
+                    const statusColors = { PENDING: 'status-processing', CONFIRMED: 'status-approved', CANCELLED: 'status-rejected' };
+                    container.innerHTML = bookings.map(b => {
+                        const tierColor = tierColors[b.tier] || '#0D1560';
+                        const statusClass = statusColors[b.status] || 'status-received';
+                        const dateStr = b.holidayDate?.date ? new Date(b.holidayDate.date).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—';
+                        return `<div class="booking-card">
+                <div class="booking-card-header">
+                    <div class="booking-card-icon" style="background:#EEF2FF;color:${tierColor};">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg>
+                    </div>
+                    <div class="flex-1">
+                        <div class="booking-card-title">${escHtml(b.holiday?.packageName || '—')}</div>
+                        <div class="booking-card-ref">${escHtml(b.holiday?.state || '—')} &middot; Ref: ${escHtml(b.ref)}</div>
+                    </div>
+                    <span class="status-pill ${statusClass}">${b.status}</span>
+                </div>
+                <div class="booking-card-details">
+                    <div class="booking-detail"><span>Date</span><strong>${dateStr}</strong></div>
+                    <div class="booking-detail"><span>Tier</span><strong style="color:${tierColor}">${b.tier}</strong></div>
+                    <div class="booking-detail"><span>Travellers</span><strong>${b.travellers}</strong></div>
+                    <div class="booking-detail"><span>Duration</span><strong>${b.holiday?.durationDays || '—'}D / ${b.holiday?.durationNights || '—'}N</strong></div>
+                    <div class="booking-detail"><span>Club Membership</span><strong>${b.membershipAdded ? '✅ Included' : '—'}</strong></div>
+                    <div class="booking-detail"><span>Total Paid</span><strong>₦${(b.totalAmount || 0).toLocaleString()}</strong></div>
+                </div>
+            </div>`;
+                    }).join('');
+                } catch (e) {
+                    container.innerHTML = `<div class="empty-state"><h3>Could not load bookings</h3><p>Please try again later.</p></div>`;
+                }
+            }
+
 
         </script>
         <script>

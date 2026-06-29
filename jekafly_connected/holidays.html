@@ -22,17 +22,584 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/styles.css" />
     <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="mobile.css" media="(max-width: 1024px)" />
     <link rel="stylesheet" href="assets/css/holidays.css" />
+    <style>
+        /* ── Booking Modal ──────────────────────────────────────────────── */
+        .hbm-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9900;
+            background: rgba(10, 19, 60, 0.72);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0;
+        }
+
+        @media (min-width: 640px) {
+            .hbm-overlay {
+                align-items: center;
+                padding: 20px;
+            }
+        }
+
+        .hbm-overlay.open {
+            display: flex;
+        }
+
+        .hbm-modal {
+            background: #fff;
+            border-radius: 24px 24px 0 0;
+            width: 100%;
+            max-width: 560px;
+            max-height: 92vh;
+            overflow-y: auto;
+            padding: 28px 24px 32px;
+            box-sizing: border-box;
+            position: relative;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        @media (min-width: 640px) {
+            .hbm-modal {
+                border-radius: 24px;
+            }
+        }
+
+        .hbm-drag {
+            width: 40px;
+            height: 4px;
+            background: #E3E5F5;
+            border-radius: 4px;
+            margin: 0 auto 20px;
+        }
+
+        .hbm-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #F0F3FF;
+            border: none;
+            border-radius: 10px;
+            width: 34px;
+            height: 34px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0D1560;
+        }
+
+        .hbm-steps {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 24px;
+        }
+
+        .hbm-step-dot {
+            flex: 1;
+            height: 3px;
+            border-radius: 3px;
+            background: #E3E5F5;
+            transition: background .2s;
+        }
+
+        .hbm-step-dot.active {
+            background: #0D1560;
+        }
+
+        .hbm-step-dot.done {
+            background: #16a34a;
+        }
+
+        .hbm-step-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #9AABCC;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            margin-bottom: 6px;
+        }
+
+        .hbm-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0D1560;
+            margin: 0 0 6px;
+            letter-spacing: -0.03em;
+        }
+
+        .hbm-sub {
+            font-size: 0.85rem;
+            color: #9AABCC;
+            margin: 0 0 24px;
+            line-height: 1.6;
+        }
+
+        .hbm-confirm-card {
+            background: #F8F9FE;
+            border-radius: 16px;
+            padding: 20px 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .hbm-confirm-img {
+            width: 72px;
+            height: 72px;
+            border-radius: 12px;
+            background: #0D1560 center/cover no-repeat;
+            flex-shrink: 0;
+        }
+
+        .hbm-confirm-info {
+            flex: 1;
+        }
+
+        .hbm-confirm-state {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #9AABCC;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+        }
+
+        .hbm-confirm-name {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #0D1560;
+            margin: 2px 0 4px;
+        }
+
+        .hbm-confirm-tag {
+            font-size: 0.8rem;
+            color: #7480A0;
+            font-style: italic;
+        }
+
+        .hbm-confirm-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .hbm-pill {
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 100px;
+            background: #EEF2FF;
+            color: #3B5BDB;
+        }
+
+        .hbm-pill--gold {
+            background: #FFF8E6;
+            color: #C48332;
+        }
+
+        .hbm-form-group {
+            margin-bottom: 16px;
+        }
+
+        .hbm-label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #9AABCC;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            margin-bottom: 6px;
+        }
+
+        .hbm-input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #E3E5F5;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            color: #0F1124;
+            background: #F8F9FE;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color .18s;
+        }
+
+        .hbm-input:focus {
+            border-color: #0D1560;
+            background: #fff;
+        }
+
+        .hbm-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .hbm-tier-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 4px;
+        }
+
+        .hbm-tier-card {
+            border: 1.5px solid #E3E5F5;
+            border-radius: 14px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: border-color .18s, background .18s;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .hbm-tier-card.selected {
+            border-color: #0D1560;
+            background: #F0F3FF;
+        }
+
+        .hbm-tier-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .hbm-tier-card-body {
+            flex: 1;
+        }
+
+        .hbm-tier-card-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #0D1560;
+        }
+
+        .hbm-tier-card-desc {
+            font-size: 0.78rem;
+            color: #7480A0;
+            margin-top: 2px;
+        }
+
+        .hbm-tier-card-price {
+            font-weight: 800;
+            font-size: 0.95rem;
+            color: #0D1560;
+            white-space: nowrap;
+        }
+
+        .hbm-club-card {
+            border: 1.5px solid #E3E5F5;
+            border-radius: 16px;
+            padding: 18px;
+            background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
+            color: #fff;
+            margin-bottom: 16px;
+        }
+
+        .hbm-club-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .hbm-club-card-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, .15);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .hbm-club-card-name {
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .hbm-club-card-sub {
+            font-size: 0.78rem;
+            opacity: .7;
+        }
+
+        .hbm-club-perks {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 16px;
+        }
+
+        .hbm-club-perk {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 0.8rem;
+            opacity: .9;
+        }
+
+        .hbm-club-perk svg {
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .hbm-club-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, .1);
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .hbm-club-toggle-label {
+            flex: 1;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .hbm-club-toggle-price {
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .hbm-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .hbm-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+            position: absolute;
+        }
+
+        .hbm-switch-slider {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, .2);
+            border-radius: 24px;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        .hbm-switch-slider::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform .2s;
+        }
+
+        .hbm-switch input:checked+.hbm-switch-slider {
+            background: #16a34a;
+        }
+
+        .hbm-switch input:checked+.hbm-switch-slider::before {
+            transform: translateX(20px);
+        }
+
+        .hbm-summary-rows {
+            background: #F8F9FE;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .hbm-summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 0;
+            border-bottom: 1px solid #EAECF5;
+            font-size: 0.85rem;
+            color: #4A5568;
+        }
+
+        .hbm-summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .hbm-summary-row.total {
+            font-weight: 800;
+            color: #0D1560;
+            font-size: 1rem;
+        }
+
+        .hbm-auth-tabs {
+            display: flex;
+            gap: 0;
+            background: #F0F3FF;
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .hbm-auth-tab {
+            flex: 1;
+            padding: 9px;
+            border: none;
+            background: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #7480A0;
+            cursor: pointer;
+            transition: background .18s, color .18s;
+        }
+
+        .hbm-auth-tab.active {
+            background: #fff;
+            color: #0D1560;
+            box-shadow: 0 2px 8px rgba(13, 21, 96, .1);
+        }
+
+        .hbm-inline-error {
+            color: #E31E24;
+            font-size: 0.78rem;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .hbm-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #0D1560, #1C2FBF);
+            color: #fff;
+            border: none;
+            border-radius: 14px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(13, 21, 96, .28);
+            letter-spacing: -.01em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity .2s;
+        }
+
+        .hbm-btn:disabled {
+            opacity: .55;
+            cursor: not-allowed;
+        }
+
+        .hbm-btn-back {
+            background: none;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.82rem;
+            color: #9AABCC;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .hbm-success {
+            text-align: center;
+            padding: 16px 0 8px;
+        }
+
+        .hbm-success-icon {
+            width: 64px;
+            height: 64px;
+            background: #F0FDF4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .hbm-already-member {
+            background: #F0FDF4;
+            border: 1.5px solid #BBF7D0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.82rem;
+            color: #15803D;
+            margin-bottom: 16px;
+        }
+
+        .hbm-date-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .hbm-date-slot {
+            border: 1.5px solid #E3E5F5;
+            border-radius: 12px;
+            padding: 10px 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: border-color .18s, background .18s;
+        }
+
+        .hbm-date-slot:hover {
+            border-color: #0D1560;
+        }
+
+        .hbm-date-slot.selected {
+            border-color: #0D1560;
+            background: #EEF2FF;
+        }
+
+        .hbm-date-slot.full {
+            opacity: .45;
+            cursor: not-allowed;
+        }
+
+        .hbm-date-slot-date {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #0D1560;
+        }
+
+        .hbm-date-slot-avail {
+            font-size: 0.72rem;
+            color: #9AABCC;
+            margin-top: 2px;
+        }
+    </style>
 </head>
 
 <body class="jkfh-body">
 
-    <!-- NAV (shared site nav, dark variant) -->
+    <!-- NAV -->
     <nav id="main-nav" class="jkfh-nav">
         <a href="/" class="nav-logo">
             <img src="assets/images/JEKAFLY LOGO W-R 2.png" alt="Jekafly Logo" />
@@ -61,40 +628,29 @@
 
     <div class="nav-mobile-drawer jkfh-mob-drawer" id="nav-mobile-drawer">
         <div class="nav-mob-list">
-            <a href="/visa" class="nav-mob-row">
-                <span class="nav-mob-row-label">Visa Application</span>
-            </a>
-            <a href="/visa#insurance" class="nav-mob-row">
-                <span class="nav-mob-row-label">Insurance</span>
-            </a>
-            <a href="/visa#track" class="nav-mob-row">
-                <span class="nav-mob-row-label">Track Visa</span>
-            </a>
-            <a href="/holidays" class="nav-mob-row nav-mob-row--active">
-                <span class="nav-mob-row-label">Holidays</span>
-            </a>
+            <a href="/visa" class="nav-mob-row"><span class="nav-mob-row-label">Visa Application</span></a>
+            <a href="/visa#insurance" class="nav-mob-row"><span class="nav-mob-row-label">Insurance</span></a>
+            <a href="/visa#track" class="nav-mob-row"><span class="nav-mob-row-label">Track Visa</span></a>
+            <a href="/holidays" class="nav-mob-row nav-mob-row--active"><span
+                    class="nav-mob-row-label">Holidays</span></a>
         </div>
     </div>
     <div class="nav-mobile-overlay" id="nav-mobile-overlay" onclick="closeNavMenu()"></div>
 
     <!-- HERO -->
     <section class="jkfh-hero">
-        <div class="jkfh-hero-bg"
-            style="background-image:url('assets/images/ekiti.jpg')"></div>
+        <div class="jkfh-hero-bg" style="background-image:url('assets/images/ekiti.jpg')"></div>
         <div class="jkfh-hero-overlay"></div>
         <div class="jkfh-hero-inner">
-            <div class="jkfh-hero-eyebrow">
-                <span class="jkfh-dot"></span>
-                Jekafly Destinations
-            </div>
+            <div class="jkfh-hero-eyebrow"><span class="jkfh-dot"></span>Jekafly Destinations</div>
             <h1 class="jkfh-hero-heading">Every destination<br />has a <em>story</em>.</h1>
             <p class="jkfh-hero-sub">Curated experiences. Authentic destinations. Memorable journeys —
                 across the culture, heritage, and hidden gems of Southwest Nigeria.</p>
             <div class="jkfh-hero-actions">
                 <a href="#destinations" class="jkfh-btn-gold">
                     Explore Packages
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
                     </svg>
@@ -104,99 +660,83 @@
         </div>
     </section>
 
-    <!-- ABOUT / PROMISE -->
+    <!-- ABOUT -->
     <section class="jkfh-about">
         <div class="jkfh-about-inner">
             <div class="jkfh-about-main">
                 <div class="jkfh-eyebrow">Our Promise</div>
                 <h2 class="jkfh-h2">Simplifying Your Journey.<br />Enriching Your Experience.</h2>
-                <p class="jkfh-about-p">Jekafly Destinations is the tourism and leisure division of Jekafly,
-                    created to redefine how people discover, experience, and connect with destinations
-                    across Nigeria, Africa, and beyond. We believe travel should be more than movement from
-                    one place to another.</p>
-                <p class="jkfh-about-p">We combine local knowledge, curated itineraries, quality hospitality
-                    partners, guided activities, and personalised support — so every journey, through our
-                    Explorer, Signature, and Executive collections, is seamless and memorable. We do not
-                    simply sell travel packages. We curate journeys, unlock experiences, and create stories
-                    worth sharing.</p>
+                <p class="jkfh-about-p">Jekafly Destinations is the tourism and leisure division of Jekafly, created to
+                    redefine how people discover, experience, and connect with destinations across Nigeria, Africa, and
+                    beyond. We believe travel should be more than movement from one place to another.</p>
+                <p class="jkfh-about-p">We combine local knowledge, curated itineraries, quality hospitality partners,
+                    guided activities, and personalised support — so every journey, through our Explorer, Signature, and
+                    Executive collections, is seamless and memorable. We do not simply sell travel packages. We curate
+                    journeys, unlock experiences, and create stories worth sharing.</p>
                 <div class="jkfh-vision-card">
                     <div class="jkfh-vision-label">Our Vision</div>
-                    <p>To become Africa's leading curator of destination experiences by connecting
-                        travellers to authentic, inspiring, and memorable journeys.</p>
+                    <p>To become Africa's leading curator of destination experiences by connecting travellers to
+                        authentic, inspiring, and memorable journeys.</p>
                 </div>
             </div>
             <div class="jkfh-values">
                 <div class="jkfh-eyebrow">Our Core Values</div>
                 <ul class="jkfh-values-list">
-                    <li>
-                        <span class="jkfh-values-icon">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
-                            </svg>
-                        </span>
+                    <li><span class="jkfh-values-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+                            </svg></span>
                         <div>
                             <div class="jkfh-values-name">Authenticity</div>
                         </div>
                     </li>
-                    <li>
-                        <span class="jkfh-values-icon">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <li><span class="jkfh-values-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M20 6L9 17l-5-5" />
-                            </svg>
-                        </span>
+                            </svg></span>
                         <div>
                             <div class="jkfh-values-name">Excellence</div>
                         </div>
                     </li>
-                    <li>
-                        <span class="jkfh-values-icon">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                            </svg>
-                        </span>
+                    <li><span class="jkfh-values-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                            </svg></span>
                         <div>
                             <div class="jkfh-values-name">Hospitality</div>
                         </div>
                     </li>
-                    <li>
-                        <span class="jkfh-values-icon">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <li><span class="jkfh-values-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M9 18h6" />
                                 <path d="M10 22h4" />
-                                <path d="M12 2a7 7 0 0 0-7 7c0 2.4 1.3 4.5 3 5.7 0 0 1 1 1 2.3h6c0-1.3 1-2.3 1-2.3 1.7-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z" />
-                            </svg>
-                        </span>
+                                <path
+                                    d="M12 2a7 7 0 0 0-7 7c0 2.4 1.3 4.5 3 5.7 0 0 1 1 1 2.3h6c0-1.3 1-2.3 1-2.3 1.7-1.2 3-3.3 3-5.7a7 7 0 0 0-7-7z" />
+                            </svg></span>
                         <div>
                             <div class="jkfh-values-name">Innovation</div>
                         </div>
                     </li>
-                    <li>
-                        <span class="jkfh-values-icon">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <li><span class="jkfh-values-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10" />
                                 <line x1="2" y1="12" x2="22" y2="12" />
-                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                            </svg>
-                        </span>
+                                <path
+                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                            </svg></span>
                         <div>
                             <div class="jkfh-values-name">Cultural Appreciation</div>
                         </div>
                     </li>
-                    <li>
-                        <span class="jkfh-values-icon">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <li><span class="jkfh-values-icon"><svg width="17" height="17" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
                                 <circle cx="9" cy="7" r="4" />
                                 <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                            </svg>
-                        </span>
+                            </svg></span>
                         <div>
                             <div class="jkfh-values-name">Customer-Centric Service</div>
                         </div>
@@ -209,13 +749,10 @@
     <!-- DESTINATIONS -->
     <section class="jkfh-destinations" id="destinations">
         <div class="jkfh-section-header">
-            <div class="jkfh-eyebrow jkfh-eyebrow--center">
-                <span class="jkfh-dot"></span>
-                The Southwest Collection
-            </div>
+            <div class="jkfh-eyebrow jkfh-eyebrow--center"><span class="jkfh-dot"></span>The Southwest Collection</div>
             <h2 class="jkfh-h2 jkfh-h2--center">A Curated Series of Destination Experiences</h2>
-            <p class="jkfh-section-sub">Inspired by the culture, heritage, lifestyle, and hidden gems of
-                Southwest Nigeria. We begin here — our domain and our strength.</p>
+            <p class="jkfh-section-sub">Inspired by the culture, heritage, lifestyle, and hidden gems of Southwest
+                Nigeria.</p>
         </div>
 
         <!-- LAGOS -->
@@ -230,18 +767,16 @@
                 <h3 class="jkfh-dest-name">The Eko Experience</h3>
                 <p class="jkfh-dest-tag">"Where Energy Meets Luxury"</p>
                 <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12 16 14" />
-                        </svg>2 Days / 1 Night
-                    </span>
+                        </svg>2 Days / 1 Night</span>
                     <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;350,000 / person</span>
                     <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Signature</span>
                 </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Urban Lifestyle,
-                    Entertainment, Beaches, Nightlife</p>
+                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Urban Lifestyle, Entertainment,
+                    Beaches, Nightlife</p>
                 <div class="jkfh-dest-cols">
                     <div>
                         <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
@@ -250,7 +785,7 @@
                             <li>Beach Day Out</li>
                             <li>Art Gallery Visit</li>
                             <li>Blue Line Rail Experience</li>
-                            <li>Nightlife Experience in Lekki &amp; Victoria Island</li>
+                            <li>Nightlife in Lekki &amp; Victoria Island</li>
                             <li>Restaurant Fine Dining</li>
                         </ul>
                     </div>
@@ -266,14 +801,14 @@
                         </ul>
                     </div>
                 </div>
-                <a href="/book?package=lagos-eko-experience" class="jkfh-dest-cta">
-                    Book This Experience
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <button class="jkfh-dest-cta"
+                    onclick="openBookingModal('Lagos State','The Eko Experience','SIGNATURE',350000,2,1,'assets/images/lagos.jpg')">
+                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
                     </svg>
-                </a>
+                </button>
             </div>
         </article>
 
@@ -289,18 +824,16 @@
                 <h3 class="jkfh-dest-name">Gateway Trails</h3>
                 <p class="jkfh-dest-tag">"Discover Heritage Beyond the Horizon"</p>
                 <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12 16 14" />
-                        </svg>2 Days / 1 Night
-                    </span>
+                        </svg>2 Days / 1 Night</span>
                     <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;280,000 / person</span>
                     <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Explorer</span>
                 </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Heritage, Culture,
-                    Nature, Adventure</p>
+                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Heritage, Culture, Nature, Adventure
+                </p>
                 <div class="jkfh-dest-cols">
                     <div>
                         <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
@@ -323,14 +856,14 @@
                         </ul>
                     </div>
                 </div>
-                <a href="/book?package=ogun-gateway-trails" class="jkfh-dest-cta">
-                    Book This Experience
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <button class="jkfh-dest-cta"
+                    onclick="openBookingModal('Ogun State','Gateway Trails','EXPLORER',280000,2,1,'assets/images/ogun.jpg')">
+                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
                     </svg>
-                </a>
+                </button>
             </div>
         </article>
 
@@ -346,18 +879,16 @@
                 <h3 class="jkfh-dest-name">The Alaafin Legacy</h3>
                 <p class="jkfh-dest-tag">"Walk Through the Kingdom of Legends"</p>
                 <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12 16 14" />
-                        </svg>2 Days / 2 Nights
-                    </span>
+                        </svg>2 Days / 2 Nights</span>
                     <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;280,000 / person</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Signature</span>
+                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Explorer</span>
                 </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Royal Heritage, History,
-                    Food &amp; Culture</p>
+                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Royal Heritage, History, Food &amp;
+                    Culture</p>
                 <div class="jkfh-dest-cols">
                     <div>
                         <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
@@ -380,14 +911,14 @@
                         </ul>
                     </div>
                 </div>
-                <a href="/book?package=oyo-alaafin-legacy" class="jkfh-dest-cta">
-                    Book This Experience
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <button class="jkfh-dest-cta"
+                    onclick="openBookingModal('Oyo State','The Alaafin Legacy','EXPLORER',280000,2,2,'assets/images/oyo.jpg')">
+                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
                     </svg>
-                </a>
+                </button>
             </div>
         </article>
 
@@ -403,18 +934,15 @@
                 <h3 class="jkfh-dest-name">Sunrise Coast Escape</h3>
                 <p class="jkfh-dest-tag">"Where Nature Meets Serenity"</p>
                 <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12 16 14" />
-                        </svg>3 Days / 2 Nights
-                    </span>
+                        </svg>3 Days / 2 Nights</span>
                     <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;300,000 / person</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Explorer</span>
+                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Executive</span>
                 </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Nature, Adventure,
-                    Wellness</p>
+                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Nature, Adventure, Wellness</p>
                 <div class="jkfh-dest-cols">
                     <div>
                         <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
@@ -437,14 +965,14 @@
                         </ul>
                     </div>
                 </div>
-                <a href="/book?package=ondo-sunrise-coast" class="jkfh-dest-cta">
-                    Book This Experience
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <button class="jkfh-dest-cta"
+                    onclick="openBookingModal('Ondo State','Sunrise Coast Escape','EXECUTIVE',300000,3,2,'assets/images/ondo.jpg')">
+                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
                     </svg>
-                </a>
+                </button>
             </div>
         </article>
 
@@ -460,18 +988,16 @@
                 <h3 class="jkfh-dest-name">Sacred Osun Journey</h3>
                 <p class="jkfh-dest-tag">"Experience the Spirit of Heritage"</p>
                 <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12 16 14" />
-                        </svg>2 Days / 1 Night
-                    </span>
+                        </svg>2 Days / 1 Night</span>
                     <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;280,000 / person</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Signature</span>
+                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Explorer</span>
                 </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Spiritual Tourism,
-                    Heritage, Culture</p>
+                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Spiritual Tourism, Heritage, Culture
+                </p>
                 <div class="jkfh-dest-cols">
                     <div>
                         <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
@@ -493,18 +1019,18 @@
                         </ul>
                     </div>
                 </div>
-                <a href="/book?package=osun-sacred-journey" class="jkfh-dest-cta">
-                    Book This Experience
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <button class="jkfh-dest-cta"
+                    onclick="openBookingModal('Osun State','Sacred Osun Journey','EXPLORER',280000,2,1,'assets/images/osun.jpg')">
+                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
                     </svg>
-                </a>
+                </button>
             </div>
         </article>
 
-        <!-- EKITI - Editor's Pick -->
+        <!-- EKITI -->
         <article class="jkfh-dest-row jkfh-dest-row--reverse jkfh-dest-row--pick" id="dest-ekiti">
             <div class="jkfh-dest-media">
                 <div class="jkfh-dest-img" style="background-image:url('assets/images/ekiti.jpg')"></div>
@@ -517,18 +1043,15 @@
                 <h3 class="jkfh-dest-name">The Hidden Gem Escape</h3>
                 <p class="jkfh-dest-tag">"Discover Nigeria's Best-Kept Secret"</p>
                 <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10" />
                             <polyline points="12 6 12 12 16 14" />
-                        </svg>3 Days / 2 Nights
-                    </span>
+                        </svg>3 Days / 2 Nights</span>
                     <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;300,000 / person</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Explorer</span>
+                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Executive</span>
                 </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Eco-Tourism, Wellness,
-                    Adventure</p>
+                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Eco-Tourism, Wellness, Adventure</p>
                 <div class="jkfh-dest-cols">
                     <div>
                         <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
@@ -550,14 +1073,14 @@
                         </ul>
                     </div>
                 </div>
-                <a href="/book?package=ekiti-hidden-gem" class="jkfh-dest-cta jkfh-dest-cta--filled">
-                    Book This Experience
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <button class="jkfh-dest-cta jkfh-dest-cta--filled"
+                    onclick="openBookingModal('Ekiti State','The Hidden Gem Escape','EXECUTIVE',300000,3,2,'assets/images/ekiti.jpg')">
+                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
                     </svg>
-                </a>
+                </button>
             </div>
         </article>
     </section>
@@ -565,72 +1088,51 @@
     <!-- MEMBERSHIP TIERS -->
     <section class="jkfh-tiers" id="tiers">
         <div class="jkfh-section-header">
-            <div class="jkfh-eyebrow jkfh-eyebrow--center">
-                <span class="jkfh-dot"></span>
-                Jekafly Membership Tier Grouping
-            </div>
+            <div class="jkfh-eyebrow jkfh-eyebrow--center"><span class="jkfh-dot"></span>Jekafly Membership Tier
+                Grouping</div>
             <h2 class="jkfh-h2 jkfh-h2--center">Join One of Our Member Tier Collections</h2>
-            <p class="jkfh-section-sub">We're not just pricing destinations — we're building exclusive club
-                tiers that grow with you. Every destination has a story; at Jekafly, we help our members
-                experience it.</p>
+            <p class="jkfh-section-sub">We're not just pricing destinations — we're building exclusive club tiers that
+                grow with you.</p>
         </div>
-
         <div class="jkfh-tier-cards">
             <div class="jkfh-tier-card">
-                <div class="jkfh-tier-card-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div class="jkfh-tier-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path
                             d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z" />
-                    </svg>
-                </div>
+                    </svg></div>
                 <div class="jkfh-tier-card-name">Explorer</div>
-                <p class="jkfh-tier-card-pos">Budget-conscious members. Affordable, exciting experiences for
-                    curious travellers seeking discovery and adventure — perfect for students, young
-                    professionals, and budget travellers.</p>
-                <div class="jkfh-tier-card-fee">
-                    <span>Membership Fee</span>
-                    <strong>&#8358;100,000</strong>
-                </div>
+                <p class="jkfh-tier-card-pos">Budget-conscious members. Affordable, exciting experiences for curious
+                    travellers seeking discovery and adventure — perfect for students, young professionals, and budget
+                    travellers.</p>
+                <div class="jkfh-tier-card-fee"><span>Membership Fee</span><strong>&#8358;100,000</strong></div>
             </div>
             <div class="jkfh-tier-card jkfh-tier-card--featured">
                 <div class="jkfh-tier-card-badge">Most Popular</div>
-                <div class="jkfh-tier-card-icon jkfh-tier-card-icon--gold">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div class="jkfh-tier-card-icon jkfh-tier-card-icon--gold"><svg width="22" height="22"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
                         <path
                             d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" />
                         <path d="M5 21h14" />
-                    </svg>
-                </div>
+                    </svg></div>
                 <div class="jkfh-tier-card-name">Signature</div>
                 <p class="jkfh-tier-card-pos">Premium curated experiences. Designed for families, couples,
-                    professionals, and discerning travellers who want enhanced comfort and guided
-                    experiences.</p>
-                <div class="jkfh-tier-card-fee">
-                    <span>Membership Fee</span>
-                    <strong>&#8358;250,000</strong>
-                </div>
+                    professionals, and discerning travellers who want enhanced comfort and guided experiences.</p>
+                <div class="jkfh-tier-card-fee"><span>Membership Fee</span><strong>&#8358;250,000</strong></div>
             </div>
             <div class="jkfh-tier-card">
-                <div class="jkfh-tier-card-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <div class="jkfh-tier-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polygon
                             points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                    </svg>
-                </div>
+                    </svg></div>
                 <div class="jkfh-tier-card-name">Executive</div>
-                <p class="jkfh-tier-card-pos">Luxury and corporate membership. Premium accommodations,
-                    concierge support, exclusive access, and elevated hospitality for executives and
-                    diaspora visitors.</p>
-                <div class="jkfh-tier-card-fee">
-                    <span>Membership Fee</span>
-                    <strong>&#8358;500,000</strong>
-                </div>
+                <p class="jkfh-tier-card-pos">Luxury and corporate membership. Premium accommodations, concierge
+                    support, exclusive access, and elevated hospitality for executives and diaspora visitors.</p>
+                <div class="jkfh-tier-card-fee"><span>Membership Fee</span><strong>&#8358;500,000</strong></div>
             </div>
         </div>
-
         <div class="jkfh-tier-table-wrap">
             <div class="jkfh-tier-table-label">Tier Activity Price Range &amp; Typical Inclusions</div>
             <div class="jkfh-tier-table-scroll">
@@ -651,8 +1153,8 @@
                             <td>Accommodation, Transfers, Breakfast, Tour Access</td>
                         </tr>
                         <tr>
-                            <td><span class="jkfh-table-tier-label jkfh-table-tier-label--gold">Signature
-                                    Series</span></td>
+                            <td><span class="jkfh-table-tier-label jkfh-table-tier-label--gold">Signature Series</span>
+                            </td>
                             <td>Couples, Professionals</td>
                             <td class="jkfh-table-price">&#8358;250,000 &ndash; &#8358;450,000</td>
                             <td>Enhanced Accommodation, Guided Experiences, Curated Activities</td>
@@ -675,10 +1177,9 @@
             <h2>Every destination has a story.</h2>
             <p>At Jekafly, we help our members experience it. Start planning your next journey today.</p>
             <div class="jkfh-cta-actions">
-                <a href="/book" class="jkfh-btn-gold jkfh-btn-gold--lg">
-                    Book Your Experience
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <a href="#destinations" class="jkfh-btn-gold jkfh-btn-gold--lg">
+                    Book Your Experience <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
                     </svg>
@@ -697,7 +1198,29 @@
         </div>
     </footer>
 
+    <!-- ═══════════════════════════════════════════════════════════════════════
+         BOOKING MODAL — 7 steps
+         ═══════════════════════════════════════════════════════════════════════ -->
+    <div class="hbm-overlay" id="hbm-overlay">
+        <div class="hbm-modal" id="hbm-modal">
+            <div class="hbm-drag"></div>
+            <button class="hbm-close" onclick="closeBookingModal()" aria-label="Close">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+            </button>
+            <div class="hbm-steps" id="hbm-step-dots"></div>
+            <div id="hbm-content"></div>
+        </div>
+    </div>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/app.js"></script>
+
     <script>
+        // ── Nav helpers ──────────────────────────────────────────────────────
         function toggleNavMenu() {
             document.getElementById('nav-mobile-drawer').classList.toggle('open');
             document.getElementById('nav-mobile-overlay').classList.toggle('open');
@@ -707,8 +1230,10 @@
             document.getElementById('nav-mobile-overlay').classList.remove('open');
         }
         window.addEventListener('scroll', () => {
-            document.querySelector('nav').classList.toggle('scrolled', window.scrollY > 20);
+            document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20);
         });
+
+        // ── Scroll reveal ────────────────────────────────────────────────────
         (function () {
             if (typeof IntersectionObserver === 'undefined') return;
             var selectors = ['.jkfh-dest-row', '.jkfh-tier-card', '.jkfh-values-list li', '.jkfh-vision-card'];
@@ -720,13 +1245,508 @@
             function init() {
                 selectors.forEach(function (sel) {
                     document.querySelectorAll(sel).forEach(function (el) {
-                        el.classList.add('jkfh-reveal');
-                        observer.observe(el);
+                        el.classList.add('jkfh-reveal'); observer.observe(el);
                     });
                 });
             }
             if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
         }());
+
+        // ══════════════════════════════════════════════════════════════════════
+        // BOOKING MODAL STATE
+        // ══════════════════════════════════════════════════════════════════════
+        var _bm = {
+            step: 1,
+            totalSteps: 7,
+            // dest data
+            state: '', packageName: '', tier: '', pricePerPerson: 0, days: 0, nights: 0, img: '',
+            holidayId: null,
+            // step 2 — auth
+            user: null,
+            // step 3 — travel details
+            dateId: null, dateStr: '', travellers: 1, leadName: '', leadEmail: '', leadPhone: '',
+            // step 4 — tier
+            selectedTier: '', tierPrice: 0,
+            // step 5 — club
+            clubActive: false, addClub: false, clubFee: 150000,
+            // step 6 — summary
+            // step 7 — payment
+        };
+
+        var TIER_LABELS = { EXPLORER: 'Explorer', SIGNATURE: 'Signature', EXECUTIVE: 'Executive' };
+        var TIER_COLORS = { EXPLORER: '#3B5BDB', SIGNATURE: '#C48332', EXECUTIVE: '#7048E8' };
+
+        function escH(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+        // ── Open modal ───────────────────────────────────────────────────────
+        async function openBookingModal(state, packageName, tier, pricePerPerson, days, nights, img) {
+            _bm.state = state;
+            _bm.packageName = packageName;
+            _bm.tier = tier;
+            _bm.pricePerPerson = pricePerPerson;
+            _bm.days = days;
+            _bm.nights = nights;
+            _bm.img = img;
+            _bm.selectedTier = tier;
+            _bm.tierPrice = pricePerPerson;
+            _bm.holidayId = null;
+            _bm.dateId = null;
+            _bm.dateStr = '';
+            _bm.addClub = false;
+            _bm.travellers = 1;
+            _bm.leadName = '';
+            _bm.leadEmail = '';
+            _bm.leadPhone = '';
+
+            // Check club membership if logged in
+            _bm.user = (typeof Auth !== 'undefined' && Auth.getCurrent) ? Auth.getCurrent() : null;
+            if (_bm.user) {
+                try {
+                    const cs = await fetch('https://api.jekafly.com/api/v1/club/status', {
+                        headers: { 'Authorization': 'Bearer ' + (Auth.getToken ? Auth.getToken() : '') }
+                    });
+                    const cd = await cs.json();
+                    _bm.clubActive = !!(cd?.data?.active);
+                } catch (e) { _bm.clubActive = false; }
+                // Prefill details from profile
+                _bm.leadName = _bm.user.name || '';
+                _bm.leadEmail = _bm.user.email || '';
+                _bm.leadPhone = _bm.user.phone || '';
+            }
+
+            // Fetch club fee from pricing
+            try {
+                const pr = await fetch('https://api.jekafly.com/api/v1/pricing');
+                const pd = await pr.json();
+                if (pd?.data?.clubMembershipFee) _bm.clubFee = pd.data.clubMembershipFee;
+            } catch (e) { }
+
+            // Try to fetch holidayId from API
+            try {
+                const hr = await fetch('https://api.jekafly.com/api/v1/holidays');
+                const hd = await hr.json();
+                const regions = hd?.data?.regions || [];
+                for (const r of regions) {
+                    const match = (r.packages || []).find(p => p.state === state && p.packageName === packageName);
+                    if (match) { _bm.holidayId = match.id; break; }
+                }
+            } catch (e) { }
+
+            _bm.step = _bm.user ? 1 : 1;
+            document.getElementById('hbm-overlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
+            renderStep();
+        }
+
+        function closeBookingModal() {
+            document.getElementById('hbm-overlay').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        // Close on overlay click
+        document.getElementById('hbm-overlay').addEventListener('click', function (e) {
+            if (e.target === this) closeBookingModal();
+        });
+
+        // ── Step dots ────────────────────────────────────────────────────────
+        function renderDots() {
+            var dots = document.getElementById('hbm-step-dots');
+            dots.innerHTML = Array.from({ length: _bm.totalSteps }, (_, i) => {
+                var cls = i + 1 < _bm.step ? 'done' : i + 1 === _bm.step ? 'active' : '';
+                return `<div class="hbm-step-dot ${cls}"></div>`;
+            }).join('');
+        }
+
+        // ── Render dispatcher ─────────────────────────────────────────────────
+        function renderStep() {
+            renderDots();
+            var fns = [null, renderStep1, renderStep2, renderStep3, renderStep4, renderStep5, renderStep6, renderStep7];
+            fns[_bm.step]();
+        }
+
+        function goStep(n) { _bm.step = n; renderStep(); document.getElementById('hbm-modal').scrollTop = 0; }
+
+        // ── STEP 1 — Destination confirmation ────────────────────────────────
+        function renderStep1() {
+            var tierColor = TIER_COLORS[_bm.tier] || '#0D1560';
+            document.getElementById('hbm-content').innerHTML = `
+            <div class="hbm-step-label">Step 1 of 7 — Confirm Destination</div>
+            <h2 class="hbm-title">You're booking</h2>
+            <p class="hbm-sub">Review your destination before we get started.</p>
+            <div class="hbm-confirm-card">
+                <div class="hbm-confirm-img" style="background-image:url('${_bm.img}')"></div>
+                <div class="hbm-confirm-info">
+                    <div class="hbm-confirm-state">${escH(_bm.state)}</div>
+                    <div class="hbm-confirm-name">${escH(_bm.packageName)}</div>
+                    <div class="hbm-confirm-meta">
+                        <span class="hbm-pill">${_bm.days}D / ${_bm.nights}N</span>
+                        <span class="hbm-pill hbm-pill--gold">From ₦${_bm.pricePerPerson.toLocaleString()}/person</span>
+                        <span class="hbm-pill" style="background:#EEF2FF;color:${tierColor}">${TIER_LABELS[_bm.tier]}</span>
+                    </div>
+                </div>
+            </div>
+            <button class="hbm-btn" onclick="goStep(2)">
+                Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>`;
+        }
+
+        // ── STEP 2 — Auth ─────────────────────────────────────────────────────
+        function renderStep2() {
+            if (_bm.user) { goStep(3); return; }
+            document.getElementById('hbm-content').innerHTML = `
+            <button class="hbm-btn-back" onclick="goStep(1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+            <div class="hbm-step-label">Step 2 of 7 — Sign In or Register</div>
+            <h2 class="hbm-title">Create an account or log in</h2>
+            <p class="hbm-sub">We need an account to confirm your booking and send your receipt.</p>
+            <div class="hbm-auth-tabs">
+                <button class="hbm-auth-tab active" id="hbm-tab-login" onclick="hbmSwitchAuth('login')">Login</button>
+                <button class="hbm-auth-tab" id="hbm-tab-register" onclick="hbmSwitchAuth('register')">Register</button>
+            </div>
+            <div id="hbm-auth-login">
+                <div class="hbm-form-group"><label class="hbm-label">Email</label><input class="hbm-input" id="hbm-login-email" type="email" placeholder="you@example.com" /></div>
+                <div class="hbm-form-group"><label class="hbm-label">Password</label><input class="hbm-input" id="hbm-login-pass" type="password" placeholder="••••••••" /></div>
+                <div id="hbm-login-err" class="hbm-inline-error"></div>
+                <button class="hbm-btn" onclick="hbmLogin()">Login &amp; Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            </div>
+            <div id="hbm-auth-register" style="display:none">
+                <div class="hbm-form-group"><label class="hbm-label">Full Name</label><input class="hbm-input" id="hbm-reg-name" type="text" placeholder="Your full name" /></div>
+                <div class="hbm-form-group"><label class="hbm-label">Email</label><input class="hbm-input" id="hbm-reg-email" type="email" placeholder="you@example.com" /></div>
+                <div class="hbm-form-group"><label class="hbm-label">Phone</label><input class="hbm-input" id="hbm-reg-phone" type="tel" placeholder="+234 xxx xxx xxxx" /></div>
+                <div class="hbm-form-group"><label class="hbm-label">Password</label><input class="hbm-input" id="hbm-reg-pass" type="password" placeholder="Min. 8 characters" /></div>
+                <div id="hbm-reg-err" class="hbm-inline-error"></div>
+                <button class="hbm-btn" onclick="hbmRegister()">Create Account &amp; Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+            </div>`;
+        }
+
+        function hbmSwitchAuth(tab) {
+            document.getElementById('hbm-auth-login').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('hbm-auth-register').style.display = tab === 'register' ? 'block' : 'none';
+            document.getElementById('hbm-tab-login').classList.toggle('active', tab === 'login');
+            document.getElementById('hbm-tab-register').classList.toggle('active', tab === 'register');
+        }
+
+        async function hbmLogin() {
+            var email = document.getElementById('hbm-login-email').value.trim();
+            var pass = document.getElementById('hbm-login-pass').value;
+            var err = document.getElementById('hbm-login-err');
+            err.style.display = 'none';
+            if (!email || !pass) { err.textContent = 'Please fill in all fields.'; err.style.display = 'block'; return; }
+            try {
+                var res = await Auth.login(email, pass);
+                if (!res.ok) throw new Error(res.error || 'Login failed');
+                _bm.user = Auth.getCurrent();
+                _bm.leadName = _bm.user.name || '';
+                _bm.leadEmail = _bm.user.email || '';
+                _bm.leadPhone = _bm.user.phone || '';
+                // Check club status after login
+                try {
+                    const cs = await fetch('https://api.jekafly.com/api/v1/club/status', {
+                        headers: { 'Authorization': 'Bearer ' + (Auth.getToken ? Auth.getToken() : '') }
+                    });
+                    const cd = await cs.json();
+                    _bm.clubActive = !!(cd?.data?.active);
+                } catch (e) { _bm.clubActive = false; }
+                goStep(3);
+            } catch (e) { err.textContent = e.message; err.style.display = 'block'; }
+        }
+
+        async function hbmRegister() {
+            var name = document.getElementById('hbm-reg-name').value.trim();
+            var email = document.getElementById('hbm-reg-email').value.trim();
+            var phone = document.getElementById('hbm-reg-phone').value.trim();
+            var pass = document.getElementById('hbm-reg-pass').value;
+            var err = document.getElementById('hbm-reg-err');
+            err.style.display = 'none';
+            if (!name || !email || !pass) { err.textContent = 'Please fill in all required fields.'; err.style.display = 'block'; return; }
+            try {
+                var res = await Auth.register(name, email, pass, phone);
+                if (!res.ok) throw new Error(res.error || 'Registration failed');
+                _bm.user = Auth.getCurrent();
+                _bm.leadName = name; _bm.leadEmail = email; _bm.leadPhone = phone;
+                _bm.clubActive = false;
+                goStep(3);
+            } catch (e) { err.textContent = e.message; err.style.display = 'block'; }
+        }
+
+        // ── STEP 3 — Travel details ───────────────────────────────────────────
+        async function renderStep3() {
+            var availHtml = '<div style="color:#9AABCC;font-size:0.82rem;">Loading available dates…</div>';
+            document.getElementById('hbm-content').innerHTML = `
+            <button class="hbm-btn-back" onclick="goStep(1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+            <div class="hbm-step-label">Step 3 of 7 — Travel Details</div>
+            <h2 class="hbm-title">When are you travelling?</h2>
+            <p class="hbm-sub">Select a date and enter your details. We've pre-filled what we know.</p>
+            <div class="hbm-form-group">
+                <label class="hbm-label">Select a Date</label>
+                <div id="hbm-date-grid" class="hbm-date-grid">${availHtml}</div>
+            </div>
+            <div class="hbm-form-group">
+                <label class="hbm-label">Number of Travellers</label>
+                <input class="hbm-input" id="hbm-travellers" type="number" min="1" max="20" value="${_bm.travellers}" />
+            </div>
+            <div class="hbm-form-group">
+                <label class="hbm-label">Lead Traveller Name</label>
+                <input class="hbm-input" id="hbm-lead-name" type="text" placeholder="Full name" value="${escH(_bm.leadName)}" />
+            </div>
+            <div class="hbm-row">
+                <div class="hbm-form-group">
+                    <label class="hbm-label">Email</label>
+                    <input class="hbm-input" id="hbm-lead-email" type="email" placeholder="you@example.com" value="${escH(_bm.leadEmail)}" />
+                </div>
+                <div class="hbm-form-group">
+                    <label class="hbm-label">Phone</label>
+                    <input class="hbm-input" id="hbm-lead-phone" type="tel" placeholder="+234..." value="${escH(_bm.leadPhone)}" />
+                </div>
+            </div>
+            <div id="hbm-step3-err" class="hbm-inline-error"></div>
+            <button class="hbm-btn" onclick="hbmStep3Next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+
+            // Load dates
+            try {
+                var endpoint = _bm.holidayId
+                    ? `https://api.jekafly.com/api/v1/holidays/${_bm.holidayId}/availability`
+                    : null;
+                var dates = [];
+                if (endpoint) {
+                    var dr = await fetch(endpoint);
+                    var dd = await dr.json();
+                    dates = dd?.data?.dates || [];
+                }
+                if (!dates.length) {
+                    // Generate placeholder dates 30/60/90 days out
+                    var now = new Date();
+                    for (var i = 1; i <= 3; i++) {
+                        var d = new Date(now); d.setDate(d.getDate() + i * 30);
+                        dates.push({ id: 'placeholder-' + i, date: d.toISOString(), capacity: 20, bookedCount: 0, available: 20, isFull: false });
+                    }
+                }
+                var grid = document.getElementById('hbm-date-grid');
+                if (!grid) return;
+                grid.innerHTML = dates.map(d => {
+                    var dt = new Date(d.date);
+                    var ds = dt.toLocaleDateString('en-NG', { dateStyle: 'medium' });
+                    var cls = d.isFull ? 'full' : (_bm.dateId === d.id ? 'selected' : '');
+                    var avail = d.isFull ? 'Fully booked' : `${d.available} spots left`;
+                    return `<div class="hbm-date-slot ${cls}" onclick="selectDate('${d.id}','${ds}',${d.isFull})" id="hbm-date-${d.id}">
+                        <div class="hbm-date-slot-date">${ds}</div>
+                        <div class="hbm-date-slot-avail">${avail}</div>
+                    </div>`;
+                }).join('');
+            } catch (e) {
+                var g = document.getElementById('hbm-date-grid');
+                if (g) g.innerHTML = '<div style="color:#E31E24;font-size:0.82rem;">Could not load dates. Please try again.</div>';
+            }
+        }
+
+        function selectDate(id, dateStr, isFull) {
+            if (isFull) return;
+            document.querySelectorAll('.hbm-date-slot').forEach(el => el.classList.remove('selected'));
+            var el = document.getElementById('hbm-date-' + id);
+            if (el) el.classList.add('selected');
+            _bm.dateId = id;
+            _bm.dateStr = dateStr;
+        }
+
+        function hbmStep3Next() {
+            var err = document.getElementById('hbm-step3-err');
+            err.style.display = 'none';
+            _bm.travellers = parseInt(document.getElementById('hbm-travellers').value) || 1;
+            _bm.leadName = document.getElementById('hbm-lead-name').value.trim();
+            _bm.leadEmail = document.getElementById('hbm-lead-email').value.trim();
+            _bm.leadPhone = document.getElementById('hbm-lead-phone').value.trim();
+            if (!_bm.dateId) { err.textContent = 'Please select a travel date.'; err.style.display = 'block'; return; }
+            if (!_bm.leadName) { err.textContent = 'Please enter the lead traveller name.'; err.style.display = 'block'; return; }
+            if (!_bm.leadEmail) { err.textContent = 'Please enter an email address.'; err.style.display = 'block'; return; }
+            goStep(4);
+        }
+
+        // ── STEP 4 — Tier selection ───────────────────────────────────────────
+        function renderStep4() {
+            var tiers = [
+                { key: 'EXPLORER', label: 'Explorer', desc: 'Accommodation · Breakfast · Local Transfers · Tour Guide · Attraction Access · Branded Pack', price: _bm.tier === 'EXPLORER' ? _bm.pricePerPerson : null, color: '#3B5BDB', bg: '#EEF2FF' },
+                { key: 'SIGNATURE', label: 'Signature', desc: 'Premium Hotel · Daily Breakfast · Airport/Local Transfers · Guided Experiences · Photography Stops · Branded Pack', price: _bm.tier === 'SIGNATURE' ? _bm.pricePerPerson : null, color: '#C48332', bg: '#FFF8E6' },
+                { key: 'EXECUTIVE', label: 'Executive', desc: 'Luxury Accommodation · VIP Transfers · Concierge · Premium Dining · Professional Photography · Exclusive Access · Branded Pack', price: _bm.tier === 'EXECUTIVE' ? _bm.pricePerPerson : null, color: '#7048E8', bg: '#F3F0FF' },
+            ];
+            // Only show tiers with a price set (or the package's own tier)
+            var available = tiers.filter(t => t.key === _bm.tier || t.price !== null);
+            // If only one available, auto-select and skip
+            if (available.length === 1) {
+                _bm.selectedTier = available[0].key;
+                _bm.tierPrice = _bm.pricePerPerson;
+                goStep(5);
+                return;
+            }
+            document.getElementById('hbm-content').innerHTML = `
+            <button class="hbm-btn-back" onclick="goStep(3)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+            <div class="hbm-step-label">Step 4 of 7 — Membership Tier</div>
+            <h2 class="hbm-title">Select your tier</h2>
+            <p class="hbm-sub">Each tier includes all standard inclusions plus the extras below.</p>
+            <div class="hbm-tier-cards">
+            ${tiers.map(t => {
+                var p = t.key === _bm.tier ? _bm.pricePerPerson : 0;
+                if (!p) return '';
+                var sel = _bm.selectedTier === t.key ? 'selected' : '';
+                return `<div class="hbm-tier-card ${sel}" onclick="selectTier('${t.key}',${p})">
+                    <div class="hbm-tier-card-icon" style="background:${t.bg};color:${t.color}">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <div class="hbm-tier-card-body">
+                        <div class="hbm-tier-card-name">${t.label}</div>
+                        <div class="hbm-tier-card-desc">${t.desc}</div>
+                    </div>
+                    <div class="hbm-tier-card-price">₦${p.toLocaleString()}</div>
+                </div>`;
+            }).join('')}
+            </div>
+            <div id="hbm-step4-err" class="hbm-inline-error"></div>
+            <button class="hbm-btn" onclick="hbmStep4Next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+        }
+
+        function selectTier(key, price) {
+            _bm.selectedTier = key; _bm.tierPrice = price;
+            document.querySelectorAll('.hbm-tier-card').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+        }
+
+        function hbmStep4Next() {
+            if (!_bm.selectedTier) { document.getElementById('hbm-step4-err').textContent = 'Please select a tier.'; document.getElementById('hbm-step4-err').style.display = 'block'; return; }
+            goStep(5);
+        }
+
+        // ── STEP 5 — Travel Club upsell ───────────────────────────────────────
+        function renderStep5() {
+            if (_bm.clubActive) {
+                document.getElementById('hbm-content').innerHTML = `
+                <button class="hbm-btn-back" onclick="goStep(4)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+                <div class="hbm-step-label">Step 5 of 7 — Travel Club</div>
+                <h2 class="hbm-title">You're a Travel Club member</h2>
+                <p class="hbm-sub">Your membership perks are automatically applied to this booking.</p>
+                <div class="hbm-already-member">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                    Active Jekafly Travel Club member — perks included
+                </div>
+                <button class="hbm-btn" onclick="goStep(6)">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+                return;
+            }
+            document.getElementById('hbm-content').innerHTML = `
+            <button class="hbm-btn-back" onclick="goStep(4)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+            <div class="hbm-step-label">Step 5 of 7 — Jekafly Travel Club</div>
+            <h2 class="hbm-title">Unlock exclusive perks</h2>
+            <p class="hbm-sub">Add annual Travel Club membership and unlock benefits beyond this trip.</p>
+            <div class="hbm-club-card">
+                <div class="hbm-club-card-header">
+                    <div class="hbm-club-card-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                    <div><div class="hbm-club-card-name">Jekafly Travel Club</div><div class="hbm-club-card-sub">Annual membership — renews each year</div></div>
+                </div>
+                <div class="hbm-club-perks">
+                    <div class="hbm-club-perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Early access to travel deals &amp; flash sales</div>
+                    <div class="hbm-club-perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Vacation package discounts</div>
+                    <div class="hbm-club-perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Priority visa assistance &amp; document support</div>
+                    <div class="hbm-club-perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Airport lounge access &amp; guest passes</div>
+                    <div class="hbm-club-perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>24/7 concierge service</div>
+                    <div class="hbm-club-perk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Entertainment discounts &amp; backstage access</div>
+                </div>
+                <div class="hbm-club-toggle">
+                    <div class="hbm-club-toggle-label">Add Travel Club membership</div>
+                    <div class="hbm-club-toggle-price">+₦${_bm.clubFee.toLocaleString()}/yr</div>
+                    <label class="hbm-switch">
+                        <input type="checkbox" id="hbm-club-toggle" ${_bm.addClub ? 'checked' : ''} onchange="_bm.addClub=this.checked" />
+                        <span class="hbm-switch-slider"></span>
+                    </label>
+                </div>
+            </div>
+            <button class="hbm-btn" onclick="goStep(6)">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+        }
+
+        // ── STEP 6 — Order summary ────────────────────────────────────────────
+        function renderStep6() {
+            var tierTotal = _bm.tierPrice * _bm.travellers;
+            var clubTotal = (!_bm.clubActive && _bm.addClub) ? _bm.clubFee : 0;
+            var grandTotal = tierTotal + clubTotal;
+            document.getElementById('hbm-content').innerHTML = `
+            <button class="hbm-btn-back" onclick="goStep(5)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+            <div class="hbm-step-label">Step 6 of 7 — Order Summary</div>
+            <h2 class="hbm-title">Review your booking</h2>
+            <p class="hbm-sub">Everything looks good? Proceed to payment.</p>
+            <div class="hbm-summary-rows">
+                <div class="hbm-summary-row"><span>${escH(_bm.packageName)}</span><span>—</span></div>
+                <div class="hbm-summary-row"><span>Date</span><span>${_bm.dateStr}</span></div>
+                <div class="hbm-summary-row"><span>Tier</span><span>${TIER_LABELS[_bm.selectedTier]}</span></div>
+                <div class="hbm-summary-row"><span>Travellers</span><span>${_bm.travellers}</span></div>
+                <div class="hbm-summary-row"><span>Tier cost (₦${_bm.tierPrice.toLocaleString()} × ${_bm.travellers})</span><span>₦${tierTotal.toLocaleString()}</span></div>
+                ${clubTotal ? `<div class="hbm-summary-row"><span>Travel Club membership (annual)</span><span>₦${clubTotal.toLocaleString()}</span></div>` : ''}
+                <div class="hbm-summary-row total"><span>Total</span><span>₦${grandTotal.toLocaleString()}</span></div>
+            </div>
+            <button class="hbm-btn" onclick="hbmProceedToPayment()">
+                Pay ₦${grandTotal.toLocaleString()} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>`;
+        }
+
+        async function hbmProceedToPayment() {
+            var tierTotal = _bm.tierPrice * _bm.travellers;
+            var clubTotal = (!_bm.clubActive && _bm.addClub) ? _bm.clubFee : 0;
+            var grandTotal = tierTotal + clubTotal;
+
+            // Create booking record first
+            var bookingRef = null;
+            if (_bm.holidayId && !_bm.dateId.startsWith('placeholder')) {
+                try {
+                    var token = typeof Auth !== 'undefined' && Auth.getToken ? Auth.getToken() : '';
+                    var br = await fetch('https://api.jekafly.com/api/v1/holidays/book', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+                        body: JSON.stringify({
+                            holidayId: _bm.holidayId,
+                            holidayDateId: _bm.dateId,
+                            tier: _bm.selectedTier,
+                            travellers: _bm.travellers,
+                            leadName: _bm.leadName,
+                            leadEmail: _bm.leadEmail,
+                            leadPhone: _bm.leadPhone,
+                            addMembership: _bm.addClub && !_bm.clubActive,
+                        })
+                    });
+                    var bd = await br.json();
+                    if (bd?.ok) bookingRef = bd.data?.booking?.ref;
+                } catch (e) { }
+            }
+
+            localStorage.setItem('jkf_pending_payment', JSON.stringify({
+                type: 'holiday',
+                packageName: _bm.packageName,
+                state: _bm.state,
+                tier: _bm.selectedTier,
+                travellers: _bm.travellers,
+                date: _bm.dateStr,
+                amount: grandTotal,
+                tierAmount: tierTotal,
+                membershipAdded: _bm.addClub && !_bm.clubActive,
+                membershipAmount: clubTotal,
+                bookingRef: bookingRef,
+                email: _bm.leadEmail,
+            }));
+            window.location.href = '/payment';
+        }
+
+        // ── STEP 7 — Success (shown on return from payment) ───────────────────
+        function renderStep7() {
+            document.getElementById('hbm-content').innerHTML = `
+            <div class="hbm-success">
+                <div class="hbm-success-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
+                </div>
+                <h2 class="hbm-title">Booking Confirmed!</h2>
+                <p class="hbm-sub">Your holiday experience has been booked. Check your email for your confirmation and details.</p>
+                <div class="hbm-summary-rows" style="text-align:left">
+                    <div class="hbm-summary-row"><span>Package</span><span>${escH(_bm.packageName)}</span></div>
+                    <div class="hbm-summary-row"><span>Date</span><span>${_bm.dateStr}</span></div>
+                    <div class="hbm-summary-row"><span>Tier</span><span>${TIER_LABELS[_bm.selectedTier]}</span></div>
+                </div>
+                <button class="hbm-btn" onclick="window.location.href='/dashboard'">
+                    View My Bookings <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+            </div>`;
+        }
     </script>
 </body>
 
