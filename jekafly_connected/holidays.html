@@ -536,7 +536,7 @@
                 browseRegion(region);
             }
         });
-        
+
         // ── Scroll reveal ────────────────────────────────────────────────────
         (function () {
             if (typeof IntersectionObserver === 'undefined') return;
@@ -949,7 +949,7 @@
             <h2 class="hbm-title">Review your booking</h2>
             <p class="hbm-sub">Everything looks good? Proceed to payment.</p>
             <div class="hbm-summary-rows">
-                <div class="hbm-summary-row"><span>${escH(_bm.packageName)}</span><span>—</span></div>
+                <div class="hbm-summary-row"><span>${escH(_bm.packageName)}</span><span>${_bm.days}D / ${_bm.nights}N</span></div>
                 <div class="hbm-summary-row"><span>Date</span><span>${_bm.dateStr}</span></div>
                 <div class="hbm-summary-row"><span>Tier</span><span>${TIER_LABELS[_bm.selectedTier]}</span></div>
                 <div class="hbm-summary-row"><span>Travellers</span><span>${_bm.travellers}</span></div>

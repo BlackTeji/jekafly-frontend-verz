@@ -143,6 +143,15 @@
                             <path
                                 d="M185.33,114.21l29.14-27.42.17-.17a32,32,0,0,0-45.26-45.26c0,.06-.11.11-.17.17L141.79,70.67l-83-30.2a8,8,0,0,0-8.39,1.86l-24,24a8,8,0,0,0,1.22,12.31l63.89,42.59L76.69,136H56a8,8,0,0,0-5.65,2.34l-24,24A8,8,0,0,0,29,175.42l36.82,14.73,14.7,36.75.06.16a8,8,0,0,0,13.18,2.47l23.87-23.88A8,8,0,0,0,120,200V179.31l14.76-14.76,42.59,63.89a8,8,0,0,0,12.31,1.22l24-24a8,8,0,0,0,1.86-8.39Z" />
                         </svg></span>Flights</div>
+
+                <div class="admin-nav-item" onclick="adminTab('holidays',this)" data-roles="super,finance"><span
+                        class="ni"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                            <path d="M9 22V12h6v10" />
+                        </svg></span>Holidays</div>
+
                 <div class="admin-nav-item" onclick="adminTab('hotels',this)" data-roles="super,finance"><span
                         class="ni"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256"
                             fill="currentColor">
@@ -690,6 +699,43 @@
                     </div>
                 </div>
 
+                <!-- HOLIDAYS -->
+                <div id="tab-holidays" style="display:none">
+                    <div class="admin-title">Holiday Packages &amp; Dates<button class="tab-refresh-btn"
+                            onclick="this.classList.add('spinning');loadHolidaysAdmin();setTimeout(()=>this.classList.remove('spinning'),800)"
+                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10" />
+                                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
+                            </svg> Refresh</button></div>
+                    <p class="admin-sub">Manage bookable travel dates and capacity for each holiday package.</p>
+                    <div class="acard">
+                        <div class="acard-header">
+                            <h3>Select a Package</h3>
+                        </div>
+                        <div class="fees-body">
+                            <select id="hol-package-select" class="fees-input" style="max-width:420px;"
+                                onchange="onHolPackageSelect(this.value)">
+                                <option value="">Choose a package...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="acard mt-20" id="hol-dates-card" style="display:none">
+                        <div class="acard-header">
+                            <h3>Bookable Dates</h3><span id="hol-dates-count" class="fs-sm text-light"></span>
+                        </div>
+                        <div class="acard-table-wrap">
+                            <div id="hol-dates-table"></div>
+                        </div>
+                        <div class="acard-footer">
+                            <input type="date" id="hol-new-date" class="input-sm" />
+                            <input type="number" id="hol-new-capacity" placeholder="Capacity" min="1" step="1"
+                                value="20" class="input-sm" />
+                            <button class="btn-manage" onclick="addHolDate()">+ Add Date</button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- HOTELS -->
                 <div id="tab-hotels" style="display:none">
                     <div class="admin-title">Hotel Orders<button class="tab-refresh-btn"
@@ -765,9 +811,9 @@
 
         window._jekafly_page = 'admin';
         const ROLE_TABS = {
-            super: ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates', 'flights', 'hotels', 'analytics'],
+            super: ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates', 'flights', 'hotels', 'holidays', 'analytics'],
             applications: ['overview', 'applications'],
-            finance: ['overview', 'fees', 'insurance', 'flights', 'hotels'],
+            finance: ['overview', 'fees', 'insurance', 'flights', 'hotels', 'holidays'],
             consultations: ['overview', 'consultations'],
             affiliates: ['overview', 'affiliates'],
         };
@@ -825,7 +871,7 @@
             if (_adminRole !== 'super' && !ROLE_TABS[_adminRole].includes(tab)) {
                 showToast('You don\'t have access to that section.', 'error'); return;
             }
-            ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates', 'flights', 'hotels', 'analytics']
+            ['overview', 'applications', 'users', 'fees', 'reviews', 'consultations', 'insurance', 'affiliates', 'flights', 'hotels', 'holidays', 'analytics']
                 .filter(t => document.getElementById('tab-' + t))
                 .forEach(t => document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none');
             document.querySelectorAll('.admin-nav-item').forEach(i => i.classList.remove('active'));
@@ -841,7 +887,7 @@
             if (tab === 'affiliates') loadAffiliates();
             if (tab === 'analytics') loadAnalytics();
             if (tab === 'flights') loadFlightOrders();
-            if (tab === 'hotels') loadHotelOrders();
+            if (tab === 'holidays') loadHolidaysAdmin();
         }
 
 
@@ -1260,6 +1306,90 @@
             else { showToast(res?.error || 'Action failed.', 'error'); }
         }
 
+
+        let _holPackages = [], _holSelectedId = null;
+
+        async function loadHolidaysAdmin() {
+            const sel = document.getElementById('hol-package-select');
+            if (!sel) return;
+            sel.innerHTML = '<option value="">Loading packages...</option>';
+            try {
+                const res = await get('/holidays/admin/packages');
+                _holPackages = res?.ok ? (res.data.holidays || []) : [];
+            } catch (e) { _holPackages = []; }
+            if (!_holPackages.length) {
+                sel.innerHTML = '<option value="">No packages found</option>';
+                return;
+            }
+            sel.innerHTML = '<option value="">Choose a package...</option>' +
+                _holPackages.map(h => `<option value="${h.id}">${escHtml(h.region)} — ${escHtml(h.packageName)} (${escHtml(h.state)})</option>`).join('');
+            if (_holSelectedId) {
+                sel.value = _holSelectedId;
+                renderHolDates();
+            }
+        }
+
+        function onHolPackageSelect(id) {
+            _holSelectedId = id || null;
+            const card = document.getElementById('hol-dates-card');
+            if (!_holSelectedId) { card.style.display = 'none'; return; }
+            card.style.display = 'block';
+            renderHolDates();
+        }
+
+        function renderHolDates() {
+            const holiday = _holPackages.find(h => h.id === _holSelectedId);
+            const table = document.getElementById('hol-dates-table');
+            const countEl = document.getElementById('hol-dates-count');
+            if (!holiday) return;
+            const dates = holiday.dates || [];
+            if (countEl) countEl.textContent = dates.length + ' date' + (dates.length !== 1 ? 's' : '');
+            if (!dates.length) {
+                table.innerHTML = '<div class="atbl-empty">No bookable dates yet. Add one below.</div>';
+                return;
+            }
+            table.innerHTML = `<table><thead><tr><th>Date</th><th>Capacity</th><th>Booked</th><th>Available</th><th></th></tr></thead><tbody>${dates.map(d => {
+                const avail = d.capacity - d.bookedCount;
+                const isPast = new Date(d.date) < new Date();
+                return `<tr style="${isPast ? 'opacity:0.55;' : ''}">
+                    <td>${new Date(d.date).toLocaleDateString('en-NG', { dateStyle: 'medium' })}${isPast ? ' <span class="fs-xs text-muted">(past)</span>' : ''}</td>
+                    <td><input type="number" value="${d.capacity}" min="1" class="select-xs" style="width:70px;" onchange="updateHolDateCapacity('${d.id}',this.value)" /></td>
+                    <td>${d.bookedCount}</td>
+                    <td><strong style="color:${avail > 0 ? '#16a34a' : '#E31E24'}">${avail}</strong></td>
+                    <td><button class="btn-manage" style="background:#FEE2E2;color:#991B1B;font-size:0.72rem;padding:3px 8px;" onclick="deleteHolDate('${d.id}')">Delete</button></td>
+                </tr>`;
+            }).join('')}</tbody></table>`;
+        }
+
+        async function addHolDate() {
+            if (!_holSelectedId) { showToast('Select a package first.', 'error'); return; }
+            const dateVal = document.getElementById('hol-new-date').value;
+            const capVal = parseInt(document.getElementById('hol-new-capacity').value);
+            if (!dateVal) { showToast('Choose a date.', 'error'); return; }
+            if (isNaN(capVal) || capVal < 1) { showToast('Enter a valid capacity.', 'error'); return; }
+            const res = await post(`/holidays/admin/${_holSelectedId}/dates`, { date: dateVal, capacity: capVal });
+            if (!res?.ok) { showToast(res?.error || 'Failed to add date.', 'error'); return; }
+            showToast('Date added.');
+            document.getElementById('hol-new-date').value = '';
+            await loadHolidaysAdmin();
+        }
+
+        async function updateHolDateCapacity(dateId, val) {
+            const cap = parseInt(val);
+            if (isNaN(cap) || cap < 1) { showToast('Enter a valid capacity.', 'error'); return; }
+            const res = await patch(`/holidays/admin/dates/${dateId}`, { capacity: cap });
+            if (!res?.ok) { showToast(res?.error || 'Failed to update capacity.', 'error'); return; }
+            showToast('Capacity updated.');
+            await loadHolidaysAdmin();
+        }
+
+        async function deleteHolDate(dateId) {
+            if (!confirm('Delete this date? This cannot be undone.')) return;
+            const res = await del(`/holidays/admin/dates/${dateId}`);
+            if (!res?.ok) { showToast(res?.error || 'Failed to delete date.', 'error'); return; }
+            showToast('Date deleted.');
+            await loadHolidaysAdmin();
+        }
 
         async function loadFlightOrders() {
             const container = document.getElementById('flights-admin-table');
@@ -2645,6 +2775,16 @@
                         d="M185.33,114.21l29.14-27.42.17-.17a32,32,0,0,0-45.26-45.26c0,.06-.11.11-.17.17L141.79,70.67l-83-30.2a8,8,0,0,0-8.39,1.86l-24,24a8,8,0,0,0,1.22,12.31l63.89,42.59L76.69,136H56a8,8,0,0,0-5.65,2.34l-24,24A8,8,0,0,0,29,175.42l36.82,14.73,14.7,36.75.06.16a8,8,0,0,0,13.18,2.47l23.87-23.88A8,8,0,0,0,120,200V179.31l14.76-14.76,42.59,63.89a8,8,0,0,0,12.31,1.22l24-24a8,8,0,0,0,1.86-8.39Z" />
                 </svg></span><span class="tab-label">Flights</span>
         </button>
+
+        <button class="admin-tab-btn" onclick="adminTab('holidays',this)" data-tab="holidays"
+            data-roles="super,finance">
+            <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <path d="M9 22V12h6v10" />
+                </svg></span><span class="tab-label">Holidays</span>
+        </button>
+
         <button class="admin-tab-btn" onclick="adminTab('hotels',this)" data-tab="hotels" data-roles="super,finance">
             <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256"
                     fill="currentColor">

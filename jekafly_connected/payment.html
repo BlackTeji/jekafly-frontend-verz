@@ -290,6 +290,9 @@
                     document.querySelector('.btn-dashboard').onclick = function () {
                         window.location.href = '/dashboard?tab=documents&consult_ref=' + encodeURIComponent(ref);
                     };
+                } else if (_ptype === 'holiday') {
+                    document.querySelector('.success-modal h2').textContent = 'Booking Confirmed!';
+                    document.querySelector('.success-modal p').textContent = 'Your holiday booking is confirmed. We\'ve sent your itinerary and confirmation to your email.';
                 }
                 document.getElementById('pay-success-overlay').classList.add('show');
                 updateNav();
@@ -359,13 +362,17 @@
                     '<div class="receipt-row"><span class="rl">Amount Paid</span><span class="rv amount">&#8358;' + (r.amount || 0).toLocaleString() + '</span></div>' +
                     '<div class="receipt-row"><span class="rl">Status</span><span class="rv text-green fw-700">Confirmed</span></div>';
                 // If consultation — route to dashboard Calendly flow
-                if ((pendingPayment?.type || '') === 'consultation') {
+                const _ptype2 = (pendingPayment?.type || '');
+                if (_ptype2 === 'consultation') {
                     document.querySelector('.success-modal h2').textContent = 'Payment Confirmed!';
                     document.querySelector('.success-modal p').textContent = 'Your consultation fee has been received. Click below to pick your booking time.';
                     document.querySelector('.btn-dashboard').textContent = 'Pick a Booking Time →';
                     document.querySelector('.btn-dashboard').onclick = function () {
                         window.location.href = '/dashboard?tab=documents&consult_ref=' + encodeURIComponent(reference);
                     };
+                } else if (_ptype2 === 'holiday') {
+                    document.querySelector('.success-modal h2').textContent = 'Booking Confirmed!';
+                    document.querySelector('.success-modal p').textContent = 'Your holiday booking is confirmed. We\'ve sent your itinerary and confirmation to your email.';
                 }
                 document.getElementById('pay-success-overlay').classList.add('show');
                 updateNav();
