@@ -8,17 +8,17 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
-    <title>Jekafly Destinations — Curated Holidays Across Southwest Nigeria</title>
+    <title>Jekafly Destinations — Curated Holiday Collections Across Nigeria</title>
     <meta name="description"
-        content="Curated holiday experiences across Southwest Nigeria — heritage, nature, adventure, and luxury. Explorer, Signature, and Executive collections, all handled for you by Jekafly." />
+        content="Curated holiday collections across Nigeria — Southwest, South-South, Southeast, North-Central, Northwest, and Northeast. Explorer, Signature, and Executive tiers, all handled for you by Jekafly." />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <link rel="canonical" href="https://jekafly.com/holidays" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://jekafly.com/holidays" />
     <meta property="og:site_name" content="Jekafly" />
-    <meta property="og:title" content="Jekafly Destinations — Curated Holidays Across Southwest Nigeria" />
+    <meta property="og:title" content="Jekafly Destinations — Curated Holiday Collections Across Nigeria" />
     <meta property="og:description"
-        content="Curated holiday experiences across Southwest Nigeria — heritage, nature, adventure, and luxury, all handled for you." />
+        content="Curated holiday collections across Nigeria — heritage, nature, adventure, and luxury, all handled for you." />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,572 +29,6 @@
     <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="mobile.css" media="(max-width: 1024px)" />
     <link rel="stylesheet" href="assets/css/holidays.css" />
-    <style>
-        /* ── Booking Modal ──────────────────────────────────────────────── */
-        .hbm-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 9900;
-            background: rgba(10, 19, 60, 0.72);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            align-items: flex-end;
-            justify-content: center;
-            padding: 0;
-        }
-
-        @media (min-width: 640px) {
-            .hbm-overlay {
-                align-items: center;
-                padding: 20px;
-            }
-        }
-
-        .hbm-overlay.open {
-            display: flex;
-        }
-
-        .hbm-modal {
-            background: #fff;
-            border-radius: 24px 24px 0 0;
-            width: 100%;
-            max-width: 560px;
-            max-height: 92vh;
-            overflow-y: auto;
-            padding: 28px 24px 32px;
-            box-sizing: border-box;
-            position: relative;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        @media (min-width: 640px) {
-            .hbm-modal {
-                border-radius: 24px;
-            }
-        }
-
-        .hbm-drag {
-            width: 40px;
-            height: 4px;
-            background: #E3E5F5;
-            border-radius: 4px;
-            margin: 0 auto 20px;
-        }
-
-        .hbm-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: #F0F3FF;
-            border: none;
-            border-radius: 10px;
-            width: 34px;
-            height: 34px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0D1560;
-        }
-
-        .hbm-steps {
-            display: flex;
-            gap: 6px;
-            margin-bottom: 24px;
-        }
-
-        .hbm-step-dot {
-            flex: 1;
-            height: 3px;
-            border-radius: 3px;
-            background: #E3E5F5;
-            transition: background .2s;
-        }
-
-        .hbm-step-dot.active {
-            background: #0D1560;
-        }
-
-        .hbm-step-dot.done {
-            background: #16a34a;
-        }
-
-        .hbm-step-label {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #9AABCC;
-            text-transform: uppercase;
-            letter-spacing: 0.07em;
-            margin-bottom: 6px;
-        }
-
-        .hbm-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: #0D1560;
-            margin: 0 0 6px;
-            letter-spacing: -0.03em;
-        }
-
-        .hbm-sub {
-            font-size: 0.85rem;
-            color: #9AABCC;
-            margin: 0 0 24px;
-            line-height: 1.6;
-        }
-
-        .hbm-confirm-card {
-            background: #F8F9FE;
-            border-radius: 16px;
-            padding: 20px 18px;
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .hbm-confirm-img {
-            width: 72px;
-            height: 72px;
-            border-radius: 12px;
-            background: #0D1560 center/cover no-repeat;
-            flex-shrink: 0;
-        }
-
-        .hbm-confirm-info {
-            flex: 1;
-        }
-
-        .hbm-confirm-state {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #9AABCC;
-            text-transform: uppercase;
-            letter-spacing: .07em;
-        }
-
-        .hbm-confirm-name {
-            font-size: 1rem;
-            font-weight: 800;
-            color: #0D1560;
-            margin: 2px 0 4px;
-        }
-
-        .hbm-confirm-tag {
-            font-size: 0.8rem;
-            color: #7480A0;
-            font-style: italic;
-        }
-
-        .hbm-confirm-meta {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .hbm-pill {
-            font-size: 0.72rem;
-            font-weight: 600;
-            padding: 3px 10px;
-            border-radius: 100px;
-            background: #EEF2FF;
-            color: #3B5BDB;
-        }
-
-        .hbm-pill--gold {
-            background: #FFF8E6;
-            color: #C48332;
-        }
-
-        .hbm-form-group {
-            margin-bottom: 16px;
-        }
-
-        .hbm-label {
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #9AABCC;
-            text-transform: uppercase;
-            letter-spacing: .07em;
-            margin-bottom: 6px;
-        }
-
-        .hbm-input {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1.5px solid #E3E5F5;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.9rem;
-            color: #0F1124;
-            background: #F8F9FE;
-            outline: none;
-            box-sizing: border-box;
-            transition: border-color .18s;
-        }
-
-        .hbm-input:focus {
-            border-color: #0D1560;
-            background: #fff;
-        }
-
-        .hbm-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .hbm-tier-cards {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 4px;
-        }
-
-        .hbm-tier-card {
-            border: 1.5px solid #E3E5F5;
-            border-radius: 14px;
-            padding: 14px 16px;
-            cursor: pointer;
-            transition: border-color .18s, background .18s;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .hbm-tier-card.selected {
-            border-color: #0D1560;
-            background: #F0F3FF;
-        }
-
-        .hbm-tier-card-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .hbm-tier-card-body {
-            flex: 1;
-        }
-
-        .hbm-tier-card-name {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: #0D1560;
-        }
-
-        .hbm-tier-card-desc {
-            font-size: 0.78rem;
-            color: #7480A0;
-            margin-top: 2px;
-        }
-
-        .hbm-tier-card-price {
-            font-weight: 800;
-            font-size: 0.95rem;
-            color: #0D1560;
-            white-space: nowrap;
-        }
-
-        .hbm-club-card {
-            border: 1.5px solid #E3E5F5;
-            border-radius: 16px;
-            padding: 18px;
-            background: linear-gradient(135deg, #0D1560 0%, #1C2FBF 100%);
-            color: #fff;
-            margin-bottom: 16px;
-        }
-
-        .hbm-club-card-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .hbm-club-card-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, .15);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .hbm-club-card-name {
-            font-weight: 800;
-            font-size: 1rem;
-        }
-
-        .hbm-club-card-sub {
-            font-size: 0.78rem;
-            opacity: .7;
-        }
-
-        .hbm-club-perks {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-            margin-bottom: 16px;
-        }
-
-        .hbm-club-perk {
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-            font-size: 0.8rem;
-            opacity: .9;
-        }
-
-        .hbm-club-perk svg {
-            flex-shrink: 0;
-            margin-top: 1px;
-        }
-
-        .hbm-club-toggle {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: rgba(255, 255, 255, .1);
-            border-radius: 12px;
-            padding: 12px 14px;
-        }
-
-        .hbm-club-toggle-label {
-            flex: 1;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .hbm-club-toggle-price {
-            font-weight: 800;
-            font-size: 0.9rem;
-        }
-
-        .hbm-switch {
-            position: relative;
-            width: 44px;
-            height: 24px;
-            flex-shrink: 0;
-        }
-
-        .hbm-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-            position: absolute;
-        }
-
-        .hbm-switch-slider {
-            position: absolute;
-            inset: 0;
-            background: rgba(255, 255, 255, .2);
-            border-radius: 24px;
-            cursor: pointer;
-            transition: background .2s;
-        }
-
-        .hbm-switch-slider::before {
-            content: '';
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            left: 3px;
-            top: 3px;
-            background: #fff;
-            border-radius: 50%;
-            transition: transform .2s;
-        }
-
-        .hbm-switch input:checked+.hbm-switch-slider {
-            background: #16a34a;
-        }
-
-        .hbm-switch input:checked+.hbm-switch-slider::before {
-            transform: translateX(20px);
-        }
-
-        .hbm-summary-rows {
-            background: #F8F9FE;
-            border-radius: 14px;
-            padding: 16px;
-            margin-bottom: 16px;
-        }
-
-        .hbm-summary-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 7px 0;
-            border-bottom: 1px solid #EAECF5;
-            font-size: 0.85rem;
-            color: #4A5568;
-        }
-
-        .hbm-summary-row:last-child {
-            border-bottom: none;
-        }
-
-        .hbm-summary-row.total {
-            font-weight: 800;
-            color: #0D1560;
-            font-size: 1rem;
-        }
-
-        .hbm-auth-tabs {
-            display: flex;
-            gap: 0;
-            background: #F0F3FF;
-            border-radius: 12px;
-            padding: 4px;
-            margin-bottom: 20px;
-        }
-
-        .hbm-auth-tab {
-            flex: 1;
-            padding: 9px;
-            border: none;
-            background: none;
-            border-radius: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #7480A0;
-            cursor: pointer;
-            transition: background .18s, color .18s;
-        }
-
-        .hbm-auth-tab.active {
-            background: #fff;
-            color: #0D1560;
-            box-shadow: 0 2px 8px rgba(13, 21, 96, .1);
-        }
-
-        .hbm-inline-error {
-            color: #E31E24;
-            font-size: 0.78rem;
-            margin-top: 6px;
-            display: none;
-        }
-
-        .hbm-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, #0D1560, #1C2FBF);
-            color: #fff;
-            border: none;
-            border-radius: 14px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(13, 21, 96, .28);
-            letter-spacing: -.01em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: opacity .2s;
-        }
-
-        .hbm-btn:disabled {
-            opacity: .55;
-            cursor: not-allowed;
-        }
-
-        .hbm-btn-back {
-            background: none;
-            border: none;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.82rem;
-            color: #9AABCC;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 0;
-            margin-bottom: 20px;
-        }
-
-        .hbm-success {
-            text-align: center;
-            padding: 16px 0 8px;
-        }
-
-        .hbm-success-icon {
-            width: 64px;
-            height: 64px;
-            background: #F0FDF4;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-        }
-
-        .hbm-already-member {
-            background: #F0FDF4;
-            border: 1.5px solid #BBF7D0;
-            border-radius: 12px;
-            padding: 12px 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.82rem;
-            color: #15803D;
-            margin-bottom: 16px;
-        }
-
-        .hbm-date-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .hbm-date-slot {
-            border: 1.5px solid #E3E5F5;
-            border-radius: 12px;
-            padding: 10px 12px;
-            cursor: pointer;
-            text-align: center;
-            transition: border-color .18s, background .18s;
-        }
-
-        .hbm-date-slot:hover {
-            border-color: #0D1560;
-        }
-
-        .hbm-date-slot.selected {
-            border-color: #0D1560;
-            background: #EEF2FF;
-        }
-
-        .hbm-date-slot.full {
-            opacity: .45;
-            cursor: not-allowed;
-        }
-
-        .hbm-date-slot-date {
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: #0D1560;
-        }
-
-        .hbm-date-slot-avail {
-            font-size: 0.72rem;
-            color: #9AABCC;
-            margin-top: 2px;
-        }
-    </style>
 </head>
 
 <body class="jkfh-body">
@@ -645,10 +79,10 @@
             <div class="jkfh-hero-eyebrow"><span class="jkfh-dot"></span>Jekafly Destinations</div>
             <h1 class="jkfh-hero-heading">Every destination<br />has a <em>story</em>.</h1>
             <p class="jkfh-hero-sub">Curated experiences. Authentic destinations. Memorable journeys —
-                across the culture, heritage, and hidden gems of Southwest Nigeria.</p>
+                across six regional collections spanning the culture, heritage, and hidden gems of Nigeria.</p>
             <div class="jkfh-hero-actions">
-                <a href="#destinations" class="jkfh-btn-gold">
-                    Explore Packages
+                <a href="#collections" class="jkfh-btn-gold">
+                    Explore Collections
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
@@ -746,343 +180,33 @@
         </div>
     </section>
 
-    <!-- DESTINATIONS -->
-    <section class="jkfh-destinations" id="destinations">
+    <!-- COLLECTIONS -->
+    <section class="jkfh-destinations" id="collections">
         <div class="jkfh-section-header">
-            <div class="jkfh-eyebrow jkfh-eyebrow--center"><span class="jkfh-dot"></span>The Southwest Collection</div>
-            <h2 class="jkfh-h2 jkfh-h2--center">A Curated Series of Destination Experiences</h2>
-            <p class="jkfh-section-sub">Inspired by the culture, heritage, lifestyle, and hidden gems of Southwest
-                Nigeria.</p>
+            <div class="jkfh-eyebrow jkfh-eyebrow--center"><span class="jkfh-dot"></span>Jekafly Holidays Collections
+            </div>
+            <h2 class="jkfh-h2 jkfh-h2--center">Choose a Regional Collection</h2>
+            <p class="jkfh-section-sub">A curated series of destination experiences inspired by the culture, heritage,
+                lifestyle, and hidden gems across Nigeria. Select a collection to explore its destinations.</p>
         </div>
 
-        <!-- LAGOS -->
-        <article class="jkfh-dest-row" id="dest-lagos">
-            <div class="jkfh-dest-media">
-                <div class="jkfh-dest-img" style="background-image:url('assets/images/lagos.jpg')"></div>
-                <div class="jkfh-dest-media-shade"></div>
-                <div class="jkfh-dest-watermark">Lagos</div>
-            </div>
-            <div class="jkfh-dest-content">
-                <div class="jkfh-dest-state">Lagos State</div>
-                <h3 class="jkfh-dest-name">The Eko Experience</h3>
-                <p class="jkfh-dest-tag">"Where Energy Meets Luxury"</p>
-                <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>2 Days / 1 Night</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;350,000 / person</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Signature</span>
-                </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Urban Lifestyle, Entertainment,
-                    Beaches, Nightlife</p>
-                <div class="jkfh-dest-cols">
-                    <div>
-                        <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
-                        <ul class="jkfh-dest-list">
-                            <li>Boat Cruise Experience</li>
-                            <li>Beach Day Out</li>
-                            <li>Art Gallery Visit</li>
-                            <li>Blue Line Rail Experience</li>
-                            <li>Nightlife in Lekki &amp; Victoria Island</li>
-                            <li>Restaurant Fine Dining</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <div class="jkfh-dest-col-label">Standard Inclusions</div>
-                        <ul class="jkfh-dest-list jkfh-dest-list--check">
-                            <li>Daily Breakfast</li>
-                            <li>Hotel Accommodation</li>
-                            <li>Intercity Transfer &amp; Local Movement</li>
-                            <li>Curated Destination Guide</li>
-                            <li>Access to Listed Attractions</li>
-                            <li>Branded Travel Pack</li>
-                        </ul>
-                    </div>
-                </div>
-                <button class="jkfh-dest-cta"
-                    onclick="openBookingModal('Lagos State','The Eko Experience','SIGNATURE',350000,2,1,'assets/images/lagos.jpg')">
-                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                </button>
-            </div>
-        </article>
+        <div class="jkfh-coll-grid" id="collections-grid"></div>
 
-        <!-- OGUN -->
-        <article class="jkfh-dest-row jkfh-dest-row--reverse" id="dest-ogun">
-            <div class="jkfh-dest-media">
-                <div class="jkfh-dest-img" style="background-image:url('assets/images/ogun.jpg')"></div>
-                <div class="jkfh-dest-media-shade"></div>
-                <div class="jkfh-dest-watermark">Ogun</div>
-            </div>
-            <div class="jkfh-dest-content">
-                <div class="jkfh-dest-state">Ogun State</div>
-                <h3 class="jkfh-dest-name">Gateway Trails</h3>
-                <p class="jkfh-dest-tag">"Discover Heritage Beyond the Horizon"</p>
-                <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>2 Days / 1 Night</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;280,000 / person</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Explorer</span>
-                </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Heritage, Culture, Nature, Adventure
-                </p>
-                <div class="jkfh-dest-cols">
-                    <div>
-                        <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
-                        <ul class="jkfh-dest-list">
-                            <li>Rock Climbing Adventure</li>
-                            <li>Adire Market Experience</li>
-                            <li>OOPL Wildlife Park</li>
-                            <li>Cultural City Tours</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <div class="jkfh-dest-col-label">Standard Inclusions</div>
-                        <ul class="jkfh-dest-list jkfh-dest-list--check">
-                            <li>Daily Breakfast</li>
-                            <li>Hotel Accommodation</li>
-                            <li>Intercity Transfer &amp; Local Movement</li>
-                            <li>Curated Destination Guide</li>
-                            <li>Access to Listed Attractions</li>
-                            <li>Branded Travel Pack</li>
-                        </ul>
-                    </div>
-                </div>
-                <button class="jkfh-dest-cta"
-                    onclick="openBookingModal('Ogun State','Gateway Trails','EXPLORER',280000,2,1,'assets/images/ogun.jpg')">
-                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                </button>
-            </div>
-        </article>
-
-        <!-- OYO -->
-        <article class="jkfh-dest-row" id="dest-oyo">
-            <div class="jkfh-dest-media">
-                <div class="jkfh-dest-img" style="background-image:url('assets/images/oyo.jpg')"></div>
-                <div class="jkfh-dest-media-shade"></div>
-                <div class="jkfh-dest-watermark">Oyo</div>
-            </div>
-            <div class="jkfh-dest-content">
-                <div class="jkfh-dest-state">Oyo State</div>
-                <h3 class="jkfh-dest-name">The Alaafin Legacy</h3>
-                <p class="jkfh-dest-tag">"Walk Through the Kingdom of Legends"</p>
-                <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>2 Days / 2 Nights</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;280,000 / person</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Explorer</span>
-                </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Royal Heritage, History, Food &amp;
-                    Culture</p>
-                <div class="jkfh-dest-cols">
-                    <div>
-                        <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
-                        <ul class="jkfh-dest-list">
-                            <li>Ibadan City Tour</li>
-                            <li>Agodi Gardens</li>
-                            <li>Heritage Sites</li>
-                            <li>Local Cuisine Experience</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <div class="jkfh-dest-col-label">Standard Inclusions</div>
-                        <ul class="jkfh-dest-list jkfh-dest-list--check">
-                            <li>Daily Breakfast</li>
-                            <li>Hotel Accommodation</li>
-                            <li>Intercity Transfer &amp; Local Movement</li>
-                            <li>Curated Destination Guide</li>
-                            <li>Access to Listed Attractions</li>
-                            <li>Branded Travel Pack</li>
-                        </ul>
-                    </div>
-                </div>
-                <button class="jkfh-dest-cta"
-                    onclick="openBookingModal('Oyo State','The Alaafin Legacy','EXPLORER',280000,2,2,'assets/images/oyo.jpg')">
-                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                </button>
-            </div>
-        </article>
-
-        <!-- ONDO -->
-        <article class="jkfh-dest-row jkfh-dest-row--reverse" id="dest-ondo">
-            <div class="jkfh-dest-media">
-                <div class="jkfh-dest-img" style="background-image:url('assets/images/ondo.jpg')"></div>
-                <div class="jkfh-dest-media-shade"></div>
-                <div class="jkfh-dest-watermark">Ondo</div>
-            </div>
-            <div class="jkfh-dest-content">
-                <div class="jkfh-dest-state">Ondo State</div>
-                <h3 class="jkfh-dest-name">Sunrise Coast Escape</h3>
-                <p class="jkfh-dest-tag">"Where Nature Meets Serenity"</p>
-                <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>3 Days / 2 Nights</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;300,000 / person</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Executive</span>
-                </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Nature, Adventure, Wellness</p>
-                <div class="jkfh-dest-cols">
-                    <div>
-                        <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
-                        <ul class="jkfh-dest-list">
-                            <li>Idanre Hills</li>
-                            <li>Coastal Exploration</li>
-                            <li>Eco-Tourism Trails</li>
-                            <li>Nature Retreat</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <div class="jkfh-dest-col-label">Standard Inclusions</div>
-                        <ul class="jkfh-dest-list jkfh-dest-list--check">
-                            <li>Daily Breakfast</li>
-                            <li>Hotel Accommodation</li>
-                            <li>Intercity Transfer &amp; Local Movement</li>
-                            <li>Curated Destination Guide</li>
-                            <li>Access to Listed Attractions</li>
-                            <li>Branded Travel Pack</li>
-                        </ul>
-                    </div>
-                </div>
-                <button class="jkfh-dest-cta"
-                    onclick="openBookingModal('Ondo State','Sunrise Coast Escape','EXECUTIVE',300000,3,2,'assets/images/ondo.jpg')">
-                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                </button>
-            </div>
-        </article>
-
-        <!-- OSUN -->
-        <article class="jkfh-dest-row" id="dest-osun">
-            <div class="jkfh-dest-media">
-                <div class="jkfh-dest-img" style="background-image:url('assets/images/osun.jpg')"></div>
-                <div class="jkfh-dest-media-shade"></div>
-                <div class="jkfh-dest-watermark">Osun</div>
-            </div>
-            <div class="jkfh-dest-content">
-                <div class="jkfh-dest-state">Osun State</div>
-                <h3 class="jkfh-dest-name">Sacred Osun Journey</h3>
-                <p class="jkfh-dest-tag">"Experience the Spirit of Heritage"</p>
-                <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>2 Days / 1 Night</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;280,000 / person</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Explorer</span>
-                </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Spiritual Tourism, Heritage, Culture
-                </p>
-                <div class="jkfh-dest-cols">
-                    <div>
-                        <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
-                        <ul class="jkfh-dest-list">
-                            <li>Osun Sacred Grove</li>
-                            <li>Ile-Ife Heritage Tour</li>
-                            <li>Cultural Village Experience</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <div class="jkfh-dest-col-label">Standard Inclusions</div>
-                        <ul class="jkfh-dest-list jkfh-dest-list--check">
-                            <li>Daily Breakfast</li>
-                            <li>Hotel Accommodation</li>
-                            <li>Intercity Transfer &amp; Local Movement</li>
-                            <li>Curated Destination Guide</li>
-                            <li>Access to Listed Attractions</li>
-                            <li>Branded Travel Pack</li>
-                        </ul>
-                    </div>
-                </div>
-                <button class="jkfh-dest-cta"
-                    onclick="openBookingModal('Osun State','Sacred Osun Journey','EXPLORER',280000,2,1,'assets/images/osun.jpg')">
-                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                </button>
-            </div>
-        </article>
-
-        <!-- EKITI -->
-        <article class="jkfh-dest-row jkfh-dest-row--reverse jkfh-dest-row--pick" id="dest-ekiti">
-            <div class="jkfh-dest-media">
-                <div class="jkfh-dest-img" style="background-image:url('assets/images/ekiti.jpg')"></div>
-                <div class="jkfh-dest-media-shade"></div>
-                <div class="jkfh-dest-watermark">Ekiti</div>
-                <div class="jkfh-dest-pick-badge">Editor's Pick</div>
-            </div>
-            <div class="jkfh-dest-content">
-                <div class="jkfh-dest-state">Ekiti State</div>
-                <h3 class="jkfh-dest-name">The Hidden Gem Escape</h3>
-                <p class="jkfh-dest-tag">"Discover Nigeria's Best-Kept Secret"</p>
-                <div class="jkfh-dest-meta-row">
-                    <span class="jkfh-dest-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>3 Days / 2 Nights</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--gold">From &#8358;300,000 / person</span>
-                    <span class="jkfh-dest-pill jkfh-dest-pill--ghost">Executive</span>
-                </div>
-                <p class="jkfh-dest-identity"><strong>Experience Identity:</strong> Eco-Tourism, Wellness, Adventure</p>
-                <div class="jkfh-dest-cols">
-                    <div>
-                        <div class="jkfh-dest-col-label">Key Attractions &amp; Activities</div>
-                        <ul class="jkfh-dest-list">
-                            <li>Ikogosi Warm Springs</li>
-                            <li>Arinta Waterfalls</li>
-                            <li>Hiking &amp; Nature Exploration</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <div class="jkfh-dest-col-label">Standard Inclusions</div>
-                        <ul class="jkfh-dest-list jkfh-dest-list--check">
-                            <li>Daily Breakfast</li>
-                            <li>Hotel Accommodation</li>
-                            <li>Intercity Transfer &amp; Local Movement</li>
-                            <li>Curated Destination Guide</li>
-                            <li>Access to Listed Attractions</li>
-                            <li>Branded Travel Pack</li>
-                        </ul>
-                    </div>
-                </div>
-                <button class="jkfh-dest-cta jkfh-dest-cta--filled"
-                    onclick="openBookingModal('Ekiti State','The Hidden Gem Escape','EXECUTIVE',300000,3,2,'assets/images/ekiti.jpg')">
-                    Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                        <polyline points="12 5 19 12 12 19" />
-                    </svg>
-                </button>
-            </div>
-        </article>
+        <!-- DESTINATION BROWSER (shown when a collection is selected) -->
+        <div class="jkfh-browser-header" id="browser-header">
+            <button class="jkfh-browser-back" onclick="backToCollections()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12" />
+                    <polyline points="12 19 5 12 12 5" />
+                </svg>
+                All Collections
+            </button>
+            <div class="jkfh-browser-eyebrow">Now Browsing</div>
+            <h3 class="jkfh-browser-title" id="browser-title"></h3>
+            <p class="jkfh-browser-tag" id="browser-tag"></p>
+        </div>
+        <div class="jkfh-card-grid" id="destination-grid"></div>
     </section>
 
     <!-- MEMBERSHIP TIERS -->
@@ -1105,7 +229,8 @@
                 <p class="jkfh-tier-card-pos">Budget-conscious members. Affordable, exciting experiences for curious
                     travellers seeking discovery and adventure — perfect for students, young professionals, and budget
                     travellers.</p>
-                <div class="jkfh-tier-card-fee"><span>Membership Fee</span><strong>&#8358;100,000</strong></div>
+                <div class="jkfh-tier-card-fee"><span>Activity Price
+                        Range</span><strong>&#8358;150,000&ndash;300,000</strong></div>
             </div>
             <div class="jkfh-tier-card jkfh-tier-card--featured">
                 <div class="jkfh-tier-card-badge">Most Popular</div>
@@ -1119,7 +244,8 @@
                 <div class="jkfh-tier-card-name">Signature</div>
                 <p class="jkfh-tier-card-pos">Premium curated experiences. Designed for families, couples,
                     professionals, and discerning travellers who want enhanced comfort and guided experiences.</p>
-                <div class="jkfh-tier-card-fee"><span>Membership Fee</span><strong>&#8358;250,000</strong></div>
+                <div class="jkfh-tier-card-fee"><span>Activity Price
+                        Range</span><strong>&#8358;300,000&ndash;500,000</strong></div>
             </div>
             <div class="jkfh-tier-card">
                 <div class="jkfh-tier-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
@@ -1130,11 +256,11 @@
                 <div class="jkfh-tier-card-name">Executive</div>
                 <p class="jkfh-tier-card-pos">Luxury and corporate membership. Premium accommodations, concierge
                     support, exclusive access, and elevated hospitality for executives and diaspora visitors.</p>
-                <div class="jkfh-tier-card-fee"><span>Membership Fee</span><strong>&#8358;500,000</strong></div>
+                <div class="jkfh-tier-card-fee"><span>Activity Price Range</span><strong>&#8358;500,000+</strong></div>
             </div>
         </div>
         <div class="jkfh-tier-table-wrap">
-            <div class="jkfh-tier-table-label">Tier Activity Price Range &amp; Typical Inclusions</div>
+            <div class="jkfh-tier-table-label">Tier Positioning &amp; Typical Inclusions</div>
             <div class="jkfh-tier-table-scroll">
                 <table class="jkfh-tier-table">
                     <thead>
@@ -1149,21 +275,24 @@
                         <tr>
                             <td><span class="jkfh-table-tier-label">Explorer Series</span></td>
                             <td>Students, Young Professionals, Budget Travelers</td>
-                            <td class="jkfh-table-price">&#8358;150,000 &ndash; &#8358;200,000</td>
-                            <td>Accommodation, Transfers, Breakfast, Tour Access</td>
+                            <td class="jkfh-table-price">&#8358;150,000 &ndash; &#8358;300,000</td>
+                            <td>Accommodation, Breakfast, Local Transfers, Tour Guide, Attraction Access, Jekafly
+                                Welcome Pack</td>
                         </tr>
                         <tr>
                             <td><span class="jkfh-table-tier-label jkfh-table-tier-label--gold">Signature Series</span>
                             </td>
                             <td>Couples, Professionals</td>
-                            <td class="jkfh-table-price">&#8358;250,000 &ndash; &#8358;450,000</td>
-                            <td>Enhanced Accommodation, Guided Experiences, Curated Activities</td>
+                            <td class="jkfh-table-price">&#8358;300,000 &ndash; &#8358;500,000</td>
+                            <td>Premium Accommodation, Daily Breakfast, Airport/Local Transfers, Guided Experiences,
+                                Attraction Tickets, Photography Stops, Jekafly Welcome Pack</td>
                         </tr>
                         <tr>
                             <td><span class="jkfh-table-tier-label">Executive Series</span></td>
                             <td>Executives, Diaspora Visitors, Luxury Travelers</td>
                             <td class="jkfh-table-price">&#8358;500,000+</td>
-                            <td>Premium Hotels, VIP Transfers, Concierge Service, Exclusive Experiences</td>
+                            <td>Luxury Accommodation, VIP Transfers, Concierge Service, Premium Dining Experience,
+                                Exclusive Access Activities, Professional Photography Session, Jekafly Welcome Pack</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1177,8 +306,8 @@
             <h2>Every destination has a story.</h2>
             <p>At Jekafly, we help our members experience it. Start planning your next journey today.</p>
             <div class="jkfh-cta-actions">
-                <a href="#destinations" class="jkfh-btn-gold jkfh-btn-gold--lg">
-                    Book Your Experience <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                <a href="#collections" class="jkfh-btn-gold jkfh-btn-gold--lg">
+                    Explore Collections <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="5" y1="12" x2="19" y2="12" />
                         <polyline points="12 5 19 12 12 19" />
@@ -1233,10 +362,178 @@
             document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20);
         });
 
+        function escH(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+        function escAttr(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
+
+        // ══════════════════════════════════════════════════════════════════════
+        // REGIONAL COLLECTIONS DATA
+        // ══════════════════════════════════════════════════════════════════════
+        var REGIONS = [
+            { key: 'southwest', name: 'Southwest', tagline: 'Culture, Heritage & Coastal Luxury', img: 'assets/images/ekiti.jpg' },
+            { key: 'southsouth', name: 'South-South', tagline: 'Waterways. Culture. Heritage. Adventure.', img: null },
+            { key: 'southeast', name: 'Southeast', tagline: 'Origins. Heritage. Enterprise.', img: null },
+            { key: 'northcentral', name: 'North-Central', tagline: 'Nature. Adventure. Discovery.', img: null },
+            { key: 'northwest', name: 'Northwest', tagline: 'Ancient Kingdoms. Culture. Desert Charm.', img: null },
+            { key: 'northeast', name: 'Northeast', tagline: 'Wild Frontiers. Mountains. Resilience.', img: null },
+        ];
+
+        // NOTE: img: null means no photo asset exists yet — a branded gradient
+        // placeholder card is rendered instead. Swap in real photography by
+        // setting img to an assets/images/ path once available.
+        var DESTINATIONS = [
+            // ── SOUTHWEST ──
+            { region: 'southwest', state: 'Lagos State', name: 'The Eko Experience', tagline: 'Where Energy Meets Luxury', tier: 'SIGNATURE', duration: '2 Days / 1 Night', days: 2, nights: 1, price: 350000, identity: 'Urban Lifestyle, Entertainment, Beaches, Nightlife', attractions: ['Boat Cruise Experience', 'Beach Day Out', 'Art Gallery Visit', 'Blue Line Rail Experience', 'Nightlife in Lekki & Victoria Island', 'Restaurant Fine Dining'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/lagos.jpg' },
+            { region: 'southwest', state: 'Ogun State', name: 'Gateway Trails', tagline: 'Discover Heritage Beyond the Horizon', tier: 'EXPLORER', duration: '2 Days / 1 Night', days: 2, nights: 1, price: 280000, identity: 'Heritage, Culture, Nature, Adventure', attractions: ['Rock Climbing Adventure', 'Adire Market Experience', 'OOPL Wildlife Park', 'Cultural City Tours'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/ogun.jpg' },
+            { region: 'southwest', state: 'Oyo State', name: 'The Alaafin Legacy', tagline: 'Walk Through the Kingdom of Legends', tier: 'EXPLORER', duration: '2 Days / 2 Nights', days: 2, nights: 2, price: 280000, identity: 'Royal Heritage, History, Food & Culture', attractions: ['Ibadan City Tour', 'Agodi Gardens', 'Heritage Sites', 'Local Cuisine Experience'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/oyo.jpg' },
+            { region: 'southwest', state: 'Ondo State', name: 'Sunrise Coast Escape', tagline: 'Where Nature Meets Serenity', tier: 'EXECUTIVE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Nature, Adventure, Wellness', attractions: ['Idanre Hills', 'Coastal Exploration', 'Eco-Tourism Trails', 'Nature Retreat'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/ondo.jpg' },
+            { region: 'southwest', state: 'Osun State', name: 'Sacred Osun Journey', tagline: 'Experience the Spirit of Heritage', tier: 'EXPLORER', duration: '2 Days / 1 Night', days: 2, nights: 1, price: 280000, identity: 'Spiritual Tourism, Heritage, Culture', attractions: ['Osun Sacred Grove', 'Ile-Ife Heritage Tour', 'Cultural Village Experience'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/osun.jpg' },
+            { region: 'southwest', state: 'Ekiti State', name: 'The Hidden Gem Escape', tagline: "Discover Nigeria's Best-Kept Secret", tier: 'EXECUTIVE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Eco-Tourism, Wellness, Adventure', attractions: ['Ikogosi Warm Springs', 'Arinta Waterfalls', 'Hiking & Nature Exploration'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/ekiti.jpg' },
+
+            // ── SOUTH-SOUTH ──
+            { region: 'southsouth', state: 'Akwa Ibom State', name: 'The Ibom Escape', tagline: 'Where Hospitality Meets Paradise', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 320000, identity: 'Coastal Luxury', attractions: ['Ibeno Beach', 'Ibom Plaza', 'Raffia City Tour'], inclusions: ['Hotel Accommodation', 'Daily Breakfast', 'Local Transfers', 'Tour Guide', 'Access to Listed Attractions'], img: null },
+            { region: 'southsouth', state: 'Cross River State', name: 'The Calabar Discovery', tagline: "Experience Nigeria's Tourism Capital", tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 380000, identity: 'Culture & Nature', attractions: ['Obudu Mountain Resort', 'Tinapa', 'Marina Resort'], inclusions: ['Hotel Accommodation', 'Daily Breakfast', 'Local Transfers', 'Tour Guide', 'Access to Listed Attractions'], img: null },
+            { region: 'southsouth', state: 'Rivers State', name: 'Garden City Prestige', tagline: 'Business Meets Lifestyle', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 350000, identity: 'Urban Lifestyle', attractions: ['Port Harcourt City Tour', 'Pleasure Park', 'Nightlife'], inclusions: ['Hotel Accommodation', 'Daily Breakfast', 'Local Transfers', 'Tour Guide'], img: null },
+            { region: 'southsouth', state: 'Bayelsa State', name: 'Creeks & Culture Experience', tagline: 'Discover the Heart of the Delta', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Eco & Cultural Tourism', attractions: ['Oxbow Lake', 'Creek Excursions'], inclusions: ['Hotel Accommodation', 'Boat Transfers', 'Tour Guide'], img: null },
+            { region: 'southsouth', state: 'Delta State', name: 'Delta Heritage Trail', tagline: 'Where Tradition Meets Modernity', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Heritage & Lifestyle', attractions: ['Nana Living History Museum', 'Asaba City Tour'], inclusions: ['Hotel Accommodation', 'Local Transfers', 'Tour Guide'], img: null },
+            { region: 'southsouth', state: 'Edo State', name: 'Benin Kingdom Legacy', tagline: 'Walk Through a Timeless Empire', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 330000, identity: 'Royal Heritage', attractions: ['Benin Moat', 'National Museum', 'Palace District'], inclusions: ['Hotel Accommodation', 'Daily Breakfast', 'Local Transfers', 'Tour Guide'], img: null },
+
+            // ── SOUTHEAST ──
+            { region: 'southeast', state: 'Anambra State', name: 'The Light of the Nation Experience', tagline: 'Discover Enterprise & Heritage', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Culture & Commerce', attractions: ['Ogbunike Cave', 'Onitsha Experience'], inclusions: ['Hotel Accommodation', 'Daily Breakfast', 'Local Transfers'], img: null },
+            { region: 'southeast', state: 'Enugu State', name: 'Coal City Escape', tagline: 'Nature, History & Serenity', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 320000, identity: 'Nature & Heritage', attractions: ['Ngwo Pine Forest', 'Awhum Waterfall'], inclusions: ['Hotel Accommodation', 'Tour Guide', 'Local Transfers'], img: null },
+            { region: 'southeast', state: 'Imo State', name: 'Eastern Heartland Retreat', tagline: 'Relax. Explore. Connect.', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Leisure Tourism', attractions: ['Oguta Lake', 'Cultural Villages'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
+            { region: 'southeast', state: 'Abia State', name: 'Aba Enterprise Journey', tagline: 'Innovation Meets Culture', tier: 'EXPLORER', duration: '2 Days / 1 Night', days: 2, nights: 1, price: 250000, identity: 'Commerce Tourism', attractions: ['Ariaria Market', 'Cultural Sites'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+            { region: 'southeast', state: 'Ebonyi State', name: 'Salt of the Nation Adventure', tagline: 'Discover Hidden Wonders', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 270000, identity: 'Nature & Agriculture', attractions: ['Salt Lakes', 'Waterfalls'], inclusions: ['Hotel Accommodation', 'Local Transfers', 'Tour Guide'], img: null },
+
+            // ── NORTH-CENTRAL ──
+            { region: 'northcentral', state: 'Federal Capital Territory', name: 'Capital Explorer', tagline: "Discover Nigeria's Seat of Power", tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 350000, identity: 'Urban Tourism', attractions: ['Zuma Rock', 'Millennium Park', 'City Tour'], inclusions: ['Hotel Accommodation', 'Local Transfers', 'Tour Guide'], img: null },
+            { region: 'northcentral', state: 'Niger State', name: 'The Confluence Adventure', tagline: 'Nature Beyond Imagination', tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 400000, identity: 'Adventure Tourism', attractions: ['Gurara Falls', 'Kainji Lake'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
+            { region: 'northcentral', state: 'Kwara State', name: 'Harmony Escape', tagline: 'Where Cultures Meet', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Heritage Tourism', attractions: ['Esie Museum', 'Owu Falls'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+            { region: 'northcentral', state: 'Kogi State', name: 'The Confluence Experience', tagline: 'Where Rivers Meet, Stories Begin', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Nature & Heritage', attractions: ['River Niger-Benue Confluence'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
+            { region: 'northcentral', state: 'Benue State', name: 'Food Basket Discovery', tagline: 'Taste the Heart of Nigeria', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Agro Tourism', attractions: ['Makurdi Riverfront', 'Cultural Experiences'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+            { region: 'northcentral', state: 'Plateau State', name: 'Jos Highland Escape', tagline: 'Cool Weather, Endless Adventure', tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 420000, identity: 'Mountain Tourism', attractions: ['Shere Hills', 'Wildlife Park'], inclusions: ['Hotel Accommodation', 'Local Transfers', 'Tour Guide'], img: null },
+            { region: 'northcentral', state: 'Nasarawa State', name: 'Hidden Treasures of Nasarawa', tagline: "Nigeria's Best Kept Secret", tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 270000, identity: 'Eco Tourism', attractions: ['Farin Ruwa Falls'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+
+            // ── NORTHWEST ──
+            { region: 'northwest', state: 'Kano State', name: 'Kano Emirate Experience', tagline: 'Journey Through Centuries', tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 450000, identity: 'Heritage Tourism', attractions: ['Ancient City Walls', "Emir's Palace"], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+            { region: 'northwest', state: 'Kaduna State', name: 'Northern Gateway Escape', tagline: 'Adventure Meets History', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 350000, identity: 'Heritage & Nature', attractions: ['Kajuru Castle', 'Matsirga Falls'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
+            { region: 'northwest', state: 'Katsina State', name: 'Land of Legends Trail', tagline: 'Experience Timeless Traditions', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Cultural Tourism', attractions: ['Gobarau Minaret'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+            { region: 'northwest', state: 'Jigawa State', name: 'Golden Dunes Journey', tagline: 'Beyond the Ordinary', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Desert Tourism', attractions: ['Wetlands & Cultural Sites'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
+            { region: 'northwest', state: 'Sokoto State', name: 'Caliphate Heritage Tour', tagline: 'Discover the Legacy of Leaders', tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 420000, identity: 'Historical Tourism', attractions: ["Sultan's Palace", 'Museum'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+            { region: 'northwest', state: 'Kebbi State', name: 'Argungu Adventure', tagline: 'Tradition on the Water', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Festival Tourism', attractions: ['Argungu Festival Grounds'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
+            { region: 'northwest', state: 'Zamfara State', name: 'Northern Frontier Experience', tagline: 'Discover Untold Stories', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Cultural Tourism', attractions: ['Heritage Communities'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+
+            // ── NORTHEAST ──
+            { region: 'northeast', state: 'Adamawa State', name: 'Highlands of Adamawa', tagline: 'Adventure Above the Clouds', tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 450000, identity: 'Mountain Tourism', attractions: ['Mambilla Plateau Region'], inclusions: ['Hotel Accommodation', 'Tour Guide', 'Local Transfers'], img: null },
+            { region: 'northeast', state: 'Taraba State', name: "Nature's Masterpiece Escape", tagline: "Explore Nigeria's Green Frontier", tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 480000, identity: 'Eco Tourism', attractions: ['Gashaka Gumti National Park'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+            { region: 'northeast', state: 'Borno State', name: 'Lake Chad Heritage Journey', tagline: 'Discover Ancient Trade Routes', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 320000, identity: 'Historical Tourism', attractions: ['Cultural Heritage Experiences'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+            { region: 'northeast', state: 'Yobe State', name: 'Desert Discovery Trail', tagline: 'Experience Northern Horizons', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Desert Tourism', attractions: ['Dune Landscapes'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
+            { region: 'northeast', state: 'Bauchi State', name: 'Yankari Wildlife Safari', tagline: "Africa's Wild Side Awaits", tier: 'EXECUTIVE', duration: '5 Days / 4 Nights', days: 5, nights: 4, price: 650000, identity: 'Safari Tourism', attractions: ['Yankari Game Reserve'], inclusions: ['Resort Accommodation', 'Safari Guide', 'Transfers'], img: null },
+            { region: 'northeast', state: 'Gombe State', name: 'Jewel of the Savannah', tagline: 'Discover Untamed Beauty', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 290000, identity: 'Eco Tourism', attractions: ['Savannah Landscapes'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+        ];
+
+        var TIER_LABELS = { EXPLORER: 'Explorer', SIGNATURE: 'Signature', EXECUTIVE: 'Executive' };
+        var TIER_COLORS = { EXPLORER: '#3B5BDB', SIGNATURE: '#C48332', EXECUTIVE: '#7048E8' };
+
+        // ── Render collections grid ─────────────────────────────────────────
+        function renderCollections() {
+            var grid = document.getElementById('collections-grid');
+            grid.innerHTML = REGIONS.map(function (r) {
+                var count = DESTINATIONS.filter(function (d) { return d.region === r.key; }).length;
+                var mediaStyle = r.img ? ' style="background-image:url(\'' + r.img + '\')"' : '';
+                var mediaClass = r.img ? 'jkfh-coll-media' : 'jkfh-coll-media jkfh-region-' + r.key;
+                return '<div class="jkfh-coll-card" onclick="browseRegion(\'' + r.key + '\')">' +
+                    '<div class="' + mediaClass + '"' + mediaStyle + '>' +
+                    '<div class="jkfh-coll-shade"></div>' +
+                    '<div class="jkfh-coll-count">' + count + ' Destination' + (count > 1 ? 's' : '') + '</div>' +
+                    '</div>' +
+                    '<div class="jkfh-coll-body">' +
+                    '<div class="jkfh-coll-name">' + escH(r.name) + '</div>' +
+                    '<div class="jkfh-coll-tag">' + escH(r.tagline) + '</div>' +
+                    '<div class="jkfh-coll-link">Explore Collection ' +
+                    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+            }).join('');
+        }
+
+        // ── Destination card ─────────────────────────────────────────────────
+        function destCardHTML(d, idx) {
+            var tierColor = TIER_COLORS[d.tier];
+            var media = d.img
+                ? '<div class="jkfh-card-img" style="background-image:url(\'' + d.img + '\')"></div>'
+                : '<div class="jkfh-card-img jkfh-card-img--placeholder jkfh-region-' + d.region + '"><span class="jkfh-card-placeholder-text">' + escH(d.state.replace(' State', '').replace('Federal Capital Territory', 'FCT')) + '</span></div>';
+            var attractionsList = d.attractions.map(function (a) { return '<li>' + escH(a) + '</li>'; }).join('');
+            var inclusionsList = d.inclusions.map(function (a) { return '<li>' + escH(a) + '</li>'; }).join('');
+            return '<div class="jkfh-card">' +
+                '<div class="jkfh-card-media">' + media +
+                '<div class="jkfh-card-shade"></div>' +
+                '<span class="jkfh-card-badge" style="background:' + tierColor + '">' + TIER_LABELS[d.tier] + '</span>' +
+                '</div>' +
+                '<div class="jkfh-card-body">' +
+                '<div class="jkfh-card-state">' + escH(d.state) + '</div>' +
+                '<div class="jkfh-card-name">' + escH(d.name) + '</div>' +
+                '<div class="jkfh-card-tag">"' + escH(d.tagline) + '"</div>' +
+                '<div class="jkfh-card-meta">' +
+                '<span class="jkfh-card-pill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' + escH(d.duration) + '</span>' +
+                '<span class="jkfh-card-pill jkfh-card-pill--gold">From &#8358;' + d.price.toLocaleString() + '</span>' +
+                '</div>' +
+                '<button class="jkfh-card-toggle" onclick="toggleCardDetails(' + idx + ')">' +
+                '<span id="toggle-label-' + idx + '">Show details</span>' +
+                '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>' +
+                '</button>' +
+                '<div class="jkfh-card-details" id="card-details-' + idx + '">' +
+                '<div class="jkfh-card-details-label">Key Attractions</div>' +
+                '<ul class="jkfh-card-details-list">' + attractionsList + '</ul>' +
+                '<div class="jkfh-card-details-label">Standard Inclusions</div>' +
+                '<ul class="jkfh-card-details-list">' + inclusionsList + '</ul>' +
+                '</div>' +
+                '<button class="jkfh-card-cta" onclick="openBookingModal(\'' + escAttr(d.state) + '\',\'' + escAttr(d.name) + '\',\'' + d.tier + '\',' + d.price + ',' + d.days + ',' + d.nights + ',\'' + (d.img || '') + '\')">' +
+                'Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
+                '</button>' +
+                '</div>' +
+                '</div>';
+        }
+
+        function toggleCardDetails(idx) {
+            var panel = document.getElementById('card-details-' + idx);
+            var label = document.getElementById('toggle-label-' + idx);
+            var open = panel.classList.toggle('open');
+            label.textContent = open ? 'Hide details' : 'Show details';
+        }
+
+        // ── Browse a region ──────────────────────────────────────────────────
+        function browseRegion(key) {
+            var region = REGIONS.find(function (r) { return r.key === key; });
+            if (!region) return;
+            var list = DESTINATIONS.filter(function (d) { return d.region === key; });
+
+            document.getElementById('collections-grid').style.display = 'none';
+            document.getElementById('browser-header').classList.add('active');
+            document.getElementById('browser-title').textContent = region.name + ' Collection';
+            document.getElementById('browser-tag').textContent = region.tagline;
+
+            var grid = document.getElementById('destination-grid');
+            grid.innerHTML = list.map(function (d, i) { return destCardHTML(d, i); }).join('');
+            grid.classList.add('active');
+
+            document.getElementById('collections').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function backToCollections() {
+            document.getElementById('collections-grid').style.display = 'grid';
+            document.getElementById('browser-header').classList.remove('active');
+            document.getElementById('destination-grid').classList.remove('active');
+            document.getElementById('destination-grid').innerHTML = '';
+            document.getElementById('collections').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        document.addEventListener('DOMContentLoaded', renderCollections);
+
         // ── Scroll reveal ────────────────────────────────────────────────────
         (function () {
             if (typeof IntersectionObserver === 'undefined') return;
-            var selectors = ['.jkfh-dest-row', '.jkfh-tier-card', '.jkfh-values-list li', '.jkfh-vision-card'];
+            var selectors = ['.jkfh-coll-card', '.jkfh-tier-card', '.jkfh-values-list li', '.jkfh-vision-card'];
             var observer = new IntersectionObserver(function (entries) {
                 entries.forEach(function (e) {
                     if (e.isIntersecting) { e.target.classList.add('jkfh-visible'); observer.unobserve(e.target); }
@@ -1258,25 +555,13 @@
         var _bm = {
             step: 1,
             totalSteps: 7,
-            // dest data
             state: '', packageName: '', tier: '', pricePerPerson: 0, days: 0, nights: 0, img: '',
             holidayId: null,
-            // step 2 — auth
             user: null,
-            // step 3 — travel details
             dateId: null, dateStr: '', travellers: 1, leadName: '', leadEmail: '', leadPhone: '',
-            // step 4 — tier
             selectedTier: '', tierPrice: 0,
-            // step 5 — club
             clubActive: false, addClub: false, clubFee: 150000,
-            // step 6 — summary
-            // step 7 — payment
         };
-
-        var TIER_LABELS = { EXPLORER: 'Explorer', SIGNATURE: 'Signature', EXECUTIVE: 'Executive' };
-        var TIER_COLORS = { EXPLORER: '#3B5BDB', SIGNATURE: '#C48332', EXECUTIVE: '#7048E8' };
-
-        function escH(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
         // ── Open modal ───────────────────────────────────────────────────────
         async function openBookingModal(state, packageName, tier, pricePerPerson, days, nights, img) {
@@ -1298,7 +583,6 @@
             _bm.leadEmail = '';
             _bm.leadPhone = '';
 
-            // Check club membership if logged in
             _bm.user = (typeof Auth !== 'undefined' && Auth.getCurrent) ? Auth.getCurrent() : null;
             if (_bm.user) {
                 try {
@@ -1308,20 +592,17 @@
                     const cd = await cs.json();
                     _bm.clubActive = !!(cd?.data?.active);
                 } catch (e) { _bm.clubActive = false; }
-                // Prefill details from profile
                 _bm.leadName = _bm.user.name || '';
                 _bm.leadEmail = _bm.user.email || '';
                 _bm.leadPhone = _bm.user.phone || '';
             }
 
-            // Fetch club fee from pricing
             try {
                 const pr = await fetch('https://api.jekafly.com/api/v1/pricing');
                 const pd = await pr.json();
                 if (pd?.data?.clubMembershipFee) _bm.clubFee = pd.data.clubMembershipFee;
             } catch (e) { }
 
-            // Try to fetch holidayId from API
             try {
                 const hr = await fetch('https://api.jekafly.com/api/v1/holidays');
                 const hd = await hr.json();
@@ -1332,7 +613,7 @@
                 }
             } catch (e) { }
 
-            _bm.step = _bm.user ? 1 : 1;
+            _bm.step = 1;
             document.getElementById('hbm-overlay').classList.add('open');
             document.body.style.overflow = 'hidden';
             renderStep();
@@ -1343,12 +624,10 @@
             document.body.style.overflow = '';
         }
 
-        // Close on overlay click
         document.getElementById('hbm-overlay').addEventListener('click', function (e) {
             if (e.target === this) closeBookingModal();
         });
 
-        // ── Step dots ────────────────────────────────────────────────────────
         function renderDots() {
             var dots = document.getElementById('hbm-step-dots');
             dots.innerHTML = Array.from({ length: _bm.totalSteps }, (_, i) => {
@@ -1357,7 +636,6 @@
             }).join('');
         }
 
-        // ── Render dispatcher ─────────────────────────────────────────────────
         function renderStep() {
             renderDots();
             var fns = [null, renderStep1, renderStep2, renderStep3, renderStep4, renderStep5, renderStep6, renderStep7];
@@ -1438,7 +716,6 @@
                 _bm.leadName = _bm.user.name || '';
                 _bm.leadEmail = _bm.user.email || '';
                 _bm.leadPhone = _bm.user.phone || '';
-                // Check club status after login
                 try {
                     const cs = await fetch('https://api.jekafly.com/api/v1/club/status', {
                         headers: { 'Authorization': 'Bearer ' + (Auth.getToken ? Auth.getToken() : '') }
@@ -1501,7 +778,6 @@
             <div id="hbm-step3-err" class="hbm-inline-error"></div>
             <button class="hbm-btn" onclick="hbmStep3Next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
 
-            // Load dates
             try {
                 var endpoint = _bm.holidayId
                     ? `https://api.jekafly.com/api/v1/holidays/${_bm.holidayId}/availability`
@@ -1513,7 +789,6 @@
                     dates = dd?.data?.dates || [];
                 }
                 if (!dates.length) {
-                    // Generate placeholder dates 30/60/90 days out
                     var now = new Date();
                     for (var i = 1; i <= 3; i++) {
                         var d = new Date(now); d.setDate(d.getDate() + i * 30);
@@ -1567,9 +842,7 @@
                 { key: 'SIGNATURE', label: 'Signature', desc: 'Premium Hotel · Daily Breakfast · Airport/Local Transfers · Guided Experiences · Photography Stops · Branded Pack', price: _bm.tier === 'SIGNATURE' ? _bm.pricePerPerson : null, color: '#C48332', bg: '#FFF8E6' },
                 { key: 'EXECUTIVE', label: 'Executive', desc: 'Luxury Accommodation · VIP Transfers · Concierge · Premium Dining · Professional Photography · Exclusive Access · Branded Pack', price: _bm.tier === 'EXECUTIVE' ? _bm.pricePerPerson : null, color: '#7048E8', bg: '#F3F0FF' },
             ];
-            // Only show tiers with a price set (or the package's own tier)
             var available = tiers.filter(t => t.key === _bm.tier || t.price !== null);
-            // If only one available, auto-select and skip
             if (available.length === 1) {
                 _bm.selectedTier = available[0].key;
                 _bm.tierPrice = _bm.pricePerPerson;
@@ -1687,7 +960,6 @@
             var clubTotal = (!_bm.clubActive && _bm.addClub) ? _bm.clubFee : 0;
             var grandTotal = tierTotal + clubTotal;
 
-            // Create booking record first
             var bookingRef = null;
             if (_bm.holidayId && !_bm.dateId.startsWith('placeholder')) {
                 try {
