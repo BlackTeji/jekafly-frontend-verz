@@ -100,6 +100,11 @@ function updateNav() {
                 <span class="nav-mob-row-label">Hotels</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
+              <button class="nav-mob-row" data-tab="mydocs" onclick="showTab('mydocs',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFF9DB;color:#E67700"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></span>
+                <span class="nav-mob-row-label">Holidays</span>
+                <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
               <button class="nav-mob-row" data-tab="profile" onclick="showTab('profile',null);closeNavMenu()">
                 <span class="nav-mob-row-icon" style="background:#E7F5FF;color:#1C7ED6"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21a9 9 0 0 1 18 0"/></svg></span>
                 <span class="nav-mob-row-label">My Profile</span>
