@@ -1,0 +1,36 @@
+.ejkf-region-bg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 16px;
+}
+
+.ejkf-region-bg-label {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: rgba(255, 255, 255, 0.92);
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.ejkf-region-southsouth {
+    background: linear-gradient(160deg, #1D6F8C, #0F3644);
+}
+
+.ejkf-region-southeast {
+    background: linear-gradient(160deg, #6B4226, #33200F);
+}
+
+.ejkf-region-northcentral {
+    background: linear-gradient(160deg, #3B7A3B, #1B3A1B);
+}
+
+.ejkf-region-northwest {
+    background: linear-gradient(160deg, #B8860B, #5C3D0A);
+}
+
+.ejkf-region-northeast {
+    background: linear-gradient(160deg, #9C5A2E, #4A2A12);
+}

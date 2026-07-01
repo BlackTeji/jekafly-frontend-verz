@@ -528,8 +528,15 @@
             document.getElementById('collections').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        document.addEventListener('DOMContentLoaded', renderCollections);
-
+        document.addEventListener('DOMContentLoaded', function () {
+            renderCollections();
+            var params = new URLSearchParams(window.location.search);
+            var region = params.get('region');
+            if (region && REGIONS.some(function (r) { return r.key === region; })) {
+                browseRegion(region);
+            }
+        });
+        
         // ── Scroll reveal ────────────────────────────────────────────────────
         (function () {
             if (typeof IntersectionObserver === 'undefined') return;
