@@ -189,6 +189,20 @@
                 rows.push({ l: 'Guests', v: String(p.guests || 1) });
                 rows.push({ l: 'Room Cost', v: '&#8358;' + (p.amount || 0).toLocaleString() });
                 if (p.ref) rows.push({ l: 'Reservation Ref', v: p.ref, isRef: true });
+            } else if (p.type === 'holiday') {
+                flag = '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0D1560" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>';
+                destName = p.packageName || 'Holiday Package';
+                const _tierLabel = { EXPLORER: 'Explorer', SIGNATURE: 'Signature', EXECUTIVE: 'Executive' }[p.tier] || p.tier || '';
+                destRef = [p.state, _tierLabel, p.date].filter(Boolean).join(' &middot; ');
+                total = p.amount || 0;
+                rows.push({ l: 'Package', v: p.packageName || '—' });
+                rows.push({ l: 'Destination', v: p.state || '—' });
+                rows.push({ l: 'Tier', v: _tierLabel || '—' });
+                rows.push({ l: 'Travel Date', v: p.date || '—' });
+                rows.push({ l: 'Travellers', v: String(p.travellers || 1) });
+                rows.push({ l: 'Tier Cost', v: '&#8358;' + (p.tierAmount || p.amount || 0).toLocaleString() });
+                if (p.membershipAdded) rows.push({ l: 'Travel Club Membership (annual)', v: '&#8358;' + (p.membershipAmount || 0).toLocaleString() });
+                if (p.bookingRef) rows.push({ l: 'Booking Ref', v: p.bookingRef, isRef: true });
             } else {
                 flag = '&#128737;'; destName = p.plan || 'Travel Insurance';
                 destRef = (p.dest || 'Worldwide') + (p.travellers ? ' &middot; ' + p.travellers + ' traveller' + (p.travellers > 1 ? 's' : '') : '');
@@ -224,10 +238,7 @@
                 '<div class="dest-card-amount"><small>Total</small>' + totalStr + '</div>' +
                 '</div></div>' +
                 '<div class="line-items">' + lineItemsHtml + '</div>' +
-                '<div class="included-strip"><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>What&#39;s included:</strong> ' + (p.type === 'consultation' ? 'A dedicated Jekafly visa expert will review your profile, advise on the strongest application strategy, check your document checklist, and answer all your visa questions in a live session.' : p.type === 'insurance' ? 'Emergency medical cover, trip cancellation protection, baggage loss compensation, and 24/7 travel assistance — as per your selected plan.' : p.type === 'flight' ? 'Confirmed flight booking with e-ticket, booking reference, and passenger itinerary sent to your email.' : p.type === 'hotel' ? 'Confirmed hotel reservation with voucher, reservation reference, and check-in details sent to your email.' : 'Expert document review by a visa specialist, embassy submission, real-time application tracking, and a dedicated support agent throughout the process.') + '</span></div>' +
-                '</div>' +
-                '<div class="pay-panel"><div class="pay-box" id="pay-box-main">' +
-                '<div id="pay-form-view">' +
+                '<div class="included-strip"><span><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span><strong>What&#39;s included:</strong> ' + (p.type === 'consultation' ? 'A dedicated Jekafly visa expert will review your profile, advise on the strongest application strategy, check your document checklist, and answer all your visa questions in a live session.' : p.type === 'insurance' ? 'Emergency medical cover, trip cancellation protection, baggage loss compensation, and 24/7 travel assistance — as per your selected plan.' : p.type === 'flight' ? 'Confirmed flight booking with e-ticket, booking reference, and passenger itinerary sent to your email.' : p.type === 'hotel' ? 'Confirmed hotel reservation with voucher, reservation reference, and check-in details sent to your email.' : p.type === 'holiday' ? 'Confirmed holiday booking with your selected tier inclusions' + (p.membershipAdded ? ', Travel Club membership activation,' : '') + ' and full itinerary sent to your email.' : 'Expert document review by a visa specialist, embassy submission, real-time application tracking, and a dedicated support agent throughout the process.') + '</span></div>' +
                 '<div class="pay-box-header"><div class="pay-box-title">Complete Payment</div><div class="pay-box-sub">You&#39;ll be prompted to pay securely via Paystack</div></div>' +
                 '<div class="pay-total-display"><span class="pay-total-currency">&#8358;</span><span class="pay-total-amount">' + total.toLocaleString() + '</span></div>' +
                 '<div class="pay-divider"></div>' +
@@ -292,11 +303,21 @@
             document.getElementById('pay-processing').classList.add('show');
             try {
                 const user = Auth.getCurrent();
+                const _meta = { destination: pendingPayment.destination || pendingPayment.dest, plan: pendingPayment.plan, date: pendingPayment.date, travelDate: pendingPayment.date, travellers: pendingPayment.travellers };
+                if (pendingPayment.type === 'holiday') {
+                    _meta.packageName = pendingPayment.packageName;
+                    _meta.state = pendingPayment.state;
+                    _meta.tier = pendingPayment.tier;
+                    _meta.tierAmount = pendingPayment.tierAmount;
+                    _meta.membershipAdded = pendingPayment.membershipAdded;
+                    _meta.membershipAmount = pendingPayment.membershipAmount;
+                    _meta.bookingRef = pendingPayment.bookingRef;
+                }
                 const res = await PaymentStore.initiate(
                     (pendingPayment.type || 'visa').toUpperCase(),
                     pendingPayment.ref || null, pendingPayment.amount,
                     pendingPayment.email || user.email,
-                    { destination: pendingPayment.destination || pendingPayment.dest, plan: pendingPayment.plan, date: pendingPayment.date, travelDate: pendingPayment.date, travellers: pendingPayment.travellers }
+                    _meta
                 );
                 if (!res?.ok) throw new Error(res?.error || 'Payment initiation failed.');
                 const { accessCode, reference, publicKey } = res.data;
