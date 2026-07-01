@@ -86,6 +86,10 @@ async function apiFetchBlob(path) {
 }
 
 var Auth = {
+    getToken() {
+        return _accessToken;
+    },
+
     async register(name, email, phone, password) {
         const res = await post('/auth/register', { name, email, phone, password });
         if (res?.ok) {

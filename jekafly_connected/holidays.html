@@ -615,7 +615,7 @@
                 const hd = await hr.json();
                 const regions = hd?.data?.regions || [];
                 for (const r of regions) {
-                    const match = (r.packages || []).find(p => p.state === state && p.packageName === packageName);
+                    const match = (r.packages || []).find(p => p.packageName === packageName);
                     if (match) { _bm.holidayId = match.id; break; }
                 }
             } catch (e) { }
