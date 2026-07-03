@@ -702,13 +702,14 @@
                 <!-- HOLIDAYS -->
                 <div id="tab-holidays" style="display:none">
                     <div class="admin-title">Holiday Packages &amp; Bookings<button class="tab-refresh-btn"
-                            onclick="refreshHolidaysAdmin(this)"
-                            title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            onclick="refreshHolidaysAdmin(this)" title="Refresh"><svg width="13" height="13"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="23 4 23 10 17 10" />
                                 <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
                             </svg> Refresh</button></div>
-                    <p class="admin-sub">Manage bookable travel dates, capacity, and traveller bookings for each holiday package.</p>
+                    <p class="admin-sub">Manage bookable travel dates, capacity, and traveller bookings for each holiday
+                        package.</p>
 
                     <div style="display:flex;gap:8px;margin-bottom:18px;">
                         <button id="hol-subtab-dates" onclick="switchHolSubTab('dates')"
@@ -761,10 +762,14 @@
                                         </select>
                                     </div>
                                     <div class="afilters-pills">
-                                        <button class="filter-btn active" onclick="holBookingsSetFilter('all',this)">All</button>
-                                        <button class="filter-btn" onclick="holBookingsSetFilter('pending',this)">Pending</button>
-                                        <button class="filter-btn" onclick="holBookingsSetFilter('confirmed',this)">Confirmed</button>
-                                        <button class="filter-btn" onclick="holBookingsSetFilter('cancelled',this)">Cancelled</button>
+                                        <button class="filter-btn active"
+                                            onclick="holBookingsSetFilter('all',this)">All</button>
+                                        <button class="filter-btn"
+                                            onclick="holBookingsSetFilter('pending',this)">Pending</button>
+                                        <button class="filter-btn"
+                                            onclick="holBookingsSetFilter('confirmed',this)">Confirmed</button>
+                                        <button class="filter-btn"
+                                            onclick="holBookingsSetFilter('cancelled',this)">Cancelled</button>
                                     </div>
                                 </div>
                             </div>
@@ -1513,7 +1518,7 @@
                     <td>${pkgLabel}</td>
                     <td class="cell-date">${dateStr}</td>
                     <td>${escHtml(b.tier)}</td>
-                    <td>${b.travellers}</td>
+                    <td>${b.travellers}${(b.additionalTravellers && b.additionalTravellers.length) ? ` <button class="btn-manage" style="padding:2px 8px;font-size:0.7rem;margin-left:4px;" onclick="showHolTravellerManifest('${b.id}')">View</button>` : ''}</td>
                     <td><strong>₦${(b.totalAmount || 0).toLocaleString()}</strong>${b.membershipAdded ? '<br><span class="fs-xs text-muted">+Club membership</span>' : ''}</td>
                     <td><span class="status-pill ${HOL_BOOKING_STATUS_CLASSES[b.status] || 'status-received'}">${HOL_BOOKING_STATUS_LABELS[b.status] || b.status}</span></td>
                     <td>${holBookingActionsHTML(b)}</td>
@@ -1521,6 +1526,33 @@
             }).join('')}</tbody></table>` + _adminBuildPager(_holBookingsAll.length, _holBookingsPage, 'holBookingsGoPage');
         }
         function holBookingsGoPage(p) { const t = Math.ceil(_holBookingsAll.length / APPS_PER_PAGE); if (p < 1 || p > t) return; _holBookingsPage = p; renderHolBookingsPage(); }
+
+        function showHolTravellerManifest(id) {
+            const b = (_holBookingsAll || []).find(x => x.id === id);
+            if (!b) return;
+            const modal = document.getElementById('hol-manifest-modal');
+            const body = document.getElementById('hol-manifest-body');
+            const title = document.getElementById('hol-manifest-title');
+            if (!modal || !body) return;
+            title.textContent = 'Traveller Manifest — ' + (b.ref || '');
+            const additional = b.additionalTravellers || [];
+            body.innerHTML = `
+                <div style="padding:10px 12px;background:#F0F2FB;border-radius:10px;">
+                    <div style="font-weight:700;color:#0D1560;font-size:0.88rem;">${escHtml(b.leadName)} <span style="font-size:0.72rem;color:#9BA5C0;font-weight:500;">— Lead Traveller</span></div>
+                    <div style="font-size:0.76rem;color:#8898BB;margin-top:2px;">${escHtml(b.leadEmail)}${b.leadPhone ? ' · ' + escHtml(b.leadPhone) : ''}</div>
+                </div>
+                ${additional.map((t, i) => `
+                <div style="padding:10px 12px;background:#FAFAFA;border-radius:10px;border:1px solid #F0F0F0;">
+                    <div style="font-weight:600;color:#0F1124;font-size:0.86rem;">${escHtml(t.name)} <span style="font-size:0.72rem;color:#9BA5C0;font-weight:500;">— Traveller ${i + 2}</span></div>
+                    ${t.phone ? `<div style="font-size:0.76rem;color:#8898BB;margin-top:2px;">${escHtml(t.phone)}</div>` : ''}
+                </div>`).join('')}
+            `;
+            modal.style.display = 'flex';
+        }
+        function closeHolManifestModal(e) {
+            if (e && e.target !== document.getElementById('hol-manifest-modal')) return;
+            document.getElementById('hol-manifest-modal').style.display = 'none';
+        }
 
         function holBookingActionsHTML(b) {
             if (b.status === 'CONFIRMED') {
@@ -2860,6 +2892,27 @@
             if (nav) nav.style.boxShadow = scrollY > 20 ? '0 2px 20px rgba(14,14,184,.08)' : 'none';
         });
     </script>
+
+    <!-- Holiday Traveller Manifest Modal -->
+    <div id="hol-manifest-modal" onclick="closeHolManifestModal(event)"
+        style="display:none;position:fixed;inset:0;z-index:99992;background:rgba(10,13,50,.55);align-items:center;justify-content:center;padding:20px;">
+        <div
+            style="background:#fff;border-radius:16px;padding:24px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.18);font-family:'Poppins',sans-serif;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+                <div id="hol-manifest-title" style="font-size:1rem;font-weight:700;color:#0D1560;">Traveller Manifest
+                </div>
+                <button onclick="closeHolManifestModal()"
+                    style="background:none;border:none;cursor:pointer;color:#9BA5C0;padding:4px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round">
+                        <line x1="18" y1="6" x2="6" y2="18" />
+                        <line x1="6" y1="6" x2="18" y2="18" />
+                    </svg>
+                </button>
+            </div>
+            <div id="hol-manifest-body" style="display:flex;flex-direction:column;gap:12px;"></div>
+        </div>
+    </div>
 
     <!-- Document Preview Modal -->
     <div id="admin-preview-modal" onclick="closeAdminPreview(event)" style="display:none">

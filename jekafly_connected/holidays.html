@@ -495,8 +495,8 @@
                 (isSoldOut
                     ? '<button class="jkfh-card-cta" disabled style="opacity:0.55;cursor:not-allowed;">No Dates Available</button>'
                     : '<button class="jkfh-card-cta" onclick="openBookingModal(\'' + escAttr(d.state) + '\',\'' + escAttr(d.name) + '\',\'' + d.tier + '\',' + d.price + ',' + d.days + ',' + d.nights + ',\'' + (d.img || '') + '\')">' +
-                      'Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
-                      '</button>') +
+                    'Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
+                    '</button>') +
                 '</div>' +
                 '</div>';
         }
@@ -563,7 +563,7 @@
             if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
         }());
 
-        var _holidayAvailability = {}; 
+        var _holidayAvailability = {};
 
         async function loadHolidayAvailability() {
             try {
@@ -592,6 +592,7 @@
             holidayId: null,
             user: null,
             dateId: null, dateStr: '', travellers: 1, leadName: '', leadEmail: '', leadPhone: '',
+            additionalTravellers: [],
             selectedTier: '', tierPrice: 0,
             clubActive: false, addClub: false, clubFee: 150000,
         };
@@ -620,6 +621,7 @@
             _bm.leadName = '';
             _bm.leadEmail = '';
             _bm.leadPhone = '';
+            _bm.additionalTravellers = [];
 
             _bm.user = (typeof Auth !== 'undefined' && Auth.getCurrent) ? Auth.getCurrent() : null;
             if (_bm.user) {
@@ -783,6 +785,49 @@
             } catch (e) { err.textContent = e.message; err.style.display = 'block'; }
         }
 
+        // ── Additional traveller fields (renders when travellers count > 1) ────
+        function renderAdditionalTravellerFields() {
+            var wrap = document.getElementById('hbm-additional-travellers-wrap');
+            if (!wrap) return;
+            var count = parseInt(document.getElementById('hbm-travellers')?.value) || 1;
+            count = Math.max(1, Math.min(20, count));
+            var extraCount = count - 1;
+
+            if (extraCount <= 0) {
+                wrap.innerHTML = '';
+                _bm.additionalTravellers = [];
+                return;
+            }
+
+            var existing = _bm.additionalTravellers || [];
+            var rows = '';
+            for (var i = 0; i < extraCount; i++) {
+                var t = existing[i] || { name: '', phone: '' };
+                rows += `<div class="hbm-row" style="margin-bottom:10px;">
+                    <div class="hbm-form-group" style="margin-bottom:0;">
+                        <label class="hbm-label">Traveller ${i + 2} — Full Name</label>
+                        <input class="hbm-input hbm-add-traveller-name" data-idx="${i}" type="text" placeholder="Full name" value="${escH(t.name)}" />
+                    </div>
+                    <div class="hbm-form-group" style="margin-bottom:0;">
+                        <label class="hbm-label">Phone <span style="font-weight:400;color:#9AABCC;">(optional)</span></label>
+                        <input class="hbm-input hbm-add-traveller-phone" data-idx="${i}" type="tel" placeholder="+234..." value="${escH(t.phone || '')}" />
+                    </div>
+                </div>`;
+            }
+            wrap.innerHTML = `<div style="font-size:0.82rem;font-weight:600;color:#0D1560;margin:14px 0 8px;">Additional Travellers</div>` + rows;
+        }
+
+        function collectAdditionalTravellers() {
+            var names = document.querySelectorAll('.hbm-add-traveller-name');
+            var phones = document.querySelectorAll('.hbm-add-traveller-phone');
+            var list = [];
+            names.forEach(function (input, i) {
+                list.push({ name: input.value.trim(), phone: (phones[i]?.value || '').trim() });
+            });
+            _bm.additionalTravellers = list;
+            return list;
+        }
+
         // ── STEP 3 — Travel details ───────────────────────────────────────────
         async function renderStep3() {
             var availHtml = '<div style="color:#9AABCC;font-size:0.82rem;">Loading available dates…</div>';
@@ -797,8 +842,9 @@
             </div>
             <div class="hbm-form-group">
                 <label class="hbm-label">Number of Travellers</label>
-                <input class="hbm-input" id="hbm-travellers" type="number" min="1" max="20" value="${_bm.travellers}" />
+                <input class="hbm-input" id="hbm-travellers" type="number" min="1" max="20" value="${_bm.travellers}" oninput="renderAdditionalTravellerFields()" />
             </div>
+            <div id="hbm-additional-travellers-wrap"></div>
             <div class="hbm-form-group">
                 <label class="hbm-label">Lead Traveller Name</label>
                 <input class="hbm-input" id="hbm-lead-name" type="text" placeholder="Full name" value="${escH(_bm.leadName)}" />
@@ -815,6 +861,8 @@
             </div>
             <div id="hbm-step3-err" class="hbm-inline-error"></div>
             <button class="hbm-btn" onclick="hbmStep3Next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+
+            renderAdditionalTravellerFields();
 
             try {
                 var endpoint = _bm.holidayId
@@ -870,9 +918,21 @@
             _bm.leadName = document.getElementById('hbm-lead-name').value.trim();
             _bm.leadEmail = document.getElementById('hbm-lead-email').value.trim();
             _bm.leadPhone = document.getElementById('hbm-lead-phone').value.trim();
+            var additional = collectAdditionalTravellers();
             if (!_bm.dateId) { err.textContent = 'Please select a travel date.'; err.style.display = 'block'; return; }
             if (!_bm.leadName) { err.textContent = 'Please enter the lead traveller name.'; err.style.display = 'block'; return; }
             if (!_bm.leadEmail) { err.textContent = 'Please enter an email address.'; err.style.display = 'block'; return; }
+            if (additional.length !== _bm.travellers - 1) {
+                err.textContent = 'Please enter a name for each additional traveller.';
+                err.style.display = 'block';
+                return;
+            }
+            var missingName = additional.find(function (t) { return !t.name; });
+            if (missingName) {
+                err.textContent = 'Please enter a full name for every additional traveller.';
+                err.style.display = 'block';
+                return;
+            }
             goStep(4);
         }
 
@@ -987,6 +1047,7 @@
                 <div class="hbm-summary-row"><span>Date</span><span>${_bm.dateStr}</span></div>
                 <div class="hbm-summary-row"><span>Tier</span><span>${TIER_LABELS[_bm.selectedTier]}</span></div>
                 <div class="hbm-summary-row"><span>Travellers</span><span>${_bm.travellers}</span></div>
+                ${(_bm.additionalTravellers && _bm.additionalTravellers.length) ? `<div class="hbm-summary-row" style="align-items:flex-start;"><span>Additional</span><span style="text-align:right;">${_bm.additionalTravellers.map(t => escH(t.name)).join('<br>')}</span></div>` : ''}
                 <div class="hbm-summary-row"><span>Tier cost (₦${_bm.tierPrice.toLocaleString()} × ${_bm.travellers})</span><span>₦${tierTotal.toLocaleString()}</span></div>
                 ${clubTotal ? `<div class="hbm-summary-row"><span>Travel Club membership (annual)</span><span>₦${clubTotal.toLocaleString()}</span></div>` : ''}
                 <div class="hbm-summary-row total"><span>Total</span><span>₦${grandTotal.toLocaleString()}</span></div>
@@ -1017,6 +1078,7 @@
                             leadEmail: _bm.leadEmail,
                             leadPhone: _bm.leadPhone,
                             addMembership: _bm.addClub && !_bm.clubActive,
+                            additionalTravellers: _bm.additionalTravellers,
                         })
                     });
                     var bd = await br.json();
