@@ -100,8 +100,8 @@ function updateNav() {
                 <span class="nav-mob-row-label">Hotels</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
-              <button class="nav-mob-row" data-tab="mydocs" onclick="showTab('mydocs',null);closeNavMenu()">
-                <span class="nav-mob-row-icon" style="background:#FFF9DB;color:#E67700"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg></span>
+              <button class="nav-mob-row" data-tab="holidays" onclick="showTab('holidays',null);closeNavMenu()">
+                <span class="nav-mob-row-icon" style="background:#FFF3E0;color:#C2410C"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></span>
                 <span class="nav-mob-row-label">Holidays</span>
                 <svg class="nav-mob-row-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
               </button>
