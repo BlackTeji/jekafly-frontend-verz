@@ -701,37 +701,78 @@
 
                 <!-- HOLIDAYS -->
                 <div id="tab-holidays" style="display:none">
-                    <div class="admin-title">Holiday Packages &amp; Dates<button class="tab-refresh-btn"
-                            onclick="this.classList.add('spinning');loadHolidaysAdmin();setTimeout(()=>this.classList.remove('spinning'),800)"
+                    <div class="admin-title">Holiday Packages &amp; Bookings<button class="tab-refresh-btn"
+                            onclick="refreshHolidaysAdmin(this)"
                             title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="23 4 23 10 17 10" />
                                 <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
                             </svg> Refresh</button></div>
-                    <p class="admin-sub">Manage bookable travel dates and capacity for each holiday package.</p>
-                    <div class="acard">
-                        <div class="acard-header">
-                            <h3>Select a Package</h3>
+                    <p class="admin-sub">Manage bookable travel dates, capacity, and traveller bookings for each holiday package.</p>
+
+                    <div style="display:flex;gap:8px;margin-bottom:18px;">
+                        <button id="hol-subtab-dates" onclick="switchHolSubTab('dates')"
+                            style="padding:8px 16px;border-radius:10px;border:1.5px solid #0D1560;background:#0D1560;color:#fff;font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">Packages
+                            &amp; Dates</button>
+                        <button id="hol-subtab-bookings" onclick="switchHolSubTab('bookings')"
+                            style="padding:8px 16px;border-radius:10px;border:1.5px solid #E5E7EB;background:#fff;color:#4B5563;font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;">Bookings</button>
+                    </div>
+
+                    <div id="hol-panel-dates">
+                        <div class="acard">
+                            <div class="acard-header">
+                                <h3>Select a Package</h3>
+                            </div>
+                            <div class="fees-body">
+                                <select id="hol-package-select" class="fees-input" style="max-width:420px;"
+                                    onchange="onHolPackageSelect(this.value)">
+                                    <option value="">Choose a package...</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="fees-body">
-                            <select id="hol-package-select" class="fees-input" style="max-width:420px;"
-                                onchange="onHolPackageSelect(this.value)">
-                                <option value="">Choose a package...</option>
-                            </select>
+                        <div class="acard mt-20" id="hol-dates-card" style="display:none">
+                            <div class="acard-header">
+                                <h3>Bookable Dates</h3><span id="hol-dates-count" class="fs-sm text-light"></span>
+                            </div>
+                            <div class="acard-table-wrap">
+                                <div id="hol-dates-table"></div>
+                            </div>
+                            <div class="acard-footer">
+                                <input type="date" id="hol-new-date" class="input-sm" />
+                                <input type="number" id="hol-new-capacity" placeholder="Capacity" min="1" step="1"
+                                    value="20" class="input-sm" />
+                                <button class="btn-manage" onclick="addHolDate()">+ Add Date</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="acard mt-20" id="hol-dates-card" style="display:none">
-                        <div class="acard-header">
-                            <h3>Bookable Dates</h3><span id="hol-dates-count" class="fs-sm text-light"></span>
-                        </div>
-                        <div class="acard-table-wrap">
-                            <div id="hol-dates-table"></div>
-                        </div>
-                        <div class="acard-footer">
-                            <input type="date" id="hol-new-date" class="input-sm" />
-                            <input type="number" id="hol-new-capacity" placeholder="Capacity" min="1" step="1"
-                                value="20" class="input-sm" />
-                            <button class="btn-manage" onclick="addHolDate()">+ Add Date</button>
+
+                    <div id="hol-panel-bookings" style="display:none">
+                        <div class="acard">
+                            <div class="acard-header">
+                                <h3>Holiday Bookings</h3>
+                                <div class="afilters">
+                                    <div class="afilters-top">
+                                        <input type="text" class="search-input" id="hol-booking-search"
+                                            placeholder="Search ref, name, email, phone..."
+                                            oninput="holBookingsSearchInput()" />
+                                        <select id="hol-booking-package-filter" class="fees-input"
+                                            style="max-width:260px;" onchange="holBookingsFilterPackage(this.value)">
+                                            <option value="">All Packages</option>
+                                        </select>
+                                    </div>
+                                    <div class="afilters-pills">
+                                        <button class="filter-btn active" onclick="holBookingsSetFilter('all',this)">All</button>
+                                        <button class="filter-btn" onclick="holBookingsSetFilter('pending',this)">Pending</button>
+                                        <button class="filter-btn" onclick="holBookingsSetFilter('confirmed',this)">Confirmed</button>
+                                        <button class="filter-btn" onclick="holBookingsSetFilter('cancelled',this)">Cancelled</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="acard-table-wrap">
+                                <div id="hol-bookings-table">
+                                    <div class="atbl-empty">Loading...</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1317,6 +1358,7 @@
                 const res = await get('/holidays/admin/packages');
                 _holPackages = res?.ok ? (res.data.holidays || []) : [];
             } catch (e) { _holPackages = []; }
+            populateHolBookingPackageFilter();
             if (!_holPackages.length) {
                 sel.innerHTML = '<option value="">No packages found</option>';
                 return;
@@ -1389,6 +1431,152 @@
             if (!res?.ok) { showToast(res?.error || 'Failed to delete date.', 'error'); return; }
             showToast('Date deleted.');
             await loadHolidaysAdmin();
+        }
+
+        let _holActiveSubTab = 'dates';
+        const HOL_SUBTAB_ACTIVE_STYLE = "padding:8px 16px;border-radius:10px;border:1.5px solid #0D1560;background:#0D1560;color:#fff;font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;";
+        const HOL_SUBTAB_INACTIVE_STYLE = "padding:8px 16px;border-radius:10px;border:1.5px solid #E5E7EB;background:#fff;color:#4B5563;font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;";
+
+        function switchHolSubTab(tab) {
+            _holActiveSubTab = tab;
+            const datesPanel = document.getElementById('hol-panel-dates');
+            const bookingsPanel = document.getElementById('hol-panel-bookings');
+            const datesBtn = document.getElementById('hol-subtab-dates');
+            const bookingsBtn = document.getElementById('hol-subtab-bookings');
+            if (tab === 'dates') {
+                datesPanel.style.display = 'block';
+                bookingsPanel.style.display = 'none';
+                datesBtn.style.cssText = HOL_SUBTAB_ACTIVE_STYLE;
+                bookingsBtn.style.cssText = HOL_SUBTAB_INACTIVE_STYLE;
+            } else {
+                datesPanel.style.display = 'none';
+                bookingsPanel.style.display = 'block';
+                datesBtn.style.cssText = HOL_SUBTAB_INACTIVE_STYLE;
+                bookingsBtn.style.cssText = HOL_SUBTAB_ACTIVE_STYLE;
+                if (!_holBookingsAll.length) loadHolBookings();
+            }
+        }
+
+        function refreshHolidaysAdmin(btn) {
+            if (btn) btn.classList.add('spinning');
+            loadHolidaysAdmin();
+            if (_holActiveSubTab === 'bookings') loadHolBookings();
+            if (btn) setTimeout(() => btn.classList.remove('spinning'), 800);
+        }
+
+        function populateHolBookingPackageFilter() {
+            const sel = document.getElementById('hol-booking-package-filter');
+            if (!sel) return;
+            const current = sel.value;
+            sel.innerHTML = '<option value="">All Packages</option>' +
+                (_holPackages || []).map(h => `<option value="${h.id}">${escHtml(h.region)} — ${escHtml(h.packageName)}</option>`).join('');
+            if (current) sel.value = current;
+        }
+
+        let _holBookingsAll = [], _holBookingsPage = 1, _holBookingsFilter = 'all', _holBookingsPackageFilter = '', _holBookingsSearchDebounce = null;
+
+        async function loadHolBookings() {
+            const table = document.getElementById('hol-bookings-table');
+            if (!table) return;
+            table.innerHTML = '<div class="atbl-empty">Loading...</div>';
+            try {
+                const params = new URLSearchParams();
+                if (_holBookingsFilter !== 'all') params.set('status', _holBookingsFilter);
+                if (_holBookingsPackageFilter) params.set('holidayId', _holBookingsPackageFilter);
+                const q = document.getElementById('hol-booking-search')?.value?.trim();
+                if (q) params.set('search', q);
+                params.set('page', '1');
+                params.set('pageSize', '200');
+                const res = await get(`/holidays/admin/bookings?${params.toString()}`);
+                _holBookingsAll = res?.ok ? (res.data.bookings || []) : [];
+            } catch (e) { _holBookingsAll = []; }
+            _holBookingsPage = 1;
+            renderHolBookingsPage();
+        }
+
+        const HOL_BOOKING_STATUS_LABELS = { PENDING: 'Pending Payment', CONFIRMED: 'Confirmed', CANCELLED: 'Cancelled' };
+        const HOL_BOOKING_STATUS_CLASSES = { PENDING: 'status-received', CONFIRMED: 'status-approved', CANCELLED: 'status-rejected' };
+
+        function renderHolBookingsPage() {
+            const table = document.getElementById('hol-bookings-table');
+            if (!table) return;
+            if (!_holBookingsAll.length) { table.innerHTML = '<div class="atbl-empty">No bookings found.</div>'; return; }
+            const paged = _adminPaginate(_holBookingsAll, _holBookingsPage);
+            table.innerHTML = `<table><thead><tr>
+                <th>Ref</th><th>Lead Traveller</th><th>Package</th><th>Date</th><th>Tier</th><th>Travellers</th><th>Amount</th><th>Status</th><th></th>
+            </tr></thead><tbody>${paged.map(b => {
+                const dateStr = b.holidayDate?.date ? new Date(b.holidayDate.date).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—';
+                const pkgLabel = b.holiday ? `${escHtml(b.holiday.packageName)}<br><span class="fs-xs text-muted">${escHtml(b.holiday.state)}</span>` : '—';
+                return `<tr>
+                    <td><span class="cell-mono">${escHtml(b.ref)}</span></td>
+                    <td><strong>${escHtml(b.leadName)}</strong><br><span class="fs-xs text-muted">${escHtml(b.leadEmail)}</span>${b.leadPhone ? `<br><span class="fs-xs text-muted">${escHtml(b.leadPhone)}</span>` : ''}</td>
+                    <td>${pkgLabel}</td>
+                    <td class="cell-date">${dateStr}</td>
+                    <td>${escHtml(b.tier)}</td>
+                    <td>${b.travellers}</td>
+                    <td><strong>₦${(b.totalAmount || 0).toLocaleString()}</strong>${b.membershipAdded ? '<br><span class="fs-xs text-muted">+Club membership</span>' : ''}</td>
+                    <td><span class="status-pill ${HOL_BOOKING_STATUS_CLASSES[b.status] || 'status-received'}">${HOL_BOOKING_STATUS_LABELS[b.status] || b.status}</span></td>
+                    <td>${holBookingActionsHTML(b)}</td>
+                </tr>`;
+            }).join('')}</tbody></table>` + _adminBuildPager(_holBookingsAll.length, _holBookingsPage, 'holBookingsGoPage');
+        }
+        function holBookingsGoPage(p) { const t = Math.ceil(_holBookingsAll.length / APPS_PER_PAGE); if (p < 1 || p > t) return; _holBookingsPage = p; renderHolBookingsPage(); }
+
+        function holBookingActionsHTML(b) {
+            if (b.status === 'CONFIRMED') {
+                return `<button class="btn-manage" style="background:#FEE2E2;color:#991B1B;font-size:0.72rem;padding:3px 8px;" onclick="cancelHolBooking('${b.id}')">Cancel</button>`;
+            }
+            if (b.status === 'CANCELLED') {
+                return `<button class="btn-manage" style="background:#F0FDF4;color:#16A34A;font-size:0.72rem;padding:3px 8px;" onclick="reconfirmHolBooking('${b.id}')">Reconfirm</button>`;
+            }
+            return '<span class="fs-xs text-muted">Awaiting payment</span>';
+        }
+
+        async function cancelHolBooking(id) {
+            const confirmed = await showConfirmModal(
+                'Cancel This Booking?',
+                'This releases the traveller\'s spot back into the date\'s capacity. It does <strong>not</strong> automatically refund the payment — process any refund separately in Paystack if needed.',
+                'Cancel Booking',
+                '#E31E24'
+            );
+            if (!confirmed) return;
+            const res = await patch(`/holidays/admin/bookings/${id}`, { status: 'CANCELLED' });
+            if (!res?.ok) { showToast(res?.error || 'Failed to cancel booking.', 'error'); return; }
+            showToast('Booking cancelled and capacity released.');
+            await loadHolBookings();
+            await loadHolidaysAdmin();
+        }
+
+        async function reconfirmHolBooking(id) {
+            const confirmed = await showConfirmModal(
+                'Reconfirm This Booking?',
+                'This re-claims a spot in the date\'s capacity. Only do this if the traveller\'s payment is genuinely valid.',
+                'Reconfirm',
+                '#16a34a'
+            );
+            if (!confirmed) return;
+            const res = await patch(`/holidays/admin/bookings/${id}`, { status: 'CONFIRMED' });
+            if (!res?.ok) { showToast(res?.error || 'Failed to reconfirm booking.', 'error'); return; }
+            showToast('Booking reconfirmed.');
+            await loadHolBookings();
+            await loadHolidaysAdmin();
+        }
+
+        function holBookingsSetFilter(f, el) {
+            _holBookingsFilter = f;
+            document.querySelectorAll('#hol-panel-bookings .filter-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            loadHolBookings();
+        }
+
+        function holBookingsFilterPackage(id) {
+            _holBookingsPackageFilter = id;
+            loadHolBookings();
+        }
+
+        function holBookingsSearchInput() {
+            clearTimeout(_holBookingsSearchDebounce);
+            _holBookingsSearchDebounce = setTimeout(() => loadHolBookings(), 300);
         }
 
         async function loadFlightOrders() {
