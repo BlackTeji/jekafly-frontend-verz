@@ -460,6 +460,8 @@
         // ── Destination card ─────────────────────────────────────────────────
         function destCardHTML(d, idx) {
             var tierColor = TIER_COLORS[d.tier];
+            var avail = _holidayAvailability[d.name];
+            var isSoldOut = !!avail && avail.hasAvailability === false;
             var media = d.img
                 ? '<div class="jkfh-card-img" style="background-image:url(\'' + d.img + '\')"></div>'
                 : '<div class="jkfh-card-img jkfh-card-img--placeholder jkfh-region-' + d.region + '"><span class="jkfh-card-placeholder-text">' + escH(d.state.replace(' State', '').replace('Federal Capital Territory', 'FCT')) + '</span></div>';
@@ -476,7 +478,9 @@
                 '<div class="jkfh-card-tag">"' + escH(d.tagline) + '"</div>' +
                 '<div class="jkfh-card-meta">' +
                 '<span class="jkfh-card-pill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' + escH(d.duration) + '</span>' +
-                '<span class="jkfh-card-pill jkfh-card-pill--gold">From &#8358;' + d.price.toLocaleString() + '</span>' +
+                (isSoldOut
+                    ? '<span class="jkfh-card-pill" style="background:#6B7280;color:#fff;">No Open Dates</span>'
+                    : '<span class="jkfh-card-pill jkfh-card-pill--gold">From &#8358;' + d.price.toLocaleString() + '</span>') +
                 '</div>' +
                 '<button class="jkfh-card-toggle" onclick="toggleCardDetails(' + idx + ')">' +
                 '<span id="toggle-label-' + idx + '">Show details</span>' +
@@ -488,9 +492,11 @@
                 '<div class="jkfh-card-details-label">Standard Inclusions</div>' +
                 '<ul class="jkfh-card-details-list">' + inclusionsList + '</ul>' +
                 '</div>' +
-                '<button class="jkfh-card-cta" onclick="openBookingModal(\'' + escAttr(d.state) + '\',\'' + escAttr(d.name) + '\',\'' + d.tier + '\',' + d.price + ',' + d.days + ',' + d.nights + ',\'' + (d.img || '') + '\')">' +
-                'Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
-                '</button>' +
+                (isSoldOut
+                    ? '<button class="jkfh-card-cta" disabled style="opacity:0.55;cursor:not-allowed;">No Dates Available</button>'
+                    : '<button class="jkfh-card-cta" onclick="openBookingModal(\'' + escAttr(d.state) + '\',\'' + escAttr(d.name) + '\',\'' + d.tier + '\',' + d.price + ',' + d.days + ',' + d.nights + ',\'' + (d.img || '') + '\')">' +
+                      'Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
+                      '</button>') +
                 '</div>' +
                 '</div>';
         }
@@ -528,7 +534,8 @@
             document.getElementById('collections').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', async function () {
+            await loadHolidayAvailability();
             renderCollections();
             var params = new URLSearchParams(window.location.search);
             var region = params.get('region');
@@ -556,6 +563,25 @@
             if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
         }());
 
+        var _holidayAvailability = {}; 
+
+        async function loadHolidayAvailability() {
+            try {
+                var res = await fetch('https://api.jekafly.com/api/v1/holidays');
+                var data = await res.json();
+                var regions = data?.data?.regions || [];
+                var map = {};
+                regions.forEach(function (r) {
+                    (r.packages || []).forEach(function (p) {
+                        map[p.packageName] = { id: p.id, hasAvailability: !!p.hasAvailability };
+                    });
+                });
+                _holidayAvailability = map;
+            } catch (e) {
+                _holidayAvailability = {};
+            }
+        }
+
         // ══════════════════════════════════════════════════════════════════════
         // BOOKING MODAL STATE
         // ══════════════════════════════════════════════════════════════════════
@@ -572,6 +598,11 @@
 
         // ── Open modal ───────────────────────────────────────────────────────
         async function openBookingModal(state, packageName, tier, pricePerPerson, days, nights, img) {
+            var avail = _holidayAvailability[packageName];
+            if (avail && avail.hasAvailability === false) {
+                if (typeof showToast === 'function') showToast('No open dates for this experience right now — check back soon.', 'error');
+                return;
+            }
             _bm.state = state;
             _bm.packageName = packageName;
             _bm.tier = tier;
@@ -795,15 +826,18 @@
                     var dd = await dr.json();
                     dates = dd?.data?.dates || [];
                 }
-                if (!dates.length) {
-                    var now = new Date();
-                    for (var i = 1; i <= 3; i++) {
-                        var d = new Date(now); d.setDate(d.getDate() + i * 30);
-                        dates.push({ id: 'placeholder-' + i, date: d.toISOString(), capacity: 20, bookedCount: 0, available: 20, isFull: false });
-                    }
-                }
                 var grid = document.getElementById('hbm-date-grid');
                 if (!grid) return;
+                var openDates = dates.filter(d => !d.isFull);
+                if (!dates.length || !openDates.length) {
+                    grid.innerHTML = '<div style="text-align:center;padding:20px;color:#7480A0;font-size:0.85rem;line-height:1.6;">' +
+                        'No open dates for this experience right now. Please check back soon, or explore another destination.' +
+                        '<div style="margin-top:14px;"><button class="hbm-btn" onclick="closeBookingModal()">Browse Other Experiences</button></div>' +
+                        '</div>';
+                    _bm.dateId = null;
+                    _bm.dateStr = '';
+                    return;
+                }
                 grid.innerHTML = dates.map(d => {
                     var dt = new Date(d.date);
                     var ds = dt.toLocaleDateString('en-NG', { dateStyle: 'medium' });
