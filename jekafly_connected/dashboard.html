@@ -2637,8 +2637,6 @@
 
     <script>
 
-        const CALENDLY_URL = 'https://calendly.com/jekaflynigeria/30min';
-
         const CONSULT_PACKAGES = {
             standard: { name: 'Standard Consultation', amount: 15000, duration: '30 min' },
             priority: { name: 'Priority Consultation', amount: 25000, duration: '30 min + doc review' },
@@ -2696,6 +2694,7 @@
 
             const res = await PaymentStore.verify(reference);
             if (res?.ok && res.data?.status === 'success') {
+                showTab('documents', null);
                 unlockCalendly(res.data);
             } else {
                 showToast('Payment verification failed. Please contact support.', 'error');
