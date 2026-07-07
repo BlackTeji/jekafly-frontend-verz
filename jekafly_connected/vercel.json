@@ -50,7 +50,7 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.paystack.co; connect-src 'self' https://api.jekafly.com https://api.paystack.co https://travel.state.gov; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://checkout.paystack.com https://calendly.com; object-src 'none'; base-uri 'self'; form-action 'self';"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.paystack.co https://app.cal.com; connect-src 'self' https://api.jekafly.com https://api.paystack.co https://travel.state.gov https://app.cal.com https://api.cal.com; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://app.cal.com; font-src 'self' https://fonts.gstatic.com; frame-src 'self' https://checkout.paystack.com https://app.cal.com; object-src 'none'; base-uri 'self'; form-action 'self';"
         }
       ]
     }
