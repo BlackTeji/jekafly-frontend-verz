@@ -731,6 +731,32 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="acard mt-20" id="hol-pricing-card" style="display:none">
+                            <div class="acard-header">
+                                <h3>Tier Pricing</h3>
+                            </div>
+                            <div class="fees-body">
+                                <div class="fees-price-grid">
+                                    <div class="fees-price-item">
+                                        <label class="fees-label">Explorer (&#8358;)</label>
+                                        <input type="number" id="hol-price-explorer" min="0" step="1000" class="fees-input" placeholder="Not offered" />
+                                    </div>
+                                    <div class="fees-price-item">
+                                        <label class="fees-label">Signature (&#8358;)</label>
+                                        <input type="number" id="hol-price-signature" min="0" step="1000" class="fees-input" placeholder="Not offered" />
+                                    </div>
+                                    <div class="fees-price-item">
+                                        <label class="fees-label">Executive (&#8358;)</label>
+                                        <input type="number" id="hol-price-executive" min="0" step="1000" class="fees-input" placeholder="Not offered" />
+                                    </div>
+                                </div>
+                                <div class="fees-save-row">
+                                    <button class="btn-manage" onclick="saveHolPricing()">Save Pricing</button>
+                                    <span id="hol-pricing-save-status" class="fees-save-status"></span>
+                                </div>
+                                <div class="fees-note" style="margin-top:8px;">Leave a field blank to remove that tier from this package. Changes only affect new bookings — existing bookings keep the price paid at checkout.</div>
+                            </div>
+                        </div>
                         <div class="acard mt-20" id="hol-dates-card" style="display:none">
                             <div class="acard-header">
                                 <h3>Bookable Dates</h3><span id="hol-dates-count" class="fs-sm text-light"></span>
@@ -1378,10 +1404,58 @@
 
         function onHolPackageSelect(id) {
             _holSelectedId = id || null;
-            const card = document.getElementById('hol-dates-card');
-            if (!_holSelectedId) { card.style.display = 'none'; return; }
-            card.style.display = 'block';
+            const datesCard = document.getElementById('hol-dates-card');
+            const pricingCard = document.getElementById('hol-pricing-card');
+            if (!_holSelectedId) {
+                datesCard.style.display = 'none';
+                pricingCard.style.display = 'none';
+                return;
+            }
+            datesCard.style.display = 'block';
+            pricingCard.style.display = 'block';
             renderHolDates();
+            renderHolPricing();
+        }
+
+        function renderHolPricing() {
+            const holiday = _holPackages.find(h => h.id === _holSelectedId);
+            if (!holiday) return;
+            document.getElementById('hol-price-explorer').value = holiday.priceExplorer ?? '';
+            document.getElementById('hol-price-signature').value = holiday.priceSignature ?? '';
+            document.getElementById('hol-price-executive').value = holiday.priceExecutive ?? '';
+        }
+
+        async function saveHolPricing() {
+            if (!_holSelectedId) { showToast('Select a package first.', 'error'); return; }
+            const readVal = (id) => {
+                const raw = document.getElementById(id).value;
+                return raw === '' ? null : parseInt(raw, 10);
+            };
+            const explorer = readVal('hol-price-explorer');
+            const signature = readVal('hol-price-signature');
+            const executive = readVal('hol-price-executive');
+            if ([explorer, signature, executive].some(v => v !== null && (isNaN(v) || v < 0))) {
+                showToast('Please enter valid amounts.', 'error');
+                return;
+            }
+            const status = document.getElementById('hol-pricing-save-status');
+            status.textContent = 'Saving…';
+            const res = await patch(`/holidays/admin/${_holSelectedId}`, {
+                priceExplorer: explorer,
+                priceSignature: signature,
+                priceExecutive: executive,
+            });
+            if (res?.ok) {
+                status.textContent = 'Saved';
+                showToast('Pricing updated.');
+                setTimeout(() => status.textContent = '', 3000);
+                await loadHolidaysAdmin();
+                _holSelectedId && (document.getElementById('hol-package-select').value = _holSelectedId);
+                renderHolPricing();
+            } else {
+                status.textContent = 'Failed';
+                showToast(res?.error || 'Failed to update pricing.', 'error');
+            }
         }
 
         function renderHolDates() {

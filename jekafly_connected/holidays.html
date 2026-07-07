@@ -205,6 +205,11 @@
             <div class="jkfh-browser-eyebrow">Now Browsing</div>
             <h3 class="jkfh-browser-title" id="browser-title"></h3>
             <p class="jkfh-browser-tag" id="browser-tag"></p>
+            <div id="browser-filter-note" style="display:none;margin-top:10px;font-size:0.82rem;color:#7480A0;">
+                Showing destinations with open dates only.
+                <a href="javascript:void(0)" onclick="showAllInRegion()"
+                    style="color:#0D1560;font-weight:600;text-decoration:underline;">Show all destinations</a>
+            </div>
         </div>
         <div class="jkfh-card-grid" id="destination-grid"></div>
     </section>
@@ -509,28 +514,69 @@
         }
 
         // ── Browse a region ──────────────────────────────────────────────────
-        function browseRegion(key) {
+        var _currentRegionKey = null;
+
+        function browseRegion(key, opts) {
             var region = REGIONS.find(function (r) { return r.key === key; });
             if (!region) return;
-            var list = DESTINATIONS.filter(function (d) { return d.region === key; });
+            _currentRegionKey = key;
 
             document.getElementById('collections-grid').style.display = 'none';
             document.getElementById('browser-header').classList.add('active');
             document.getElementById('browser-title').textContent = region.name + ' Collection';
             document.getElementById('browser-tag').textContent = region.tagline;
 
-            var grid = document.getElementById('destination-grid');
-            grid.innerHTML = list.map(function (d, i) { return destCardHTML(d, i); }).join('');
-            grid.classList.add('active');
+            renderRegionGrid(key, !!(opts && opts.onlyAvailable));
 
             document.getElementById('collections').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
+        function renderRegionGrid(key, onlyAvailable) {
+            var list = DESTINATIONS.filter(function (d) { return d.region === key; });
+            if (onlyAvailable) {
+                list = list.filter(function (d) {
+                    var avail = _holidayAvailability[d.name];
+                    return !(avail && avail.hasAvailability === false);
+                });
+            }
+            var note = document.getElementById('browser-filter-note');
+            if (note) note.style.display = onlyAvailable ? 'block' : 'none';
+
+            var grid = document.getElementById('destination-grid');
+            if (!list.length) {
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px 16px;color:#7480A0;font-size:0.9rem;">' +
+                    'No destinations with open dates in this collection right now.<br>' +
+                    '<a href="javascript:void(0)" onclick="showAllInRegion()" style="color:#0D1560;font-weight:600;text-decoration:underline;">Show all destinations</a>' +
+                    '</div>';
+            } else {
+                grid.innerHTML = list.map(function (d, i) { return destCardHTML(d, i); }).join('');
+            }
+            grid.classList.add('active');
+        }
+
+        function showAllInRegion() {
+            if (!_currentRegionKey) return;
+            renderRegionGrid(_currentRegionKey, false);
+        }
+
+        function browseOtherExperiences() {
+            closeBookingModal();
+            if (_currentRegionKey) {
+                renderRegionGrid(_currentRegionKey, true);
+                document.getElementById('collections').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                backToCollections();
+            }
+        }
+
         function backToCollections() {
+            _currentRegionKey = null;
             document.getElementById('collections-grid').style.display = 'grid';
             document.getElementById('browser-header').classList.remove('active');
             document.getElementById('destination-grid').classList.remove('active');
             document.getElementById('destination-grid').innerHTML = '';
+            var note = document.getElementById('browser-filter-note');
+            if (note) note.style.display = 'none';
             document.getElementById('collections').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
