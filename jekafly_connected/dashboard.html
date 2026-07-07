@@ -500,10 +500,15 @@
                                 function mountCalBooking() {
                                     if (window._calInlineMounted) return;
                                     window._calInlineMounted = true;
+                                    const _cUser = typeof Auth !== 'undefined' ? Auth.getCurrent() : null;
                                     Cal("inline", {
                                         elementOrSelector: "#cal-booking",
                                         calLink: "jekafly/30min",
-                                        config: { theme: "light" }
+                                        config: {
+                                            theme: "light",
+                                            name: _cUser?.name || "",
+                                            email: _cUser?.email || ""
+                                        }
                                     });
                                     Cal("on", {
                                         action: "bookingSuccessfulV2",
