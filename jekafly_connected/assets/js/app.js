@@ -346,8 +346,16 @@ async function handleLogin() {
 
     if (!email || !pass) { showToast('Please fill in all fields.', 'error'); return; }
 
+    const btn = document.getElementById('btn-login');
+    if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); }
+
     const res = await Auth.login(email, pass);
-    if (!res.ok) { showToast(res.msg, 'error'); return; }
+
+    if (!res.ok) {
+        if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); }
+        showToast(res.msg, 'error');
+        return;
+    }
 
     closeModal();
     updateNav();
@@ -369,8 +377,16 @@ async function handleRegister() {
 
     if (!name || !email || !phone || !pass) { showToast('Please fill in all fields.', 'error'); return; }
 
+    const btn = document.getElementById('btn-register');
+    if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); }
+
     const res = await Auth.register(name, email, phone, pass);
-    if (!res.ok) { showToast(res.msg, 'error'); return; }
+
+    if (!res.ok) {
+        if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); }
+        showToast(res.msg, 'error');
+        return;
+    }
 
     closeModal();
     updateNav();
