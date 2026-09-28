@@ -1938,3 +1938,97 @@
         grid-template-columns: 1fr;
     }
 }
+/* ═══════════════════════════════════════════════════════════════
+   API-DRIVEN COLLECTIONS + INTERNATIONAL TRIPS
+   ═══════════════════════════════════════════════════════════════ */
+.jkfh-is-hidden {
+    display: none !important;
+}
+
+.jkfh-region-passportbuilder {
+    background: linear-gradient(160deg, #0D1560, #1F3A8A);
+}
+
+.jkfh-region-squaddeals {
+    background: linear-gradient(160deg, #E31E24, #7A0F13);
+}
+
+.jkfh-region-default {
+    background: linear-gradient(160deg, #2A3350, #11162A);
+}
+
+.jkfh-section-header--sub {
+    margin-top: 88px;
+}
+
+.jkfh-grid-status {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 32px 16px;
+    color: var(--jkfh-text-dim);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.jkfh-grid-status a {
+    color: var(--jkfh-gold-light);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.jkfh-filter-note {
+    display: none;
+    margin-top: 10px;
+    font-size: 0.82rem;
+    color: var(--jkfh-text-dim);
+}
+
+.jkfh-filter-note.active {
+    display: block;
+}
+
+.jkfh-filter-note a {
+    color: var(--jkfh-gold-light);
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.jkfh-card-pill--muted {
+    background: #6B7280;
+    border-color: #6B7280;
+    color: #fff;
+}
+
+.jkfh-card-cta:disabled,
+.jkfh-card-cta:disabled:hover {
+    opacity: 0.55;
+    cursor: not-allowed;
+    background: none;
+    color: var(--jkfh-gold-light);
+}
+
+.jkfh-card-details-text {
+    font-size: 0.78rem;
+    color: var(--jkfh-text-dim);
+    line-height: 1.5;
+    margin: 0 0 12px;
+}
+
+.hbm-tier-card-icon--room {
+    background: #EEF2FF;
+    color: #0D1560;
+}
+
+.hbm-summary-row--top {
+    align-items: flex-start;
+}
+
+.hbm-summary-names {
+    text-align: right;
+}
+
+@media (max-width: 1024px) {
+    .jkfh-section-header--sub {
+        margin-top: 56px;
+    }
+}

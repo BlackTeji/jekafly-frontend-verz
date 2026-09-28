@@ -708,8 +708,8 @@
                                 <polyline points="23 4 23 10 17 10" />
                                 <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" />
                             </svg> Refresh</button></div>
-                    <p class="admin-sub">Manage bookable travel dates, capacity, and traveller bookings for each holiday
-                        package.</p>
+                    <p class="admin-sub">Create and edit holiday packages, prices, bookable dates and capacity, and manage
+                        traveller bookings.</p>
 
                     <div style="display:flex;gap:8px;margin-bottom:18px;">
                         <button id="hol-subtab-dates" onclick="switchHolSubTab('dates')"
@@ -722,42 +722,130 @@
                     <div id="hol-panel-dates">
                         <div class="acard">
                             <div class="acard-header">
-                                <h3>Select a Package</h3>
+                                <h3>Holiday Packages <span id="hol-pkg-count" class="fs-sm text-light"></span></h3>
+                                <button class="btn-manage" onclick="openHolEditor(null)">+ New Package</button>
                             </div>
-                            <div class="fees-body">
-                                <select id="hol-package-select" class="fees-input" style="max-width:420px;"
-                                    onchange="onHolPackageSelect(this.value)">
-                                    <option value="">Choose a package...</option>
+                            <div class="hol-filters">
+                                <input type="text" class="search-input" id="hol-pkg-search"
+                                    placeholder="Search package, destination, collection..."
+                                    oninput="renderHolPackageList()" />
+                                <select id="hol-pkg-category-filter" class="fees-input hol-filter-select"
+                                    onchange="renderHolPackageList()">
+                                    <option value="">All types</option>
+                                    <option value="LOCAL">Nigeria (local)</option>
+                                    <option value="INTERNATIONAL">International</option>
+                                </select>
+                                <select id="hol-pkg-status-filter" class="fees-input hol-filter-select"
+                                    onchange="renderHolPackageList()">
+                                    <option value="">All statuses</option>
+                                    <option value="ACTIVE">Active</option>
+                                    <option value="DRAFT">Draft</option>
+                                    <option value="ARCHIVED">Archived</option>
                                 </select>
                             </div>
+                            <div class="acard-table-wrap">
+                                <div id="hol-pkg-table">
+                                    <div class="atbl-empty">Loading...</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="acard mt-20" id="hol-pricing-card" style="display:none">
+
+                        <div class="acard mt-20 hol-hidden" id="hol-editor-card">
                             <div class="acard-header">
-                                <h3>Tier Pricing</h3>
+                                <h3 id="hol-editor-title">Edit Package</h3>
+                                <button class="hol-editor-close" onclick="closeHolEditor()">Close</button>
                             </div>
                             <div class="fees-body">
-                                <div class="fees-price-grid">
-                                    <div class="fees-price-item">
-                                        <label class="fees-label">Explorer (&#8358;)</label>
-                                        <input type="number" id="hol-price-explorer" min="0" step="1000" class="fees-input" placeholder="Not offered" />
+                                <div class="hol-form-grid">
+                                    <div class="hol-field">
+                                        <label class="fees-label" for="hol-f-category">Type</label>
+                                        <select id="hol-f-category" class="fees-input" onchange="syncHolPriceFields()">
+                                            <option value="LOCAL">Nigeria (local)</option>
+                                            <option value="INTERNATIONAL">International</option>
+                                        </select>
                                     </div>
-                                    <div class="fees-price-item">
-                                        <label class="fees-label">Signature (&#8358;)</label>
-                                        <input type="number" id="hol-price-signature" min="0" step="1000" class="fees-input" placeholder="Not offered" />
+                                    <div class="hol-field">
+                                        <label class="fees-label" for="hol-f-region">Collection</label>
+                                        <input id="hol-f-region" class="fees-input" list="hol-collection-options"
+                                            placeholder="e.g. Southwest, Passport Builder" />
+                                        <datalist id="hol-collection-options"></datalist>
                                     </div>
-                                    <div class="fees-price-item">
-                                        <label class="fees-label">Executive (&#8358;)</label>
-                                        <input type="number" id="hol-price-executive" min="0" step="1000" class="fees-input" placeholder="Not offered" />
+                                    <div class="hol-field">
+                                        <label class="fees-label" for="hol-f-state">Destination (state or country)</label>
+                                        <input id="hol-f-state" class="fees-input" placeholder="e.g. Lagos State, Ghana" />
+                                    </div>
+                                    <div class="hol-field">
+                                        <label class="fees-label" for="hol-f-name">Package name</label>
+                                        <input id="hol-f-name" class="fees-input" placeholder="e.g. The Eko Experience" />
+                                    </div>
+                                    <div class="hol-field hol-field--wide">
+                                        <label class="fees-label" for="hol-f-tagline">Tagline</label>
+                                        <input id="hol-f-tagline" class="fees-input" placeholder="e.g. Where Energy Meets Luxury" />
+                                    </div>
+                                    <div class="hol-field hol-field--wide">
+                                        <label class="fees-label" for="hol-f-identity">Experience identity</label>
+                                        <input id="hol-f-identity" class="fees-input" placeholder="e.g. Urban Lifestyle, Entertainment, Beaches" />
+                                    </div>
+                                    <div class="hol-field">
+                                        <label class="fees-label" for="hol-f-days">Days</label>
+                                        <input id="hol-f-days" type="number" min="1" max="60" class="fees-input" />
+                                    </div>
+                                    <div class="hol-field">
+                                        <label class="fees-label" for="hol-f-nights">Nights</label>
+                                        <input id="hol-f-nights" type="number" min="0" max="60" class="fees-input" />
+                                    </div>
+                                    <div class="hol-field" data-price="LOCAL">
+                                        <label class="fees-label" for="hol-f-price">Price per person (&#8358;)</label>
+                                        <input id="hol-f-price" type="number" min="0" step="1000" class="fees-input" />
+                                    </div>
+                                    <div class="hol-field" data-price="INTERNATIONAL">
+                                        <label class="fees-label" for="hol-f-price-sharing">Per person sharing (&#8358;)</label>
+                                        <input id="hol-f-price-sharing" type="number" min="0" step="1000" class="fees-input" placeholder="Not offered" />
+                                    </div>
+                                    <div class="hol-field" data-price="INTERNATIONAL">
+                                        <label class="fees-label" for="hol-f-price-single">Single occupancy (&#8358;)</label>
+                                        <input id="hol-f-price-single" type="number" min="0" step="1000" class="fees-input" placeholder="Not offered" />
+                                    </div>
+                                    <div class="hol-field">
+                                        <label class="fees-label" for="hol-f-status">Status</label>
+                                        <select id="hol-f-status" class="fees-input">
+                                            <option value="ACTIVE">Active — visible on site</option>
+                                            <option value="DRAFT">Draft — hidden</option>
+                                            <option value="ARCHIVED">Archived — hidden</option>
+                                        </select>
+                                    </div>
+                                    <div class="hol-field">
+                                        <label class="fees-label" for="hol-f-sort">Display order</label>
+                                        <input id="hol-f-sort" type="number" step="10" class="fees-input" />
+                                    </div>
+                                    <div class="hol-field hol-field--half">
+                                        <label class="fees-label" for="hol-f-attractions">Key attractions (one per line)</label>
+                                        <textarea id="hol-f-attractions" class="fees-input hol-textarea" rows="6"></textarea>
+                                    </div>
+                                    <div class="hol-field hol-field--half">
+                                        <label class="fees-label" for="hol-f-inclusions">Standard inclusions (one per line)</label>
+                                        <textarea id="hol-f-inclusions" class="fees-input hol-textarea" rows="6"></textarea>
+                                    </div>
+                                    <div class="hol-field hol-field--half">
+                                        <label class="fees-label" for="hol-f-images">Image URLs (one per line, first is the cover)</label>
+                                        <textarea id="hol-f-images" class="fees-input hol-textarea" rows="3"
+                                            placeholder="assets/images/lagos.jpg"></textarea>
+                                    </div>
+                                    <div class="hol-field hol-field--half">
+                                        <label class="fees-label" for="hol-f-notes">Internal notes (not shown on site)</label>
+                                        <textarea id="hol-f-notes" class="fees-input hol-textarea" rows="3"></textarea>
                                     </div>
                                 </div>
                                 <div class="fees-save-row">
-                                    <button class="btn-manage" onclick="saveHolPricing()">Save Pricing</button>
-                                    <span id="hol-pricing-save-status" class="fees-save-status"></span>
+                                    <button class="btn-manage" id="hol-save-btn" onclick="saveHolPackage()">Save Package</button>
+                                    <button class="hol-btn-danger hol-hidden" id="hol-delete-btn" onclick="deleteHolPackage()">Delete</button>
+                                    <span id="hol-editor-status" class="fees-save-status"></span>
                                 </div>
-                                <div class="fees-note" style="margin-top:8px;">Leave a field blank to remove that tier from this package. Changes only affect new bookings — existing bookings keep the price paid at checkout.</div>
+                                <div class="fees-note hol-note">Price changes only affect new bookings — existing bookings keep the amount paid at checkout. A package only appears on the site when it is Active and has at least one open date.</div>
                             </div>
                         </div>
-                        <div class="acard mt-20" id="hol-dates-card" style="display:none">
+
+                        <div class="acard mt-20 hol-hidden" id="hol-dates-card">
                             <div class="acard-header">
                                 <h3>Bookable Dates</h3><span id="hol-dates-count" class="fs-sm text-light"></span>
                             </div>
@@ -1379,83 +1467,211 @@
         }
 
 
-        let _holPackages = [], _holSelectedId = null;
+        let _holPackages = [], _holSelectedId = null, _holCollections = [], _holSaving = false;
+        const HOL_DEFAULT_COLLECTIONS = ['Southwest', 'South-South', 'Southeast', 'North-Central', 'Northwest', 'Northeast', 'Passport Builder', 'Squad Deals'];
+        const HOL_STATUS_CLASS = { ACTIVE: 'status-approved', DRAFT: 'status-processing', ARCHIVED: 'status-rejected' };
+
+        function holNaira(n) { return n ? '&#8358;' + Number(n).toLocaleString('en-NG') : '—'; }
+
+        function holPriceSummary(h) {
+            if (h.category === 'INTERNATIONAL') {
+                return `${holNaira(h.priceSharing)} <span class="fs-xs text-muted">sharing</span><br>${holNaira(h.priceSingle)} <span class="fs-xs text-muted">single</span>`;
+            }
+            return holNaira(h.price);
+        }
 
         async function loadHolidaysAdmin() {
-            const sel = document.getElementById('hol-package-select');
-            if (!sel) return;
-            sel.innerHTML = '<option value="">Loading packages...</option>';
+            const table = document.getElementById('hol-pkg-table');
+            if (!table) return;
+            if (!_holPackages.length) table.innerHTML = '<div class="atbl-empty">Loading...</div>';
             try {
                 const res = await get('/holidays/admin/packages');
-                _holPackages = res?.ok ? (res.data.holidays || []) : [];
-            } catch (e) { _holPackages = []; }
+                if (!res?.ok) throw new Error(res?.error || 'Failed to load packages');
+                _holPackages = res.data.holidays || [];
+                _holCollections = res.data.collections || HOL_DEFAULT_COLLECTIONS;
+            } catch (e) {
+                table.innerHTML = `<div class="atbl-empty">${escHtml(e.message || 'Failed to load packages')}</div>`;
+                return;
+            }
             populateHolBookingPackageFilter();
-            if (!_holPackages.length) {
-                sel.innerHTML = '<option value="">No packages found</option>';
-                return;
-            }
-            sel.innerHTML = '<option value="">Choose a package...</option>' +
-                _holPackages.map(h => `<option value="${h.id}">${escHtml(h.region)} — ${escHtml(h.packageName)} (${escHtml(h.state)})</option>`).join('');
+            populateHolCollectionOptions();
+            renderHolPackageList();
             if (_holSelectedId) {
-                sel.value = _holSelectedId;
-                renderHolDates();
+                const still = _holPackages.find(h => h.id === _holSelectedId);
+                if (still) renderHolDates(); else closeHolEditor();
             }
         }
 
-        function onHolPackageSelect(id) {
-            _holSelectedId = id || null;
-            const datesCard = document.getElementById('hol-dates-card');
-            const pricingCard = document.getElementById('hol-pricing-card');
-            if (!_holSelectedId) {
-                datesCard.style.display = 'none';
-                pricingCard.style.display = 'none';
+        function populateHolCollectionOptions() {
+            const list = document.getElementById('hol-collection-options');
+            if (!list) return;
+            const names = new Set([...(_holCollections || []), ..._holPackages.map(h => h.region)]);
+            list.innerHTML = [...names].filter(Boolean).map(n => `<option value="${escHtml(n)}"></option>`).join('');
+        }
+
+        function renderHolPackageList() {
+            const table = document.getElementById('hol-pkg-table');
+            const countEl = document.getElementById('hol-pkg-count');
+            if (!table) return;
+            const q = (document.getElementById('hol-pkg-search')?.value || '').trim().toLowerCase();
+            const cat = document.getElementById('hol-pkg-category-filter')?.value || '';
+            const st = document.getElementById('hol-pkg-status-filter')?.value || '';
+            const rows = _holPackages.filter(h =>
+                (!cat || h.category === cat) &&
+                (!st || h.status === st) &&
+                (!q || [h.packageName, h.state, h.region].some(v => String(v || '').toLowerCase().includes(q)))
+            );
+            if (countEl) countEl.textContent = `(${rows.length} of ${_holPackages.length})`;
+            if (!rows.length) {
+                table.innerHTML = '<div class="atbl-empty">No packages match these filters.</div>';
                 return;
             }
-            datesCard.style.display = 'block';
-            pricingCard.style.display = 'block';
-            renderHolDates();
-            renderHolPricing();
+            const now = new Date();
+            table.innerHTML = `<table><thead><tr><th>Collection</th><th>Package</th><th>Duration</th><th>Price / person</th><th>Open dates</th><th>Status</th><th></th></tr></thead><tbody>${rows.map(h => {
+                const open = (h.dates || []).filter(d => new Date(d.date) >= now && d.bookedCount < d.capacity).length;
+                const sel = h.id === _holSelectedId ? ' class="hol-row-selected"' : '';
+                return `<tr${sel}>
+                    <td>${escHtml(h.region)}<br><span class="fs-xs text-muted">${h.category === 'INTERNATIONAL' ? 'International' : 'Nigeria'}</span></td>
+                    <td><strong>${escHtml(h.packageName)}</strong><br><span class="fs-xs text-muted">${escHtml(h.state)}</span></td>
+                    <td>${h.durationDays}D / ${h.durationNights}N</td>
+                    <td>${holPriceSummary(h)}</td>
+                    <td>${open ? open : '<span class="hol-text-warn">None</span>'}</td>
+                    <td><span class="status-pill ${HOL_STATUS_CLASS[h.status] || ''}">${h.status}</span></td>
+                    <td><button class="btn-manage hol-btn-sm" onclick="openHolEditor('${h.id}')">Edit</button></td>
+                </tr>`;
+            }).join('')}</tbody></table>`;
         }
 
-        function renderHolPricing() {
-            const holiday = _holPackages.find(h => h.id === _holSelectedId);
-            if (!holiday) return;
-            document.getElementById('hol-price-explorer').value = holiday.priceExplorer ?? '';
-            document.getElementById('hol-price-signature').value = holiday.priceSignature ?? '';
-            document.getElementById('hol-price-executive').value = holiday.priceExecutive ?? '';
-        }
+        function holSetVal(id, v) { const el = document.getElementById(id); if (el) el.value = v ?? ''; }
+        function holGetVal(id) { return (document.getElementById(id)?.value ?? '').trim(); }
 
-        async function saveHolPricing() {
-            if (!_holSelectedId) { showToast('Select a package first.', 'error'); return; }
-            const readVal = (id) => {
-                const raw = document.getElementById(id).value;
-                return raw === '' ? null : parseInt(raw, 10);
-            };
-            const explorer = readVal('hol-price-explorer');
-            const signature = readVal('hol-price-signature');
-            const executive = readVal('hol-price-executive');
-            if ([explorer, signature, executive].some(v => v !== null && (isNaN(v) || v < 0))) {
-                showToast('Please enter valid amounts.', 'error');
-                return;
-            }
-            const status = document.getElementById('hol-pricing-save-status');
-            status.textContent = 'Saving…';
-            const res = await patch(`/holidays/admin/${_holSelectedId}`, {
-                priceExplorer: explorer,
-                priceSignature: signature,
-                priceExecutive: executive,
+        function syncHolPriceFields() {
+            const cat = document.getElementById('hol-f-category').value;
+            document.querySelectorAll('#hol-editor-card [data-price]').forEach(el => {
+                el.classList.toggle('hol-hidden', el.getAttribute('data-price') !== cat);
             });
-            if (res?.ok) {
-                status.textContent = 'Saved';
-                showToast('Pricing updated.');
-                setTimeout(() => status.textContent = '', 3000);
-                await loadHolidaysAdmin();
-                _holSelectedId && (document.getElementById('hol-package-select').value = _holSelectedId);
-                renderHolPricing();
+        }
+
+        function openHolEditor(id) {
+            _holSelectedId = id || null;
+            const h = id ? _holPackages.find(x => x.id === id) : null;
+            if (id && !h) return;
+            const card = document.getElementById('hol-editor-card');
+            document.getElementById('hol-editor-title').textContent = h ? `Edit — ${h.packageName}` : 'New Package';
+            holSetVal('hol-f-category', h?.category || 'LOCAL');
+            holSetVal('hol-f-region', h?.region || '');
+            holSetVal('hol-f-state', h?.state || '');
+            holSetVal('hol-f-name', h?.packageName || '');
+            holSetVal('hol-f-tagline', h?.tagline || '');
+            holSetVal('hol-f-identity', h?.experienceType || '');
+            holSetVal('hol-f-days', h?.durationDays ?? 3);
+            holSetVal('hol-f-nights', h?.durationNights ?? 2);
+            holSetVal('hol-f-price', h?.price ?? '');
+            holSetVal('hol-f-price-sharing', h?.priceSharing ?? '');
+            holSetVal('hol-f-price-single', h?.priceSingle ?? '');
+            holSetVal('hol-f-status', h?.status || 'DRAFT');
+            holSetVal('hol-f-sort', h?.sortOrder ?? 0);
+            holSetVal('hol-f-attractions', (h?.attractions || []).join('\n'));
+            holSetVal('hol-f-inclusions', (h?.inclusions || []).join('\n'));
+            holSetVal('hol-f-images', (h?.images || []).join('\n'));
+            holSetVal('hol-f-notes', h?.notes || '');
+            document.getElementById('hol-editor-status').textContent = '';
+            const delBtn = document.getElementById('hol-delete-btn');
+            delBtn.classList.toggle('hol-hidden', !h || (h._count?.bookings || 0) > 0);
+            syncHolPriceFields();
+            card.classList.remove('hol-hidden');
+            document.getElementById('hol-dates-card').classList.toggle('hol-hidden', !h);
+            if (h) renderHolDates();
+            renderHolPackageList();
+            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function closeHolEditor() {
+            _holSelectedId = null;
+            document.getElementById('hol-editor-card').classList.add('hol-hidden');
+            document.getElementById('hol-dates-card').classList.add('hol-hidden');
+            renderHolPackageList();
+        }
+
+        function holPriceInput(id) {
+            const raw = holGetVal(id);
+            if (raw === '') return null;
+            const n = parseInt(raw, 10);
+            return Number.isInteger(n) && n > 0 ? n : NaN;
+        }
+
+        async function saveHolPackage() {
+            if (_holSaving) return;
+            const category = holGetVal('hol-f-category');
+            const payload = {
+                category,
+                region: holGetVal('hol-f-region'),
+                state: holGetVal('hol-f-state'),
+                packageName: holGetVal('hol-f-name'),
+                tagline: holGetVal('hol-f-tagline'),
+                experienceType: holGetVal('hol-f-identity'),
+                durationDays: parseInt(holGetVal('hol-f-days'), 10),
+                durationNights: parseInt(holGetVal('hol-f-nights'), 10),
+                status: holGetVal('hol-f-status'),
+                sortOrder: parseInt(holGetVal('hol-f-sort'), 10) || 0,
+                attractions: holGetVal('hol-f-attractions'),
+                inclusions: holGetVal('hol-f-inclusions'),
+                images: holGetVal('hol-f-images'),
+                notes: holGetVal('hol-f-notes'),
+            };
+            if (category === 'INTERNATIONAL') {
+                payload.priceSharing = holPriceInput('hol-f-price-sharing');
+                payload.priceSingle = holPriceInput('hol-f-price-single');
+                payload.price = null;
             } else {
-                status.textContent = 'Failed';
-                showToast(res?.error || 'Failed to update pricing.', 'error');
+                payload.price = holPriceInput('hol-f-price');
+                payload.priceSharing = null;
+                payload.priceSingle = null;
             }
+            if (!payload.region || !payload.state || !payload.packageName) {
+                showToast('Collection, destination and package name are required.', 'error');
+                return;
+            }
+            if (!Number.isInteger(payload.durationDays) || payload.durationDays < 1 || !Number.isInteger(payload.durationNights) || payload.durationNights < 0) {
+                showToast('Enter valid days and nights.', 'error');
+                return;
+            }
+            if ([payload.price, payload.priceSharing, payload.priceSingle].some(v => Number.isNaN(v))) {
+                showToast('Prices must be whole naira amounts above 0.', 'error');
+                return;
+            }
+            const status = document.getElementById('hol-editor-status');
+            const btn = document.getElementById('hol-save-btn');
+            _holSaving = true;
+            btn.classList.add('btn-loading');
+            status.textContent = 'Saving…';
+            const res = _holSelectedId
+                ? await patch(`/holidays/admin/${_holSelectedId}`, payload)
+                : await post('/holidays/admin', payload);
+            _holSaving = false;
+            btn.classList.remove('btn-loading');
+            if (!res?.ok) {
+                status.textContent = 'Failed';
+                showToast(res?.error || 'Failed to save package.', 'error');
+                return;
+            }
+            status.textContent = 'Saved';
+            setTimeout(() => { if (status.textContent === 'Saved') status.textContent = ''; }, 3000);
+            showToast(_holSelectedId ? 'Package updated.' : 'Package created. Add bookable dates below.');
+            const savedId = res.data?.holiday?.id || _holSelectedId;
+            await loadHolidaysAdmin();
+            if (savedId) openHolEditor(savedId);
+        }
+
+        async function deleteHolPackage() {
+            if (!_holSelectedId) return;
+            const h = _holPackages.find(x => x.id === _holSelectedId);
+            if (!confirm(`Delete "${h?.packageName || 'this package'}" and all its dates? This cannot be undone.`)) return;
+            const res = await del(`/holidays/admin/${_holSelectedId}`);
+            if (!res?.ok) { showToast(res?.error || 'Failed to delete package.', 'error'); return; }
+            showToast('Package deleted.');
+            closeHolEditor();
+            await loadHolidaysAdmin();
         }
 
         function renderHolDates() {
@@ -1472,18 +1688,18 @@
             table.innerHTML = `<table><thead><tr><th>Date</th><th>Capacity</th><th>Booked</th><th>Available</th><th></th></tr></thead><tbody>${dates.map(d => {
                 const avail = d.capacity - d.bookedCount;
                 const isPast = new Date(d.date) < new Date();
-                return `<tr style="${isPast ? 'opacity:0.55;' : ''}">
+                return `<tr${isPast ? ' class="hol-row-past"' : ''}>
                     <td>${new Date(d.date).toLocaleDateString('en-NG', { dateStyle: 'medium' })}${isPast ? ' <span class="fs-xs text-muted">(past)</span>' : ''}</td>
-                    <td><input type="number" value="${d.capacity}" min="1" class="select-xs" style="width:70px;" onchange="updateHolDateCapacity('${d.id}',this.value)" /></td>
+                    <td><input type="number" value="${d.capacity}" min="1" class="select-xs hol-cap-input" onchange="updateHolDateCapacity('${d.id}',this.value)" /></td>
                     <td>${d.bookedCount}</td>
-                    <td><strong style="color:${avail > 0 ? '#16a34a' : '#E31E24'}">${avail}</strong></td>
-                    <td><button class="btn-manage" style="background:#FEE2E2;color:#991B1B;font-size:0.72rem;padding:3px 8px;" onclick="deleteHolDate('${d.id}')">Delete</button></td>
+                    <td><strong class="${avail > 0 ? 'hol-text-ok' : 'hol-text-warn'}">${avail}</strong></td>
+                    <td><button class="hol-btn-danger hol-btn-sm" onclick="deleteHolDate('${d.id}')">Delete</button></td>
                 </tr>`;
             }).join('')}</tbody></table>`;
         }
 
         async function addHolDate() {
-            if (!_holSelectedId) { showToast('Select a package first.', 'error'); return; }
+            if (!_holSelectedId) { showToast('Save the package first.', 'error'); return; }
             const dateVal = document.getElementById('hol-new-date').value;
             const capVal = parseInt(document.getElementById('hol-new-capacity').value);
             if (!dateVal) { showToast('Choose a date.', 'error'); return; }

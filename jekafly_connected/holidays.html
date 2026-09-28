@@ -10,7 +10,7 @@
     <link rel="manifest" href="site.webmanifest" />
     <title>Jekafly Destinations — Curated Holiday Collections Across Nigeria</title>
     <meta name="description"
-        content="Curated holiday collections across Nigeria — Southwest, South-South, Southeast, North-Central, Northwest, and Northeast. Explorer, Signature, and Executive tiers, all handled for you by Jekafly." />
+        content="Curated holiday collections across Nigeria — Southwest, South-South, Southeast, North-Central, Northwest, and Northeast — plus international Passport Builder trips and Squad Deals, all handled for you by Jekafly." />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <link rel="canonical" href="https://jekafly.com/holidays" />
     <meta property="og:type" content="website" />
@@ -79,7 +79,8 @@
             <div class="jkfh-hero-eyebrow"><span class="jkfh-dot"></span>Jekafly Destinations</div>
             <h1 class="jkfh-hero-heading">Every destination<br />has a <em>story</em>.</h1>
             <p class="jkfh-hero-sub">Curated experiences. Authentic destinations. Memorable journeys —
-                across six regional collections spanning the culture, heritage, and hidden gems of Nigeria.</p>
+                across six regional collections spanning the culture, heritage, and hidden gems of Nigeria, and
+                international trips across Africa and beyond.</p>
             <div class="jkfh-hero-actions">
                 <a href="#collections" class="jkfh-btn-gold">
                     Explore Collections
@@ -89,7 +90,7 @@
                         <polyline points="12 5 19 12 12 19" />
                     </svg>
                 </a>
-                <a href="#tiers" class="jkfh-btn-line">View Membership Tiers</a>
+                <a href="#international" class="jkfh-btn-line">International Trips</a>
             </div>
         </div>
     </section>
@@ -104,8 +105,8 @@
                     redefine how people discover, experience, and connect with destinations across Nigeria, Africa, and
                     beyond. We believe travel should be more than movement from one place to another.</p>
                 <p class="jkfh-about-p">We combine local knowledge, curated itineraries, quality hospitality partners,
-                    guided activities, and personalised support — so every journey, through our Explorer, Signature, and
-                    Executive collections, is seamless and memorable. We do not simply sell travel packages. We curate
+                    guided activities, and personalised support — so every journey is seamless and memorable. We do not
+                    simply sell travel packages. We curate
                     journeys, unlock experiences, and create stories worth sharing.</p>
                 <div class="jkfh-vision-card">
                     <div class="jkfh-vision-label">Our Vision</div>
@@ -190,7 +191,20 @@
                 lifestyle, and hidden gems across Nigeria. Select a collection to explore its destinations.</p>
         </div>
 
-        <div class="jkfh-coll-grid" id="collections-grid"></div>
+        <div id="collections-groups">
+            <div class="jkfh-coll-grid" id="collections-grid">
+                <div class="jkfh-grid-status">Loading collections…</div>
+            </div>
+
+            <div class="jkfh-section-header jkfh-section-header--sub" id="international">
+                <div class="jkfh-eyebrow jkfh-eyebrow--center"><span class="jkfh-dot"></span>Jekafly International Trips
+                </div>
+                <h2 class="jkfh-h2 jkfh-h2--center">Go Beyond Nigeria</h2>
+                <p class="jkfh-section-sub">Passport-building getaways and group Squad Deals across Africa and the Middle
+                    East. Priced per person, with single occupancy or shared rooms.</p>
+            </div>
+            <div class="jkfh-coll-grid" id="international-grid"></div>
+        </div>
 
         <!-- DESTINATION BROWSER (shown when a collection is selected) -->
         <div class="jkfh-browser-header" id="browser-header">
@@ -205,104 +219,12 @@
             <div class="jkfh-browser-eyebrow">Now Browsing</div>
             <h3 class="jkfh-browser-title" id="browser-title"></h3>
             <p class="jkfh-browser-tag" id="browser-tag"></p>
-            <div id="browser-filter-note" style="display:none;margin-top:10px;font-size:0.82rem;color:#7480A0;">
+            <div id="browser-filter-note" class="jkfh-filter-note">
                 Showing destinations with open dates only.
-                <a href="javascript:void(0)" onclick="showAllInRegion()"
-                    style="color:#0D1560;font-weight:600;text-decoration:underline;">Show all destinations</a>
+                <a href="javascript:void(0)" onclick="showAllInRegion()">Show all destinations</a>
             </div>
         </div>
         <div class="jkfh-card-grid" id="destination-grid"></div>
-    </section>
-
-    <!-- MEMBERSHIP TIERS -->
-    <section class="jkfh-tiers" id="tiers">
-        <div class="jkfh-section-header">
-            <div class="jkfh-eyebrow jkfh-eyebrow--center"><span class="jkfh-dot"></span>Jekafly Membership Tier
-                Grouping</div>
-            <h2 class="jkfh-h2 jkfh-h2--center">Join One of Our Member Tier Collections</h2>
-            <p class="jkfh-section-sub">We're not just pricing destinations — we're building exclusive club tiers that
-                grow with you.</p>
-        </div>
-        <div class="jkfh-tier-cards">
-            <div class="jkfh-tier-card">
-                <div class="jkfh-tier-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path
-                            d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 1-4 1L8.5 8.5l-8.3-1.8L2 9l8 2-1 5-5 2 1 2 6-1.5 2 6 2-2.5z" />
-                    </svg></div>
-                <div class="jkfh-tier-card-name">Explorer</div>
-                <p class="jkfh-tier-card-pos">Budget-conscious members. Affordable, exciting experiences for curious
-                    travellers seeking discovery and adventure — perfect for students, young professionals, and budget
-                    travellers.</p>
-                <div class="jkfh-tier-card-fee"><span>Activity Price
-                        Range</span><strong>&#8358;150,000&ndash;300,000</strong></div>
-            </div>
-            <div class="jkfh-tier-card jkfh-tier-card--featured">
-                <div class="jkfh-tier-card-badge">Most Popular</div>
-                <div class="jkfh-tier-card-icon jkfh-tier-card-icon--gold"><svg width="22" height="22"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path
-                            d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z" />
-                        <path d="M5 21h14" />
-                    </svg></div>
-                <div class="jkfh-tier-card-name">Signature</div>
-                <p class="jkfh-tier-card-pos">Premium curated experiences. Designed for families, couples,
-                    professionals, and discerning travellers who want enhanced comfort and guided experiences.</p>
-                <div class="jkfh-tier-card-fee"><span>Activity Price
-                        Range</span><strong>&#8358;300,000&ndash;500,000</strong></div>
-            </div>
-            <div class="jkfh-tier-card">
-                <div class="jkfh-tier-card-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon
-                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                    </svg></div>
-                <div class="jkfh-tier-card-name">Executive</div>
-                <p class="jkfh-tier-card-pos">Luxury and corporate membership. Premium accommodations, concierge
-                    support, exclusive access, and elevated hospitality for executives and diaspora visitors.</p>
-                <div class="jkfh-tier-card-fee"><span>Activity Price Range</span><strong>&#8358;500,000+</strong></div>
-            </div>
-        </div>
-        <div class="jkfh-tier-table-wrap">
-            <div class="jkfh-tier-table-label">Tier Positioning &amp; Typical Inclusions</div>
-            <div class="jkfh-tier-table-scroll">
-                <table class="jkfh-tier-table">
-                    <thead>
-                        <tr>
-                            <th>Tier</th>
-                            <th>Suggested Audience</th>
-                            <th>Tier Activity Price Range</th>
-                            <th>Typical Inclusions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span class="jkfh-table-tier-label">Explorer Series</span></td>
-                            <td>Students, Young Professionals, Budget Travelers</td>
-                            <td class="jkfh-table-price">&#8358;150,000 &ndash; &#8358;300,000</td>
-                            <td>Accommodation, Breakfast, Local Transfers, Tour Guide, Attraction Access, Jekafly
-                                Welcome Pack</td>
-                        </tr>
-                        <tr>
-                            <td><span class="jkfh-table-tier-label jkfh-table-tier-label--gold">Signature Series</span>
-                            </td>
-                            <td>Couples, Professionals</td>
-                            <td class="jkfh-table-price">&#8358;300,000 &ndash; &#8358;500,000</td>
-                            <td>Premium Accommodation, Daily Breakfast, Airport/Local Transfers, Guided Experiences,
-                                Attraction Tickets, Photography Stops, Jekafly Welcome Pack</td>
-                        </tr>
-                        <tr>
-                            <td><span class="jkfh-table-tier-label">Executive Series</span></td>
-                            <td>Executives, Diaspora Visitors, Luxury Travelers</td>
-                            <td class="jkfh-table-price">&#8358;500,000+</td>
-                            <td>Luxury Accommodation, VIP Transfers, Concierge Service, Premium Dining Experience,
-                                Exclusive Access Activities, Professional Photography Session, Jekafly Welcome Pack</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </section>
 
     <!-- CTA -->
@@ -367,139 +289,170 @@
             document.querySelector('nav')?.classList.toggle('scrolled', window.scrollY > 20);
         });
 
-        function escH(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+        function escH(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
         function escAttr(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'"); }
 
         // ══════════════════════════════════════════════════════════════════════
-        // REGIONAL COLLECTIONS DATA
+        // COLLECTIONS DATA — loaded from the API so admin edits show up live
         // ══════════════════════════════════════════════════════════════════════
-        var REGIONS = [
-            { key: 'southwest', name: 'Southwest', tagline: 'Culture, Heritage & Coastal Luxury', img: 'assets/images/ekiti.jpg' },
-            { key: 'southsouth', name: 'South-South', tagline: 'Waterways. Culture. Heritage. Adventure.', img: null },
-            { key: 'southeast', name: 'Southeast', tagline: 'Origins. Heritage. Enterprise.', img: null },
-            { key: 'northcentral', name: 'North-Central', tagline: 'Nature. Adventure. Discovery.', img: null },
-            { key: 'northwest', name: 'Northwest', tagline: 'Ancient Kingdoms. Culture. Desert Charm.', img: null },
-            { key: 'northeast', name: 'Northeast', tagline: 'Wild Frontiers. Mountains. Resilience.', img: null },
-        ];
+        var API_BASE = 'https://api.jekafly.com/api/v1';
+        var REGION_META = {
+            'Southwest': { tagline: 'Culture, Heritage & Coastal Luxury', img: 'assets/images/ekiti.jpg' },
+            'South-South': { tagline: 'Waterways. Culture. Heritage. Adventure.' },
+            'Southeast': { tagline: 'Origins. Heritage. Enterprise.' },
+            'North-Central': { tagline: 'Nature. Adventure. Discovery.' },
+            'Northwest': { tagline: 'Ancient Kingdoms. Culture. Desert Charm.' },
+            'Northeast': { tagline: 'Wild Frontiers. Mountains. Resilience.' },
+            'Passport Builder': { tagline: 'Short international trips that grow your travel history.' },
+            'Squad Deals': { tagline: 'Group getaways with visa, return flights and villa stays included.' },
+        };
+        var KNOWN_REGION_KEYS = ['southwest', 'southsouth', 'southeast', 'northcentral', 'northwest', 'northeast', 'passportbuilder', 'squaddeals'];
+        var OCCUPANCY_LABELS = { SINGLE: 'Single occupancy', SHARING: 'Per person sharing' };
+        var REGIONS = [];
+        var DESTINATIONS = [];
 
-        // NOTE: img: null means no photo asset exists yet — a branded gradient
-        // placeholder card is rendered instead. Swap in real photography by
-        // setting img to an assets/images/ path once available.
-        var DESTINATIONS = [
-            // ── SOUTHWEST ──
-            { region: 'southwest', state: 'Lagos State', name: 'The Eko Experience', tagline: 'Where Energy Meets Luxury', tier: 'SIGNATURE', duration: '2 Days / 1 Night', days: 2, nights: 1, price: 350000, identity: 'Urban Lifestyle, Entertainment, Beaches, Nightlife', attractions: ['Boat Cruise Experience', 'Beach Day Out', 'Art Gallery Visit', 'Blue Line Rail Experience', 'Nightlife in Lekki & Victoria Island', 'Restaurant Fine Dining'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/lagos.jpg' },
-            { region: 'southwest', state: 'Ogun State', name: 'Gateway Trails', tagline: 'Discover Heritage Beyond the Horizon', tier: 'EXPLORER', duration: '2 Days / 1 Night', days: 2, nights: 1, price: 280000, identity: 'Heritage, Culture, Nature, Adventure', attractions: ['Rock Climbing Adventure', 'Adire Market Experience', 'OOPL Wildlife Park', 'Cultural City Tours'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/ogun.jpg' },
-            { region: 'southwest', state: 'Oyo State', name: 'The Alaafin Legacy', tagline: 'Walk Through the Kingdom of Legends', tier: 'EXPLORER', duration: '2 Days / 2 Nights', days: 2, nights: 2, price: 280000, identity: 'Royal Heritage, History, Food & Culture', attractions: ['Ibadan City Tour', 'Agodi Gardens', 'Heritage Sites', 'Local Cuisine Experience'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/oyo.jpg' },
-            { region: 'southwest', state: 'Ondo State', name: 'Sunrise Coast Escape', tagline: 'Where Nature Meets Serenity', tier: 'EXECUTIVE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Nature, Adventure, Wellness', attractions: ['Idanre Hills', 'Coastal Exploration', 'Eco-Tourism Trails', 'Nature Retreat'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/ondo.jpg' },
-            { region: 'southwest', state: 'Osun State', name: 'Sacred Osun Journey', tagline: 'Experience the Spirit of Heritage', tier: 'EXPLORER', duration: '2 Days / 1 Night', days: 2, nights: 1, price: 280000, identity: 'Spiritual Tourism, Heritage, Culture', attractions: ['Osun Sacred Grove', 'Ile-Ife Heritage Tour', 'Cultural Village Experience'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/osun.jpg' },
-            { region: 'southwest', state: 'Ekiti State', name: 'The Hidden Gem Escape', tagline: "Discover Nigeria's Best-Kept Secret", tier: 'EXECUTIVE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Eco-Tourism, Wellness, Adventure', attractions: ['Ikogosi Warm Springs', 'Arinta Waterfalls', 'Hiking & Nature Exploration'], inclusions: ['Daily Breakfast', 'Hotel Accommodation', 'Intercity Transfer & Local Movement', 'Curated Destination Guide', 'Access to Listed Attractions', 'Branded Travel Pack'], img: 'assets/images/ekiti.jpg' },
+        function regionKey(name) { return String(name || '').toLowerCase().replace(/[^a-z]/g, ''); }
+        function regionClass(key) { return 'jkfh-region-' + (KNOWN_REGION_KEYS.indexOf(key) > -1 ? key : 'default'); }
+        function naira(n) { return '₦' + Number(n || 0).toLocaleString('en-NG'); }
+        function durationLabel(days, nights) {
+            return days + ' Day' + (days === 1 ? '' : 's') + ' / ' + nights + ' Night' + (nights === 1 ? '' : 's');
+        }
+        function asList(v) { return Array.isArray(v) ? v.filter(Boolean).map(String) : []; }
 
-            // ── SOUTH-SOUTH ──
-            { region: 'southsouth', state: 'Akwa Ibom State', name: 'The Ibom Escape', tagline: 'Where Hospitality Meets Paradise', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 320000, identity: 'Coastal Luxury', attractions: ['Ibeno Beach', 'Ibom Plaza', 'Raffia City Tour'], inclusions: ['Hotel Accommodation', 'Daily Breakfast', 'Local Transfers', 'Tour Guide', 'Access to Listed Attractions'], img: null },
-            { region: 'southsouth', state: 'Cross River State', name: 'The Calabar Discovery', tagline: "Experience Nigeria's Tourism Capital", tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 380000, identity: 'Culture & Nature', attractions: ['Obudu Mountain Resort', 'Tinapa', 'Marina Resort'], inclusions: ['Hotel Accommodation', 'Daily Breakfast', 'Local Transfers', 'Tour Guide', 'Access to Listed Attractions'], img: null },
-            { region: 'southsouth', state: 'Rivers State', name: 'Garden City Prestige', tagline: 'Business Meets Lifestyle', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 350000, identity: 'Urban Lifestyle', attractions: ['Port Harcourt City Tour', 'Pleasure Park', 'Nightlife'], inclusions: ['Hotel Accommodation', 'Daily Breakfast', 'Local Transfers', 'Tour Guide'], img: null },
-            { region: 'southsouth', state: 'Bayelsa State', name: 'Creeks & Culture Experience', tagline: 'Discover the Heart of the Delta', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Eco & Cultural Tourism', attractions: ['Oxbow Lake', 'Creek Excursions'], inclusions: ['Hotel Accommodation', 'Boat Transfers', 'Tour Guide'], img: null },
-            { region: 'southsouth', state: 'Delta State', name: 'Delta Heritage Trail', tagline: 'Where Tradition Meets Modernity', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Heritage & Lifestyle', attractions: ['Nana Living History Museum', 'Asaba City Tour'], inclusions: ['Hotel Accommodation', 'Local Transfers', 'Tour Guide'], img: null },
-            { region: 'southsouth', state: 'Edo State', name: 'Benin Kingdom Legacy', tagline: 'Walk Through a Timeless Empire', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 330000, identity: 'Royal Heritage', attractions: ['Benin Moat', 'National Museum', 'Palace District'], inclusions: ['Hotel Accommodation', 'Daily Breakfast', 'Local Transfers', 'Tour Guide'], img: null },
+        function mapPackage(p) {
+            var intl = p.category === 'INTERNATIONAL';
+            var images = asList(p.images);
+            return {
+                id: p.id,
+                region: regionKey(p.region),
+                regionName: p.region,
+                category: intl ? 'INTERNATIONAL' : 'LOCAL',
+                state: p.state || '',
+                name: p.packageName || '',
+                tagline: p.tagline || '',
+                days: p.durationDays || 0,
+                nights: p.durationNights || 0,
+                duration: durationLabel(p.durationDays || 0, p.durationNights || 0),
+                price: intl ? null : (p.price || null),
+                priceSingle: intl ? (p.priceSingle || null) : null,
+                priceSharing: intl ? (p.priceSharing || null) : null,
+                startingPrice: p.startingPrice || p.price || null,
+                identity: p.experienceType || '',
+                attractions: asList(p.attractions),
+                inclusions: asList(p.inclusions),
+                img: images[0] || null,
+                hasAvailability: !!p.hasAvailability,
+            };
+        }
 
-            // ── SOUTHEAST ──
-            { region: 'southeast', state: 'Anambra State', name: 'The Light of the Nation Experience', tagline: 'Discover Enterprise & Heritage', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Culture & Commerce', attractions: ['Ogbunike Cave', 'Onitsha Experience'], inclusions: ['Hotel Accommodation', 'Daily Breakfast', 'Local Transfers'], img: null },
-            { region: 'southeast', state: 'Enugu State', name: 'Coal City Escape', tagline: 'Nature, History & Serenity', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 320000, identity: 'Nature & Heritage', attractions: ['Ngwo Pine Forest', 'Awhum Waterfall'], inclusions: ['Hotel Accommodation', 'Tour Guide', 'Local Transfers'], img: null },
-            { region: 'southeast', state: 'Imo State', name: 'Eastern Heartland Retreat', tagline: 'Relax. Explore. Connect.', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Leisure Tourism', attractions: ['Oguta Lake', 'Cultural Villages'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
-            { region: 'southeast', state: 'Abia State', name: 'Aba Enterprise Journey', tagline: 'Innovation Meets Culture', tier: 'EXPLORER', duration: '2 Days / 1 Night', days: 2, nights: 1, price: 250000, identity: 'Commerce Tourism', attractions: ['Ariaria Market', 'Cultural Sites'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
-            { region: 'southeast', state: 'Ebonyi State', name: 'Salt of the Nation Adventure', tagline: 'Discover Hidden Wonders', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 270000, identity: 'Nature & Agriculture', attractions: ['Salt Lakes', 'Waterfalls'], inclusions: ['Hotel Accommodation', 'Local Transfers', 'Tour Guide'], img: null },
+        async function loadCollections() {
+            var res = await fetch(API_BASE + '/holidays');
+            var data = await res.json();
+            if (!res.ok || !data || !data.ok) throw new Error((data && data.error) || 'Failed to load holidays');
+            var regions = (data.data && data.data.regions) || [];
+            REGIONS = regions.map(function (r) {
+                var meta = REGION_META[r.region] || {};
+                var first = (r.packages || [])[0] || {};
+                return {
+                    key: regionKey(r.region),
+                    name: r.region,
+                    category: (r.category || first.category) === 'INTERNATIONAL' ? 'INTERNATIONAL' : 'LOCAL',
+                    tagline: meta.tagline || '',
+                    img: meta.img || null,
+                };
+            });
+            DESTINATIONS = [];
+            regions.forEach(function (r) {
+                (r.packages || []).forEach(function (p) { DESTINATIONS.push(mapPackage(p)); });
+            });
+        }
 
-            // ── NORTH-CENTRAL ──
-            { region: 'northcentral', state: 'Federal Capital Territory', name: 'Capital Explorer', tagline: "Discover Nigeria's Seat of Power", tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 350000, identity: 'Urban Tourism', attractions: ['Zuma Rock', 'Millennium Park', 'City Tour'], inclusions: ['Hotel Accommodation', 'Local Transfers', 'Tour Guide'], img: null },
-            { region: 'northcentral', state: 'Niger State', name: 'The Confluence Adventure', tagline: 'Nature Beyond Imagination', tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 400000, identity: 'Adventure Tourism', attractions: ['Gurara Falls', 'Kainji Lake'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
-            { region: 'northcentral', state: 'Kwara State', name: 'Harmony Escape', tagline: 'Where Cultures Meet', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Heritage Tourism', attractions: ['Esie Museum', 'Owu Falls'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
-            { region: 'northcentral', state: 'Kogi State', name: 'The Confluence Experience', tagline: 'Where Rivers Meet, Stories Begin', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Nature & Heritage', attractions: ['River Niger-Benue Confluence'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
-            { region: 'northcentral', state: 'Benue State', name: 'Food Basket Discovery', tagline: 'Taste the Heart of Nigeria', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Agro Tourism', attractions: ['Makurdi Riverfront', 'Cultural Experiences'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
-            { region: 'northcentral', state: 'Plateau State', name: 'Jos Highland Escape', tagline: 'Cool Weather, Endless Adventure', tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 420000, identity: 'Mountain Tourism', attractions: ['Shere Hills', 'Wildlife Park'], inclusions: ['Hotel Accommodation', 'Local Transfers', 'Tour Guide'], img: null },
-            { region: 'northcentral', state: 'Nasarawa State', name: 'Hidden Treasures of Nasarawa', tagline: "Nigeria's Best Kept Secret", tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 270000, identity: 'Eco Tourism', attractions: ['Farin Ruwa Falls'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
+        // ── Render collections grids ────────────────────────────────────────
+        function collCardHTML(r) {
+            var count = DESTINATIONS.filter(function (d) { return d.region === r.key; }).length;
+            var mediaStyle = r.img ? ' style="background-image:url(\'' + escH(r.img) + '\')"' : '';
+            var mediaClass = r.img ? 'jkfh-coll-media' : 'jkfh-coll-media ' + regionClass(r.key);
+            var noun = r.category === 'INTERNATIONAL' ? 'Trip' : 'Destination';
+            return '<div class="jkfh-coll-card" onclick="browseRegion(\'' + r.key + '\')">' +
+                '<div class="' + mediaClass + '"' + mediaStyle + '>' +
+                '<div class="jkfh-coll-shade"></div>' +
+                '<div class="jkfh-coll-count">' + count + ' ' + noun + (count === 1 ? '' : 's') + '</div>' +
+                '</div>' +
+                '<div class="jkfh-coll-body">' +
+                '<div class="jkfh-coll-name">' + escH(r.name) + '</div>' +
+                '<div class="jkfh-coll-tag">' + escH(r.tagline) + '</div>' +
+                '<div class="jkfh-coll-link">Explore Collection ' +
+                '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
+                '</div>' +
+                '</div>' +
+                '</div>';
+        }
 
-            // ── NORTHWEST ──
-            { region: 'northwest', state: 'Kano State', name: 'Kano Emirate Experience', tagline: 'Journey Through Centuries', tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 450000, identity: 'Heritage Tourism', attractions: ['Ancient City Walls', "Emir's Palace"], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
-            { region: 'northwest', state: 'Kaduna State', name: 'Northern Gateway Escape', tagline: 'Adventure Meets History', tier: 'SIGNATURE', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 350000, identity: 'Heritage & Nature', attractions: ['Kajuru Castle', 'Matsirga Falls'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
-            { region: 'northwest', state: 'Katsina State', name: 'Land of Legends Trail', tagline: 'Experience Timeless Traditions', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Cultural Tourism', attractions: ['Gobarau Minaret'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
-            { region: 'northwest', state: 'Jigawa State', name: 'Golden Dunes Journey', tagline: 'Beyond the Ordinary', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Desert Tourism', attractions: ['Wetlands & Cultural Sites'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
-            { region: 'northwest', state: 'Sokoto State', name: 'Caliphate Heritage Tour', tagline: 'Discover the Legacy of Leaders', tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 420000, identity: 'Historical Tourism', attractions: ["Sultan's Palace", 'Museum'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
-            { region: 'northwest', state: 'Kebbi State', name: 'Argungu Adventure', tagline: 'Tradition on the Water', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Festival Tourism', attractions: ['Argungu Festival Grounds'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
-            { region: 'northwest', state: 'Zamfara State', name: 'Northern Frontier Experience', tagline: 'Discover Untold Stories', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 280000, identity: 'Cultural Tourism', attractions: ['Heritage Communities'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
-
-            // ── NORTHEAST ──
-            { region: 'northeast', state: 'Adamawa State', name: 'Highlands of Adamawa', tagline: 'Adventure Above the Clouds', tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 450000, identity: 'Mountain Tourism', attractions: ['Mambilla Plateau Region'], inclusions: ['Hotel Accommodation', 'Tour Guide', 'Local Transfers'], img: null },
-            { region: 'northeast', state: 'Taraba State', name: "Nature's Masterpiece Escape", tagline: "Explore Nigeria's Green Frontier", tier: 'SIGNATURE', duration: '4 Days / 3 Nights', days: 4, nights: 3, price: 480000, identity: 'Eco Tourism', attractions: ['Gashaka Gumti National Park'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
-            { region: 'northeast', state: 'Borno State', name: 'Lake Chad Heritage Journey', tagline: 'Discover Ancient Trade Routes', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 320000, identity: 'Historical Tourism', attractions: ['Cultural Heritage Experiences'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
-            { region: 'northeast', state: 'Yobe State', name: 'Desert Discovery Trail', tagline: 'Experience Northern Horizons', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 300000, identity: 'Desert Tourism', attractions: ['Dune Landscapes'], inclusions: ['Hotel Accommodation', 'Local Transfers'], img: null },
-            { region: 'northeast', state: 'Bauchi State', name: 'Yankari Wildlife Safari', tagline: "Africa's Wild Side Awaits", tier: 'EXECUTIVE', duration: '5 Days / 4 Nights', days: 5, nights: 4, price: 650000, identity: 'Safari Tourism', attractions: ['Yankari Game Reserve'], inclusions: ['Resort Accommodation', 'Safari Guide', 'Transfers'], img: null },
-            { region: 'northeast', state: 'Gombe State', name: 'Jewel of the Savannah', tagline: 'Discover Untamed Beauty', tier: 'EXPLORER', duration: '3 Days / 2 Nights', days: 3, nights: 2, price: 290000, identity: 'Eco Tourism', attractions: ['Savannah Landscapes'], inclusions: ['Hotel Accommodation', 'Tour Guide'], img: null },
-        ];
-
-        var TIER_LABELS = { EXPLORER: 'Explorer', SIGNATURE: 'Signature', EXECUTIVE: 'Executive' };
-        var TIER_COLORS = { EXPLORER: '#3B5BDB', SIGNATURE: '#C48332', EXECUTIVE: '#7048E8' };
-
-        // ── Render collections grid ─────────────────────────────────────────
         function renderCollections() {
-            var grid = document.getElementById('collections-grid');
-            grid.innerHTML = REGIONS.map(function (r) {
-                var count = DESTINATIONS.filter(function (d) { return d.region === r.key; }).length;
-                var mediaStyle = r.img ? ' style="background-image:url(\'' + r.img + '\')"' : '';
-                var mediaClass = r.img ? 'jkfh-coll-media' : 'jkfh-coll-media jkfh-region-' + r.key;
-                return '<div class="jkfh-coll-card" onclick="browseRegion(\'' + r.key + '\')">' +
-                    '<div class="' + mediaClass + '"' + mediaStyle + '>' +
-                    '<div class="jkfh-coll-shade"></div>' +
-                    '<div class="jkfh-coll-count">' + count + ' Destination' + (count > 1 ? 's' : '') + '</div>' +
-                    '</div>' +
-                    '<div class="jkfh-coll-body">' +
-                    '<div class="jkfh-coll-name">' + escH(r.name) + '</div>' +
-                    '<div class="jkfh-coll-tag">' + escH(r.tagline) + '</div>' +
-                    '<div class="jkfh-coll-link">Explore Collection ' +
-                    '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
-            }).join('');
+            var local = REGIONS.filter(function (r) { return r.category === 'LOCAL'; });
+            var intl = REGIONS.filter(function (r) { return r.category === 'INTERNATIONAL'; });
+            document.getElementById('collections-grid').innerHTML = local.length
+                ? local.map(collCardHTML).join('')
+                : '<div class="jkfh-grid-status">New collections are on the way — check back soon.</div>';
+            document.getElementById('international-grid').innerHTML = intl.map(collCardHTML).join('');
+            document.getElementById('international').classList.toggle('jkfh-is-hidden', !intl.length);
+            document.getElementById('international-grid').classList.toggle('jkfh-is-hidden', !intl.length);
+        }
+
+        function renderCollectionsError() {
+            document.getElementById('collections-grid').innerHTML =
+                '<div class="jkfh-grid-status">We couldn\'t load our collections right now. ' +
+                '<a href="javascript:void(0)" onclick="initCollections()">Try again</a></div>';
+            document.getElementById('international').classList.add('jkfh-is-hidden');
+            document.getElementById('international-grid').classList.add('jkfh-is-hidden');
         }
 
         // ── Destination card ─────────────────────────────────────────────────
+        function priceLabel(d) {
+            if (d.category === 'INTERNATIONAL') return 'From ' + naira(d.startingPrice) + ' / person';
+            return naira(d.price) + ' / person';
+        }
+
         function destCardHTML(d, idx) {
-            var tierColor = TIER_COLORS[d.tier];
-            var avail = _holidayAvailability[d.name];
-            var isSoldOut = !!avail && avail.hasAvailability === false;
+            var isSoldOut = !d.hasAvailability;
             var media = d.img
-                ? '<div class="jkfh-card-img" style="background-image:url(\'' + d.img + '\')"></div>'
-                : '<div class="jkfh-card-img jkfh-card-img--placeholder jkfh-region-' + d.region + '"><span class="jkfh-card-placeholder-text">' + escH(d.state.replace(' State', '').replace('Federal Capital Territory', 'FCT')) + '</span></div>';
+                ? '<div class="jkfh-card-img" style="background-image:url(\'' + escH(d.img) + '\')"></div>'
+                : '<div class="jkfh-card-img jkfh-card-img--placeholder ' + regionClass(d.region) + '"><span class="jkfh-card-placeholder-text">' + escH(d.state.replace(' State', '').replace('Federal Capital Territory', 'FCT')) + '</span></div>';
             var attractionsList = d.attractions.map(function (a) { return '<li>' + escH(a) + '</li>'; }).join('');
             var inclusionsList = d.inclusions.map(function (a) { return '<li>' + escH(a) + '</li>'; }).join('');
+            var roomList = '';
+            if (d.category === 'INTERNATIONAL') {
+                if (d.priceSharing) roomList += '<li>Per person sharing — ' + naira(d.priceSharing) + '</li>';
+                if (d.priceSingle) roomList += '<li>Single occupancy — ' + naira(d.priceSingle) + '</li>';
+            }
+            var badge = d.category === 'INTERNATIONAL' ? '<span class="jkfh-card-badge">' + escH(d.regionName) + '</span>' : '';
             return '<div class="jkfh-card">' +
                 '<div class="jkfh-card-media">' + media +
-                '<div class="jkfh-card-shade"></div>' +
-                '<span class="jkfh-card-badge" style="background:' + tierColor + '">' + TIER_LABELS[d.tier] + '</span>' +
+                '<div class="jkfh-card-shade"></div>' + badge +
                 '</div>' +
                 '<div class="jkfh-card-body">' +
                 '<div class="jkfh-card-state">' + escH(d.state) + '</div>' +
                 '<div class="jkfh-card-name">' + escH(d.name) + '</div>' +
-                '<div class="jkfh-card-tag">"' + escH(d.tagline) + '"</div>' +
+                (d.tagline ? '<div class="jkfh-card-tag">"' + escH(d.tagline) + '"</div>' : '') +
                 '<div class="jkfh-card-meta">' +
                 '<span class="jkfh-card-pill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' + escH(d.duration) + '</span>' +
                 (isSoldOut
-                    ? '<span class="jkfh-card-pill" style="background:#6B7280;color:#fff;">No Open Dates</span>'
-                    : '<span class="jkfh-card-pill jkfh-card-pill--gold">From &#8358;' + d.price.toLocaleString() + '</span>') +
+                    ? '<span class="jkfh-card-pill jkfh-card-pill--muted">No Open Dates</span>'
+                    : '<span class="jkfh-card-pill jkfh-card-pill--gold">' + priceLabel(d) + '</span>') +
                 '</div>' +
                 '<button class="jkfh-card-toggle" onclick="toggleCardDetails(' + idx + ')">' +
                 '<span id="toggle-label-' + idx + '">Show details</span>' +
                 '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>' +
                 '</button>' +
                 '<div class="jkfh-card-details" id="card-details-' + idx + '">' +
-                '<div class="jkfh-card-details-label">Key Attractions</div>' +
-                '<ul class="jkfh-card-details-list">' + attractionsList + '</ul>' +
-                '<div class="jkfh-card-details-label">Standard Inclusions</div>' +
-                '<ul class="jkfh-card-details-list">' + inclusionsList + '</ul>' +
+                (d.identity ? '<div class="jkfh-card-details-label">Experience</div><p class="jkfh-card-details-text">' + escH(d.identity) + '</p>' : '') +
+                (attractionsList ? '<div class="jkfh-card-details-label">Key Attractions</div><ul class="jkfh-card-details-list">' + attractionsList + '</ul>' : '') +
+                (inclusionsList ? '<div class="jkfh-card-details-label">Standard Inclusions</div><ul class="jkfh-card-details-list">' + inclusionsList + '</ul>' : '') +
+                (roomList ? '<div class="jkfh-card-details-label">Room Options</div><ul class="jkfh-card-details-list">' + roomList + '</ul>' : '') +
                 '</div>' +
                 (isSoldOut
-                    ? '<button class="jkfh-card-cta" disabled style="opacity:0.55;cursor:not-allowed;">No Dates Available</button>'
-                    : '<button class="jkfh-card-cta" onclick="openBookingModal(\'' + escAttr(d.state) + '\',\'' + escAttr(d.name) + '\',\'' + d.tier + '\',' + d.price + ',' + d.days + ',' + d.nights + ',\'' + (d.img || '') + '\')">' +
+                    ? '<button class="jkfh-card-cta" disabled>No Dates Available</button>'
+                    : '<button class="jkfh-card-cta" onclick="openBookingModal(\'' + escAttr(d.id) + '\')">' +
                     'Book This Experience <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
                     '</button>') +
                 '</div>' +
@@ -521,9 +474,9 @@
             if (!region) return;
             _currentRegionKey = key;
 
-            document.getElementById('collections-grid').style.display = 'none';
+            document.getElementById('collections-groups').classList.add('jkfh-is-hidden');
             document.getElementById('browser-header').classList.add('active');
-            document.getElementById('browser-title').textContent = region.name + ' Collection';
+            document.getElementById('browser-title').textContent = region.category === 'INTERNATIONAL' ? region.name : region.name + ' Collection';
             document.getElementById('browser-tag').textContent = region.tagline;
 
             renderRegionGrid(key, !!(opts && opts.onlyAvailable));
@@ -534,19 +487,16 @@
         function renderRegionGrid(key, onlyAvailable) {
             var list = DESTINATIONS.filter(function (d) { return d.region === key; });
             if (onlyAvailable) {
-                list = list.filter(function (d) {
-                    var avail = _holidayAvailability[d.name];
-                    return !(avail && avail.hasAvailability === false);
-                });
+                list = list.filter(function (d) { return d.hasAvailability; });
             }
             var note = document.getElementById('browser-filter-note');
-            if (note) note.style.display = onlyAvailable ? 'block' : 'none';
+            if (note) note.classList.toggle('active', onlyAvailable);
 
             var grid = document.getElementById('destination-grid');
             if (!list.length) {
-                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:32px 16px;color:#7480A0;font-size:0.9rem;">' +
+                grid.innerHTML = '<div class="jkfh-grid-status">' +
                     'No destinations with open dates in this collection right now.<br>' +
-                    '<a href="javascript:void(0)" onclick="showAllInRegion()" style="color:#0D1560;font-weight:600;text-decoration:underline;">Show all destinations</a>' +
+                    '<a href="javascript:void(0)" onclick="showAllInRegion()">Show all destinations</a>' +
                     '</div>';
             } else {
                 grid.innerHTML = list.map(function (d, i) { return destCardHTML(d, i); }).join('');
@@ -571,62 +521,53 @@
 
         function backToCollections() {
             _currentRegionKey = null;
-            document.getElementById('collections-grid').style.display = 'grid';
+            document.getElementById('collections-groups').classList.remove('jkfh-is-hidden');
             document.getElementById('browser-header').classList.remove('active');
             document.getElementById('destination-grid').classList.remove('active');
             document.getElementById('destination-grid').innerHTML = '';
             var note = document.getElementById('browser-filter-note');
-            if (note) note.style.display = 'none';
+            if (note) note.classList.remove('active');
             document.getElementById('collections').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        document.addEventListener('DOMContentLoaded', async function () {
-            await loadHolidayAvailability();
+        async function initCollections() {
+            document.getElementById('collections-grid').innerHTML = '<div class="jkfh-grid-status">Loading collections…</div>';
+            try {
+                await loadCollections();
+            } catch (e) {
+                renderCollectionsError();
+                return;
+            }
             renderCollections();
+            observeReveal();
             var params = new URLSearchParams(window.location.search);
             var region = params.get('region');
             if (region && REGIONS.some(function (r) { return r.key === region; })) {
                 browseRegion(region);
-            }
-        });
-
-        // ── Scroll reveal ────────────────────────────────────────────────────
-        (function () {
-            if (typeof IntersectionObserver === 'undefined') return;
-            var selectors = ['.jkfh-coll-card', '.jkfh-tier-card', '.jkfh-values-list li', '.jkfh-vision-card'];
-            var observer = new IntersectionObserver(function (entries) {
-                entries.forEach(function (e) {
-                    if (e.isIntersecting) { e.target.classList.add('jkfh-visible'); observer.unobserve(e.target); }
-                });
-            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-            function init() {
-                selectors.forEach(function (sel) {
-                    document.querySelectorAll(sel).forEach(function (el) {
-                        el.classList.add('jkfh-reveal'); observer.observe(el);
-                    });
-                });
-            }
-            if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', init); } else { init(); }
-        }());
-
-        var _holidayAvailability = {};
-
-        async function loadHolidayAvailability() {
-            try {
-                var res = await fetch('https://api.jekafly.com/api/v1/holidays');
-                var data = await res.json();
-                var regions = data?.data?.regions || [];
-                var map = {};
-                regions.forEach(function (r) {
-                    (r.packages || []).forEach(function (p) {
-                        map[p.packageName] = { id: p.id, hasAvailability: !!p.hasAvailability };
-                    });
-                });
-                _holidayAvailability = map;
-            } catch (e) {
-                _holidayAvailability = {};
+            } else if (window.location.hash === '#international') {
+                document.getElementById('international').scrollIntoView({ block: 'start' });
             }
         }
+
+        document.addEventListener('DOMContentLoaded', initCollections);
+
+        // ── Scroll reveal ────────────────────────────────────────────────────
+        var _revealObserver = (typeof IntersectionObserver === 'undefined') ? null : new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) { e.target.classList.add('jkfh-visible'); _revealObserver.unobserve(e.target); }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+        function observeReveal() {
+            if (!_revealObserver) return;
+            ['.jkfh-coll-card', '.jkfh-values-list li', '.jkfh-vision-card'].forEach(function (sel) {
+                document.querySelectorAll(sel).forEach(function (el) {
+                    if (el.classList.contains('jkfh-reveal')) return;
+                    el.classList.add('jkfh-reveal'); _revealObserver.observe(el);
+                });
+            });
+        }
+        if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', observeReveal); } else { observeReveal(); }
 
         // ══════════════════════════════════════════════════════════════════════
         // BOOKING MODAL STATE
@@ -634,32 +575,48 @@
         var _bm = {
             step: 1,
             totalSteps: 7,
-            state: '', packageName: '', tier: '', pricePerPerson: 0, days: 0, nights: 0, img: '',
+            pkg: null,
+            state: '', packageName: '', category: 'LOCAL', days: 0, nights: 0, img: '',
             holidayId: null,
             user: null,
             dateId: null, dateStr: '', travellers: 1, leadName: '', leadEmail: '', leadPhone: '',
             additionalTravellers: [],
-            selectedTier: '', tierPrice: 0,
+            occupancy: null, unitPrice: 0,
             clubActive: false, addClub: false, clubFee: 150000,
+            submitting: false,
         };
 
+        function authHeader() {
+            var t = (typeof Auth !== 'undefined' && Auth.getToken) ? Auth.getToken() : '';
+            return t ? { 'Authorization': 'Bearer ' + t } : {};
+        }
+
+        async function refreshClubStatus() {
+            try {
+                const cs = await fetch(API_BASE + '/club/status', { headers: authHeader() });
+                const cd = await cs.json();
+                _bm.clubActive = !!(cd?.data?.active);
+            } catch (e) { _bm.clubActive = false; }
+        }
+
         // ── Open modal ───────────────────────────────────────────────────────
-        async function openBookingModal(state, packageName, tier, pricePerPerson, days, nights, img) {
-            var avail = _holidayAvailability[packageName];
-            if (avail && avail.hasAvailability === false) {
+        async function openBookingModal(id) {
+            var d = DESTINATIONS.find(function (x) { return x.id === id; });
+            if (!d) return;
+            if (!d.hasAvailability) {
                 if (typeof showToast === 'function') showToast('No open dates for this experience right now — check back soon.', 'error');
                 return;
             }
-            _bm.state = state;
-            _bm.packageName = packageName;
-            _bm.tier = tier;
-            _bm.pricePerPerson = pricePerPerson;
-            _bm.days = days;
-            _bm.nights = nights;
-            _bm.img = img;
-            _bm.selectedTier = tier;
-            _bm.tierPrice = pricePerPerson;
-            _bm.holidayId = null;
+            _bm.pkg = d;
+            _bm.holidayId = d.id;
+            _bm.state = d.state;
+            _bm.packageName = d.name;
+            _bm.category = d.category;
+            _bm.days = d.days;
+            _bm.nights = d.nights;
+            _bm.img = d.img || '';
+            _bm.occupancy = null;
+            _bm.unitPrice = d.category === 'INTERNATIONAL' ? 0 : (d.price || 0);
             _bm.dateId = null;
             _bm.dateStr = '';
             _bm.addClub = false;
@@ -668,35 +625,20 @@
             _bm.leadEmail = '';
             _bm.leadPhone = '';
             _bm.additionalTravellers = [];
+            _bm.submitting = false;
 
             _bm.user = (typeof Auth !== 'undefined' && Auth.getCurrent) ? Auth.getCurrent() : null;
             if (_bm.user) {
-                try {
-                    const cs = await fetch('https://api.jekafly.com/api/v1/club/status', {
-                        headers: { 'Authorization': 'Bearer ' + (Auth.getToken ? Auth.getToken() : '') }
-                    });
-                    const cd = await cs.json();
-                    _bm.clubActive = !!(cd?.data?.active);
-                } catch (e) { _bm.clubActive = false; }
+                await refreshClubStatus();
                 _bm.leadName = _bm.user.name || '';
                 _bm.leadEmail = _bm.user.email || '';
                 _bm.leadPhone = _bm.user.phone || '';
             }
 
             try {
-                const pr = await fetch('https://api.jekafly.com/api/v1/pricing');
+                const pr = await fetch(API_BASE + '/pricing');
                 const pd = await pr.json();
                 if (pd?.data?.clubMembershipFee) _bm.clubFee = pd.data.clubMembershipFee;
-            } catch (e) { }
-
-            try {
-                const hr = await fetch('https://api.jekafly.com/api/v1/holidays');
-                const hd = await hr.json();
-                const regions = hd?.data?.regions || [];
-                for (const r of regions) {
-                    const match = (r.packages || []).find(p => p.packageName === packageName);
-                    if (match) { _bm.holidayId = match.id; break; }
-                }
             } catch (e) { }
 
             _bm.step = 1;
@@ -732,20 +674,26 @@
 
         // ── STEP 1 — Destination confirmation ────────────────────────────────
         function renderStep1() {
-            var tierColor = TIER_COLORS[_bm.tier] || '#0D1560';
+            var d = _bm.pkg || {};
+            var imgHtml = _bm.img
+                ? `<div class="hbm-confirm-img" style="background-image:url('${escH(_bm.img)}')"></div>`
+                : `<div class="hbm-confirm-img ${regionClass(d.region)}"></div>`;
+            var pricePill = _bm.category === 'INTERNATIONAL'
+                ? `From ${naira(d.startingPrice)}/person`
+                : `${naira(_bm.unitPrice)}/person`;
             document.getElementById('hbm-content').innerHTML = `
             <div class="hbm-step-label">Step 1 of 7 — Confirm Destination</div>
             <h2 class="hbm-title">You're booking</h2>
             <p class="hbm-sub">Review your destination before we get started.</p>
             <div class="hbm-confirm-card">
-                <div class="hbm-confirm-img" style="background-image:url('${_bm.img}')"></div>
+                ${imgHtml}
                 <div class="hbm-confirm-info">
                     <div class="hbm-confirm-state">${escH(_bm.state)}</div>
                     <div class="hbm-confirm-name">${escH(_bm.packageName)}</div>
                     <div class="hbm-confirm-meta">
                         <span class="hbm-pill">${_bm.days}D / ${_bm.nights}N</span>
-                        <span class="hbm-pill hbm-pill--gold">From ₦${_bm.pricePerPerson.toLocaleString()}/person</span>
-                        <span class="hbm-pill" style="background:#EEF2FF;color:${tierColor}">${TIER_LABELS[_bm.tier]}</span>
+                        <span class="hbm-pill hbm-pill--gold">${pricePill}</span>
+                        ${_bm.category === 'INTERNATIONAL' ? `<span class="hbm-pill">${escH(d.regionName || 'International')}</span>` : ''}
                     </div>
                 </div>
             </div>
@@ -802,13 +750,7 @@
                 _bm.leadName = _bm.user.name || '';
                 _bm.leadEmail = _bm.user.email || '';
                 _bm.leadPhone = _bm.user.phone || '';
-                try {
-                    const cs = await fetch('https://api.jekafly.com/api/v1/club/status', {
-                        headers: { 'Authorization': 'Bearer ' + (Auth.getToken ? Auth.getToken() : '') }
-                    });
-                    const cd = await cs.json();
-                    _bm.clubActive = !!(cd?.data?.active);
-                } catch (e) { _bm.clubActive = false; }
+                await refreshClubStatus();
                 goStep(3);
             } catch (e) { err.textContent = e.message; err.style.display = 'block'; }
         }
@@ -912,7 +854,7 @@
 
             try {
                 var endpoint = _bm.holidayId
-                    ? `https://api.jekafly.com/api/v1/holidays/${_bm.holidayId}/availability`
+                    ? `${API_BASE}/holidays/${_bm.holidayId}/availability`
                     : null;
                 var dates = [];
                 if (endpoint) {
@@ -982,39 +924,40 @@
             goStep(4);
         }
 
-        // ── STEP 4 — Tier selection ───────────────────────────────────────────
+        // ── STEP 4 — Room option (international trips only) ──────────────────
         function renderStep4() {
-            var tiers = [
-                { key: 'EXPLORER', label: 'Explorer', desc: 'Accommodation · Breakfast · Local Transfers · Tour Guide · Attraction Access · Branded Pack', price: _bm.tier === 'EXPLORER' ? _bm.pricePerPerson : null, color: '#3B5BDB', bg: '#EEF2FF' },
-                { key: 'SIGNATURE', label: 'Signature', desc: 'Premium Hotel · Daily Breakfast · Airport/Local Transfers · Guided Experiences · Photography Stops · Branded Pack', price: _bm.tier === 'SIGNATURE' ? _bm.pricePerPerson : null, color: '#C48332', bg: '#FFF8E6' },
-                { key: 'EXECUTIVE', label: 'Executive', desc: 'Luxury Accommodation · VIP Transfers · Concierge · Premium Dining · Professional Photography · Exclusive Access · Branded Pack', price: _bm.tier === 'EXECUTIVE' ? _bm.pricePerPerson : null, color: '#7048E8', bg: '#F3F0FF' },
-            ];
-            var available = tiers.filter(t => t.key === _bm.tier || t.price !== null);
-            if (available.length === 1) {
-                _bm.selectedTier = available[0].key;
-                _bm.tierPrice = _bm.pricePerPerson;
+            var d = _bm.pkg || {};
+            if (_bm.category !== 'INTERNATIONAL') {
+                _bm.occupancy = null;
+                _bm.unitPrice = d.price || 0;
                 goStep(5);
                 return;
             }
+            var options = [
+                { key: 'SHARING', label: OCCUPANCY_LABELS.SHARING, desc: 'Share a twin or double room with another traveller. Price is per person.', price: d.priceSharing },
+                { key: 'SINGLE', label: OCCUPANCY_LABELS.SINGLE, desc: 'A room to yourself for the whole trip. Price is per person.', price: d.priceSingle },
+            ].filter(function (o) { return o.price; });
+            if (options.length === 1 && !_bm.occupancy) {
+                _bm.occupancy = options[0].key;
+                _bm.unitPrice = options[0].price;
+            }
             document.getElementById('hbm-content').innerHTML = `
             <button class="hbm-btn-back" onclick="goStep(3)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
-            <div class="hbm-step-label">Step 4 of 7 — Membership Tier</div>
-            <h2 class="hbm-title">Select your tier</h2>
-            <p class="hbm-sub">Each tier includes all standard inclusions plus the extras below.</p>
+            <div class="hbm-step-label">Step 4 of 7 — Room Option</div>
+            <h2 class="hbm-title">Choose your room</h2>
+            <p class="hbm-sub">All options include the trip's standard inclusions.</p>
             <div class="hbm-tier-cards">
-            ${tiers.map(t => {
-                var p = t.key === _bm.tier ? _bm.pricePerPerson : 0;
-                if (!p) return '';
-                var sel = _bm.selectedTier === t.key ? 'selected' : '';
-                return `<div class="hbm-tier-card ${sel}" onclick="selectTier('${t.key}',${p})">
-                    <div class="hbm-tier-card-icon" style="background:${t.bg};color:${t.color}">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            ${options.map(o => {
+                var sel = _bm.occupancy === o.key ? 'selected' : '';
+                return `<div class="hbm-tier-card ${sel}" onclick="selectOccupancy(this,'${o.key}',${o.price})">
+                    <div class="hbm-tier-card-icon hbm-tier-card-icon--room">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>
                     </div>
                     <div class="hbm-tier-card-body">
-                        <div class="hbm-tier-card-name">${t.label}</div>
-                        <div class="hbm-tier-card-desc">${t.desc}</div>
+                        <div class="hbm-tier-card-name">${o.label}</div>
+                        <div class="hbm-tier-card-desc">${o.desc}</div>
                     </div>
-                    <div class="hbm-tier-card-price">₦${p.toLocaleString()}</div>
+                    <div class="hbm-tier-card-price">${naira(o.price)}</div>
                 </div>`;
             }).join('')}
             </div>
@@ -1022,22 +965,29 @@
             <button class="hbm-btn" onclick="hbmStep4Next()">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
         }
 
-        function selectTier(key, price) {
-            _bm.selectedTier = key; _bm.tierPrice = price;
-            document.querySelectorAll('.hbm-tier-card').forEach(el => el.classList.remove('selected'));
-            event.currentTarget.classList.add('selected');
+        function selectOccupancy(el, key, price) {
+            _bm.occupancy = key; _bm.unitPrice = price;
+            document.querySelectorAll('.hbm-tier-card').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
         }
 
         function hbmStep4Next() {
-            if (!_bm.selectedTier) { document.getElementById('hbm-step4-err').textContent = 'Please select a tier.'; document.getElementById('hbm-step4-err').style.display = 'block'; return; }
+            if (!_bm.occupancy || !_bm.unitPrice) {
+                var err = document.getElementById('hbm-step4-err');
+                err.textContent = 'Please choose a room option.';
+                err.style.display = 'block';
+                return;
+            }
             goStep(5);
         }
+
+        function stepBeforeClub() { return _bm.category === 'INTERNATIONAL' ? 4 : 3; }
 
         // ── STEP 5 — Travel Club upsell ───────────────────────────────────────
         function renderStep5() {
             if (_bm.clubActive) {
                 document.getElementById('hbm-content').innerHTML = `
-                <button class="hbm-btn-back" onclick="goStep(4)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+                <button class="hbm-btn-back" onclick="goStep(stepBeforeClub())"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
                 <div class="hbm-step-label">Step 5 of 7 — Travel Club</div>
                 <h2 class="hbm-title">You're a Travel Club member</h2>
                 <p class="hbm-sub">Your membership perks are automatically applied to this booking.</p>
@@ -1049,7 +999,7 @@
                 return;
             }
             document.getElementById('hbm-content').innerHTML = `
-            <button class="hbm-btn-back" onclick="goStep(4)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+            <button class="hbm-btn-back" onclick="goStep(stepBeforeClub())"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
             <div class="hbm-step-label">Step 5 of 7 — Jekafly Travel Club</div>
             <h2 class="hbm-title">Unlock exclusive perks</h2>
             <p class="hbm-sub">Add annual Travel Club membership and unlock benefits beyond this trip.</p>
@@ -1079,10 +1029,14 @@
         }
 
         // ── STEP 6 — Order summary ────────────────────────────────────────────
-        function renderStep6() {
-            var tierTotal = _bm.tierPrice * _bm.travellers;
+        function bookingTotals() {
+            var packageTotal = _bm.unitPrice * _bm.travellers;
             var clubTotal = (!_bm.clubActive && _bm.addClub) ? _bm.clubFee : 0;
-            var grandTotal = tierTotal + clubTotal;
+            return { packageTotal: packageTotal, clubTotal: clubTotal, grandTotal: packageTotal + clubTotal };
+        }
+
+        function renderStep6() {
+            var t = bookingTotals();
             document.getElementById('hbm-content').innerHTML = `
             <button class="hbm-btn-back" onclick="goStep(5)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
             <div class="hbm-step-label">Step 6 of 7 — Order Summary</div>
@@ -1090,60 +1044,79 @@
             <p class="hbm-sub">Everything looks good? Proceed to payment.</p>
             <div class="hbm-summary-rows">
                 <div class="hbm-summary-row"><span>${escH(_bm.packageName)}</span><span>${_bm.days}D / ${_bm.nights}N</span></div>
-                <div class="hbm-summary-row"><span>Date</span><span>${_bm.dateStr}</span></div>
-                <div class="hbm-summary-row"><span>Tier</span><span>${TIER_LABELS[_bm.selectedTier]}</span></div>
+                <div class="hbm-summary-row"><span>Destination</span><span>${escH(_bm.state)}</span></div>
+                <div class="hbm-summary-row"><span>Date</span><span>${escH(_bm.dateStr)}</span></div>
+                ${_bm.occupancy ? `<div class="hbm-summary-row"><span>Room</span><span>${OCCUPANCY_LABELS[_bm.occupancy]}</span></div>` : ''}
                 <div class="hbm-summary-row"><span>Travellers</span><span>${_bm.travellers}</span></div>
-                ${(_bm.additionalTravellers && _bm.additionalTravellers.length) ? `<div class="hbm-summary-row" style="align-items:flex-start;"><span>Additional</span><span style="text-align:right;">${_bm.additionalTravellers.map(t => escH(t.name)).join('<br>')}</span></div>` : ''}
-                <div class="hbm-summary-row"><span>Tier cost (₦${_bm.tierPrice.toLocaleString()} × ${_bm.travellers})</span><span>₦${tierTotal.toLocaleString()}</span></div>
-                ${clubTotal ? `<div class="hbm-summary-row"><span>Travel Club membership (annual)</span><span>₦${clubTotal.toLocaleString()}</span></div>` : ''}
-                <div class="hbm-summary-row total"><span>Total</span><span>₦${grandTotal.toLocaleString()}</span></div>
+                ${(_bm.additionalTravellers && _bm.additionalTravellers.length) ? `<div class="hbm-summary-row hbm-summary-row--top"><span>Additional</span><span class="hbm-summary-names">${_bm.additionalTravellers.map(t => escH(t.name)).join('<br>')}</span></div>` : ''}
+                <div class="hbm-summary-row"><span>Package (${naira(_bm.unitPrice)} × ${_bm.travellers})</span><span>${naira(t.packageTotal)}</span></div>
+                ${t.clubTotal ? `<div class="hbm-summary-row"><span>Travel Club membership (annual)</span><span>${naira(t.clubTotal)}</span></div>` : ''}
+                <div class="hbm-summary-row total"><span>Total</span><span>${naira(t.grandTotal)}</span></div>
             </div>
-            <button class="hbm-btn" onclick="hbmProceedToPayment()">
-                Pay ₦${grandTotal.toLocaleString()} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <div id="hbm-step6-err" class="hbm-inline-error"></div>
+            <button class="hbm-btn" id="hbm-pay-btn" onclick="hbmProceedToPayment()">
+                Pay ${naira(t.grandTotal)} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>`;
         }
 
         async function hbmProceedToPayment() {
-            var tierTotal = _bm.tierPrice * _bm.travellers;
-            var clubTotal = (!_bm.clubActive && _bm.addClub) ? _bm.clubFee : 0;
-            var grandTotal = tierTotal + clubTotal;
+            if (_bm.submitting) return;
+            var err = document.getElementById('hbm-step6-err');
+            var btn = document.getElementById('hbm-pay-btn');
+            err.style.display = 'none';
+            if (!_bm.holidayId || !_bm.dateId) {
+                err.textContent = 'Please go back and choose a travel date.';
+                err.style.display = 'block';
+                return;
+            }
+            _bm.submitting = true;
+            if (btn) btn.classList.add('btn-loading');
 
-            var bookingRef = null;
-            if (_bm.holidayId && !_bm.dateId.startsWith('placeholder')) {
-                try {
-                    var token = typeof Auth !== 'undefined' && Auth.getToken ? Auth.getToken() : '';
-                    var br = await fetch('https://api.jekafly.com/api/v1/holidays/book', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-                        body: JSON.stringify({
-                            holidayId: _bm.holidayId,
-                            holidayDateId: _bm.dateId,
-                            tier: _bm.selectedTier,
-                            travellers: _bm.travellers,
-                            leadName: _bm.leadName,
-                            leadEmail: _bm.leadEmail,
-                            leadPhone: _bm.leadPhone,
-                            addMembership: _bm.addClub && !_bm.clubActive,
-                            additionalTravellers: _bm.additionalTravellers,
-                        })
-                    });
-                    var bd = await br.json();
-                    if (bd?.ok) bookingRef = bd.data?.booking?.ref;
-                } catch (e) { }
+            var booking = null;
+            var failMsg = 'We could not reserve your booking. Please try again.';
+            try {
+                var br = await fetch(API_BASE + '/holidays/book', {
+                    method: 'POST',
+                    headers: Object.assign({ 'Content-Type': 'application/json' }, authHeader()),
+                    body: JSON.stringify({
+                        holidayId: _bm.holidayId,
+                        holidayDateId: _bm.dateId,
+                        occupancy: _bm.occupancy,
+                        travellers: _bm.travellers,
+                        leadName: _bm.leadName,
+                        leadEmail: _bm.leadEmail,
+                        leadPhone: _bm.leadPhone,
+                        addMembership: _bm.addClub && !_bm.clubActive,
+                        additionalTravellers: _bm.additionalTravellers,
+                    })
+                });
+                var bd = await br.json();
+                if (bd?.ok) booking = bd.data?.booking || null;
+                else if (br.status === 401) failMsg = 'Your session has expired. Please log in again to continue.';
+                else if (bd?.error) failMsg = bd.error;
+            } catch (e) { }
+
+            if (!booking || !booking.ref) {
+                _bm.submitting = false;
+                if (btn) btn.classList.remove('btn-loading');
+                err.textContent = failMsg;
+                err.style.display = 'block';
+                return;
             }
 
             localStorage.setItem('jkf_pending_payment', JSON.stringify({
                 type: 'holiday',
                 packageName: _bm.packageName,
                 state: _bm.state,
-                tier: _bm.selectedTier,
+                occupancy: _bm.occupancy,
                 travellers: _bm.travellers,
                 date: _bm.dateStr,
-                amount: grandTotal,
-                tierAmount: tierTotal,
-                membershipAdded: _bm.addClub && !_bm.clubActive,
-                membershipAmount: clubTotal,
-                bookingRef: bookingRef,
+                amount: booking.totalAmount,
+                tierAmount: booking.tierAmount,
+                unitPrice: booking.unitPrice,
+                membershipAdded: !!booking.membershipAdded,
+                membershipAmount: booking.membershipAmount || 0,
+                bookingRef: booking.ref,
                 email: _bm.leadEmail,
             }));
             window.location.href = '/payment';
@@ -1161,7 +1134,7 @@
                 <div class="hbm-summary-rows" style="text-align:left">
                     <div class="hbm-summary-row"><span>Package</span><span>${escH(_bm.packageName)}</span></div>
                     <div class="hbm-summary-row"><span>Date</span><span>${_bm.dateStr}</span></div>
-                    <div class="hbm-summary-row"><span>Tier</span><span>${TIER_LABELS[_bm.selectedTier]}</span></div>
+                    ${_bm.occupancy ? `<div class="hbm-summary-row"><span>Room</span><span>${OCCUPANCY_LABELS[_bm.occupancy]}</span></div>` : ''}
                 </div>
                 <button class="hbm-btn" onclick="window.location.href='/dashboard'">
                     View My Bookings <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>

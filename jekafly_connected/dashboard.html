@@ -2593,12 +2593,12 @@
                 return;
             }
 
-            const tierColors = { EXPLORER: '#3B5BDB', SIGNATURE: '#C48332', EXECUTIVE: '#7048E8' };
+            const roomLabels = { SINGLE: 'Single occupancy', SHARING: 'Per person sharing' };
             const statusColors = { PENDING: 'status-processing', CONFIRMED: 'status-approved', CANCELLED: 'status-rejected' };
             const paged = _paginate(_holidaysAllBookings, _holidaysBookingsPage);
 
             container.innerHTML = paged.map(b => {
-                const tierColor = tierColors[b.tier] || '#0D1560';
+                const tierColor = '#0D1560';
                 const statusClass = statusColors[b.status] || 'status-received';
                 const dateStr = b.holidayDate?.date ? new Date(b.holidayDate.date).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—';
                 return `<div class="booking-card">
@@ -2614,7 +2614,7 @@
                 </div>
                 <div class="booking-card-details">
                     <div class="booking-detail"><span>Date</span><strong>${dateStr}</strong></div>
-                    <div class="booking-detail"><span>Tier</span><strong style="color:${tierColor}">${b.tier}</strong></div>
+                    ${b.occupancy ? `<div class="booking-detail"><span>Room</span><strong>${roomLabels[b.occupancy] || b.occupancy}</strong></div>` : ''}
                     <div class="booking-detail"><span>Travellers</span><strong>${b.travellers}</strong></div>
                     <div class="booking-detail"><span>Duration</span><strong>${b.holiday?.durationDays || '—'}D / ${b.holiday?.durationNights || '—'}N</strong></div>
                     <div class="booking-detail"><span>Club Membership</span><strong>${b.membershipAdded ? '✅ Included' : '—'}</strong></div>
