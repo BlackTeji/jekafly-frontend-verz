@@ -3005,6 +3005,31 @@ h4 {
     display: none !important;
 }
 
+.hol-subtabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.hol-subtab {
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1.5px solid #E5E7EB;
+    background: #fff;
+    color: #4B5563;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.hol-subtab.active {
+    border-color: #0D1560;
+    background: #0D1560;
+    color: #fff;
+}
+
 .hol-filters {
     display: flex;
     align-items: center;
