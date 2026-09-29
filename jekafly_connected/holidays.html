@@ -298,18 +298,34 @@
         var API_BASE = 'https://api.jekafly.com/api/v1';
         var REGION_META = {
             'Southwest': { tagline: 'Culture, Heritage & Coastal Luxury', img: 'assets/images/ekiti.jpg' },
-            'South-South': { tagline: 'Waterways. Culture. Heritage. Adventure.' },
-            'Southeast': { tagline: 'Origins. Heritage. Enterprise.' },
-            'North-Central': { tagline: 'Nature. Adventure. Discovery.' },
-            'Northwest': { tagline: 'Ancient Kingdoms. Culture. Desert Charm.' },
-            'Northeast': { tagline: 'Wild Frontiers. Mountains. Resilience.' },
-            'Passport Builder': { tagline: 'Short international trips that grow your travel history.' },
-            'Squad Deals': { tagline: 'Group getaways with visa, return flights and villa stays included.' },
+            'South-South': { tagline: 'Waterways. Culture. Heritage. Adventure.', img: 'assets/images/holidays/cross-river.jpg' },
+            'Southeast': { tagline: 'Origins. Heritage. Enterprise.', img: 'assets/images/holidays/imo.jpg' },
+            'North-Central': { tagline: 'Nature. Adventure. Discovery.', img: 'assets/images/holidays/niger.jpg' },
+            'Northwest': { tagline: 'Ancient Kingdoms. Culture. Desert Charm.', img: 'assets/images/holidays/kano.jpg' },
+            'Northeast': { tagline: 'Wild Frontiers. Mountains. Resilience.', img: 'assets/images/holidays/taraba.jpg' },
+            'Passport Builder': { tagline: 'Short international trips that grow your travel history.', img: 'assets/images/holidays/collection-passport-builder.jpg' },
+            'Squad Deals': { tagline: 'Group getaways with visa, return flights and villa stays included.', img: 'assets/images/holidays/collection-squad-deals.jpg' },
         };
         var KNOWN_REGION_KEYS = ['southwest', 'southsouth', 'southeast', 'northcentral', 'northwest', 'northeast', 'passportbuilder', 'squaddeals'];
         var OCCUPANCY_LABELS = { SINGLE: 'Single occupancy', SHARING: 'Per person sharing' };
         var REGIONS = [];
         var DESTINATIONS = [];
+        var PHOTO_CREDITS = {};
+
+        async function loadPhotoCredits() {
+            try {
+                var r = await fetch('assets/images/holidays/credits.json');
+                if (r.ok) PHOTO_CREDITS = await r.json();
+            } catch (e) { PHOTO_CREDITS = {}; }
+        }
+
+        function photoCreditHTML(img) {
+            var c = img && PHOTO_CREDITS[img];
+            if (!c) return '';
+            var author = c.source ? '<a href="' + escH(c.source) + '" target="_blank" rel="noopener">' + escH(c.author) + '</a>' : escH(c.author);
+            var lic = c.licenseUrl ? '<a href="' + escH(c.licenseUrl) + '" target="_blank" rel="noopener">' + escH(c.license) + '</a>' : escH(c.license);
+            return '<div class="jkfh-photo-credit">Photo: ' + author + ' · ' + lic + ', via Wikimedia Commons</div>';
+        }
 
         function regionKey(name) { return String(name || '').toLowerCase().replace(/[^a-z]/g, ''); }
         function regionClass(key) { return 'jkfh-region-' + (KNOWN_REGION_KEYS.indexOf(key) > -1 ? key : 'default'); }
@@ -381,6 +397,7 @@
                 '<div class="jkfh-coll-body">' +
                 '<div class="jkfh-coll-name">' + escH(r.name) + '</div>' +
                 '<div class="jkfh-coll-tag">' + escH(r.tagline) + '</div>' +
+                photoCreditHTML(r.img) +
                 '<div class="jkfh-coll-link">Explore Collection ' +
                 '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
                 '</div>' +
@@ -449,6 +466,7 @@
                 (attractionsList ? '<div class="jkfh-card-details-label">Key Attractions</div><ul class="jkfh-card-details-list">' + attractionsList + '</ul>' : '') +
                 (inclusionsList ? '<div class="jkfh-card-details-label">Standard Inclusions</div><ul class="jkfh-card-details-list">' + inclusionsList + '</ul>' : '') +
                 (roomList ? '<div class="jkfh-card-details-label">Room Options</div><ul class="jkfh-card-details-list">' + roomList + '</ul>' : '') +
+                photoCreditHTML(d.img) +
                 '</div>' +
                 (isSoldOut
                     ? '<button class="jkfh-card-cta" disabled>No Dates Available</button>'
@@ -533,7 +551,7 @@
         async function initCollections() {
             document.getElementById('collections-grid').innerHTML = '<div class="jkfh-grid-status">Loading collections…</div>';
             try {
-                await loadCollections();
+                await Promise.all([loadCollections(), loadPhotoCredits()]);
             } catch (e) {
                 renderCollectionsError();
                 return;

@@ -2027,6 +2027,18 @@
     text-align: right;
 }
 
+.jkfh-photo-credit {
+    font-size: 0.64rem;
+    line-height: 1.4;
+    color: var(--jkfh-text-faint);
+    margin: 0 0 12px;
+}
+
+.jkfh-photo-credit a {
+    color: inherit;
+    text-decoration: underline;
+}
+
 @media (max-width: 1024px) {
     .jkfh-section-header--sub {
         margin-top: 56px;
