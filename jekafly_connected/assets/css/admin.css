@@ -3162,3 +3162,495 @@ h4 {
         flex: 1 1 140px;
     }
 }
+
+
+/* ── Admin page (moved from inline styles) ── */
+#admin-role-badge {
+    margin-top:8px;
+    font-size:0.75rem;
+    color:#9BA5C0;
+    font-weight:600;
+}
+
+#tab-applications {
+    display:none;
+}
+
+#admin-zip-btn {
+    display:none;
+}
+
+#tab-users {
+    display:none;
+}
+
+#delete-user-overlay {
+    display:none;
+}
+
+#aff-action-overlay {
+    display:none;
+}
+
+.adm-delete-modal-box-space {
+    margin-top:24px;
+}
+
+#aff-confirm-btn {
+    flex:1;
+    justify-content:center;
+}
+
+.adm-flex-gap-10-size {
+    flex:1;
+}
+
+#tab-fees {
+    display:none;
+}
+
+.adm-fees-pricing-heading-text {
+    font-weight:500;
+    color:#9BA5C0;
+}
+
+.adm-fees-price-item-box {
+    font-size:0.72rem;
+    color:#9BA5C0;
+    margin-top:4px;
+}
+
+.adm-fees-price-item-space {
+    margin-top:4px;
+}
+
+#tab-reviews {
+    display:none;
+}
+
+#tab-consultations {
+    display:none;
+}
+
+#tab-insurance {
+    display:none;
+}
+
+#tab-affiliates {
+    display:none;
+}
+
+#tab-analytics {
+    display:none;
+}
+
+.adm-tab-analytics-row {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+}
+
+.adm-tab-analytics-text {
+    font-size:0.82rem;
+    font-weight:600;
+    color:var(--text-light);
+}
+
+.adm-tab-analytics-row-2 {
+    display:flex;
+    gap:6px;
+}
+
+#an-generated {
+    font-size:0.75rem;
+    color:var(--text-light);
+    margin-left:auto;
+}
+
+#tab-flights {
+    display:none;
+}
+
+#tab-holidays {
+    display:none;
+}
+
+#hol-panel-bookings {
+    display:none;
+}
+
+#hol-booking-package-filter {
+    max-width:260px;
+}
+
+#tab-hotels {
+    display:none;
+}
+
+#hol-manifest-modal {
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:99992;
+    background:rgba(10,13,50,.55);
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.adm-hol-manifest-modal-box {
+    background:#fff;
+    border-radius:16px;
+    padding:24px;
+    max-width:420px;
+    width:100%;
+    box-shadow:0 24px 60px rgba(0,0,0,.18);
+    font-family:'Poppins',sans-serif;
+}
+
+.adm-hol-manifest-modal-row {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+}
+
+#hol-manifest-title {
+    font-size:1rem;
+    font-weight:700;
+    color:#0D1560;
+}
+
+.adm-hol-manifest-modal-box-2 {
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:#9BA5C0;
+    padding:4px;
+}
+
+#hol-manifest-body {
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+#admin-preview-modal {
+    display:none;
+}
+
+
+/* ── Admin page — script-rendered elements (moved from inline styles) ── */
+.adm-render-aff-pending-box.adm-render-aff-pending-box {
+    font-size:0.78rem;
+    color:#8898BB;
+    margin-top:2px;
+}
+
+.adm-render-aff-pending-row.adm-render-aff-pending-row {
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.adm-render-aff-active-box.adm-render-aff-active-box {
+    background:#f0f2fb;
+    padding:3px 8px;
+    border-radius:5px;
+    font-size:0.82rem;
+}
+
+.adm-render-hol-bookings-page-box.adm-render-hol-bookings-page-box {
+    padding:2px 8px;
+    font-size:0.7rem;
+    margin-left:4px;
+}
+
+.adm-show-hol-traveller-manifest-box.adm-show-hol-traveller-manifest-box {
+    padding:10px 12px;
+    background:#F0F2FB;
+    border-radius:10px;
+}
+
+.adm-show-hol-traveller-manifest-text.adm-show-hol-traveller-manifest-text {
+    font-weight:700;
+    color:#0D1560;
+    font-size:0.88rem;
+}
+
+.adm-show-hol-traveller-manifest-text-2.adm-show-hol-traveller-manifest-text-2 {
+    font-size:0.72rem;
+    color:#9BA5C0;
+    font-weight:500;
+}
+
+.adm-show-hol-traveller-manifest-box-2.adm-show-hol-traveller-manifest-box-2 {
+    font-size:0.76rem;
+    color:#8898BB;
+    margin-top:2px;
+}
+
+.adm-show-hol-traveller-manifest-box-3.adm-show-hol-traveller-manifest-box-3 {
+    padding:10px 12px;
+    background:#FAFAFA;
+    border-radius:10px;
+    border:1px solid #F0F0F0;
+}
+
+.adm-show-hol-traveller-manifest-text-3.adm-show-hol-traveller-manifest-text-3 {
+    font-weight:600;
+    color:#0F1124;
+    font-size:0.86rem;
+}
+
+.adm-hol-booking-actions-html-box.adm-hol-booking-actions-html-box {
+    background:#FEE2E2;
+    color:#991B1B;
+    font-size:0.72rem;
+    padding:3px 8px;
+}
+
+.adm-hol-booking-actions-html-box-2.adm-hol-booking-actions-html-box-2 {
+    background:#F0FDF4;
+    color:#16A34A;
+    font-size:0.72rem;
+    padding:3px 8px;
+}
+
+.adm-render-table-text.adm-render-table-text {
+    font-size:0.7rem;
+    white-space:nowrap;
+}
+
+.adm-render-table-box.adm-render-table-box {
+    font-size:0.65rem;
+    padding:3px 8px;
+}
+
+.adm-render-table-text-2.adm-render-table-text-2 {
+    white-space:nowrap;
+}
+
+.adm-render-users-page-text.adm-render-users-page-text {
+    white-space:nowrap;
+}
+
+.adm-render-users-page-row.adm-render-users-page-row {
+    white-space:nowrap;
+    display:flex;
+    gap:6px;
+    align-items:center;
+}
+
+.adm-_an-destinations-box.adm-_an-destinations-box {
+    font-size:0.75rem;
+    color:var(--text-light);
+    min-width:60px;
+    text-align:right;
+}
+
+.adm-cell-color-text.adm-cell-color-text {
+    font-size:0.72rem;
+    font-weight:400;
+    color:var(--text-light);
+}
+
+.adm-cell-color-row.adm-cell-color-row {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding-top:12px;
+    font-size:0.72rem;
+    color:var(--text-light);
+}
+
+.adm-_an-traffic-text.adm-_an-traffic-text {
+    font-weight:400;
+    color:var(--text-light);
+}
+
+.adm-_an-revenue-by-type-box.adm-_an-revenue-by-type-box {
+    background:#0D1560;
+}
+
+.adm-_an-page-table-box.adm-_an-page-table-box {
+    grid-column:1/-1;
+}
+
+.adm-_an-page-table-space.adm-_an-page-table-space {
+    padding:20px 0;
+}
+
+.adm-_an-page-table-text.adm-_an-page-table-text {
+    font-weight:600;
+}
+
+.adm-_an-page-table-box-2.adm-_an-page-table-box-2 {
+    height:4px;
+    background:#F0F2F8;
+    border-radius:2px;
+    margin-top:4px;
+}
+
+.adm-_an-page-table-text-2.adm-_an-page-table-text-2 {
+    font-weight:700;
+}
+
+.adm-_an-page-table-text-3.adm-_an-page-table-text-3 {
+    color:#1C2FBF;
+    font-weight:600;
+}
+
+.adm-_an-page-table-space-2.adm-_an-page-table-space-2 {
+    margin-bottom:14px;
+}
+
+.adm-_an-page-table-box-3.adm-_an-page-table-box-3 {
+    font-size:0.72rem;
+    font-weight:400;
+    color:var(--text-light);
+    margin-left:8px;
+}
+
+.adm-_an-page-table-box-4.adm-_an-page-table-box-4 {
+    overflow-x:auto;
+}
+
+.adm-_an-page-table-box-5.adm-_an-page-table-box-5 {
+    min-width:700px;
+}
+
+.adm-render-analytics-box.adm-render-analytics-box {
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px solid #F0F2F8;
+}
+
+.adm-render-analytics-space.adm-render-analytics-space {
+    margin-bottom:10px;
+}
+
+.adm-render-analytics-space-2.adm-render-analytics-space-2 {
+    margin-bottom:16px;
+}
+
+.adm-render-analytics-row.adm-render-analytics-row {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.adm-render-analytics-row-2.adm-render-analytics-row-2 {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:#F0F2F8;
+    border-radius:20px;
+    padding:5px 12px;
+}
+
+.adm-render-analytics-text.adm-render-analytics-text {
+    font-size:0.82rem;
+    font-weight:600;
+}
+
+.adm-render-analytics-text-2.adm-render-analytics-text-2 {
+    font-size:0.75rem;
+    color:var(--text-light);
+}
+
+.adm-show-confirm-modal-box.adm-show-confirm-modal-box {
+    font-size:1rem;
+    font-weight:700;
+    color:#0D1560;
+    margin-bottom:10px;
+}
+
+.adm-show-confirm-modal-box-2.adm-show-confirm-modal-box-2 {
+    font-size:0.88rem;
+    color:#4B5563;
+    margin-bottom:24px;
+    line-height:1.6;
+}
+
+.adm-show-confirm-modal-row.adm-show-confirm-modal-row {
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+}
+
+.adm-render-fee-table-row.adm-render-fee-table-row {
+    display:flex;
+    gap:6px;
+    align-items:center;
+}
+
+.adm-render-fee-table-box.adm-render-fee-table-box {
+    background:#FEE2E2;
+    color:#991B1B;
+    font-size:0.72rem;
+    padding:3px 8px;
+}
+
+.adm-download-docs-zip-box.adm-download-docs-zip-box {
+    animation:spin .8s linear infinite;
+}
+
+/* ── Admin page — confirm dialog and fee toggles ── */
+.adm-confirm-dialog {
+    background: #fff;
+    border-radius: 18px;
+    padding: 32px 28px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .18);
+    font-family: 'Poppins', sans-serif;
+}
+
+.adm-confirm-cancel {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1.5px solid #E5E7EB;
+    background: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #6B7280;
+}
+
+.adm-confirm-ok {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background: #0D1560;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.fee-row.fee-row--off {
+    opacity: 0.65;
+    background: #FAFAFA;
+}
+
+.adm-fee-toggle {
+    cursor: pointer;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: #F9FAFB;
+    color: #9CA3AF;
+    border: 1px solid #E5E7EB;
+}
+
+.adm-fee-toggle.adm-fee-toggle--on {
+    background: #F0FDF4;
+    color: #16A34A;
+    border-color: #BBF7D0;
+}

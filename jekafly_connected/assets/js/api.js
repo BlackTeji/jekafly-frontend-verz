@@ -424,7 +424,7 @@ var AffiliateStore = {
     },
     async getMe() {
         const res = await get('/affiliates/me');
-        return res?.ok ? res.data : null;
+        return res?.ok && res.data?.affiliate ? res.data : null;
     },
     async getStats() {
         const res = await get('/affiliates/stats');

@@ -614,7 +614,7 @@
                 const data = await AffiliateStore.getMe();
                 if (!data) return;
                 const aff = data.affiliate || data;
-                const status = aff.status;
+                const status = String(aff.status || '').toUpperCase();
                 if (status === 'PENDING') {
                     showAlready('Application Under Review', 'You have already applied. Our team is reviewing your application. You will hear back within 48 hours.');
                 } else if (status === 'APPROVED') {

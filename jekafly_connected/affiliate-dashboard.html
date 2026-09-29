@@ -960,21 +960,12 @@
         window._jekafly_page = 'affiliate-dashboard';
 
         document.addEventListener('DOMContentLoaded', async () => {
-            // Listen for real-time payout status updates via SSE
-            if (window.EventSource) {
-                try {
-                    const token = Auth.getToken ? Auth.getToken() : localStorage.getItem('jkf_token');
-                    if (token) {
-                        const evtSrc = new EventSource(API_BASE + '/api/v1/events?token=' + encodeURIComponent(token));
-                        evtSrc.addEventListener('payment:confirmed', () => {
-                            AffiliateStore.getPayouts().then(p => { _affPayouts = p || []; renderPayoutHistory(); });
-                        });
-                        evtSrc.addEventListener('payout:processed', () => {
-                            AffiliateStore.getPayouts().then(p => { _affPayouts = p || []; renderPayoutHistory(); });
-                        });
-                    }
-                } catch (e) { }
-            }
+            const _refreshPayouts = () => {
+                if (typeof AffiliateStore === 'undefined') return;
+                AffiliateStore.getPayouts().then(p => { _affPayouts = p || []; renderPayoutHistory(); }).catch(() => { });
+            };
+            window.addEventListener('jkf:payment-confirmed', _refreshPayouts);
+            window.addEventListener('jkf:payout-processed', _refreshPayouts);
             // ── Magic token: handle FIRST before any auth gate ────────────────
             const _magicParams = new URLSearchParams(window.location.search);
             const _magicToken = _magicParams.get('magic');

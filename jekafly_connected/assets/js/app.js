@@ -2232,8 +2232,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (_es) return;
         var user = Auth.getCurrent();
         if (!user) return;
+        var token = Auth.getToken ? Auth.getToken() : null;
+        if (!token) { scheduleReconnect(true); return; }
 
-        _es = new EventSource(API_BASE + '/events', { withCredentials: true });
+        _es = new EventSource(API_BASE + '/events?token=' + encodeURIComponent(token));
 
         _es.addEventListener('connected', function () {
             _retryMs = 3000;
@@ -2268,9 +2270,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             } catch (err) { }
         });
 
+        _es.addEventListener('payout:processed', function (e) {
+            try { window.dispatchEvent(new CustomEvent('jkf:payout-processed', { detail: JSON.parse(e.data) })); } catch (err) { }
+        });
+
         _es.addEventListener('payment:confirmed', function (e) {
             try {
                 var data = JSON.parse(e.data);
+                window.dispatchEvent(new CustomEvent('jkf:payment-confirmed', { detail: data }));
                 if (typeof showToast === 'function') {
                     showToast('Payment confirmed for ' + data.ref + ' ✓');
                 }
@@ -2283,11 +2290,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         _es.onerror = function () {
             _es.close();
             _es = null;
-            _retryTimer = setTimeout(function () {
-                _retryMs = Math.min(_retryMs * 2, _maxRetry);
-                connect();
-            }, _retryMs);
+            scheduleReconnect(true);
         };
+    }
+
+    function scheduleReconnect(refreshFirst) {
+        if (_retryTimer) return;
+        _retryTimer = setTimeout(function () {
+            _retryTimer = null;
+            _retryMs = Math.min(_retryMs * 2, _maxRetry);
+            if (!Auth.getCurrent()) return;
+            var refresh = refreshFirst && Auth.refreshCurrent ? Auth.refreshCurrent() : null;
+            Promise.resolve(refresh).catch(function () { }).then(connect);
+        }, _retryMs);
     }
 
     function disconnect() {

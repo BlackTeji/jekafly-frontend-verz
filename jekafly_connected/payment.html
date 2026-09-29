@@ -327,6 +327,15 @@
                 );
                 if (!res?.ok) throw new Error(res?.error || 'Payment initiation failed.');
                 const { accessCode, reference, publicKey } = res.data;
+                if (typeof res.data.amount === 'number' && res.data.amount !== pendingPayment.amount) {
+                    pendingPayment.amount = res.data.amount;
+                    const _fmt = '&#8358;' + res.data.amount.toLocaleString();
+                    const _big = document.querySelector('.pay-total-amount');
+                    if (_big) _big.textContent = res.data.amount.toLocaleString();
+                    document.querySelectorAll('.dest-card-amount').forEach(el => { el.innerHTML = '<small>Total</small>' + _fmt; });
+                    document.querySelectorAll('.total-line .li-val').forEach(el => { el.innerHTML = _fmt; });
+                    showToast('Total updated to the current price: ' + '₦' + res.data.amount.toLocaleString());
+                }
                 document.getElementById('pay-processing').classList.remove('show');
                 document.getElementById('pay-form-view').style.display = 'block';
                 btn.disabled = false;

@@ -60,7 +60,7 @@
                     <div class="admin-avatar" id="admin-avatar">AD</div>
                     <div class="admin-username" id="admin-sidebar-name">Loading...</div>
                     <div class="admin-useremail" id="admin-sidebar-email">...</div>
-                    <div id="admin-role-badge" style="margin-top:8px;font-size:0.75rem;color:#9BA5C0;font-weight:600;">
+                    <div id="admin-role-badge">
                     </div>
                 </div>
                 <div class="admin-nav-section">Overview</div>
@@ -190,7 +190,7 @@
                 </div>
 
                 <!-- APPLICATIONS -->
-                <div id="tab-applications" style="display:none">
+                <div id="tab-applications">
                     <div class="admin-title">All Applications<button class="tab-refresh-btn"
                             onclick="this.classList.add('spinning');loadApps();setTimeout(()=>this.classList.remove('spinning'),800)"
                             title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
@@ -219,7 +219,7 @@
                                             d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48" />
                                     </svg> Uploaded Documents</div>
                                 <button id="admin-zip-btn" onclick="downloadDocsZip()" class="btn-navy"
-                                    style="display:none">Download All as ZIP</button>
+                                   >Download All as ZIP</button>
                             </div>
                             <div id="admin-doc-list" class="fs-sm text-muted">Select an application to view documents.
                             </div>
@@ -272,7 +272,7 @@
                 </div>
 
                 <!-- USERS -->
-                <div id="tab-users" style="display:none">
+                <div id="tab-users">
                     <div class="admin-title">Users<button class="tab-refresh-btn"
                             onclick="this.classList.add('spinning');loadUsers();setTimeout(()=>this.classList.remove('spinning'),800)"
                             title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
@@ -294,7 +294,7 @@
                     </div>
                 </div>
 
-                <div id="delete-user-overlay" class="delete-modal-overlay" style="display:none">
+                <div id="delete-user-overlay" class="delete-modal-overlay">
                     <div class="delete-modal-box">
                         <div class="delete-modal-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -323,7 +323,7 @@
                 </div>
 
                 <!-- AFFILIATE CONFIRM MODAL -->
-                <div id="aff-action-overlay" class="delete-modal-overlay" style="display:none">
+                <div id="aff-action-overlay" class="delete-modal-overlay">
                     <div class="delete-modal-box aff-confirm-box">
                         <div id="aff-confirm-icon" class="aff-confirm-icon aff-confirm-icon--approve">
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -351,16 +351,16 @@
                             <div id="aff-bank-verify-detail" class="aff-bank-verify-detail"></div>
                         </div>
 
-                        <div class="flex-gap-10" style="margin-top:24px;">
+                        <div class="flex-gap-10 adm-delete-modal-box-space">
                             <button id="aff-confirm-btn" class="btn-aff-approve" onclick="executeAffAction()"
-                                style="flex:1;justify-content:center;">Confirm</button>
-                            <button onclick="closeAffModal()" class="btn-delete-cancel" style="flex:1;">Cancel</button>
+                               >Confirm</button>
+                            <button onclick="closeAffModal()" class="btn-delete-cancel adm-flex-gap-10-size">Cancel</button>
                         </div>
                     </div>
                 </div>
 
                 <!-- FEES -->
-                <div id="tab-fees" style="display:none">
+                <div id="tab-fees">
                     <div class="admin-title">Manage Fees<button class="tab-refresh-btn"
                             onclick="this.classList.add('spinning');loadFeesTab();setTimeout(()=>this.classList.remove('spinning'),800)"
                             title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
@@ -434,7 +434,7 @@
                                         <path
                                             d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
                                     </svg>
-                                    Travel Insurance <span style="font-weight:500;color:#9BA5C0;">(per person)</span>
+                                    Travel Insurance <span class="adm-fees-pricing-heading-text">(per person)</span>
                                 </div>
                                 <div class="fees-price-grid">
                                     <div class="fees-price-item">
@@ -469,7 +469,7 @@
                                         <label class="fees-label">Processing Fee (%)</label>
                                         <input type="number" id="price-processing-fee" min="0" max="20" step="1"
                                             class="fees-input" placeholder="5" />
-                                        <div style="font-size:0.72rem;color:#9BA5C0;margin-top:4px;">Added on top of
+                                        <div class="adm-fees-price-item-box">Added on top of
                                             visa fee at checkout (e.g. 5 = 5%)</div>
                                     </div>
                                 </div>
@@ -491,7 +491,7 @@
                                         <label class="fees-label">Processing Fee (%)</label>
                                         <input type="number" id="price-processing-fee" min="0" max="20" step="1"
                                             class="fees-input" placeholder="5" />
-                                        <div class="fees-note" style="margin-top:4px;">Added as a percentage on top of
+                                        <div class="fees-note adm-fees-price-item-space">Added as a percentage on top of
                                             the visa fee at checkout.</div>
                                     </div>
                                 </div>
@@ -533,7 +533,7 @@
                 </div>
 
                 <!-- REVIEWS -->
-                <div id="tab-reviews" style="display:none">
+                <div id="tab-reviews">
                     <div class="admin-title">Customer Reviews<button class="tab-refresh-btn"
                             onclick="this.classList.add('spinning');loadReviews();setTimeout(()=>this.classList.remove('spinning'),800)"
                             title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
@@ -562,7 +562,7 @@
                 </div>
 
                 <!-- CONSULTATIONS -->
-                <div id="tab-consultations" style="display:none">
+                <div id="tab-consultations">
                     <div class="admin-title">Consultations<button class="tab-refresh-btn"
                             onclick="this.classList.add('spinning');loadConsultations();setTimeout(()=>this.classList.remove('spinning'),800)"
                             title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
@@ -584,7 +584,7 @@
                 </div>
 
                 <!-- AFFILIATES -->
-                <div id="tab-insurance" style="display:none">
+                <div id="tab-insurance">
                     <div class="admin-section-header">
                         <h2 class="admin-title">Insurance Policies</h2>
                         <p class="admin-sub">All travel insurance purchases made through Jekafly.</p>
@@ -602,7 +602,7 @@
                     </div>
                 </div>
 
-                <div id="tab-affiliates" style="display:none">
+                <div id="tab-affiliates">
                     <div class="admin-title">Affiliates<button class="tab-refresh-btn"
                             onclick="this.classList.add('spinning');loadAffiliates();setTimeout(()=>this.classList.remove('spinning'),800)"
                             title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
@@ -646,7 +646,7 @@
                 </div>
 
                 <!-- FLIGHTS -->
-                <div id="tab-analytics" style="display:none">
+                <div id="tab-analytics">
                     <div class="admin-title">Analytics<button class="tab-refresh-btn"
                             onclick="this.classList.add('spinning');loadAnalytics();setTimeout(()=>this.classList.remove('spinning'),800)"
                             title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
@@ -657,9 +657,9 @@
                     <p class="admin-sub">Business intelligence across applications, revenue, users, and conversions.</p>
 
                     <!-- Period selector -->
-                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;flex-wrap:wrap;">
-                        <span style="font-size:0.82rem;font-weight:600;color:var(--text-light);">Period:</span>
-                        <div style="display:flex;gap:6px;">
+                    <div class="adm-tab-analytics-row">
+                        <span class="adm-tab-analytics-text">Period:</span>
+                        <div class="adm-tab-analytics-row-2">
                             <button class="an-period-btn active" data-period="7d"
                                 onclick="setAnalyticsPeriod('7d',this)">7 days</button>
                             <button class="an-period-btn" data-period="30d" onclick="setAnalyticsPeriod('30d',this)">30
@@ -670,7 +670,7 @@
                                 time</button>
                         </div>
                         <span id="an-generated"
-                            style="font-size:0.75rem;color:var(--text-light);margin-left:auto;"></span>
+                           ></span>
                     </div>
 
                     <div id="analytics-body">
@@ -678,7 +678,7 @@
                     </div>
                 </div>
 
-                <div id="tab-flights" style="display:none">
+                <div id="tab-flights">
                     <div class="admin-title">Flight Orders<button class="tab-refresh-btn"
                             onclick="this.classList.add('spinning');loadFlightOrders();setTimeout(()=>this.classList.remove('spinning'),800)"
                             title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
@@ -700,7 +700,7 @@
                 </div>
 
                 <!-- HOLIDAYS -->
-                <div id="tab-holidays" style="display:none">
+                <div id="tab-holidays">
                     <div class="admin-title">Holiday Packages &amp; Bookings<button class="tab-refresh-btn"
                             onclick="refreshHolidaysAdmin(this)" title="Refresh"><svg width="13" height="13"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -853,7 +853,7 @@
                         </div>
                     </div>
 
-                    <div id="hol-panel-bookings" style="display:none">
+                    <div id="hol-panel-bookings">
                         <div class="acard">
                             <div class="acard-header">
                                 <h3>Holiday Bookings</h3>
@@ -863,7 +863,7 @@
                                             placeholder="Search ref, name, email, phone..."
                                             oninput="holBookingsSearchInput()" />
                                         <select id="hol-booking-package-filter" class="fees-input"
-                                            style="max-width:260px;" onchange="holBookingsFilterPackage(this.value)">
+                                            onchange="holBookingsFilterPackage(this.value)">
                                             <option value="">All Packages</option>
                                         </select>
                                     </div>
@@ -889,7 +889,7 @@
                 </div>
 
                 <!-- HOTELS -->
-                <div id="tab-hotels" style="display:none">
+                <div id="tab-hotels">
                     <div class="admin-title">Hotel Orders<button class="tab-refresh-btn"
                             onclick="this.classList.add('spinning');loadHotelOrders();setTimeout(()=>this.classList.remove('spinning'),800)"
                             title="Refresh"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"
@@ -1156,10 +1156,10 @@
                             <div>
                                 <div class="aff-app-name">${escHtml(a.name)}</div>
                                 <div class="aff-app-meta"><span class="aff-app-meta-pill">${channelLabels[a.channel] || escHtml(a.channel || '—')}</span><span class="aff-app-meta-pill">${audienceLabels[a.audienceSize] || escHtml(a.audienceSize || '—')}</span></div>
-                                <div style="font-size:0.78rem;color:#8898BB;margin-top:2px;">${escHtml(a.email)}</div>
+                                <div class="adm-render-aff-pending-box">${escHtml(a.email)}</div>
                             </div>
                         </div>
-                        <div style="display:flex;align-items:center;gap:10px;">
+                        <div class="adm-render-aff-pending-row">
                             <span class="aff-app-date">${new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</span>
                             <span class="aff-app-chevron" id="aff-chev-${a.id}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span>
                         </div>
@@ -1195,7 +1195,7 @@
                 const tier = a.totalReferrals >= 31 ? 'Elite' : a.totalReferrals >= 16 ? 'Pro' : a.totalReferrals >= 6 ? 'Growth' : 'Starter';
                 return `<tr>
                     <td><strong>${escHtml(a.name)}</strong><br><span class="fs-xs text-muted">${escHtml(a.email)}</span></td>
-                    <td><code style="background:#f0f2fb;padding:3px 8px;border-radius:5px;font-size:0.82rem;">${escHtml(a.referralCode || a.code || '—')}</code></td>
+                    <td><code class="adm-render-aff-active-box">${escHtml(a.referralCode || a.code || '—')}</code></td>
                     <td><strong>${a.totalReferrals || 0}</strong></td>
                     <td>₦${(a.totalEarned || 0).toLocaleString()}</td>
                     <td>₦${(a.balance || 0).toLocaleString()}</td>
@@ -1821,7 +1821,7 @@
                     <td>${pkgLabel}</td>
                     <td class="cell-date">${dateStr}</td>
                     <td>${escHtml(b.tier)}</td>
-                    <td>${b.travellers}${(b.additionalTravellers && b.additionalTravellers.length) ? ` <button class="btn-manage" style="padding:2px 8px;font-size:0.7rem;margin-left:4px;" onclick="showHolTravellerManifest('${b.id}')">View</button>` : ''}</td>
+                    <td>${b.travellers}${(b.additionalTravellers && b.additionalTravellers.length) ? ` <button class="btn-manage adm-render-hol-bookings-page-box" onclick="showHolTravellerManifest('${b.id}')">View</button>` : ''}</td>
                     <td><strong>₦${(b.totalAmount || 0).toLocaleString()}</strong>${b.membershipAdded ? '<br><span class="fs-xs text-muted">+Club membership</span>' : ''}</td>
                     <td><span class="status-pill ${HOL_BOOKING_STATUS_CLASSES[b.status] || 'status-received'}">${HOL_BOOKING_STATUS_LABELS[b.status] || b.status}</span></td>
                     <td>${holBookingActionsHTML(b)}</td>
@@ -1840,14 +1840,14 @@
             title.textContent = 'Traveller Manifest — ' + (b.ref || '');
             const additional = b.additionalTravellers || [];
             body.innerHTML = `
-                <div style="padding:10px 12px;background:#F0F2FB;border-radius:10px;">
-                    <div style="font-weight:700;color:#0D1560;font-size:0.88rem;">${escHtml(b.leadName)} <span style="font-size:0.72rem;color:#9BA5C0;font-weight:500;">— Lead Traveller</span></div>
-                    <div style="font-size:0.76rem;color:#8898BB;margin-top:2px;">${escHtml(b.leadEmail)}${b.leadPhone ? ' · ' + escHtml(b.leadPhone) : ''}</div>
+                <div class="adm-show-hol-traveller-manifest-box">
+                    <div class="adm-show-hol-traveller-manifest-text">${escHtml(b.leadName)} <span class="adm-show-hol-traveller-manifest-text-2">— Lead Traveller</span></div>
+                    <div class="adm-show-hol-traveller-manifest-box-2">${escHtml(b.leadEmail)}${b.leadPhone ? ' · ' + escHtml(b.leadPhone) : ''}</div>
                 </div>
                 ${additional.map((t, i) => `
-                <div style="padding:10px 12px;background:#FAFAFA;border-radius:10px;border:1px solid #F0F0F0;">
-                    <div style="font-weight:600;color:#0F1124;font-size:0.86rem;">${escHtml(t.name)} <span style="font-size:0.72rem;color:#9BA5C0;font-weight:500;">— Traveller ${i + 2}</span></div>
-                    ${t.phone ? `<div style="font-size:0.76rem;color:#8898BB;margin-top:2px;">${escHtml(t.phone)}</div>` : ''}
+                <div class="adm-show-hol-traveller-manifest-box-3">
+                    <div class="adm-show-hol-traveller-manifest-text-3">${escHtml(t.name)} <span class="adm-show-hol-traveller-manifest-text-2">— Traveller ${i + 2}</span></div>
+                    ${t.phone ? `<div class="adm-show-hol-traveller-manifest-box-2">${escHtml(t.phone)}</div>` : ''}
                 </div>`).join('')}
             `;
             modal.style.display = 'flex';
@@ -1859,10 +1859,10 @@
 
         function holBookingActionsHTML(b) {
             if (b.status === 'CONFIRMED') {
-                return `<button class="btn-manage" style="background:#FEE2E2;color:#991B1B;font-size:0.72rem;padding:3px 8px;" onclick="cancelHolBooking('${b.id}')">Cancel</button>`;
+                return `<button class="btn-manage adm-hol-booking-actions-html-box" onclick="cancelHolBooking('${b.id}')">Cancel</button>`;
             }
             if (b.status === 'CANCELLED') {
-                return `<button class="btn-manage" style="background:#F0FDF4;color:#16A34A;font-size:0.72rem;padding:3px 8px;" onclick="reconfirmHolBooking('${b.id}')">Reconfirm</button>`;
+                return `<button class="btn-manage adm-hol-booking-actions-html-box-2" onclick="reconfirmHolBooking('${b.id}')">Reconfirm</button>`;
             }
             return '<span class="fs-xs text-muted">Awaiting payment</span>';
         }
@@ -2151,12 +2151,12 @@
                     <div class="app-mob-card-content">
                         <div class="app-mob-card-top">
                             <span class="app-mob-dest">${escHtml(a.destination)}</span>
-                            ${a.paid ? '<span class="paid-yes" style="font-size:0.7rem;white-space:nowrap"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span>' : '<span class="paid-no" style="font-size:0.7rem;white-space:nowrap"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Unpaid</span>'}
+                            ${a.paid ? '<span class="paid-yes adm-render-table-text"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg> Paid</span>' : '<span class="paid-no adm-render-table-text"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg> Unpaid</span>'}
                         </div>
                         <div class="app-mob-ref">${a.ref}</div>
                         <div class="app-mob-card-bottom">
-                            <span class="status-pill ${SC[a.status]}" style="font-size:0.65rem;padding:3px 8px">${SL[a.status] || a.status}</span>
-                            <span class="app-mob-date" style="white-space:nowrap">${a.applicantName ? escHtml(a.applicantName.split(' ')[0]) : ''} · ${new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</span>
+                            <span class="status-pill ${SC[a.status]} adm-render-table-box">${SL[a.status] || a.status}</span>
+                            <span class="app-mob-date adm-render-table-text-2">${a.applicantName ? escHtml(a.applicantName.split(' ')[0]) : ''} · ${new Date(a.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</span>
                         </div>
                     </div>
                 </div>`).join('');
@@ -2303,12 +2303,12 @@
                 return `<tr>
                 <td><strong>${escHtml(u.name)}</strong></td>
                 <td>${escHtml(u.email)}</td>
-                <td style="white-space:nowrap">${u.phone ? escHtml(u.phone) : '—'}</td>
+                <td class="adm-render-users-page-text">${u.phone ? escHtml(u.phone) : '—'}</td>
                 <td><span class="status-pill ${isAdmin ? 'status-embassy' : 'status-received'}">${u.role?.toLowerCase() || 'user'}</span></td>
                 ${adminLevelCell}
                 <td class="cell-date">${new Date(u.createdAt).toLocaleDateString('en-NG', { dateStyle: 'medium' })}</td>
                 <td><strong>${n}</strong></td>
-                <td style="white-space:nowrap;display:flex;gap:6px;align-items:center;">${isAdmin ? (isSuperAdmin ? `<button onclick="openDeleteUserModal('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}', true)" class="badge-pending" title="Delete admin"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>` : '<span class="fs-xs text-muted">Protected</span>') : `<button onclick="promoteToAdmin('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}')" class="btn-promote" title="Promote to Admin"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Make Admin</button><button onclick="openDeleteUserModal('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}')" class="badge-pending" title="Delete user"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>`}</td>
+                <td class="adm-render-users-page-row">${isAdmin ? (isSuperAdmin ? `<button onclick="openDeleteUserModal('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}', true)" class="badge-pending" title="Delete admin"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>` : '<span class="fs-xs text-muted">Protected</span>') : `<button onclick="promoteToAdmin('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}')" class="btn-promote" title="Promote to Admin"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg> Make Admin</button><button onclick="openDeleteUserModal('${u.id}','${escHtml(u.name).replace(/'/g, "\\'")}')" class="badge-pending" title="Delete user"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>`}</td>
             </tr>`;
             }).join('')}</tbody></table>` + _adminBuildPager(_usersAll.length, _usersPage, 'usersGoPage');
         }
@@ -2530,7 +2530,7 @@
                         <div class="an-dest-bar" style="width:${Math.round(d.count / max * 100)}%"></div>
                     </div>
                     <div class="an-dest-count">${d.count}</div>
-                    <div style="font-size:0.75rem;color:var(--text-light);min-width:60px;text-align:right;">${_fmtMoney(d.revenue)}</div>
+                    <div class="adm-_an-destinations-box">${_fmtMoney(d.revenue)}</div>
                 </div>`).join('')}
             </div>`;
         }
@@ -2560,7 +2560,7 @@
             return `<div class="an-card an-card--flush">
                 <div class="an-card-title an-card-padded">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                    Activity Heatmap <span style="font-size:0.72rem;font-weight:400;color:var(--text-light);">day × hour — darker = more activity</span>
+                    Activity Heatmap <span class="adm-cell-color-text">day × hour — darker = more activity</span>
                 </div>
                 <div class="an-heatmap">
                     <div class="an-heatmap-grid">
@@ -2568,7 +2568,7 @@
                         ${gridRows}
                     </div>
                 </div>
-                <div class="an-card-padded" style="display:flex;align-items:center;gap:6px;padding-top:12px;font-size:0.72rem;color:var(--text-light);">
+                <div class="an-card-padded adm-cell-color-row">
                     <span>Less</span>
                     ${COLORS.map(c => `<div style="width:14px;height:14px;border-radius:3px;background:${c};"></div>`).join('')}
                     <span>More</span>
@@ -2589,7 +2589,7 @@
                 <div class="an-traffic-row">
                     <div class="an-traffic-dot" style="background:${i.color}"></div>
                     <div class="an-traffic-label">${i.label}</div>
-                    <div class="an-traffic-val">${i.count} <span style="font-weight:400;color:var(--text-light);">(${total > 0 ? Math.round(i.count / total * 100) : 0}%)</span></div>
+                    <div class="an-traffic-val">${i.count} <span class="adm-_an-traffic-text">(${total > 0 ? Math.round(i.count / total * 100) : 0}%)</span></div>
                 </div>`).join('')}
             </div>`;
         }
@@ -2599,7 +2599,7 @@
                 <div class="an-card-title">Revenue Breakdown</div>
                 ${types.map(t => `
                 <div class="an-traffic-row">
-                    <div class="an-traffic-dot" style="background:#0D1560"></div>
+                    <div class="an-traffic-dot adm-_an-revenue-by-type-box"></div>
                     <div class="an-traffic-label">${t.type}</div>
                     <div class="an-traffic-val">${_fmtMoney(t.amount)}</div>
                 </div>`).join('')}
@@ -2608,9 +2608,9 @@
 
         function _anPageTable(pv) {
             if (!pv || !pv.pages || pv.pages.length === 0) {
-                return `<div class="an-card" style="grid-column:1/-1;">
+                return `<div class="an-card adm-_an-page-table-box">
                     <div class="an-card-title"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg> Page Behaviour</div>
-                    <div class="atbl-empty" style="padding:20px 0;">No page view data yet — tracking begins once users visit the site.</div>
+                    <div class="atbl-empty adm-_an-page-table-space">No page view data yet — tracking begins once users visit the site.</div>
                 </div>`;
             }
             const maxViews = Math.max(...pv.pages.map(p => p.views), 1);
@@ -2622,29 +2622,29 @@
                 const scroll = p.avgScroll != null ? p.avgScroll + '%' : '—';
                 const exitCls = p.exitRate > 60 ? 'color:#E31E24;font-weight:700;' : p.exitRate > 30 ? 'color:#d97706;font-weight:600;' : 'color:#16a34a;font-weight:600;';
                 return `<tr>
-                    <td style="font-weight:600;">
+                    <td class="adm-_an-page-table-text">
                         ${escHtml(p.page)}
-                        <div style="height:4px;background:#F0F2F8;border-radius:2px;margin-top:4px;">
+                        <div class="adm-_an-page-table-box-2">
                             <div style="height:100%;width:${barW}%;background:#0D1560;border-radius:2px;"></div>
                         </div>
                     </td>
-                    <td style="font-weight:700;">${p.views.toLocaleString()}</td>
+                    <td class="adm-_an-page-table-text-2">${p.views.toLocaleString()}</td>
                     <td>${p.sessions.toLocaleString()}</td>
                     <td>${p.uniqueUsers.toLocaleString()}</td>
                     <td>${dur}</td>
                     <td>${scroll}</td>
                     <td style="${exitCls}">${p.exitRate}%</td>
-                    <td style="color:#1C2FBF;font-weight:600;">${p.entryRate}%</td>
+                    <td class="adm-_an-page-table-text-3">${p.entryRate}%</td>
                 </tr>`;
             }).join('');
-            return `<div class="an-card" style="grid-column:1/-1;">
-                <div class="an-card-title" style="margin-bottom:14px;">
+            return `<div class="an-card adm-_an-page-table-box">
+                <div class="an-card-title adm-_an-page-table-space-2">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
                     Page Behaviour
-                    <span style="font-size:0.72rem;font-weight:400;color:var(--text-light);margin-left:8px;">${pv.totalViews.toLocaleString()} views · ${pv.uniqueSessions.toLocaleString()} sessions · ${pv.uniqueUsers.toLocaleString()} users</span>
+                    <span class="adm-_an-page-table-box-3">${pv.totalViews.toLocaleString()} views · ${pv.uniqueSessions.toLocaleString()} sessions · ${pv.uniqueUsers.toLocaleString()} users</span>
                 </div>
-                <div style="overflow-x:auto;">
-                <table style="min-width:700px;">
+                <div class="adm-_an-page-table-box-4">
+                <table class="adm-_an-page-table-box-5">
                     <thead><tr>
                         <th>Page</th>
                         <th>Views</th>
@@ -2726,8 +2726,8 @@
                             <div class="an-traffic-val">${v}</div>
                         </div>`).join('')}
                         ${d.reviews.avgRating ? `
-                        <div style="margin-top:14px;padding-top:14px;border-top:1px solid #F0F2F8;">
-                            <div class="an-card-title" style="margin-bottom:10px;">Reviews</div>
+                        <div class="adm-render-analytics-box">
+                            <div class="an-card-title adm-render-analytics-space">Reviews</div>
                             ${[
                         ['Avg Rating', d.reviews.avgRating + ' / 5'],
                         ['Total Reviews', d.reviews.total],
@@ -2742,13 +2742,13 @@
                 </div>`,
 
                 // Row 6: Purposes
-                d.purposes.length ? `<div class="an-card" style="margin-bottom:16px;">
+                d.purposes.length ? `<div class="an-card adm-render-analytics-space-2">
                     <div class="an-card-title">Application Purpose Breakdown</div>
-                    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                    <div class="adm-render-analytics-row">
                         ${d.purposes.map(p => `
-                        <div style="display:flex;align-items:center;gap:6px;background:#F0F2F8;border-radius:20px;padding:5px 12px;">
-                            <span style="font-size:0.82rem;font-weight:600;">${escHtml(p.name)}</span>
-                            <span style="font-size:0.75rem;color:var(--text-light);">${p.count}</span>
+                        <div class="adm-render-analytics-row-2">
+                            <span class="adm-render-analytics-text">${escHtml(p.name)}</span>
+                            <span class="adm-render-analytics-text-2">${p.count}</span>
                         </div>`).join('')}
                     </div>
                 </div>` : '',
@@ -2761,12 +2761,12 @@
                 const id = 'jkf-confirm-' + Date.now();
                 const el = document.createElement('div');
                 el.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(10,13,50,.55);display:flex;align-items:center;justify-content:center;padding:20px;';
-                el.innerHTML = `<div style="background:#fff;border-radius:18px;padding:32px 28px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.18);font-family:'Poppins',sans-serif;">
-                    <div style="font-size:1rem;font-weight:700;color:#0D1560;margin-bottom:10px;">${title}</div>
-                    <div style="font-size:0.88rem;color:#4B5563;margin-bottom:24px;line-height:1.6;">${body}</div>
-                    <div style="display:flex;gap:10px;justify-content:flex-end;">
-                        <button id="${id}-cancel" style="padding:10px 20px;border-radius:10px;border:1.5px solid #E5E7EB;background:#fff;font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;color:#6B7280;">Cancel</button>
-                        <button id="${id}-ok" style="padding:10px 20px;border-radius:10px;border:none;background:${confirmColor || '#0D1560'};color:#fff;font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;">${confirmLabel || 'Confirm'}</button>
+                el.innerHTML = `<div class="adm-confirm-dialog">
+                    <div class="adm-show-confirm-modal-box">${title}</div>
+                    <div class="adm-show-confirm-modal-box-2">${body}</div>
+                    <div class="adm-show-confirm-modal-row">
+                        <button id="${id}-cancel" class="adm-confirm-cancel">Cancel</button>
+                        <button id="${id}-ok" class="adm-confirm-ok"${confirmColor ? ` style="background:${confirmColor}"` : ''}>${confirmLabel || 'Confirm'}</button>
                     </div>
                 </div>`;
                 document.body.appendChild(el);
@@ -2879,24 +2879,12 @@
                 ${sorted.map(([country, data]) => {
                 const enabled = enabledSet.has(country);
                 return `
-                        <tr class="fee-row" style="${!enabled ? 'opacity:0.65;background:#FAFAFA;' : ''}">
+                        <tr class="fee-row${!enabled ? ' fee-row--off' : ''}">
                             <td>
                                 <strong>${country}</strong> ${window.visaRequirements?.[country]?.flag || ''}
                             </td>
                             <td>
-                                <button 
-                                    onclick="toggleCountry('${country}')" 
-                                    style="
-                                        border:none;
-                                        cursor:pointer;
-                                        padding:3px 10px;
-                                        border-radius:6px;
-                                        font-size:0.75rem;
-                                        font-weight:500;
-                                        background:${enabled ? '#F0FDF4' : '#F9FAFB'};
-                                        color:${enabled ? '#16A34A' : '#9CA3AF'};
-                                        border:1px solid ${enabled ? '#BBF7D0' : '#E5E7EB'};
-                                    ">
+                                <button onclick="toggleCountry('${country}')" class="adm-fee-toggle${enabled ? ' adm-fee-toggle--on' : ''}">
                                     ${enabled ? '● Active' : '○ Inactive'}
                                 </button>
                             </td>
@@ -2915,14 +2903,14 @@
                             <td class="fw-700 text-navy">
                                 ₦${((data.override != null ? data.override : data.default) || 0).toLocaleString()}
                             </td>
-                            <td style="display:flex;gap:6px;align-items:center;">
+                            <td class="adm-render-fee-table-row">
                                 ${data.override != null
                         ? `<button class="btn-manage badge-error-xs" onclick="resetFee('${country}')">Reset</button>`
                         : '<span class="fs-xs text-muted">default</span>'
                     }
                                 <button
-                                    class="btn-manage"
-                                    style="background:#FEE2E2;color:#991B1B;font-size:0.72rem;padding:3px 8px;"
+                                    class="btn-manage adm-render-fee-table-box"
+                                   
                                     onclick="deleteCountryFee('${country}')">
                                     Delete
                                 </button>
@@ -2956,16 +2944,11 @@
 
             const btn = document.querySelector(`button[onclick="toggleCountry('${country}')"]`);
             if (btn) {
-                btn.style.background = enabled ? '#F0FDF4' : '#F9FAFB';
-                btn.style.color = enabled ? '#16A34A' : '#9CA3AF';
-                btn.style.borderColor = enabled ? '#BBF7D0' : '#E5E7EB';
+                btn.classList.toggle('adm-fee-toggle--on', !!enabled);
                 btn.textContent = enabled ? '● Active' : '○ Inactive';
 
                 const row = btn.closest('tr');
-                if (row) {
-                    row.style.opacity = enabled ? '1' : '0.65';
-                    row.style.background = enabled ? '' : '#FAFAFA';
-                }
+                if (row) row.classList.toggle('fee-row--off', !enabled);
             }
         }
 
@@ -3135,7 +3118,7 @@
             if (!ref) { showToast('No application selected.', 'error'); return; }
             const btn = document.getElementById('admin-zip-btn');
             btn.disabled = true;
-            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="animation:spin .8s linear infinite"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Preparing...';
+            btn.innerHTML = '<svg class="adm-download-docs-zip-box" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg> Preparing...';
             try {
                 const blob = await apiFetchBlob(`/admin/documents/zip?ref=${encodeURIComponent(ref)}`);
                 if (!blob) throw new Error('No blob returned');
@@ -3198,14 +3181,14 @@
 
     <!-- Holiday Traveller Manifest Modal -->
     <div id="hol-manifest-modal" onclick="closeHolManifestModal(event)"
-        style="display:none;position:fixed;inset:0;z-index:99992;background:rgba(10,13,50,.55);align-items:center;justify-content:center;padding:20px;">
-        <div
-            style="background:#fff;border-radius:16px;padding:24px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.18);font-family:'Poppins',sans-serif;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-                <div id="hol-manifest-title" style="font-size:1rem;font-weight:700;color:#0D1560;">Traveller Manifest
+       >
+        <div class="adm-hol-manifest-modal-box"
+           >
+            <div class="adm-hol-manifest-modal-row">
+                <div id="hol-manifest-title">Traveller Manifest
                 </div>
-                <button onclick="closeHolManifestModal()"
-                    style="background:none;border:none;cursor:pointer;color:#9BA5C0;padding:4px;">
+                <button class="adm-hol-manifest-modal-box-2" onclick="closeHolManifestModal()"
+                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round">
                         <line x1="18" y1="6" x2="6" y2="18" />
@@ -3213,12 +3196,12 @@
                     </svg>
                 </button>
             </div>
-            <div id="hol-manifest-body" style="display:flex;flex-direction:column;gap:12px;"></div>
+            <div id="hol-manifest-body"></div>
         </div>
     </div>
 
     <!-- Document Preview Modal -->
-    <div id="admin-preview-modal" onclick="closeAdminPreview(event)" style="display:none">
+    <div id="admin-preview-modal" onclick="closeAdminPreview(event)">
         <div id="admin-preview-box">
             <div id="admin-preview-header">
                 <div class="fw-700 text-navy nowrap flex-1" id="admin-preview-name">Document</div>

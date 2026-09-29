@@ -2783,3 +2783,571 @@ tr:hover td {
         grid-template-columns: 1fr !important;
     }
 }
+
+/* ── Dashboard page (moved from inline styles) ── */
+.dash-pkg-standard-box {
+    background:#EEF2FF;
+    color:#3B5BDB;
+}
+
+.dash-pkg-priority-box {
+    background:#F3F0FF;
+    color:#7048E8;
+}
+
+.dash-pkg-vip-box {
+    background:#FFFDE7;
+    color:#CA8A04;
+}
+
+.dash-consult-step-1-row {
+    display:flex;
+    align-items:flex-start;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.dash-consult-step-1-size {
+    flex:1;
+    min-width:200px;
+}
+
+.dash-consult-step-1-row-2 {
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    align-items:flex-end;
+    justify-content:center;
+}
+
+#consult-pkg-error {
+    display:none;
+}
+
+.dash-consult-step-1-box {
+    white-space:nowrap;
+    padding:12px 22px;
+}
+
+.dash-consult-step-2-box {
+    text-align:center;
+    padding:48px 20px;
+    background:#F8F9FE;
+    border-radius:16px;
+    border:1.5px solid var(--border);
+}
+
+.dash-consult-step-2-row {
+    width:56px;
+    height:56px;
+    background:#EEF2FF;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 16px;
+}
+
+.dash-consult-step-2-box-2 {
+    font-family:'Poppins',sans-serif;
+    font-size:1.1rem;
+    font-weight:700;
+    color:#0D1560;
+    margin-bottom:8px;
+}
+
+.dash-consult-step-2-box-3 {
+    font-size:0.88rem;
+    color:#9BA5C0;
+    margin-bottom:24px;
+    max-width:320px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.6;
+}
+
+#cal-booking {
+    min-width:320px;
+    height:630px;
+    overflow:scroll;
+}
+
+.dash-consult-step-2-space {
+    margin-top:16px;
+}
+
+.dash-dash-ins-basic-box {
+    background:#E0F7FA;
+    color:#0891B2;
+}
+
+.dash-dash-ins-standard-box {
+    background:#FFF0F6;
+    color:#C2255C;
+}
+
+.dash-dash-ins-premium-box {
+    background:#FFFDE7;
+    color:#CA8A04;
+}
+
+.dash-form-group-box {
+    font-size:0.7rem;
+    font-weight:600;
+    color:#9AABCC;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-left:6px;
+}
+
+#p-email {
+    cursor:not-allowed;
+}
+
+#jkf-auth-prompt {
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:99990;
+    background:rgba(10,19,60,0.72);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.dash-jkf-auth-prompt-box {
+    background:#fff;
+    border-radius:24px;
+    padding:36px 32px 28px;
+    max-width:400px;
+    width:100%;
+    box-shadow:0 32px 80px rgba(13,21,96,0.22);
+    font-family:'Poppins',sans-serif;
+    text-align:center;
+    animation:popIn .38s cubic-bezier(.34,1.56,.64,1);
+}
+
+.dash-jkf-auth-prompt-row {
+    width:56px;
+    height:56px;
+    background:linear-gradient(135deg,#0D1560,#1C2FBF);
+    border-radius:16px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 20px;
+    box-shadow:0 6px 20px rgba(13,21,96,0.28);
+}
+
+.dash-jkf-auth-prompt-box-2 {
+    font-size:1.3rem;
+    font-weight:800;
+    color:#0D1560;
+    letter-spacing:-0.03em;
+    margin-bottom:8px;
+}
+
+.dash-jkf-auth-prompt-box-3 {
+    font-size:0.88rem;
+    color:#7480A0;
+    line-height:1.65;
+    margin-bottom:28px;
+}
+
+.dash-jkf-auth-prompt-row-2 {
+    display:grid;
+    gap:10px;
+}
+
+.dash-jkf-auth-prompt-box-4 {
+    width:100%;
+    padding:14px;
+    background:linear-gradient(135deg,#0D1560,#1C2FBF);
+    color:#fff;
+    border:none;
+    border-radius:14px;
+    font-family:'Poppins',sans-serif;
+    font-size:0.95rem;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 6px 20px rgba(13,21,96,0.28);
+    letter-spacing:-0.01em;
+}
+
+.dash-jkf-auth-prompt-box-5 {
+    width:100%;
+    padding:14px;
+    background:#F0F3FF;
+    color:#0D1560;
+    border:none;
+    border-radius:14px;
+    font-family:'Poppins',sans-serif;
+    font-size:0.95rem;
+    font-weight:700;
+    cursor:pointer;
+    letter-spacing:-0.01em;
+}
+
+.dash-jkf-auth-prompt-box-6 {
+    display:block;
+    margin-top:18px;
+    font-size:0.82rem;
+    color:#9AABCC;
+    text-decoration:none;
+    font-family:'Poppins',sans-serif;
+}
+
+#jkf-setpass-overlay {
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:99995;
+    background:rgba(10,19,60,0.8);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    box-sizing:border-box;
+}
+
+.dash-jkf-setpass-overlay-box {
+    background:#fff;
+    border-radius:24px;
+    padding:36px 32px 30px;
+    max-width:420px;
+    width:100%;
+    box-shadow:0 32px 80px rgba(13,21,96,0.24);
+    font-family:'Poppins',sans-serif;
+    animation:popIn .38s cubic-bezier(.34,1.56,.64,1);
+}
+
+.dash-jkf-setpass-overlay-row {
+    width:52px;
+    height:52px;
+    background:linear-gradient(135deg,#0D1560,#1C2FBF);
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:20px;
+    box-shadow:0 6px 18px rgba(13,21,96,0.28);
+}
+
+.dash-jkf-setpass-overlay-box-2 {
+    font-size:1.25rem;
+    font-weight:800;
+    color:#0D1560;
+    letter-spacing:-0.03em;
+    margin:0 0 8px;
+}
+
+.dash-jkf-setpass-overlay-box-3 {
+    font-size:0.87rem;
+    color:#7480A0;
+    line-height:1.65;
+    margin-bottom:24px;
+}
+
+.dash-jkf-setpass-overlay-space {
+    margin-bottom:14px;
+}
+
+.dash-jkf-setpass-overlay-box-4 {
+    display:block;
+    font-size:0.7rem;
+    font-weight:700;
+    color:#9AABCC;
+    text-transform:uppercase;
+    letter-spacing:0.07em;
+    margin-bottom:6px;
+}
+
+.dash-jkf-setpass-overlay-box-5 {
+    position:relative;
+}
+
+#magic-newpass {
+    width:100%;
+    padding:12px 44px 12px 14px;
+    border:1.5px solid #E3E5F5;
+    border-radius:12px;
+    font-family:'Poppins',sans-serif;
+    font-size:0.9rem;
+    color:#0F1124;
+    background:#F8F9FE;
+    outline:none;
+    box-sizing:border-box;
+    transition:border-color .18s;
+}
+
+.dash-jkf-setpass-overlay-row-2 {
+    position:absolute;
+    right:12px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:#9AABCC;
+    padding:4px;
+    display:flex;
+    align-items:center;
+}
+
+.dash-jkf-setpass-overlay-space-2 {
+    margin-bottom:24px;
+}
+
+#magic-confirmpass {
+    width:100%;
+    padding:12px 14px;
+    border:1.5px solid #E3E5F5;
+    border-radius:12px;
+    font-family:'Poppins',sans-serif;
+    font-size:0.9rem;
+    color:#0F1124;
+    background:#F8F9FE;
+    outline:none;
+    box-sizing:border-box;
+    transition:border-color .18s;
+}
+
+#magic-setpass-btn {
+    width:100%;
+    padding:14px;
+    background:linear-gradient(135deg,#0D1560,#1C2FBF);
+    color:#fff;
+    border:none;
+    border-radius:14px;
+    font-family:'Poppins',sans-serif;
+    font-size:0.95rem;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 6px 20px rgba(13,21,96,0.28);
+    letter-spacing:-0.01em;
+    transition:opacity .2s;
+}
+
+#magic-setpass-err {
+    display:none;
+    color:#E31E24;
+    font-size:0.82rem;
+    text-align:center;
+    margin-top:12px;
+    font-family:'Poppins',sans-serif;
+}
+
+
+/* ── Dashboard page — script-rendered elements (moved from inline styles) ── */
+.dash-_inject-affiliate-nav-box.dash-_inject-affiliate-nav-box {
+    margin-left:auto;
+    background:linear-gradient(135deg,#0D1560,#1C2FBF);
+    color:#fff;
+    font-size:0.6rem;
+    font-weight:700;
+    padding:2px 7px;
+    border-radius:100px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    flex-shrink:0;
+}
+
+.dash-_inject-affiliate-nav-box-2.dash-_inject-affiliate-nav-box-2 {
+    background:linear-gradient(135deg,#0D1560,#1C2FBF);
+    color:#fff;
+    font-size:0.6rem;
+    font-weight:700;
+    padding:2px 7px;
+    border-radius:100px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+}
+
+.dash-load-applications-box.dash-load-applications-box {
+    background:linear-gradient(135deg,#0D1560 0%,#1C2FBF 100%);
+    border-radius:20px;
+    padding:40px 36px;
+    color:#fff;
+    margin-bottom:16px;
+    position:relative;
+    overflow:hidden;
+}
+
+.dash-load-applications-box-2.dash-load-applications-box-2 {
+    position:absolute;
+    right:-40px;
+    top:-40px;
+    width:200px;
+    height:200px;
+    background:rgba(255,255,255,0.04);
+    border-radius:50%;
+}
+
+.dash-load-applications-box-3.dash-load-applications-box-3 {
+    position:absolute;
+    right:40px;
+    bottom:-60px;
+    width:150px;
+    height:150px;
+    background:rgba(255,255,255,0.04);
+    border-radius:50%;
+}
+
+.dash-load-applications-box-4.dash-load-applications-box-4 {
+    position:relative;
+    z-index:1;
+}
+
+.dash-load-applications-box-5.dash-load-applications-box-5 {
+    display:inline-block;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.2);
+    border-radius:100px;
+    padding:5px 16px;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    margin-bottom:18px;
+}
+
+.dash-load-applications-box-6.dash-load-applications-box-6 {
+    font-size:1.6rem;
+    font-weight:800;
+    margin:0 0 10px;
+    letter-spacing:-0.03em;
+    line-height:1.2;
+}
+
+.dash-load-applications-box-7.dash-load-applications-box-7 {
+    font-size:0.92rem;
+    color:rgba(255,255,255,0.65);
+    margin:0 0 28px;
+    line-height:1.6;
+    max-width:420px;
+}
+
+.dash-load-applications-row.dash-load-applications-row {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.dash-load-applications-box-8.dash-load-applications-box-8 {
+    background:#fff;
+    border:1.5px solid #EAECF5;
+    border-radius:14px;
+    padding:20px;
+    cursor:pointer;
+    transition:box-shadow .15s;
+}
+
+.dash-load-applications-row-2.dash-load-applications-row-2 {
+    width:36px;
+    height:36px;
+    background:#EEF2FF;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:12px;
+}
+
+.dash-load-applications-box-9.dash-load-applications-box-9 {
+    font-weight:700;
+    font-size:0.88rem;
+    color:#0F1124;
+    margin-bottom:4px;
+}
+
+.dash-load-applications-text.dash-load-applications-text {
+    font-size:0.78rem;
+    color:#6B7280;
+    line-height:1.5;
+}
+
+.dash-load-applications-row-3.dash-load-applications-row-3 {
+    width:36px;
+    height:36px;
+    background:#F0FDF4;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:12px;
+}
+
+.dash-load-applications-row-4.dash-load-applications-row-4 {
+    width:36px;
+    height:36px;
+    background:#FFF7ED;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:12px;
+}
+
+.dash-select-doc-app-row.dash-select-doc-app-row {
+    font-size:0.78rem;
+    color:#16a34a;
+    display:flex;
+    align-items:center;
+    gap:4px;
+}
+
+.dash-select-doc-app-text.dash-select-doc-app-text {
+    color:#16a34a;
+    font-weight:700;
+}
+
+.dash-select-doc-app-text-2.dash-select-doc-app-text-2 {
+    color:#0D1560;
+}
+
+.dash-load-holiday-bookings-space.dash-load-holiday-bookings-space {
+    padding:48px 0;
+}
+
+.dash-load-holiday-bookings-space-2.dash-load-holiday-bookings-space-2 {
+    margin:12px auto;
+}
+
+.dash-render-holiday-bookings-page-row.dash-render-holiday-bookings-page-row {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top:16px;
+    text-decoration:none;
+}
+
+/* ── Dashboard page — empty-state apply button ── */
+.dash-hero-apply-btn {
+    background: #fff;
+    color: #0D1560;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 28px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: transform .15s;
+}
+
+.dash-hero-apply-btn:hover {
+    transform: translateY(-1px);
+}
+
+.booking-card-icon.dash-holiday-booking-icon {
+    background: #EEF2FF;
+    color: #0D1560;
+}

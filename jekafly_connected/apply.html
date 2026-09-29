@@ -1063,7 +1063,7 @@
 
             const adminFees = await FeeStore.getAll();
             const adminServiceFee = adminFees.serviceFee || JEKAFLY_SERVICE_FEE;
-            const destFee = adminFees.destinations[dest] != null ? adminFees.destinations[dest] : (feeMap[dest] || 120000);
+            const destFee = adminFees.destinations[dest] > 0 ? adminFees.destinations[dest] : (feeMap[dest] || 120000);
 
             const visaFee = destFee;
             const extraTravellers = travellers.length;
