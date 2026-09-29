@@ -964,6 +964,7 @@
             <p class="section-sub" id="reviews-sub">Thousands of Nigerians have simplified their journey with Jekafly.
             </p>
         </div>
+        <div class="testi-marquee" id="testi-marquee">
         <div class="testi-grid" id="testi-grid">
             <div class="testi-card">
                 <div class="testi-stars"><span class="star-rating">★★★★★</span></div>
@@ -1001,6 +1002,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 
@@ -1510,42 +1512,13 @@
                     });
                 });
             }
-            function initTestiCarousel() {
-                if (!window.matchMedia('(max-width: 768px)').matches) return;
-                const grid = document.getElementById('testi-grid');
-                if (!grid) return;
-                const cards = Array.from(grid.querySelectorAll('.testi-card'));
-                if (cards.length < 2) return;
-                cards.forEach(c => { c.style.cssText = 'opacity:1;transform:none;flex:0 0 82vw;min-width:0;'; c.classList.remove('mob-fade'); });
-                const clones1 = cards.map(c => { const cl = c.cloneNode(true); cl.setAttribute('aria-hidden', 'true'); return cl; });
-                const clones2 = cards.map(c => { const cl = c.cloneNode(true); cl.setAttribute('aria-hidden', 'true'); return cl; });
-                clones1.forEach(c => grid.appendChild(c));
-                clones2.forEach(c => grid.appendChild(c));
-                const speed = cards.length * 12;
-                const wrapper = document.createElement('div');
-                wrapper.id = 'testi-wrapper';
-                wrapper.style.cssText = 'overflow:hidden;width:100%;margin-top:20px;';
-                grid.parentNode.insertBefore(wrapper, grid);
-                wrapper.appendChild(grid);
-                grid.style.cssText = `display:flex;flex-direction:row;gap:14px;width:max-content;animation:testi-marquee ${speed}s linear infinite;`;
-                function pauseCarousel() { grid.style.animationPlayState = 'paused'; }
-                function resumeCarousel() { setTimeout(() => { grid.style.animationPlayState = 'running'; }, 1800); }
-                grid.addEventListener('touchstart', pauseCarousel, { passive: true });
-                grid.addEventListener('touchend', resumeCarousel, { passive: true });
-                if (!document.getElementById('testi-kf')) {
-                    const s = document.createElement('style');
-                    s.id = 'testi-kf';
-                    s.textContent = `@keyframes testi-marquee{0%{transform:translateX(0)}100%{transform:translateX(-${Math.round(100 / 3)}%)}}`;
-                    document.head.appendChild(s);
-                }
-            }
             function initScrollFade() {
                 const selectors = ['.service-card', '.step', '.dest-card', '.ins-plan', '.ins-features .ins-feature', '.section-header', '.section-title', '.checker-form', '.checker-info', '.track-wrap', '.cta-banner', '.info-list li', '.hero-content', '.destinations', '.insurance', '.tracking', '.how', '.services', '.visa-checker'];
                 const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('mob-visible'); observer.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -20px 0px' });
                 selectors.forEach(sel => { document.querySelectorAll(sel).forEach((el, i) => { el.classList.add('mob-fade'); if (i > 0) el.style.transitionDelay = (i * 0.07) + 's'; observer.observe(el); }); });
             }
             document.addEventListener('DOMContentLoaded', function () {
-                initInfoList(); initInsurancePlans(); initScrollFade(); setTimeout(initTestiCarousel, 300);
+                initInfoList(); initInsurancePlans(); initScrollFade();
                 const insDate = document.getElementById('ins-date');
                 if (insDate) { const today = new Date().toISOString().split('T')[0]; insDate.min = today; insDate.value = today; }
             });
@@ -1553,30 +1526,56 @@
     </script>
 
     <script>
+        function buildTestiMarquee() {
+            const wrap = document.getElementById('testi-marquee');
+            const grid = document.getElementById('testi-grid');
+            if (!wrap || !grid) return;
+            grid.querySelectorAll('[aria-hidden="true"]').forEach(c => c.remove());
+            const cards = Array.from(grid.querySelectorAll('.testi-card'));
+            if (cards.length < 2) return;
+            const gap = parseFloat(getComputedStyle(wrap).getPropertyValue('--testi-gap')) || 20;
+            const cardW = cards[0].getBoundingClientRect().width || 360;
+            const perSet = cards.length * (cardW + gap);
+            const repeats = Math.max(1, Math.ceil((wrap.clientWidth || window.innerWidth) / perSet));
+            const addCopy = c => { const copy = c.cloneNode(true); copy.setAttribute('aria-hidden', 'true'); grid.appendChild(copy); };
+            for (let i = 1; i < repeats; i++) cards.forEach(addCopy);
+            const set = Array.from(grid.querySelectorAll('.testi-card'));
+            set.forEach(addCopy);
+            wrap.style.setProperty('--testi-duration', (set.length * 8) + 's');
+            wrap.classList.add('is-running');
+        }
+        (function () {
+            const wrap = document.getElementById('testi-marquee');
+            if (!wrap) return;
+            let resumeTimer = null;
+            wrap.addEventListener('touchstart', () => { clearTimeout(resumeTimer); wrap.classList.add('is-paused'); }, { passive: true });
+            wrap.addEventListener('touchend', () => { resumeTimer = setTimeout(() => wrap.classList.remove('is-paused'), 1800); }, { passive: true });
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', buildTestiMarquee); else buildTestiMarquee();
+            let lastW = window.innerWidth, resizeTimer = null;
+            window.addEventListener('resize', () => {
+                if (Math.abs(window.innerWidth - lastW) < 80) return;
+                lastW = window.innerWidth;
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(buildTestiMarquee, 250);
+            });
+        })();
         (async () => {
             try {
                 const res = await fetch('https://api.jekafly.com/api/v1/reviews');
                 const data = await res.json();
                 const reviews = data?.data?.reviews || [];
                 if (!reviews.length) return;
-                const isMobile = window.innerWidth <= 768;
                 const stars = r => '★'.repeat(r) + '☆'.repeat(5 - r);
                 const initials = name => name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
                 const grid = document.getElementById('testi-grid');
                 if (!grid) return;
-                const makeCard = r => { const div = document.createElement('div'); div.className = 'testi-card'; div.innerHTML = `<div class='testi-stars'>${stars(r.rating)}</div><div class='testi-text'>\u201c${r.text.replace(/</g, '&lt;').replace(/>/g, '&gt;')}\u201d</div><div class='testi-author'><div class='testi-avatar'>${initials(r.name || 'JK')}</div><div><div class='testi-name'>${r.name || 'Jekafly Customer'}</div><div class='testi-meta'>${r.destination} Visa</div></div></div>`; return div; };
-                document.getElementById('reviews-sub').textContent = `Thousands of Nigerians have simplified their journey with Jekafly.`;
-                if (isMobile) {
-                    const kf = document.getElementById('testi-kf'); if (kf) kf.remove();
-                    const wrapper = document.getElementById('testi-wrapper'); if (wrapper) { wrapper.parentNode.insertBefore(grid, wrapper); wrapper.remove(); }
-                    grid.querySelectorAll('[aria-hidden="true"]').forEach(c => c.remove()); grid.style.cssText = '';
-                    reviews.slice(0, 9).forEach(r => grid.appendChild(makeCard(r))); setTimeout(initTestiCarousel, 100);
-                } else {
-                    const SWAP_INTERVAL = 3500; let queue = reviews.slice(); let swapIdx = 0;
-                    if (!document.getElementById('testi-swap-kf')) { const s = document.createElement('style'); s.id = 'testi-swap-kf'; s.textContent = `@keyframes testi-fade-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}.testi-card.swapping-in{animation:testi-fade-in 0.4s ease forwards}`; document.head.appendChild(s); }
-                    function swapNext() { if (!queue.length) return; const staticCards = grid.querySelectorAll('.testi-card:not([aria-hidden])'); if (swapIdx >= staticCards.length) return; const target = staticCards[swapIdx]; const review = queue.shift(); swapIdx++; target.style.transition = 'opacity 0.3s'; target.style.opacity = '0'; setTimeout(() => { const fresh = makeCard(review); fresh.classList.add('swapping-in'); target.replaceWith(fresh); setTimeout(() => fresh.classList.remove('swapping-in'), 450); }, 300); if (queue.length) setTimeout(swapNext, SWAP_INTERVAL); }
-                    setTimeout(swapNext, 1200);
-                }
+                const esc = t => String(t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                const makeCard = r => { const div = document.createElement('div'); div.className = 'testi-card'; div.innerHTML = `<div class='testi-stars'>${stars(r.rating)}</div><div class='testi-text'>\u201c${esc(r.text)}\u201d</div><div class='testi-author'><div class='testi-avatar'>${esc(initials(r.name || 'JK'))}</div><div><div class='testi-name'>${esc(r.name || 'Jekafly Customer')}</div><div class='testi-meta'>${esc(r.destination)} Visa</div></div></div>`; return div; };
+                const live = reviews.filter(r => r.text && r.rating >= 4).slice(0, 12);
+                if (live.length < 3) return;
+                grid.innerHTML = '';
+                live.forEach(r => grid.appendChild(makeCard(r)));
+                if (typeof buildTestiMarquee === 'function') buildTestiMarquee();
             } catch { }
         })();
         (function () {
