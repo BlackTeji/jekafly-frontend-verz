@@ -251,8 +251,18 @@
             <a href="/"><img src="assets/images/JEKAFLY LOGO W-R 2.png" alt="Jekafly"
                     style="height:34px;width:auto;display:block;margin-bottom:14px;" /></a>
             <p>&#169; 2026 Kazwhale Concepts Limited. All rights reserved. Registered in Nigeria.</p>
+            <p class="jkfh-footer-credits"><a href="javascript:void(0)" onclick="openPhotoCredits()">Photo credits</a></p>
         </div>
     </footer>
+
+    <div class="jkfh-credits-overlay" id="photo-credits-overlay" onclick="closePhotoCredits(event)">
+        <div class="jkfh-credits-modal">
+            <button class="jkfh-credits-close" onclick="closePhotoCredits()" aria-label="Close">&#215;</button>
+            <h3 class="jkfh-credits-title">Photo credits</h3>
+            <p class="jkfh-credits-sub">Destination photos from Wikimedia Commons, used under the licences shown.</p>
+            <ul class="jkfh-credits-list" id="photo-credits-list"></ul>
+        </div>
+    </div>
 
     <!-- ═══════════════════════════════════════════════════════════════════════
          BOOKING MODAL — 7 steps
@@ -319,12 +329,26 @@
             } catch (e) { PHOTO_CREDITS = {}; }
         }
 
-        function photoCreditHTML(img) {
-            var c = img && PHOTO_CREDITS[img];
-            if (!c) return '';
-            var author = c.source ? '<a href="' + escH(c.source) + '" target="_blank" rel="noopener">' + escH(c.author) + '</a>' : escH(c.author);
-            var lic = c.licenseUrl ? '<a href="' + escH(c.licenseUrl) + '" target="_blank" rel="noopener">' + escH(c.license) + '</a>' : escH(c.license);
-            return '<div class="jkfh-photo-credit">Photo: ' + author + ' · ' + lic + ', via Wikimedia Commons</div>';
+        function openPhotoCredits() {
+            var list = document.getElementById('photo-credits-list');
+            var seen = {};
+            var rows = [];
+            REGIONS.forEach(function (r) { if (r.img) seen[r.img] = r.name + ' collection'; });
+            DESTINATIONS.forEach(function (d) { if (d.img) seen[d.img] = d.name + ' — ' + d.state; });
+            Object.keys(PHOTO_CREDITS).forEach(function (img) {
+                var c = PHOTO_CREDITS[img];
+                var label = seen[img] || img.split('/').pop();
+                var author = c.source ? '<a href="' + escH(c.source) + '" target="_blank" rel="noopener">' + escH(c.author) + '</a>' : escH(c.author);
+                var lic = c.licenseUrl ? '<a href="' + escH(c.licenseUrl) + '" target="_blank" rel="noopener">' + escH(c.license) + '</a>' : escH(c.license);
+                rows.push('<li><span class="jkfh-credits-place">' + escH(label) + '</span><span>' + author + ' · ' + lic + '</span></li>');
+            });
+            list.innerHTML = rows.length ? rows.join('') : '<li>Photo credits are loading — please try again.</li>';
+            document.getElementById('photo-credits-overlay').classList.add('open');
+        }
+
+        function closePhotoCredits(e) {
+            if (e && e.target !== e.currentTarget) return;
+            document.getElementById('photo-credits-overlay').classList.remove('open');
         }
 
         function regionKey(name) { return String(name || '').toLowerCase().replace(/[^a-z]/g, ''); }
@@ -397,7 +421,6 @@
                 '<div class="jkfh-coll-body">' +
                 '<div class="jkfh-coll-name">' + escH(r.name) + '</div>' +
                 '<div class="jkfh-coll-tag">' + escH(r.tagline) + '</div>' +
-                photoCreditHTML(r.img) +
                 '<div class="jkfh-coll-link">Explore Collection ' +
                 '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
                 '</div>' +
@@ -466,7 +489,6 @@
                 (attractionsList ? '<div class="jkfh-card-details-label">Key Attractions</div><ul class="jkfh-card-details-list">' + attractionsList + '</ul>' : '') +
                 (inclusionsList ? '<div class="jkfh-card-details-label">Standard Inclusions</div><ul class="jkfh-card-details-list">' + inclusionsList + '</ul>' : '') +
                 (roomList ? '<div class="jkfh-card-details-label">Room Options</div><ul class="jkfh-card-details-list">' + roomList + '</ul>' : '') +
-                photoCreditHTML(d.img) +
                 '</div>' +
                 (isSoldOut
                     ? '<button class="jkfh-card-cta" disabled>No Dates Available</button>'
