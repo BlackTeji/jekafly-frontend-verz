@@ -297,10 +297,12 @@ var FeeStore = {
         return put('/fees/service', { amount: Number(amount) });
     },
 
-    async setDestinationFee(country, amount) {
+    async setDestinationFee(country, amount, enabled) {
         this._cache = null;
         this._cacheTime = 0;
-        return put(`/fees/${encodeURIComponent(country)}`, { amount: Number(amount) });
+        const body = { amount: Number(amount) };
+        if (typeof enabled === 'boolean') body.enabled = enabled;
+        return put(`/fees/${encodeURIComponent(country)}`, body);
     },
 
     async resetDestinationFee(country) {

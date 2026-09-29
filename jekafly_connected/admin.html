@@ -462,37 +462,15 @@
                                         stroke-linejoin="round">
                                         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                                     </svg>
-                                    Payment Processing Fee
+                                    Insurance Processing Fee
                                 </div>
                                 <div class="fees-price-grid">
                                     <div class="fees-price-item">
-                                        <label class="fees-label">Processing Fee (%)</label>
+                                        <label class="fees-label">Processing fee on insurance (%)</label>
                                         <input type="number" id="price-processing-fee" min="0" max="20" step="1"
                                             class="fees-input" placeholder="5" />
-                                        <div class="adm-fees-price-item-box">Added on top of
-                                            visa fee at checkout (e.g. 5 = 5%)</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="fees-pricing-block">
-                                <div class="fees-pricing-heading">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24"
-                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10" />
-                                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" />
-                                        <path d="M12 18V6" />
-                                    </svg>
-                                    Processing Fee
-                                </div>
-                                <div class="fees-price-grid">
-                                    <div class="fees-price-item">
-                                        <label class="fees-label">Processing Fee (%)</label>
-                                        <input type="number" id="price-processing-fee" min="0" max="20" step="1"
-                                            class="fees-input" placeholder="5" />
-                                        <div class="fees-note adm-fees-price-item-space">Added as a percentage on top of
-                                            the visa fee at checkout.</div>
+                                        <div class="adm-fees-price-item-box">Added on top of the insurance plan cost at
+                                            checkout (5 = 5%). Not charged on visas, consultations or holidays.</div>
                                     </div>
                                 </div>
                             </div>
@@ -506,28 +484,57 @@
 
                     <div class="acard">
                         <div class="acard-header">
-                            <h3>Destination Fees</h3>
-                            <div class="flex-row flex-gap-8">
-                                <button class="btn-manage ml-auto nowrap" onclick="exportCSV('fees')">Export
-                                    CSV</button>
-                                <input type="text" class="search-input fee-search-input" id="fee-search"
-                                    placeholder="Search country..." oninput="filterFeeTable()" />
+                            <h3>Destination Fees <span id="dfee-count" class="fs-sm text-light"></span></h3>
+                            <div class="dfee-header-actions">
+                                <button class="btn-manage dfee-btn-ghost" onclick="exportCSV('fees')">Export CSV</button>
+                                <button class="btn-manage" onclick="toggleDfeeAdd(true)">+ Add Country</button>
                             </div>
                         </div>
-                        <div class="acard-header-meta"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-                                <path d="M12 9v4" />
-                                <path d="M12 17h.01" />
-                            </svg> These are Jekafly's charges per destination (what the applicant pays you). They are
-                            separate from the embassy's own fees.</div>
-                        <div id="fees-table"></div>
-                        <div class="acard-footer">
-                            <input type="text" id="new-fee-country" placeholder="Country name" class="input-sm" />
-                            <input type="number" id="new-fee-amount" placeholder="Amount in &#8358;" min="0" step="500"
-                                class="input-sm" />
-                            <button class="btn-manage" onclick="addCustomFee()">+ Add / Update</button>
+
+                        <div class="dfee-explainer" id="dfee-explainer"></div>
+
+                        <div class="dfee-add hol-hidden" id="dfee-add">
+                            <div class="dfee-add-grid">
+                                <div class="hol-field">
+                                    <label class="fees-label" for="dfee-add-country">Country</label>
+                                    <input id="dfee-add-country" class="fees-input" list="dfee-country-options"
+                                        placeholder="Start typing a country..." oninput="onDfeeAddCountry()" />
+                                    <datalist id="dfee-country-options"></datalist>
+                                </div>
+                                <div class="hol-field">
+                                    <label class="fees-label" for="dfee-add-amount">Destination fee (&#8358;)</label>
+                                    <input id="dfee-add-amount" type="number" min="1000" step="500" class="fees-input" />
+                                </div>
+                                <label class="dfee-check">
+                                    <input type="checkbox" id="dfee-add-open" checked />
+                                    Open for applications now
+                                </label>
+                                <div class="dfee-add-actions">
+                                    <button class="btn-manage" onclick="addDfeeCountry()">Add Country</button>
+                                    <button class="hol-editor-close" onclick="toggleDfeeAdd(false)">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="dfee-toolbar">
+                            <div class="dfee-chips" id="dfee-chips"></div>
+                            <div class="dfee-toolbar-right">
+                                <input type="text" class="search-input dfee-search" id="fee-search"
+                                    placeholder="Search country..." oninput="renderFeeTable()" />
+                                <select id="dfee-region" class="fees-input dfee-select" onchange="renderFeeTable()">
+                                    <option value="">All regions</option>
+                                </select>
+                                <select id="dfee-sort" class="fees-input dfee-select" onchange="renderFeeTable()">
+                                    <option value="region">Group by region</option>
+                                    <option value="name">A&ndash;Z</option>
+                                    <option value="fee-desc">Fee: high to low</option>
+                                    <option value="fee-asc">Fee: low to high</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="acard-table-wrap">
+                            <div id="fees-table"></div>
                         </div>
                     </div>
                 </div>
@@ -2789,13 +2796,17 @@
         };
 
         let _cachedFees = null;
+        let _dfeeFilter = 'all';
 
         async function loadFeesTab() {
             document.getElementById('fees-table').innerHTML = '<div class="atbl-empty">Loading fees...</div>';
+            FeeStore._cacheTime = 0;
             _cachedFees = await FeeStore.getAll();
             const svc = _cachedFees.serviceFee || 25000;
             document.getElementById('fee-service').value = svc;
             document.getElementById('service-fee-current').textContent = `Current: ₦${Number(svc).toLocaleString()} per application`;
+            populateDfeeRegions();
+            populateDfeeCountryOptions();
             renderFeeTable();
             loadPricing();
         }
@@ -2836,196 +2847,207 @@
             showToast('Service fee updated to ₦' + val.toLocaleString());
         }
 
-        function renderFeeTable(filter = '') {
+        function dfeeDefault(country) {
+            const defs = (_cachedFees && _cachedFees.defaults) || DEFAULT_FEES;
+            return defs[country] || (_cachedFees && _cachedFees.fallbackFee) || 120000;
+        }
+
+        function dfeeRegion(country) {
+            const r = String(window.visaRequirements?.[country]?.region || '').trim();
+            if (!r) return 'Other';
+            const first = r.split(/[\s(]/)[0];
+            if (/middle/i.test(r)) return 'Middle East';
+            if (/caribbean/i.test(r)) return 'Caribbean';
+            if (/america/i.test(r)) return /south|latin|central/i.test(r) ? 'Latin America' : 'North America';
+            if (/oceania|pacific|australia/i.test(r)) return 'Oceania';
+            return first.charAt(0).toUpperCase() + first.slice(1);
+        }
+
+        function dfeeRows() {
+            if (!_cachedFees) return [];
+            const saved = _cachedFees.destinations || {};
+            const enabled = new Set(_cachedFees.enabledCountries || []);
+            const defs = (_cachedFees.defaults) || DEFAULT_FEES;
+            const names = new Set([...Object.keys(defs), ...Object.keys(saved)]);
+            return [...names].map(country => {
+                const def = dfeeDefault(country);
+                const inList = Object.prototype.hasOwnProperty.call(saved, country);
+                const fee = inList ? saved[country] : def;
+                return {
+                    country,
+                    region: dfeeRegion(country),
+                    flag: window.visaRequirements?.[country]?.flag || '',
+                    open: inList && enabled.has(country),
+                    inList,
+                    fee,
+                    def,
+                    custom: inList && fee !== def,
+                };
+            });
+        }
+
+        function populateDfeeRegions() {
+            const sel = document.getElementById('dfee-region');
+            if (!sel) return;
+            const current = sel.value;
+            const regions = [...new Set(dfeeRows().map(r => r.region))].sort();
+            sel.innerHTML = '<option value="">All regions</option>' + regions.map(r => `<option value="${escHtml(r)}">${escHtml(r)}</option>`).join('');
+            sel.value = current;
+        }
+
+        function populateDfeeCountryOptions() {
+            const list = document.getElementById('dfee-country-options');
+            if (!list) return;
+            const listed = new Set(dfeeRows().filter(r => r.inList).map(r => r.country));
+            const all = Object.keys(window.visaRequirements || {}).filter(c => !listed.has(c)).sort();
+            list.innerHTML = all.map(c => `<option value="${escHtml(c)}"></option>`).join('');
+        }
+
+        function setDfeeFilter(f) {
+            _dfeeFilter = f;
+            renderFeeTable();
+        }
+
+        function renderFeeTable() {
             if (!_cachedFees) return;
+            const svc = _cachedFees.serviceFee || 25000;
+            const rate = _cachedFees.extraTravellerRate || 0.85;
+            const all = dfeeRows();
+            const counts = {
+                all: all.length,
+                open: all.filter(r => r.open).length,
+                paused: all.filter(r => !r.open).length,
+                custom: all.filter(r => r.custom).length,
+            };
 
-            const overrides = _cachedFees.destinations || {};
-            const enabledSet = new Set(_cachedFees.enabledCountries || Object.keys(overrides));
-            const allCountries = {};
+            const explainer = document.getElementById('dfee-explainer');
+            if (explainer) explainer.innerHTML =
+                `<strong>What an applicant pays:</strong> destination fee + ₦${svc.toLocaleString()} service fee, plus ${Math.round(rate * 100)}% of the destination fee for each extra traveller. ` +
+                `Only <strong>Open</strong> countries can be applied for. These are Jekafly's charges, separate from embassy fees.`;
 
-            Object.entries(DEFAULT_FEES).forEach(([k, v]) => {
-                allCountries[k] = { default: v, override: overrides[k] };
-            });
+            const countEl = document.getElementById('dfee-count');
+            if (countEl) countEl.textContent = `(${counts.open} open of ${counts.all})`;
 
-            Object.entries(overrides).forEach(([k, v]) => {
-                if (!allCountries[k]) {
-                    allCountries[k] = { default: null, override: v };
-                }
-            });
+            const chips = [['all', 'All'], ['open', 'Open'], ['paused', 'Paused'], ['custom', 'Custom fee']];
+            document.getElementById('dfee-chips').innerHTML = chips.map(([k, l]) =>
+                `<button class="dfee-chip${_dfeeFilter === k ? ' active' : ''}" onclick="setDfeeFilter('${k}')">${l} <span>${counts[k]}</span></button>`).join('');
 
-            const sorted = Object.entries(allCountries)
-                .filter(([k]) => !filter || k.toLowerCase().includes(filter.toLowerCase()))
-                .sort(([a], [b]) => a.localeCompare(b));
+            const q = (document.getElementById('fee-search')?.value || '').trim().toLowerCase();
+            const region = document.getElementById('dfee-region')?.value || '';
+            const sort = document.getElementById('dfee-sort')?.value || 'region';
 
-            if (!sorted.length) {
-                document.getElementById('fees-table').innerHTML =
-                    '<div class="atbl-empty">No matching countries.</div>';
+            let rows = all.filter(r =>
+                (!q || r.country.toLowerCase().includes(q)) &&
+                (!region || r.region === region) &&
+                (_dfeeFilter === 'all' || (_dfeeFilter === 'open' && r.open) || (_dfeeFilter === 'paused' && !r.open) || (_dfeeFilter === 'custom' && r.custom))
+            );
+
+            if (sort === 'fee-desc') rows.sort((a, b) => b.fee - a.fee || a.country.localeCompare(b.country));
+            else if (sort === 'fee-asc') rows.sort((a, b) => a.fee - b.fee || a.country.localeCompare(b.country));
+            else if (sort === 'name') rows.sort((a, b) => a.country.localeCompare(b.country));
+            else rows.sort((a, b) => a.region.localeCompare(b.region) || a.country.localeCompare(b.country));
+
+            const table = document.getElementById('fees-table');
+            if (!rows.length) {
+                table.innerHTML = '<div class="atbl-empty">No countries match these filters.</div>';
                 return;
             }
 
-            document.getElementById('fees-table').innerHTML = `
-        <table>
-            <thead>
-                <tr>
-                    <th>Country</th>
-                    <th>Processing</th>
-                    <th>Default Fee</th>
-                    <th>Custom Fee</th>
-                    <th>Effective Fee</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                ${sorted.map(([country, data]) => {
-                const enabled = enabledSet.has(country);
-                return `
-                        <tr class="fee-row${!enabled ? ' fee-row--off' : ''}">
-                            <td>
-                                <strong>${country}</strong> ${window.visaRequirements?.[country]?.flag || ''}
-                            </td>
-                            <td>
-                                <button onclick="toggleCountry('${country}')" class="adm-fee-toggle${enabled ? ' adm-fee-toggle--on' : ''}">
-                                    ${enabled ? '● Active' : '○ Inactive'}
-                                </button>
-                            </td>
-                            <td>₦${data.default ? data.default.toLocaleString() : '—'}</td>
-                            <td>
-                                <input
-                                    type="number"
-                                    value="${data.override != null ? data.override : ''}"
-                                    placeholder="—"
-                                    class="select-xs"
-                                    onchange="updateFeeInline('${country}', this.value)"
-                                    min="0"
-                                    step="500"
-                                />
-                            </td>
-                            <td class="fw-700 text-navy">
-                                ₦${((data.override != null ? data.override : data.default) || 0).toLocaleString()}
-                            </td>
-                            <td class="adm-render-fee-table-row">
-                                ${data.override != null
-                        ? `<button class="btn-manage badge-error-xs" onclick="resetFee('${country}')">Reset</button>`
-                        : '<span class="fs-xs text-muted">default</span>'
-                    }
-                                <button
-                                    class="btn-manage adm-render-fee-table-box"
-                                   
-                                    onclick="deleteCountryFee('${country}')">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-            }).join('')}
-            </tbody>
-        </table>
-    `;
+            let lastRegion = null;
+            const body = rows.map(r => {
+                let head = '';
+                if (sort === 'region' && r.region !== lastRegion) {
+                    lastRegion = r.region;
+                    const n = rows.filter(x => x.region === r.region).length;
+                    head = `<tr class="dfee-group"><td colspan="5">${escHtml(r.region)} <span>${n}</span></td></tr>`;
+                }
+                const c = escHtml(r.country);
+                const js = r.country.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+                return head + `<tr class="dfee-row${r.open ? '' : ' dfee-row--paused'}">
+                    <td><div class="dfee-country"><span class="dfee-flag">${r.flag}</span><div><strong>${c}</strong><div class="dfee-sub">${r.inList ? (r.custom ? 'Custom fee' : 'Default fee') : 'Not listed yet'}</div></div></div></td>
+                    <td><button class="dfee-switch${r.open ? ' on' : ''}" onclick="toggleCountry('${js}')" aria-label="${r.open ? 'Pause' : 'Open'} ${c}"><span></span>${r.open ? 'Open' : 'Paused'}</button></td>
+                    <td><div class="dfee-input"><span>₦</span><input type="number" min="1000" step="500" value="${r.fee}" onchange="updateFeeInline('${js}', this.value)" /></div>${r.custom ? `<div class="dfee-sub">Default ₦${r.def.toLocaleString()}</div>` : ''}</td>
+                    <td class="dfee-pays">₦${(r.fee + svc).toLocaleString()}<div class="dfee-sub">+₦${Math.round(r.fee * rate).toLocaleString()} per extra traveller</div></td>
+                    <td class="dfee-actions">
+                        ${r.custom ? `<button class="dfee-link" onclick="resetFee('${js}')">Reset to default</button>` : ''}
+                        ${r.inList ? `<button class="dfee-link dfee-link--danger" onclick="deleteCountryFee('${js}')">Remove</button>` : ''}
+                    </td>
+                </tr>`;
+            }).join('');
+
+            table.innerHTML = `<table class="dfee-table"><thead><tr><th>Country</th><th>Status</th><th>Destination fee</th><th>Applicant pays (1 traveller)</th><th></th></tr></thead><tbody>${body}</tbody></table>`;
+        }
+
+        async function refreshFees(msg) {
+            FeeStore._cacheTime = 0;
+            _cachedFees = await FeeStore.getAll();
+            populateDfeeRegions();
+            populateDfeeCountryOptions();
+            renderFeeTable();
+            if (msg) showToast(msg);
         }
 
         async function toggleCountry(country) {
             const res = await FeeStore.toggleCountry(country);
-            if (!res?.ok) {
-                showToast('Failed to update country status.', 'error');
-                return;
-            }
-
-            const enabled = res.data?.enabled;
-
-            if (_cachedFees?.enabledCountries) {
-                if (enabled) {
-                    if (!_cachedFees.enabledCountries.includes(country)) {
-                        _cachedFees.enabledCountries.push(country);
-                    }
-                } else {
-                    _cachedFees.enabledCountries = _cachedFees.enabledCountries.filter(c => c !== country);
-                }
-            }
-
-            const btn = document.querySelector(`button[onclick="toggleCountry('${country}')"]`);
-            if (btn) {
-                btn.classList.toggle('adm-fee-toggle--on', !!enabled);
-                btn.textContent = enabled ? '● Active' : '○ Inactive';
-
-                const row = btn.closest('tr');
-                if (row) row.classList.toggle('fee-row--off', !enabled);
-            }
+            if (!res?.ok) { showToast(res?.error || 'Failed to update country status.', 'error'); return; }
+            await refreshFees(`${country} is now ${res.data?.enabled ? 'open for applications' : 'paused'}.`);
         }
 
-        function filterFeeTable() {
-            renderFeeTable(document.getElementById('fee-search').value);
-        }
+        function filterFeeTable() { renderFeeTable(); }
 
         async function updateFeeInline(country, val) {
-            const n = parseInt(val);
-            if (!isNaN(n) && n >= 0) {
-                const res = await FeeStore.setDestinationFee(country, n);
-                if (!res?.ok) {
-                    showToast('Failed to update fee: ' + (res?.error || 'Unknown error'), 'error');
-                    return;
-                }
-
-                _cachedFees = await FeeStore.getAll();
-                showToast(country + ' fee set to ₦' + n.toLocaleString());
-                renderFeeTable(document.getElementById('fee-search').value);
-            }
+            const n = parseInt(val, 10);
+            if (isNaN(n) || n < 1000) { showToast('Fee must be at least ₦1,000.', 'error'); renderFeeTable(); return; }
+            const row = dfeeRows().find(r => r.country === country);
+            const res = await FeeStore.setDestinationFee(country, n, row && !row.inList ? false : undefined);
+            if (!res?.ok) { showToast('Failed to update fee: ' + (res?.error || 'Unknown error'), 'error'); return; }
+            await refreshFees(`${country} fee set to ₦${n.toLocaleString()}.`);
         }
 
         async function resetFee(country) {
-            const res = await FeeStore.resetDestinationFee(country);
-            if (!res?.ok) {
-                showToast('Failed to reset fee: ' + (res?.error || 'Unknown error'), 'error');
-                return;
-            }
-
-            _cachedFees = await FeeStore.getAll();
-            showToast(country + ' reset to default fee.');
-            renderFeeTable(document.getElementById('fee-search').value);
+            const def = dfeeDefault(country);
+            const res = await FeeStore.setDestinationFee(country, def);
+            if (!res?.ok) { showToast('Failed to reset fee: ' + (res?.error || 'Unknown error'), 'error'); return; }
+            await refreshFees(`${country} reset to the default ₦${def.toLocaleString()}.`);
         }
 
         async function deleteCountryFee(country) {
-            if (!confirm(`Remove ${country} from the fee list? This cannot be undone.`)) return;
-
+            if (!confirm(`Remove ${country} from your list? Applicants won't be able to apply for it until you add it again.`)) return;
             const res = await FeeStore.resetDestinationFee(country);
-            if (!res?.ok) {
-                showToast('Failed to delete: ' + (res?.error || 'Unknown error'), 'error');
-                return;
-            }
-
-            if (_cachedFees?.destinations) delete _cachedFees.destinations[country];
-            _cachedFees = await FeeStore.getAll();
-
-            showToast(country + ' removed from fee list.');
-            renderFeeTable(document.getElementById('fee-search').value);
+            if (!res?.ok) { showToast('Failed to remove: ' + (res?.error || 'Unknown error'), 'error'); return; }
+            await refreshFees(`${country} removed.`);
         }
 
-        async function addCustomFee() {
-            const country = document.getElementById('new-fee-country').value.trim();
-            const amount = parseInt(document.getElementById('new-fee-amount').value);
-
-            if (!country) {
-                showToast('Enter a country name.', 'error');
-                return;
+        function toggleDfeeAdd(show) {
+            document.getElementById('dfee-add').classList.toggle('hol-hidden', !show);
+            if (show) {
+                document.getElementById('dfee-add-country').value = '';
+                document.getElementById('dfee-add-amount').value = '';
+                document.getElementById('dfee-add-open').checked = true;
+                document.getElementById('dfee-add-country').focus();
             }
-
-            if (isNaN(amount) || amount < 0) {
-                showToast('Enter a valid amount.', 'error');
-                return;
-            }
-
-            const res = await FeeStore.setDestinationFee(country, amount);
-            if (!res?.ok) {
-                showToast('Failed to set fee: ' + (res?.error || 'Unknown error'), 'error');
-                return;
-            }
-
-            _cachedFees = await FeeStore.getAll();
-            document.getElementById('new-fee-country').value = '';
-            document.getElementById('new-fee-amount').value = '';
-
-            showToast(country + ' fee set to ₦' + amount.toLocaleString());
-            renderFeeTable(document.getElementById('fee-search').value);
         }
+
+        function onDfeeAddCountry() {
+            const c = document.getElementById('dfee-add-country').value.trim();
+            const amt = document.getElementById('dfee-add-amount');
+            if (c && window.visaRequirements?.[c] && !amt.value) amt.value = dfeeDefault(c);
+        }
+
+        async function addDfeeCountry() {
+            const country = document.getElementById('dfee-add-country').value.trim();
+            const amount = parseInt(document.getElementById('dfee-add-amount').value, 10);
+            const open = document.getElementById('dfee-add-open').checked;
+            if (!country) { showToast('Choose a country.', 'error'); return; }
+            if (!window.visaRequirements?.[country] && !confirm(`"${country}" isn't in the visa requirements list, so applicants won't see it. Add it anyway?`)) return;
+            if (isNaN(amount) || amount < 1000) { showToast('Fee must be at least ₦1,000.', 'error'); return; }
+            const res = await FeeStore.setDestinationFee(country, amount, open);
+            if (!res?.ok) { showToast('Failed to add: ' + (res?.error || 'Unknown error'), 'error'); return; }
+            toggleDfeeAdd(false);
+            await refreshFees(`${country} added at ₦${amount.toLocaleString()}${open ? ' and open for applications' : ' (paused)'}.`);
+        }
+
+        function addCustomFee() { toggleDfeeAdd(true); }
 
         const _docUrlMap = {}, _docNameMap = {};
         let _adminPreviewDocId = null;
@@ -3162,13 +3184,10 @@
                 downloadCSV(`jekafly-users-${date}.csv`, toCSV(rows));
             } else if (type === 'fees') {
                 if (!_cachedFees) { showToast('Load fees tab first.', 'error'); return; }
-                const overrides = _cachedFees.destinations || {};
-                const enabledSet = new Set(_cachedFees.enabledCountries || Object.keys(overrides));
-                const rows = [['Country', 'Default Fee (₦)', 'Custom Fee (₦)', 'Effective Fee (₦)', 'Processing']];
-                const allC = {};
-                Object.entries(DEFAULT_FEES).forEach(([k, v]) => allC[k] = { def: v, ovr: overrides[k] });
-                Object.entries(overrides).forEach(([k, v]) => { if (!allC[k]) allC[k] = { def: null, ovr: v }; });
-                Object.entries(allC).sort(([a], [b]) => a.localeCompare(b)).forEach(([country, data]) => rows.push([country, data.def ?? '', data.ovr != null ? data.ovr : '', data.ovr != null ? data.ovr : (data.def ?? ''), enabledSet.has(country) ? 'Active' : 'Inactive']));
+                const svc = _cachedFees.serviceFee || 25000;
+                const rows = [['Country', 'Region', 'Status', 'Destination Fee (₦)', 'Default Fee (₦)', 'Applicant Pays, 1 traveller (₦)']];
+                dfeeRows().sort((a, b) => a.region.localeCompare(b.region) || a.country.localeCompare(b.country))
+                    .forEach(r => rows.push([r.country, r.region, r.open ? 'Open' : (r.inList ? 'Paused' : 'Not listed'), r.fee, r.def, r.fee + svc]));
                 downloadCSV(`jekafly-fees-${date}.csv`, toCSV(rows));
             }
         }
