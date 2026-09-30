@@ -381,7 +381,7 @@
                             <div class="fees-field-row">
                                 <div class="fees-field-group">
                                     <label class="fees-label">Jekafly Service Fee (&#8358;)</label>
-                                    <input type="number" id="fee-service" placeholder="25000" min="0" step="500"
+                                    <input type="number" id="fee-service" placeholder="Enter amount" min="0" step="500"
                                         class="fees-input" />
                                 </div>
                                 <button class="btn-manage" onclick="saveServiceFee()">Save Fee</button>
@@ -2956,9 +2956,11 @@
             document.getElementById('fees-table').innerHTML = '<div class="atbl-empty">Loading fees...</div>';
             FeeStore._cacheTime = 0;
             _cachedFees = await FeeStore.getAll();
-            const svc = _cachedFees.serviceFee || 25000;
-            document.getElementById('fee-service').value = svc;
-            document.getElementById('service-fee-current').textContent = `Current: ₦${Number(svc).toLocaleString()} per application`;
+            const svc = _cachedFees.serviceFee;
+            document.getElementById('fee-service').value = svc ?? '';
+            document.getElementById('service-fee-current').textContent = svc == null
+                ? 'Not set yet. Visa applications cannot be paid for until you set this fee.'
+                : `Current: ₦${Number(svc).toLocaleString()} per application`;
             populateDfeeRegions();
             populateDfeeCountryOptions();
             renderFeeTable();
@@ -2993,12 +2995,15 @@
         }
 
         async function saveServiceFee() {
-            const val = parseInt(document.getElementById('fee-service').value);
-            if (isNaN(val) || val < 0) { showToast('Enter a valid amount.', 'error'); return; }
-            await FeeStore.setServiceFee(val);
-            _cachedFees = null;
-            document.getElementById('service-fee-current').textContent = `Saved: ₦${val.toLocaleString()} per application`;
+            const raw = document.getElementById('fee-service').value;
+            const val = Number(raw);
+            if (raw === '' || !Number.isInteger(val) || val < 0) { showToast('Enter a whole naira amount.', 'error'); return; }
+            const prev = _cachedFees?.serviceFee;
+            if (prev != null && val !== prev && !confirm(`Change the service fee from ₦${Number(prev).toLocaleString()} to ₦${val.toLocaleString()}? It applies to every new visa application.`)) return;
+            const res = await FeeStore.setServiceFee(val);
+            if (!res?.ok) { showToast(res?.error || 'Could not save the service fee.', 'error'); return; }
             showToast('Service fee updated to ₦' + val.toLocaleString());
+            await loadFeesTab();
         }
 
         function dfeeDefault(country) {
@@ -3064,7 +3069,7 @@
 
         function renderFeeTable() {
             if (!_cachedFees) return;
-            const svc = _cachedFees.serviceFee || 25000;
+            const svc = _cachedFees.serviceFee ?? 0;
             const rate = _cachedFees.extraTravellerRate || 0.85;
             const all = dfeeRows();
             const counts = {
@@ -3338,7 +3343,7 @@
                 downloadCSV(`jekafly-users-${date}.csv`, toCSV(rows));
             } else if (type === 'fees') {
                 if (!_cachedFees) { showToast('Load fees tab first.', 'error'); return; }
-                const svc = _cachedFees.serviceFee || 25000;
+                const svc = _cachedFees.serviceFee ?? 0;
                 const rows = [['Country', 'Region', 'Status', 'Destination Fee (₦)', 'Default Fee (₦)', 'Applicant Pays, 1 traveller (₦)']];
                 dfeeRows().sort((a, b) => a.region.localeCompare(b.region) || a.country.localeCompare(b.country))
                     .forEach(r => rows.push([r.country, r.region, r.open ? 'Open' : (r.inList ? 'Paused' : 'Not listed'), r.fee, r.def, r.fee + svc]));

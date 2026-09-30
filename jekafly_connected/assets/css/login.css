@@ -298,3 +298,189 @@
 .forgot-link:hover {
     opacity: 0.9;
 }
+
+/* ── Holidays context (arriving from /holidays) ── */
+.ctx-hol-only {
+    display: none !important;
+}
+
+.ctx-holidays .ctx-visa-only {
+    display: none !important;
+}
+
+.ctx-holidays .ctx-hol-only {
+    display: revert !important;
+}
+
+.ctx-holidays .nav-links.ctx-hol-only {
+    display: flex !important;
+}
+
+@media (max-width: 1024px) {
+    .ctx-holidays .nav-links.ctx-hol-only {
+        display: none !important;
+    }
+}
+
+.ctx-holidays #main-nav .nav-links a.nav-active {
+    border-bottom-color: #C48332;
+}
+
+.aside-logo-img {
+    height: 36px;
+    width: auto;
+    display: block;
+}
+
+.ctx-holidays body {
+    background: #0C1008;
+}
+
+.ctx-holidays #main-nav {
+    background: rgba(12, 16, 8, 0.85);
+    border-bottom: 1px solid rgba(242, 233, 216, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.ctx-holidays #main-nav .nav-links a {
+    color: rgba(242, 233, 216, 0.56);
+}
+
+.ctx-holidays #main-nav .nav-links a:hover,
+.ctx-holidays #main-nav .nav-links a.nav-active {
+    color: #E8A84A;
+    background: rgba(196, 131, 50, 0.1);
+}
+
+.ctx-holidays #main-nav .btn-outline {
+    background: transparent;
+    border-color: rgba(242, 233, 216, 0.1);
+    color: #F2E9D8;
+}
+
+.ctx-holidays #main-nav .btn-outline:hover {
+    border-color: #C48332;
+    background: rgba(196, 131, 50, 0.08);
+}
+
+.ctx-holidays #main-nav .btn-primary {
+    background: #C48332;
+    color: #fff;
+}
+
+.ctx-holidays #main-nav .btn-primary:hover {
+    background: #B5721F;
+}
+
+.ctx-holidays .nav-toggle,
+.ctx-holidays .nav-burger,
+.ctx-holidays .nav-toggle svg {
+    border-color: rgba(242, 233, 216, 0.1) !important;
+    color: #F2E9D8 !important;
+    stroke: #F2E9D8;
+    background: transparent !important;
+}
+
+.ctx-holidays .nav-mobile-drawer {
+    background: rgba(12, 16, 8, 0.97);
+}
+
+.ctx-holidays .nav-mob-row-label {
+    color: #F2E9D8;
+}
+
+.ctx-holidays .login-page {
+    background:
+        linear-gradient(180deg, rgba(12, 16, 8, 0.78) 0%, rgba(12, 16, 8, 0.9) 60%, rgba(12, 16, 8, 0.98) 100%),
+        url('../images/ekiti.jpg') center / cover no-repeat;
+}
+
+.ctx-holidays .login-wrap {
+    border-color: rgba(242, 233, 216, 0.08);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+
+.ctx-holidays .login-aside {
+    background:
+        linear-gradient(180deg, rgba(12, 16, 8, 0.55) 0%, rgba(12, 16, 8, 0.82) 55%, rgba(12, 16, 8, 0.95) 100%),
+        url('../images/holidays/cross-river.jpg') center / cover no-repeat;
+}
+
+.ctx-holidays .login-aside::before,
+.ctx-holidays .login-aside::after {
+    display: none;
+}
+
+.aside-hol {
+    position: relative;
+    z-index: 1;
+}
+
+.aside-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #E8A84A;
+    margin-bottom: 14px;
+}
+
+.aside-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C48332;
+}
+
+.ctx-holidays .aside-heading {
+    color: #F2E9D8;
+}
+
+.ctx-holidays .aside-sub {
+    color: rgba(242, 233, 216, 0.72);
+}
+
+.ctx-holidays .aside-perks li {
+    color: rgba(242, 233, 216, 0.88);
+}
+
+.ctx-holidays .aside-perks li .perk-icon {
+    background: rgba(196, 131, 50, 0.18);
+    color: #E8A84A;
+}
+
+.ctx-holidays .login-heading {
+    color: #14180F;
+}
+
+.ctx-holidays .tab.active {
+    color: #8A5A1E;
+}
+
+.ctx-holidays .btn-auth {
+    background: #C48332;
+}
+
+.ctx-holidays .btn-auth:hover {
+    background: #B5721F;
+}
+
+.ctx-holidays .forgot-link,
+.ctx-holidays .legal-consent a {
+    color: #8A5A1E;
+}
+
+.ctx-holidays .login-form-panel input:focus {
+    border-color: #C48332;
+    box-shadow: 0 0 0 3px rgba(196, 131, 50, 0.15);
+}
+
+@media (max-width: 768px) {
+    .ctx-holidays .login-wrap {
+        border-radius: 18px;
+    }
+}

@@ -286,7 +286,7 @@ var FeeStore = {
             this._cacheTime = now;
             return res.data;
         }
-        return { serviceFee: 25000, destinations: {} };
+        return { serviceFee: null, destinations: {}, unavailable: true };
     },
 
     async setServiceFee(amount) {

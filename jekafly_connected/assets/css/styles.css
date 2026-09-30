@@ -3572,3 +3572,228 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         display: none !important;
     }
 }
+
+/* ── Live travel advisories ── */
+.adv-wrap {
+    margin: 16px 0;
+}
+
+.adv-wrap.adv-empty {
+    display: none;
+}
+
+.adv-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+.adv-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0D1560;
+}
+
+.adv-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #15803D;
+}
+
+.adv-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #16A34A;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.18);
+}
+
+.adv-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.adv-grid--one {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.adv-card {
+    --adv-tone: #10B981;
+    --adv-bg: #ECFDF5;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: #fff;
+    border: 1.5px solid #E3E5F5;
+    border-left: 4px solid var(--adv-tone);
+    border-radius: 12px;
+    padding: 12px 14px;
+    text-decoration: none;
+    color: #374151;
+    transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.adv-card:hover {
+    border-color: #C7CBE8;
+    border-left-color: var(--adv-tone);
+    box-shadow: 0 4px 14px rgba(13, 21, 96, 0.06);
+}
+
+.adv-tone-green {
+    --adv-tone: #10B981;
+    --adv-bg: #ECFDF5;
+}
+
+.adv-tone-amber {
+    --adv-tone: #F59E0B;
+    --adv-bg: #FFFBEB;
+}
+
+.adv-tone-orange {
+    --adv-tone: #EA580C;
+    --adv-bg: #FFF7ED;
+}
+
+.adv-tone-red {
+    --adv-tone: #E31E24;
+    --adv-bg: #FEF2F2;
+}
+
+.adv-src {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8A8FB5;
+}
+
+.adv-level {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: #1A1D3A;
+    line-height: 1.4;
+}
+
+.adv-dot {
+    flex: 0 0 auto;
+    width: 9px;
+    height: 9px;
+    margin-top: 5px;
+    border-radius: 50%;
+    background: var(--adv-tone);
+    box-shadow: 0 0 0 3px var(--adv-bg);
+}
+
+.adv-body {
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: #4A4F75;
+    margin: 0;
+}
+
+.adv-meta {
+    margin-top: auto;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #0D1560;
+}
+
+.adv-note {
+    font-size: 0.72rem;
+    color: #8A8FB5;
+    margin: 8px 0 0;
+    line-height: 1.5;
+}
+
+.adv-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+    color: #6B7094;
+    background: #F7F8FD;
+    border-radius: 12px;
+    padding: 12px 14px;
+}
+
+.adv-spinner {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid #D5D9F0;
+    border-top-color: #0D1560;
+    animation: adv-spin .8s linear infinite;
+}
+
+@keyframes adv-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 640px) {
+    .adv-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+.adv-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: #F7F8FD;
+    border-radius: 10px;
+    padding: 10px 14px;
+    text-decoration: none;
+    color: #374151;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    transition: background .15s ease;
+}
+
+.adv-line:hover {
+    background: #EEF0FB;
+}
+
+.adv-line .adv-dot {
+    margin-top: 0;
+    background: var(--adv-tone, #10B981);
+    box-shadow: 0 0 0 3px var(--adv-bg, #ECFDF5);
+}
+
+.adv-line-text {
+    flex: 1 1 220px;
+    min-width: 0;
+    font-weight: 600;
+    color: #1A1D3A;
+}
+
+.adv-line-label {
+    font-weight: 500;
+    color: #6B7094;
+    margin-right: 6px;
+}
+
+.adv-line-label::after {
+    content: ':';
+}
+
+.adv-line-meta {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #0D1560;
+    white-space: nowrap;
+}
