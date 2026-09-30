@@ -1,6 +1,25 @@
 var API_BASE = 'https://api.jekafly.com/api/v1';
 
 var _accessToken = null;
+var _refreshPromise = null;
+
+function refreshAccessToken() {
+    if (_refreshPromise) return _refreshPromise;
+    _refreshPromise = (async () => {
+        try {
+            const res = await fetch(API_BASE + '/auth/refresh', { method: 'POST', credentials: 'include' });
+            if (!res.ok) return { ok: false, status: res.status };
+            const data = await res.json();
+            _accessToken = data.data.accessToken;
+            return { ok: true, status: res.status };
+        } catch (err) {
+            return { ok: false, status: 0 };
+        } finally {
+            setTimeout(() => { _refreshPromise = null; }, 0);
+        }
+    })();
+    return _refreshPromise;
+}
 
 async function apiFetch(method, path, body, isFormData = false) {
     const headers = {};
@@ -27,14 +46,8 @@ async function apiFetch(method, path, body, isFormData = false) {
     clearTimeout(timer);
 
     if (res.status === 401 && path !== '/auth/refresh') {
-        const refreshed = await fetch(API_BASE + '/auth/refresh', {
-            method: 'POST', credentials: 'include',
-        });
-        if (refreshed.ok) {
-            const data = await refreshed.json();
-            _accessToken = data.data.accessToken;
-            return apiFetch(method, path, body, isFormData);
-        }
+        const refreshed = await refreshAccessToken();
+        if (refreshed.ok) return apiFetch(method, path, body, isFormData);
         const stored = localStorage.getItem('jkf_user');
         if (!stored) {
             _accessToken = null;
@@ -73,12 +86,8 @@ async function apiFetchBlob(path) {
         headers,
     });
     if (res.status === 401) {
-        const refreshed = await fetch(API_BASE + '/auth/refresh', { method: 'POST', credentials: 'include' });
-        if (refreshed.ok) {
-            const data = await refreshed.json();
-            _accessToken = data.data.accessToken;
-            return apiFetchBlob(path);
-        }
+        const refreshed = await refreshAccessToken();
+        if (refreshed.ok) return apiFetchBlob(path);
         return null;
     }
     if (!res.ok) return null;
@@ -161,25 +170,14 @@ var Auth = {
         if (Auth._initPromise) return Auth._initPromise;
         Auth._initPromise = (async () => {
             try {
-                const tryRefresh = async () => {
-                    const res = await fetch(API_BASE + '/auth/refresh', {
-                        method: 'POST', credentials: 'include',
-                    });
-                    return res;
-                };
-
-                let res = await tryRefresh();
+                let res = await refreshAccessToken();
 
                 if (!res.ok) {
                     await new Promise(r => setTimeout(r, 800));
-                    res = await tryRefresh();
+                    res = await refreshAccessToken();
                 }
 
-                if (res.ok) {
-                    const data = await res.json();
-                    _accessToken = data.data.accessToken;
-                    return user;
-                }
+                if (res.ok) return user;
 
                 if (res.status === 401) {
                     localStorage.removeItem('jkf_user');
@@ -462,17 +460,32 @@ var AffiliateStore = {
 (function () {
     'use strict';
 
-    var IDLE_MS = 5 * 60 * 1000;
-    var WARN_MS = 4 * 60 * 1000;
+    var IDLE_MS = 30 * 60 * 1000;
+    var WARN_MS = IDLE_MS - 60 * 1000;
+    var SHARED_KEY = 'jkf_last_activity';
     var _warnEl = null;
     var _warnCountdown = null;
-    var _idleTimer = null;
-    var _warnTimer = null;
+    var _timer = null;
     var _active = false;
     var _lastActivity = Date.now();
+    var _lastShared = 0;
 
     function _isLoggedIn() {
         try { return !!localStorage.getItem('jkf_user'); } catch { return false; }
+    }
+
+    function _sharedActivity() {
+        try { return parseInt(localStorage.getItem(SHARED_KEY), 10) || 0; } catch { return 0; }
+    }
+
+    function _shareActivity(ts) {
+        if (ts - _lastShared < 5000) return;
+        _lastShared = ts;
+        try { localStorage.setItem(SHARED_KEY, String(ts)); } catch { }
+    }
+
+    function _latestActivity() {
+        return Math.max(_lastActivity, _sharedActivity());
     }
 
     function _removeWarn() {
@@ -480,39 +493,28 @@ var AffiliateStore = {
         if (_warnCountdown) { clearInterval(_warnCountdown); _warnCountdown = null; }
     }
 
-    function _showWarn() {
-        _removeWarn();
-        var secs = 60;
+    function _showWarn(secs) {
+        if (_warnEl) return;
         _warnEl = document.createElement('div');
         _warnEl.id = 'jkf-idle-warn';
-        _warnEl.style.cssText = [
-            'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:99999;',
-            'background:#0D1560;color:#fff;border-radius:14px;padding:16px 24px;',
-            'font-family:Poppins,sans-serif;font-size:0.9rem;font-weight:600;',
-            'box-shadow:0 8px 32px rgba(0,0,0,0.28);display:flex;align-items:center;gap:16px;',
-            'max-width:92vw;',
-        ].join('');
+        _warnEl.className = 'jkf-idle-warn';
         _warnEl.innerHTML =
             '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E31E24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>' +
-            '<span>Session expiring in <strong id="jkf-idle-secs">60</strong>s due to inactivity.</span>' +
-            '<button onclick="window.__jkfIdleReset && window.__jkfIdleReset()" style="' +
-            'background:#E31E24;border:none;color:#fff;padding:8px 16px;border-radius:8px;' +
-            'font-family:Poppins,sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;white-space:nowrap;' +
-            '">Stay Logged In</button>';
+            '<span>You\'ll be signed out in <strong id="jkf-idle-secs">' + secs + '</strong>s due to inactivity.</span>' +
+            '<button type="button" class="jkf-idle-btn" onclick="window.__jkfIdleReset && window.__jkfIdleReset()">Stay signed in</button>';
         document.body.appendChild(_warnEl);
 
         _warnCountdown = setInterval(function () {
-            secs--;
+            var left = Math.max(0, Math.ceil((IDLE_MS - (Date.now() - _latestActivity())) / 1000));
             var el = document.getElementById('jkf-idle-secs');
-            if (el) el.textContent = secs;
-            if (secs <= 0) { clearInterval(_warnCountdown); _warnCountdown = null; }
+            if (el) el.textContent = left;
         }, 1000);
     }
 
     function _logout() {
         _removeWarn();
         _active = false;
-        _clearTimers();
+        _clearTimer();
         if (typeof Auth !== 'undefined') {
             Auth.logout().catch(function () { }).finally(function () {
                 window.location.replace('/');
@@ -523,18 +525,29 @@ var AffiliateStore = {
         }
     }
 
-    function _clearTimers() {
-        if (_idleTimer) { clearTimeout(_idleTimer); _idleTimer = null; }
-        if (_warnTimer) { clearTimeout(_warnTimer); _warnTimer = null; }
+    function _clearTimer() {
+        if (_timer) { clearTimeout(_timer); _timer = null; }
+    }
+
+    function _check() {
+        _clearTimer();
+        if (!_active) return;
+        var elapsed = Date.now() - _latestActivity();
+        if (elapsed >= IDLE_MS) { _logout(); return; }
+        if (elapsed >= WARN_MS) {
+            _showWarn(Math.ceil((IDLE_MS - elapsed) / 1000));
+            _timer = setTimeout(_check, Math.min(1000, IDLE_MS - elapsed));
+            return;
+        }
+        _removeWarn();
+        _timer = setTimeout(_check, WARN_MS - elapsed);
     }
 
     function _reset() {
         if (!_active) return;
         _lastActivity = Date.now();
-        _removeWarn();
-        _clearTimers();
-        _warnTimer = setTimeout(_showWarn, WARN_MS);
-        _idleTimer = setTimeout(_logout, IDLE_MS);
+        _shareActivity(_lastActivity);
+        _check();
     }
 
     function _start() {
@@ -542,49 +555,28 @@ var AffiliateStore = {
         if (!_isLoggedIn()) return;
         _active = true;
         _lastActivity = Date.now();
-        _reset();
+        _lastShared = 0;
+        _shareActivity(_lastActivity);
+        _check();
     }
 
     function _stop() {
         _active = false;
-        _clearTimers();
+        _clearTimer();
         _removeWarn();
     }
 
     document.addEventListener('visibilitychange', function () {
-        if (!_active) return;
-        if (document.hidden) return;
-
-        var elapsed = Date.now() - _lastActivity;
-
-        if (elapsed >= IDLE_MS) {
-            _logout();
-        } else if (elapsed >= WARN_MS) {
-            var remaining = Math.ceil((IDLE_MS - elapsed) / 1000);
-            _removeWarn();
-            _showWarn();
-            var el = document.getElementById('jkf-idle-secs');
-            if (el) el.textContent = remaining;
-            _clearTimers();
-            _idleTimer = setTimeout(_logout, IDLE_MS - elapsed);
-        } else {
-            _clearTimers();
-            var timeLeft = IDLE_MS - elapsed;
-            var warnLeft = WARN_MS - elapsed;
-            if (warnLeft > 0) _warnTimer = setTimeout(_showWarn, warnLeft);
-            _idleTimer = setTimeout(_logout, timeLeft);
-        }
+        if (_active && !document.hidden) _check();
     });
 
     window.addEventListener('focus', function () {
-        if (!_active) return;
-        var elapsed = Date.now() - _lastActivity;
-        if (elapsed >= IDLE_MS) _logout();
+        if (_active) _check();
     });
 
-    window.__jkfIdleReset = function () { _reset(); };
+    window.__jkfIdleReset = function () { _lastShared = 0; _reset(); };
 
-    var EVENTS = ['mousedown', 'mousemove', 'keydown', 'touchstart', 'scroll', 'click', 'wheel'];
+    var EVENTS = ['mousedown', 'mousemove', 'keydown', 'touchstart', 'scroll', 'click', 'wheel', 'input'];
     var _throttle = null;
     function _onActivity() {
         if (!_active) return;
@@ -604,6 +596,8 @@ var AffiliateStore = {
         if (e.key === 'jkf_user') {
             if (e.newValue) { _start(); }
             else { _stop(); }
+        } else if (e.key === SHARED_KEY && _active) {
+            _check();
         }
     });
 

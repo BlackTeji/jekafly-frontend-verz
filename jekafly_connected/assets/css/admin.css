@@ -3982,3 +3982,134 @@ h4 {
         grid-template-columns: 1fr;
     }
 }
+
+/* ── Holiday trip dates ── */
+.hol-dates-help {
+    font-size: 0.8rem;
+    color: #6B7094;
+    padding: 0 22px 14px;
+    line-height: 1.55;
+}
+
+.hol-date-add {
+    margin: 0 22px 18px;
+    padding: 16px;
+    background: #F7F8FD;
+    border: 1.5px dashed #D5D9F0;
+    border-radius: 14px;
+}
+
+.hol-date-add-head,
+.hol-date-add-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 90px 32px;
+    gap: 10px;
+    align-items: center;
+}
+
+.hol-date-add-head {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8A8FB5;
+    margin-bottom: 6px;
+}
+
+.hol-date-add-row {
+    margin-bottom: 8px;
+}
+
+.hol-date-add-row .input-sm {
+    width: 100%;
+    min-width: 0;
+}
+
+.hol-date-remove {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 8px;
+    background: #fff;
+    color: #8A8FB5;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
+.hol-date-remove:hover {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+.hol-date-add-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.hol-date-add-right {
+    display: flex;
+    gap: 8px;
+}
+
+.hol-date-more,
+.hol-date-cancel,
+.hol-past-toggle {
+    background: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #1520A0;
+    cursor: pointer;
+    padding: 6px 4px;
+}
+
+.hol-date-cancel {
+    color: #6B7094;
+}
+
+.hol-past-toggle {
+    display: block;
+    margin: 12px 22px;
+}
+
+.hol-dates-tbl .hol-date-input {
+    width: 150px;
+}
+
+.hol-date-len {
+    white-space: nowrap;
+    font-size: 0.82rem;
+    color: #4A4F75;
+}
+
+.hol-date-lock {
+    font-size: 0.72rem;
+    color: #8A8FB5;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .hol-date-add {
+        margin: 0 12px 14px;
+        padding: 12px;
+    }
+
+    .hol-date-add-head {
+        display: none;
+    }
+
+    .hol-date-add-row {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 32px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #E3E5F5;
+    }
+
+    .hol-date-add-row .hol-new-cap {
+        grid-column: 1 / 3;
+    }
+}

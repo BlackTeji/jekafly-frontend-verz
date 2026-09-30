@@ -974,7 +974,7 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
-    <script src="assets/js/session.js" defer></script>
+    <script src="assets/js/cookie-consent.js" defer></script>
     <script>
         let currentUser = null;
         let selectedApp = null;
@@ -2599,7 +2599,10 @@
 
             container.innerHTML = paged.map(b => {
                 const statusClass = statusColors[b.status] || 'status-received';
-                const dateStr = b.holidayDate?.date ? new Date(b.holidayDate.date).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—';
+                const _dOpt = { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' };
+                const dateStr = b.holidayDate?.date
+                    ? new Date(b.holidayDate.date).toLocaleDateString('en-GB', _dOpt) + (b.holidayDate.endDate && b.holidayDate.endDate !== b.holidayDate.date ? ' – ' + new Date(b.holidayDate.endDate).toLocaleDateString('en-GB', _dOpt) : '')
+                    : '—';
                 return `<div class="booking-card">
                 <div class="booking-card-header">
                     <div class="booking-card-icon dash-holiday-booking-icon">

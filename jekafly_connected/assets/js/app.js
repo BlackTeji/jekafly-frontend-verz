@@ -281,6 +281,10 @@ function showToast(msg, type = 'success') {
 
 
 function openModal(type) {
+    if ((type === "login" || type === "register") && !document.getElementById("modal-auth")) {
+        window.location.href = "/login?return=" + encodeURIComponent(window.location.pathname);
+        return;
+    }
     const auth = document.getElementById("modal-auth");
     const apply = document.getElementById("modal-apply");
     const ins = document.getElementById("modal-insurance");

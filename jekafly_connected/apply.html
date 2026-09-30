@@ -422,12 +422,10 @@
                     <label class="terms-label">
                         <input type="checkbox" id="terms-check" class="terms-checkbox" />
                         I confirm all information is accurate and I agree to Jekafly's
-                        <a href="#" class="terms-link"
-                            onclick="event.preventDefault();openDocModal('assets/docs/terms.pdf','Terms of Service')">Terms
-                            of Service</a>
+                        <a href="/terms" class="terms-link" target="_blank" rel="noopener">Terms &amp;
+                            Conditions</a>
                         and
-                        <a href="#" class="terms-link"
-                            onclick="event.preventDefault();openDocModal('assets/docs/privacy.pdf','Privacy Policy')">Privacy
+                        <a href="/privacy" class="terms-link" target="_blank" rel="noopener">Privacy
                             Policy</a>.
                     </label>
                 </div>
@@ -497,7 +495,7 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
-    <script src="assets/js/session.js" defer></script>
+    <script src="assets/js/cookie-consent.js" defer></script>
     <script>
         let currentStep = 1;
         let travellers = [];

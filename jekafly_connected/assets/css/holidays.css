@@ -1518,6 +1518,13 @@
     color: #0D1560;
 }
 
+.hbm-date-slot-len {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #4A5580;
+    margin-top: 2px;
+}
+
 .hbm-date-slot-avail {
     font-size: 0.72rem;
     color: #9AABCC;

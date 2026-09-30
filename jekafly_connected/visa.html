@@ -15,7 +15,7 @@
         content="Apply for UK, US, Canada, Schengen, UAE, and 150+ country visas online from Nigeria. Expert document review, embassy submission support, travel insurance, and real-time tracking — all handled for you." />
     <meta name="keywords"
         content="visa application Nigeria, UK visa Nigeria, US visa Nigeria, Schengen visa Lagos, Canada visa Nigeria, UAE visa Nigeria, apply visa online Nigeria, visa consultants Nigeria, jekafly" />
-    <meta name="author" content="Jekafly Technologies Limited" />
+    <meta name="author" content="Kazwhale Concepts Limited" />
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <link rel="canonical" href="https://jekafly.com/visa" />
     <meta property="og:type" content="website" />
@@ -36,7 +36,7 @@
         content="Apply for UK, US, Canada, Schengen, UAE, and 150+ country visas online. Expert visa consultants, document review, travel insurance." />
     <meta name="twitter:image" content="https://jekafly.com/assets/images/og-image.png" />
     <script
-        type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Jekafly","legalName":"Jekafly Technologies Limited","url":"https://jekafly.com","logo":"https://jekafly.com/assets/images/JEKAFLY LOGO B-R 2.png","description":"Nigeria's leading online visa application and travel services platform.","areaServed":"NG"}</script>
+        type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Jekafly","legalName":"Kazwhale Concepts Limited","url":"https://jekafly.com","logo":"https://jekafly.com/assets/images/JEKAFLY LOGO B-R 2.png","description":"Nigeria's leading online visa application and travel services platform.","areaServed":"NG"}</script>
     <script
         type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Jekafly Visa","url":"https://jekafly.com/visa","description":"Apply for UK, US, Canada, Schengen, UAE and 150+ country visas online from Nigeria.","isPartOf":{"@type":"WebSite","name":"Jekafly","url":"https://jekafly.com"}}</script>
     <script
@@ -1069,9 +1069,16 @@
                 <a href="/apply">Visa Application</a>
                 <a href="#insurance">Travel Insurance</a>
                 <a href="#track">Track Visa</a>
+                <a href="/holidays">Holidays</a>
                 <a href="/apply">Document Support</a>
                 <a href="/">Flight Booking</a>
                 <a href="/">Hotel Reservations</a>
+            </div>
+            <div class="footer-col">
+                <h4>Legal</h4>
+                <a href="/terms">Terms &amp; Conditions</a>
+                <a href="/privacy">Privacy Policy</a>
+                <a href="#cookie-settings">Cookie settings</a>
             </div>
             <div class="footer-col">
                 <h4>Destinations</h4>
@@ -1190,6 +1197,7 @@
                     </div>
                     <button class="btn-check btn-check-mt" id="btn-register" type="button"
                         onclick="handleRegister()">Create Free Account</button>
+                    <p class="legal-consent">By creating an account, you agree to Jekafly's <a href="/terms" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
                 </div>
             </div>
 
@@ -1411,6 +1419,7 @@
                             <div id="consult-confirm-msg" style="font-size:0.72rem;margin-top:3px;display:none;"></div>
                         </div>
                         <div id="consult-reg-error" class="inline-error"></div>
+                        <p class="legal-consent">By creating an account and paying, you agree to Jekafly's <a href="/terms" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
                         <button class="btn-check btn-check-mt" id="btn-consult-register" onclick="consultModalRegister()">Create Account
                             &amp; Pay
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1434,7 +1443,7 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
-    <script src="assets/js/session.js" defer></script>
+    <script src="assets/js/cookie-consent.js" defer></script>
 
     <script>
         // Explore track — live counts and starting prices from the holidays API
@@ -1621,7 +1630,7 @@
         function consultModalBack() { document.getElementById('consult-modal-step-2').style.display = 'none'; document.getElementById('consult-modal-step-1').style.display = 'block'; const modal = document.querySelector('.modal'); if (modal) modal.scrollTop = 0; }
         function switchConsultTab(tab) { document.getElementById('consult-login-form').style.display = tab === 'login' ? 'block' : 'none'; document.getElementById('consult-register-form').style.display = tab === 'register' ? 'block' : 'none'; document.getElementById('consult-tab-login').classList.toggle('active', tab === 'login'); document.getElementById('consult-tab-register').classList.toggle('active', tab === 'register'); }
         async function consultModalLogin() { const email = document.getElementById('consult-login-email').value.trim(); const pass = document.getElementById('consult-login-pass').value; const errEl = document.getElementById('consult-login-error'); errEl.style.display = 'none'; if (!email || !pass) { errEl.textContent = 'Please fill in all fields.'; errEl.style.display = 'block'; return; } const btn = document.getElementById('btn-consult-login'); if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); } try { const res = await Auth.login(email, pass); if (!res.ok) throw new Error(res.error || 'Login failed'); await consultPay(email); } catch (e) { errEl.textContent = e.message; errEl.style.display = 'block'; if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); } } }
-        async function consultModalRegister() { const name = document.getElementById('consult-reg-name').value.trim(); const email = document.getElementById('consult-reg-email').value.trim(); const phone = document.getElementById('consult-reg-phone').value.trim(); const pass = document.getElementById('consult-reg-pass').value; const confirm = document.getElementById('consult-reg-confirm').value; const errEl = document.getElementById('consult-reg-error'); errEl.style.display = 'none'; if (!name || !email || !pass) { errEl.textContent = 'Please fill in all required fields.'; errEl.style.display = 'block'; return; } if (pass !== confirm) { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return; } const btn = document.getElementById('btn-consult-register'); if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); } try { const res = await Auth.register(name, email, pass, phone); if (!res.ok) throw new Error(res.error || 'Registration failed'); await consultPay(email); } catch (e) { errEl.textContent = e.message; errEl.style.display = 'block'; if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); } } }
+        async function consultModalRegister() { const name = document.getElementById('consult-reg-name').value.trim(); const email = document.getElementById('consult-reg-email').value.trim(); const phone = document.getElementById('consult-reg-phone').value.trim(); const pass = document.getElementById('consult-reg-pass').value; const confirm = document.getElementById('consult-reg-confirm').value; const errEl = document.getElementById('consult-reg-error'); errEl.style.display = 'none'; if (!name || !email || !pass) { errEl.textContent = 'Please fill in all required fields.'; errEl.style.display = 'block'; return; } if (pass !== confirm) { errEl.textContent = 'Passwords do not match.'; errEl.style.display = 'block'; return; } const btn = document.getElementById('btn-consult-register'); if (btn) { btn.disabled = true; btn.classList.add('btn-loading'); } try { const res = await Auth.register(name, email, phone, pass); if (!res.ok) throw new Error(res.msg || 'Registration failed'); await consultPay(email); } catch (e) { errEl.textContent = e.message; errEl.style.display = 'block'; if (btn) { btn.disabled = false; btn.classList.remove('btn-loading'); } } }
         function consultPay(email) { const pkg = CONSULT_PACKAGES[_cModalPkg]; localStorage.setItem('jkf_pending_payment', JSON.stringify({ type: 'consultation', plan: pkg.name, package: _cModalPkg, amount: pkg.amount, email: email })); window.location.href = '/payment'; }
     </script>
 

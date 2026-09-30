@@ -251,7 +251,7 @@
             <a href="/"><img src="assets/images/JEKAFLY LOGO W-R 2.png" alt="Jekafly"
                     style="height:34px;width:auto;display:block;margin-bottom:14px;" /></a>
             <p>&#169; 2026 Kazwhale Concepts Limited. All rights reserved. Registered in Nigeria.</p>
-            <p class="jkfh-footer-credits"><a href="javascript:void(0)" onclick="openPhotoCredits()">Photo credits</a></p>
+            <p class="jkfh-footer-credits"><a href="/terms">Terms &amp; Conditions</a> · <a href="/privacy">Privacy Policy</a> · <a href="#cookie-settings">Cookie settings</a> · <a href="javascript:void(0)" onclick="openPhotoCredits()">Photo credits</a></p>
         </div>
     </footer>
 
@@ -284,6 +284,7 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
+    <script src="assets/js/cookie-consent.js" defer></script>
 
     <script>
         // ── Nav helpers ──────────────────────────────────────────────────────
@@ -863,9 +864,9 @@
             <button class="hbm-btn-back" onclick="goStep(1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
             <div class="hbm-step-label">Step 3 of 7 — Travel Details</div>
             <h2 class="hbm-title">When are you travelling?</h2>
-            <p class="hbm-sub">Select a date and enter your details. We've pre-filled what we know.</p>
+            <p class="hbm-sub">Pick your trip dates and enter your details. We've pre-filled what we know.</p>
             <div class="hbm-form-group">
-                <label class="hbm-label">Select a Date</label>
+                <label class="hbm-label">Trip Dates</label>
                 <div id="hbm-date-grid" class="hbm-date-grid">${availHtml}</div>
             </div>
             <div class="hbm-form-group">
@@ -915,12 +916,14 @@
                     return;
                 }
                 grid.innerHTML = dates.map(d => {
-                    var dt = new Date(d.date);
-                    var ds = dt.toLocaleDateString('en-NG', { dateStyle: 'medium' });
+                    var ds = tripDateRange(d.date, d.endDate);
+                    var n = tripNights(d.date, d.endDate);
+                    var len = n === null ? '' : (n === 0 ? 'Day trip' : n + (n === 1 ? ' night' : ' nights'));
                     var cls = d.isFull ? 'full' : (_bm.dateId === d.id ? 'selected' : '');
-                    var avail = d.isFull ? 'Fully booked' : `${d.available} spots left`;
-                    return `<div class="hbm-date-slot ${cls}" onclick="selectDate('${d.id}','${ds}',${d.isFull})" id="hbm-date-${d.id}">
-                        <div class="hbm-date-slot-date">${ds}</div>
+                    var avail = d.isFull ? 'Fully booked' : `${d.available} spot${d.available === 1 ? '' : 's'} left`;
+                    return `<div class="hbm-date-slot ${cls}" onclick="selectDate('${d.id}','${escAttr(ds)}',${d.isFull})" id="hbm-date-${d.id}">
+                        <div class="hbm-date-slot-date">${escH(ds)}</div>
+                        ${len ? `<div class="hbm-date-slot-len">${len}</div>` : ''}
                         <div class="hbm-date-slot-avail">${avail}</div>
                     </div>`;
                 }).join('');
@@ -928,6 +931,24 @@
                 var g = document.getElementById('hbm-date-grid');
                 if (g) g.innerHTML = '<div style="color:#E31E24;font-size:0.82rem;">Could not load dates. Please try again.</div>';
             }
+        }
+
+        function tripFmtDay(d, withYear) {
+            var opts = { day: 'numeric', month: 'short', timeZone: 'UTC' };
+            if (withYear !== false) opts.year = 'numeric';
+            return new Date(d).toLocaleDateString('en-GB', opts);
+        }
+
+        function tripDateRange(start, end) {
+            if (!end || new Date(end).toISOString().slice(0, 10) === new Date(start).toISOString().slice(0, 10)) return tripFmtDay(start);
+            var sameYear = new Date(start).getUTCFullYear() === new Date(end).getUTCFullYear();
+            return tripFmtDay(start, !sameYear) + ' – ' + tripFmtDay(end);
+        }
+
+        function tripNights(start, end) {
+            if (!end) return null;
+            var n = Math.round((new Date(end) - new Date(start)) / 86400000);
+            return n >= 0 ? n : null;
         }
 
         function selectDate(id, dateStr, isFull) {
@@ -1085,7 +1106,7 @@
             <div class="hbm-summary-rows">
                 <div class="hbm-summary-row"><span>${escH(_bm.packageName)}</span><span>${_bm.days}D / ${_bm.nights}N</span></div>
                 <div class="hbm-summary-row"><span>Destination</span><span>${escH(_bm.state)}</span></div>
-                <div class="hbm-summary-row"><span>Date</span><span>${escH(_bm.dateStr)}</span></div>
+                <div class="hbm-summary-row"><span>Trip dates</span><span>${escH(_bm.dateStr)}</span></div>
                 ${_bm.occupancy ? `<div class="hbm-summary-row"><span>Room</span><span>${OCCUPANCY_LABELS[_bm.occupancy]}</span></div>` : ''}
                 <div class="hbm-summary-row"><span>Travellers</span><span>${_bm.travellers}</span></div>
                 ${(_bm.additionalTravellers && _bm.additionalTravellers.length) ? `<div class="hbm-summary-row hbm-summary-row--top"><span>Additional</span><span class="hbm-summary-names">${_bm.additionalTravellers.map(t => escH(t.name)).join('<br>')}</span></div>` : ''}
@@ -1173,7 +1194,7 @@
                 <p class="hbm-sub">Your holiday experience has been booked. Check your email for your confirmation and details.</p>
                 <div class="hbm-summary-rows" style="text-align:left">
                     <div class="hbm-summary-row"><span>Package</span><span>${escH(_bm.packageName)}</span></div>
-                    <div class="hbm-summary-row"><span>Date</span><span>${_bm.dateStr}</span></div>
+                    <div class="hbm-summary-row"><span>Trip dates</span><span>${escH(_bm.dateStr)}</span></div>
                     ${_bm.occupancy ? `<div class="hbm-summary-row"><span>Room</span><span>${OCCUPANCY_LABELS[_bm.occupancy]}</span></div>` : ''}
                 </div>
                 <button class="hbm-btn" onclick="window.location.href='/dashboard'">

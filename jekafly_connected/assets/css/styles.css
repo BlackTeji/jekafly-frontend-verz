@@ -3296,3 +3296,279 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         display: none;
     }
 }
+
+/* ── Idle sign-out warning ── */
+.jkf-idle-warn {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+    background: #0D1560;
+    color: #fff;
+    border-radius: 14px;
+    padding: 16px 24px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 92vw;
+}
+
+.jkf-idle-btn {
+    background: #E31E24;
+    border: none;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .jkf-idle-warn {
+        bottom: 84px;
+        padding: 14px 16px;
+        gap: 12px;
+        font-size: 0.82rem;
+    }
+}
+
+/* ── Legal consent line (sign-up forms) ── */
+.legal-consent {
+    font-size: 0.76rem;
+    line-height: 1.55;
+    color: #6B7094;
+    text-align: center;
+    margin: 12px 0 0;
+}
+
+.legal-consent a {
+    color: #0D1560;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+/* ── Cookie consent banner ── */
+.ck-banner {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    z-index: 99990;
+    width: 420px;
+    max-width: calc(100vw - 32px);
+    background: #fff;
+    color: #1A1D3A;
+    border: 1.5px solid #E3E5F5;
+    border-radius: 18px;
+    box-shadow: 0 18px 50px rgba(13, 21, 96, 0.18);
+    padding: 20px 20px 16px;
+    font-family: 'Poppins', sans-serif;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .25s ease, transform .25s ease;
+}
+
+.ck-banner.ck-open {
+    opacity: 1;
+    transform: none;
+}
+
+.ck-title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #0D1560;
+    margin-bottom: 6px;
+}
+
+.ck-text {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: #4A4F75;
+    margin: 0;
+}
+
+.ck-text a {
+    color: #0D1560;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.ck-options {
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.ck-manage .ck-options {
+    display: flex;
+}
+
+.ck-opt {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #F7F8FD;
+    border-radius: 12px;
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+.ck-opt span {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.82rem;
+    color: #0D1560;
+}
+
+.ck-opt small {
+    font-size: 0.72rem;
+    color: #6B7094;
+    font-weight: 400;
+}
+
+.ck-opt input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.ck-switch {
+    flex: 0 0 auto;
+    position: relative;
+    width: 38px;
+    height: 22px;
+    border-radius: 999px;
+    background: #D5D9F0;
+    transition: background .2s ease;
+}
+
+.ck-switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    transition: transform .2s ease;
+}
+
+.ck-opt input:checked+.ck-switch {
+    background: #0D1560;
+}
+
+.ck-opt input:checked+.ck-switch::after {
+    transform: translateX(16px);
+}
+
+.ck-opt input:disabled+.ck-switch {
+    opacity: 0.5;
+}
+
+.ck-opt input:focus-visible+.ck-switch {
+    outline: 2.5px solid rgba(13, 21, 96, 0.35);
+    outline-offset: 2px;
+}
+
+.ck-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.ck-btn {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 9px 14px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+}
+
+.ck-btn-link {
+    background: none;
+    color: #1520A0;
+    padding: 9px 6px;
+    margin-right: auto;
+}
+
+.ck-btn-ghost {
+    background: #fff;
+    border-color: #D5D9F0;
+    color: #0D1560;
+}
+
+.ck-btn-ghost:hover {
+    border-color: #0D1560;
+}
+
+.ck-btn-primary {
+    background: #0D1560;
+    color: #fff;
+}
+
+.ck-btn-primary:hover {
+    background: #1520A0;
+}
+
+.ck-save {
+    display: none;
+}
+
+.ck-manage .ck-save {
+    display: inline-block;
+}
+
+.ck-manage .ck-btn-link {
+    visibility: hidden;
+}
+
+@media (max-width: 600px) {
+    .ck-banner {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        width: auto;
+        max-width: none;
+        padding: 16px 16px 14px;
+        max-height: calc(100vh - 24px);
+        overflow-y: auto;
+    }
+
+    .ck-actions {
+        justify-content: stretch;
+    }
+
+    .ck-btn-ghost,
+    .ck-btn-primary {
+        flex: 1;
+    }
+
+    .ck-manage .ck-btn-link {
+        display: none;
+    }
+}
+
+@media print {
+    .ck-banner {
+        display: none !important;
+    }
+}

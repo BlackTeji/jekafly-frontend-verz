@@ -846,16 +846,28 @@
 
                         <div class="acard mt-20 hol-hidden" id="hol-dates-card">
                             <div class="acard-header">
-                                <h3>Bookable Dates</h3><span id="hol-dates-count" class="fs-sm text-light"></span>
+                                <div>
+                                    <h3>Trip Dates</h3>
+                                    <span id="hol-dates-count" class="fs-sm text-light"></span>
+                                </div>
+                                <button class="btn-manage" id="hol-date-add-btn" onclick="toggleHolDateAdd()">+ Add Dates</button>
+                            </div>
+                            <div class="hol-dates-help" id="hol-dates-help"></div>
+                            <div class="hol-date-add hol-hidden" id="hol-date-add">
+                                <div class="hol-date-add-head">
+                                    <span>Start date</span><span>End date</span><span>Spots</span><span></span>
+                                </div>
+                                <div id="hol-date-add-rows"></div>
+                                <div class="hol-date-add-actions">
+                                    <button class="hol-date-more" onclick="addHolDateRow()">+ Another date</button>
+                                    <div class="hol-date-add-right">
+                                        <button class="hol-date-cancel" onclick="toggleHolDateAdd(false)">Cancel</button>
+                                        <button class="btn-manage" id="hol-date-save" onclick="saveHolDateRows()">Save dates</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="acard-table-wrap">
                                 <div id="hol-dates-table"></div>
-                            </div>
-                            <div class="acard-footer">
-                                <input type="date" id="hol-new-date" class="input-sm" />
-                                <input type="number" id="hol-new-capacity" placeholder="Capacity" min="1" step="1"
-                                    value="20" class="input-sm" />
-                                <button class="btn-manage" onclick="addHolDate()">+ Add Date</button>
                             </div>
                         </div>
                     </div>
@@ -923,7 +935,6 @@
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/app.js"></script>
-    <script src="assets/js/session.js" defer></script>
     <script>
         function escHtml(s) { return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
@@ -1596,6 +1607,7 @@
             syncHolPriceFields();
             card.classList.remove('hol-hidden');
             document.getElementById('hol-dates-card').classList.toggle('hol-hidden', !h);
+            toggleHolDateAdd(false);
             if (h) renderHolDates();
             renderHolPackageList();
             card.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -1689,49 +1701,191 @@
             await loadHolidaysAdmin();
         }
 
-        function renderHolDates() {
-            const holiday = _holPackages.find(h => h.id === _holSelectedId);
-            const table = document.getElementById('hol-dates-table');
-            const countEl = document.getElementById('hol-dates-count');
-            if (!holiday) return;
-            const dates = holiday.dates || [];
-            if (countEl) countEl.textContent = dates.length + ' date' + (dates.length !== 1 ? 's' : '');
-            if (!dates.length) {
-                table.innerHTML = '<div class="atbl-empty">No bookable dates yet. Add one below.</div>';
-                return;
-            }
-            table.innerHTML = `<table><thead><tr><th>Date</th><th>Capacity</th><th>Booked</th><th>Available</th><th></th></tr></thead><tbody>${dates.map(d => {
-                const avail = d.capacity - d.bookedCount;
-                const isPast = new Date(d.date) < new Date();
-                return `<tr${isPast ? ' class="hol-row-past"' : ''}>
-                    <td>${new Date(d.date).toLocaleDateString('en-NG', { dateStyle: 'medium' })}${isPast ? ' <span class="fs-xs text-muted">(past)</span>' : ''}</td>
-                    <td><input type="number" value="${d.capacity}" min="1" class="select-xs hol-cap-input" onchange="updateHolDateCapacity('${d.id}',this.value)" /></td>
-                    <td>${d.bookedCount}</td>
-                    <td><strong class="${avail > 0 ? 'hol-text-ok' : 'hol-text-warn'}">${avail}</strong></td>
-                    <td><button class="hol-btn-danger hol-btn-sm" onclick="deleteHolDate('${d.id}')">Delete</button></td>
-                </tr>`;
-            }).join('')}</tbody></table>`;
+        let _holShowPastDates = false;
+
+        function holDayIso(d) {
+            return d ? new Date(d).toISOString().slice(0, 10) : '';
         }
 
-        async function addHolDate() {
+        function holFmtDay(d, withYear) {
+            const opts = { day: 'numeric', month: 'short', timeZone: 'UTC' };
+            if (withYear !== false) opts.year = 'numeric';
+            return new Date(d).toLocaleDateString('en-GB', opts);
+        }
+
+        function holDateRange(start, end) {
+            if (!end || holDayIso(end) === holDayIso(start)) return holFmtDay(start);
+            const sameYear = new Date(start).getUTCFullYear() === new Date(end).getUTCFullYear();
+            return holFmtDay(start, !sameYear) + ' – ' + holFmtDay(end);
+        }
+
+        function holNights(start, end) {
+            if (!start || !end) return null;
+            const n = Math.round((new Date(end) - new Date(start)) / 86400000);
+            return n >= 0 ? n : null;
+        }
+
+        function holAddDays(iso, days) {
+            if (!iso) return '';
+            const d = new Date(iso + 'T00:00:00Z');
+            d.setUTCDate(d.getUTCDate() + (days || 0));
+            return d.toISOString().slice(0, 10);
+        }
+
+        function holSelected() {
+            return _holPackages.find(h => h.id === _holSelectedId);
+        }
+
+        function renderHolDates() {
+            const holiday = holSelected();
+            const table = document.getElementById('hol-dates-table');
+            const countEl = document.getElementById('hol-dates-count');
+            const help = document.getElementById('hol-dates-help');
+            if (!holiday) return;
+            const todayIso = new Date().toISOString().slice(0, 10);
+            const dates = (holiday.dates || []).slice().sort((a, b) => new Date(a.date) - new Date(b.date));
+            const upcoming = dates.filter(d => holDayIso(d.date) >= todayIso);
+            const past = dates.filter(d => holDayIso(d.date) < todayIso);
+            const nights = holiday.durationNights;
+            if (help) help.textContent = 'Each date is a separate departure customers can pick. Set any start and end date — the end date is suggested from the package length' +
+                (Number.isInteger(nights) ? ` (${nights} night${nights === 1 ? '' : 's'})` : '') + ', but you can change it for any trip.';
+            if (countEl) countEl.textContent = upcoming.length + ' upcoming' + (past.length ? ' · ' + past.length + ' past' : '');
+            if (!dates.length) {
+                table.innerHTML = '<div class="atbl-empty">No trip dates yet. Use “+ Add Dates” to add one or more departures.</div>';
+                return;
+            }
+            const row = d => {
+                const avail = d.capacity - d.bookedCount;
+                const n = holNights(d.date, d.endDate);
+                const isPast = holDayIso(d.date) < todayIso;
+                const locked = d.bookedCount > 0;
+                return `<tr${isPast ? ' class="hol-row-past"' : ''}>
+                    <td><input type="date" class="input-sm hol-date-input" value="${holDayIso(d.date)}" onchange="updateHolDate('${d.id}','date',this.value)" /></td>
+                    <td><input type="date" class="input-sm hol-date-input" value="${holDayIso(d.endDate)}" min="${holDayIso(d.date)}" onchange="updateHolDate('${d.id}','endDate',this.value)" /></td>
+                    <td class="hol-date-len">${n === null ? '<span class="text-muted">—</span>' : n === 0 ? 'Day trip' : n + ' night' + (n === 1 ? '' : 's')}</td>
+                    <td><input type="number" value="${d.capacity}" min="${Math.max(1, d.bookedCount)}" class="select-xs hol-cap-input" onchange="updateHolDate('${d.id}','capacity',this.value)" /></td>
+                    <td>${d.bookedCount}</td>
+                    <td><strong class="${avail > 0 ? 'hol-text-ok' : 'hol-text-warn'}">${avail > 0 ? avail : 'Full'}</strong></td>
+                    <td>${locked
+                        ? '<span class="hol-date-lock" title="Dates with bookings cannot be deleted">Has bookings</span>'
+                        : `<button class="hol-btn-danger hol-btn-sm" onclick="deleteHolDate('${d.id}')">Delete</button>`}</td>
+                </tr>`;
+            };
+            const head = '<thead><tr><th>Start</th><th>End</th><th>Length</th><th>Spots</th><th>Booked</th><th>Left</th><th></th></tr></thead>';
+            let html = upcoming.length
+                ? `<table class="hol-dates-tbl">${head}<tbody>${upcoming.map(row).join('')}</tbody></table>`
+                : '<div class="atbl-empty">No upcoming dates. Customers can’t book this package until you add one.</div>';
+            if (past.length) {
+                html += `<button class="hol-past-toggle" onclick="_holShowPastDates=!_holShowPastDates;renderHolDates()">${_holShowPastDates ? 'Hide' : 'Show'} ${past.length} past date${past.length === 1 ? '' : 's'}</button>`;
+                if (_holShowPastDates) html += `<table class="hol-dates-tbl">${head}<tbody>${past.slice().reverse().map(row).join('')}</tbody></table>`;
+            }
+            table.innerHTML = html;
+        }
+
+        function toggleHolDateAdd(force) {
+            const box = document.getElementById('hol-date-add');
+            if (!box) return;
+            const open = typeof force === 'boolean' ? force : box.classList.contains('hol-hidden');
+            box.classList.toggle('hol-hidden', !open);
+            document.getElementById('hol-date-add-btn')?.classList.toggle('hol-hidden', open);
+            const rows = document.getElementById('hol-date-add-rows');
+            if (open) {
+                rows.innerHTML = '';
+                addHolDateRow();
+            } else if (rows) {
+                rows.innerHTML = '';
+            }
+        }
+
+        function addHolDateRow() {
+            const rows = document.getElementById('hol-date-add-rows');
+            const holiday = holSelected();
+            const last = rows.lastElementChild;
+            let start = '', end = '', cap = '20';
+            if (last) {
+                const prevStart = last.querySelector('.hol-new-start').value;
+                const prevEnd = last.querySelector('.hol-new-end').value;
+                cap = last.querySelector('.hol-new-cap').value || '20';
+                if (prevStart) {
+                    const len = prevEnd ? holNights(prevStart, prevEnd) : (holiday?.durationNights || 0);
+                    start = holAddDays(prevStart, 7);
+                    end = holAddDays(start, len || 0);
+                }
+            }
+            const div = document.createElement('div');
+            div.className = 'hol-date-add-row';
+            div.innerHTML = `
+                <input type="date" class="input-sm hol-new-start" value="${start}" onchange="onHolNewStart(this)" aria-label="Start date" />
+                <input type="date" class="input-sm hol-new-end" value="${end}" min="${start}" aria-label="End date" />
+                <input type="number" class="input-sm hol-new-cap" value="${cap}" min="1" step="1" aria-label="Spots" />
+                <button class="hol-date-remove" onclick="removeHolDateRow(this)" aria-label="Remove row">&#215;</button>`;
+            rows.appendChild(div);
+        }
+
+        function removeHolDateRow(btn) {
+            const rows = document.getElementById('hol-date-add-rows');
+            btn.closest('.hol-date-add-row').remove();
+            if (!rows.children.length) toggleHolDateAdd(false);
+        }
+
+        function onHolNewStart(input) {
+            const row = input.closest('.hol-date-add-row');
+            const endEl = row.querySelector('.hol-new-end');
+            endEl.min = input.value;
+            if (!endEl.value || endEl.value < input.value || !endEl.dataset.touched) {
+                const nights = holSelected()?.durationNights || 0;
+                endEl.value = input.value ? holAddDays(input.value, nights) : '';
+            }
+            endEl.onchange = () => { endEl.dataset.touched = '1'; };
+        }
+
+        async function saveHolDateRows() {
             if (!_holSelectedId) { showToast('Save the package first.', 'error'); return; }
-            const dateVal = document.getElementById('hol-new-date').value;
-            const capVal = parseInt(document.getElementById('hol-new-capacity').value);
-            if (!dateVal) { showToast('Choose a date.', 'error'); return; }
-            if (isNaN(capVal) || capVal < 1) { showToast('Enter a valid capacity.', 'error'); return; }
-            const res = await post(`/holidays/admin/${_holSelectedId}/dates`, { date: dateVal, capacity: capVal });
-            if (!res?.ok) { showToast(res?.error || 'Failed to add date.', 'error'); return; }
-            showToast('Date added.');
-            document.getElementById('hol-new-date').value = '';
+            const rows = Array.from(document.querySelectorAll('#hol-date-add-rows .hol-date-add-row'));
+            const dates = [];
+            for (let i = 0; i < rows.length; i++) {
+                const r = rows[i];
+                const date = r.querySelector('.hol-new-start').value;
+                const endDate = r.querySelector('.hol-new-end').value;
+                const capacity = parseInt(r.querySelector('.hol-new-cap').value, 10);
+                if (!date && !endDate) continue;
+                const label = rows.length > 1 ? `Row ${i + 1}: ` : '';
+                if (!date) { showToast(label + 'choose a start date.', 'error'); return; }
+                if (endDate && endDate < date) { showToast(label + 'end date is before the start date.', 'error'); return; }
+                if (!Number.isInteger(capacity) || capacity < 1) { showToast(label + 'enter the number of spots.', 'error'); return; }
+                dates.push({ date, endDate: endDate || null, capacity });
+            }
+            if (!dates.length) { showToast('Add at least one date.', 'error'); return; }
+            const btn = document.getElementById('hol-date-save');
+            btn.disabled = true;
+            const res = await post(`/holidays/admin/${_holSelectedId}/dates`, { dates });
+            btn.disabled = false;
+            if (!res?.ok) { showToast(res?.error || 'Failed to add dates.', 'error'); return; }
+            showToast(dates.length === 1 ? 'Date added.' : dates.length + ' dates added.');
+            toggleHolDateAdd(false);
             await loadHolidaysAdmin();
         }
 
-        async function updateHolDateCapacity(dateId, val) {
-            const cap = parseInt(val);
-            if (isNaN(cap) || cap < 1) { showToast('Enter a valid capacity.', 'error'); return; }
-            const res = await patch(`/holidays/admin/dates/${dateId}`, { capacity: cap });
-            if (!res?.ok) { showToast(res?.error || 'Failed to update capacity.', 'error'); return; }
-            showToast('Capacity updated.');
+        async function updateHolDate(dateId, field, val) {
+            const body = {};
+            if (field === 'capacity') {
+                const cap = parseInt(val, 10);
+                if (!Number.isInteger(cap) || cap < 1) { showToast('Enter a valid number of spots.', 'error'); renderHolDates(); return; }
+                body.capacity = cap;
+            } else if (field === 'date') {
+                if (!val) { showToast('A start date is required.', 'error'); renderHolDates(); return; }
+                body.date = val;
+                const cur = (holSelected()?.dates || []).find(d => d.id === dateId);
+                if (cur && cur.endDate) {
+                    const len = holNights(cur.date, cur.endDate) || 0;
+                    body.endDate = holAddDays(val, len);
+                }
+            } else {
+                body.endDate = val || null;
+            }
+            const res = await patch(`/holidays/admin/dates/${dateId}`, body);
+            if (!res?.ok) { showToast(res?.error || 'Failed to update date.', 'error'); renderHolDates(); return; }
+            showToast('Date updated.');
             await loadHolidaysAdmin();
         }
 
@@ -1818,16 +1972,16 @@
             if (!_holBookingsAll.length) { table.innerHTML = '<div class="atbl-empty">No bookings found.</div>'; return; }
             const paged = _adminPaginate(_holBookingsAll, _holBookingsPage);
             table.innerHTML = `<table><thead><tr>
-                <th>Ref</th><th>Lead Traveller</th><th>Package</th><th>Date</th><th>Tier</th><th>Travellers</th><th>Amount</th><th>Status</th><th></th>
+                <th>Ref</th><th>Lead Traveller</th><th>Package</th><th>Trip dates</th><th>Room</th><th>Travellers</th><th>Amount</th><th>Status</th><th></th>
             </tr></thead><tbody>${paged.map(b => {
-                const dateStr = b.holidayDate?.date ? new Date(b.holidayDate.date).toLocaleDateString('en-NG', { dateStyle: 'medium' }) : '—';
+                const dateStr = b.holidayDate?.date ? holDateRange(b.holidayDate.date, b.holidayDate.endDate) : '—';
                 const pkgLabel = b.holiday ? `${escHtml(b.holiday.packageName)}<br><span class="fs-xs text-muted">${escHtml(b.holiday.state)}</span>` : '—';
                 return `<tr>
                     <td><span class="cell-mono">${escHtml(b.ref)}</span></td>
                     <td><strong>${escHtml(b.leadName)}</strong><br><span class="fs-xs text-muted">${escHtml(b.leadEmail)}</span>${b.leadPhone ? `<br><span class="fs-xs text-muted">${escHtml(b.leadPhone)}</span>` : ''}</td>
                     <td>${pkgLabel}</td>
                     <td class="cell-date">${dateStr}</td>
-                    <td>${escHtml(b.tier)}</td>
+                    <td>${escHtml(b.occupancy === 'SINGLE' ? 'Single' : b.occupancy === 'SHARING' ? 'Sharing' : 'Standard')}</td>
                     <td>${b.travellers}${(b.additionalTravellers && b.additionalTravellers.length) ? ` <button class="btn-manage adm-render-hol-bookings-page-box" onclick="showHolTravellerManifest('${b.id}')">View</button>` : ''}</td>
                     <td><strong>₦${(b.totalAmount || 0).toLocaleString()}</strong>${b.membershipAdded ? '<br><span class="fs-xs text-muted">+Club membership</span>' : ''}</td>
                     <td><span class="status-pill ${HOL_BOOKING_STATUS_CLASSES[b.status] || 'status-received'}">${HOL_BOOKING_STATUS_LABELS[b.status] || b.status}</span></td>
