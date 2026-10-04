@@ -383,7 +383,27 @@
                 inclusions: asList(p.inclusions),
                 img: images[0] || null,
                 hasAvailability: !!p.hasAvailability,
+                nextTime: packageNextTime(p),
             };
+        }
+
+        function packageNextTime(p) {
+            if (!p.hasAvailability) return Infinity;
+            var d = p.nextDate || (p.dates && p.dates[0] && p.dates[0].date);
+            var t = d ? new Date(d).getTime() : NaN;
+            return isNaN(t) ? Infinity : t;
+        }
+
+        function bySoonest(getTime) {
+            return function (a, b) {
+                var ta = getTime(a.v), tb = getTime(b.v);
+                if (ta !== tb) return ta < tb ? -1 : 1;
+                return a.i - b.i;
+            };
+        }
+
+        function sortSoonest(list, getTime) {
+            return list.map(function (v, i) { return { v: v, i: i }; }).sort(bySoonest(getTime)).map(function (x) { return x.v; });
         }
 
         async function loadCollections() {
@@ -406,6 +426,12 @@
             regions.forEach(function (r) {
                 (r.packages || []).forEach(function (p) { DESTINATIONS.push(mapPackage(p)); });
             });
+            DESTINATIONS = sortSoonest(DESTINATIONS, function (d) { return d.nextTime; });
+            var regionNext = {};
+            DESTINATIONS.forEach(function (d) {
+                if (regionNext[d.region] === undefined || d.nextTime < regionNext[d.region]) regionNext[d.region] = d.nextTime;
+            });
+            REGIONS = sortSoonest(REGIONS, function (r) { return regionNext[r.key] === undefined ? Infinity : regionNext[r.key]; });
         }
 
         // ── Render collections grids ────────────────────────────────────────
