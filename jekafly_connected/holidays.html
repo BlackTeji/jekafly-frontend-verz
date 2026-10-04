@@ -29,6 +29,7 @@
     <link rel="stylesheet" href="assets/css/utilities.css" />
     <link rel="stylesheet" href="mobile.css" media="(max-width: 1024px)" />
     <link rel="stylesheet" href="assets/css/holidays.css" />
+    <link rel="stylesheet" href="assets/css/holidays-booking.css" />
 </head>
 
 <body class="jkfh-body">
@@ -384,7 +385,40 @@
                 img: images[0] || null,
                 hasAvailability: !!p.hasAvailability,
                 nextTime: packageNextTime(p),
+                openDates: (p.dates || []).map(function (x) { return { date: x.date, endDate: x.endDate || null }; }),
+                openCount: typeof p.openDateCount === 'number' ? p.openDateCount : (p.dates || []).length,
+                upcomingCount: typeof p.upcomingDateCount === 'number' ? p.upcomingDateCount : (p.dates || []).length,
             };
+        }
+
+        function shortDay(d, opts) {
+            return new Date(d).toLocaleDateString('en-GB', Object.assign({ timeZone: 'UTC' }, opts));
+        }
+
+        function shortRange(start, end) {
+            var s = new Date(start), thisYear = new Date().getUTCFullYear();
+            var yr = s.getUTCFullYear() !== thisYear ? ' ' + s.getUTCFullYear() : '';
+            if (!end || new Date(end).toISOString().slice(0, 10) === s.toISOString().slice(0, 10)) return shortDay(start, { day: 'numeric', month: 'short' }) + yr;
+            var e = new Date(end);
+            if (s.getUTCMonth() === e.getUTCMonth() && s.getUTCFullYear() === e.getUTCFullYear()) {
+                return s.getUTCDate() + '–' + shortDay(end, { day: 'numeric', month: 'short' }) + yr;
+            }
+            var eyr = e.getUTCFullYear() !== thisYear ? ' ' + e.getUTCFullYear() : '';
+            return shortDay(start, { day: 'numeric', month: 'short' }) + (e.getUTCFullYear() !== s.getUTCFullYear() ? yr : '') + ' – ' + shortDay(end, { day: 'numeric', month: 'short' }) + (eyr || yr);
+        }
+
+        function cardDatesHTML(d) {
+            var icon = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+            if (!d.hasAvailability) {
+                return '<div class="jkfh-card-dates jkfh-card-dates--none">' + icon +
+                    (d.upcomingCount > 0 ? 'Fully booked — new dates soon' : 'Dates coming soon') + '</div>';
+            }
+            var chips = d.openDates.map(function (x, i) {
+                return '<span class="jkfh-date-chip' + (i === 0 ? ' jkfh-date-chip--next' : '') + '">' + escH(shortRange(x.date, x.endDate)) + '</span>';
+            }).join('');
+            var more = d.openCount > d.openDates.length ? '<span class="jkfh-date-more">+' + (d.openCount - d.openDates.length) + ' more</span>' : '';
+            return '<div class="jkfh-card-dates"><div class="jkfh-card-dates-label">' + icon + (d.openCount === 1 ? 'Open date' : 'Open dates') + '</div>' +
+                '<div class="jkfh-card-dates-list">' + chips + more + '</div></div>';
         }
 
         function packageNextTime(p) {
@@ -432,6 +466,7 @@
                 if (regionNext[d.region] === undefined || d.nextTime < regionNext[d.region]) regionNext[d.region] = d.nextTime;
             });
             REGIONS = sortSoonest(REGIONS, function (r) { return regionNext[r.key] === undefined ? Infinity : regionNext[r.key]; });
+            REGIONS.forEach(function (r) { r.nextTime = regionNext[r.key] === undefined ? Infinity : regionNext[r.key]; });
         }
 
         // ── Render collections grids ────────────────────────────────────────
@@ -448,6 +483,9 @@
                 '<div class="jkfh-coll-body">' +
                 '<div class="jkfh-coll-name">' + escH(r.name) + '</div>' +
                 '<div class="jkfh-coll-tag">' + escH(r.tagline) + '</div>' +
+                (isFinite(r.nextTime)
+                    ? '<div class="jkfh-coll-next"><span class="jkfh-coll-next-dot"></span>Next trip ' + escH(shortDay(r.nextTime, { day: 'numeric', month: 'short' })) + '</div>'
+                    : '<div class="jkfh-coll-next jkfh-coll-next--none">Dates coming soon</div>') +
                 '<div class="jkfh-coll-link">Explore Collection ' +
                 '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>' +
                 '</div>' +
@@ -503,10 +541,9 @@
                 (d.tagline ? '<div class="jkfh-card-tag">"' + escH(d.tagline) + '"</div>' : '') +
                 '<div class="jkfh-card-meta">' +
                 '<span class="jkfh-card-pill"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>' + escH(d.duration) + '</span>' +
-                (isSoldOut
-                    ? '<span class="jkfh-card-pill jkfh-card-pill--muted">No Open Dates</span>'
-                    : '<span class="jkfh-card-pill jkfh-card-pill--gold">' + priceLabel(d) + '</span>') +
+                '<span class="jkfh-card-pill jkfh-card-pill--gold">' + priceLabel(d) + '</span>' +
                 '</div>' +
+                cardDatesHTML(d) +
                 '<button class="jkfh-card-toggle" onclick="toggleCardDetails(' + idx + ')">' +
                 '<span id="toggle-label-' + idx + '">Show details</span>' +
                 '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>' +
@@ -641,7 +678,6 @@
         // ══════════════════════════════════════════════════════════════════════
         var _bm = {
             step: 1,
-            totalSteps: 7,
             pkg: null,
             state: '', packageName: '', category: 'LOCAL', days: 0, nights: 0, img: '',
             holidayId: null,
@@ -723,18 +759,35 @@
             if (e.target === this) closeBookingModal();
         });
 
+        function visibleSteps() {
+            var steps = [1, 2];
+            if (_bm.category === 'INTERNATIONAL') steps.push(3);
+            steps.push(4, 5);
+            if (!_bm.user) steps.push(6);
+            return steps;
+        }
+
+        function stepLabel(n) {
+            var steps = visibleSteps();
+            var i = steps.indexOf(n);
+            return 'Step ' + (i < 0 ? steps.length : i + 1) + ' of ' + steps.length;
+        }
+
         function renderDots() {
             var dots = document.getElementById('hbm-step-dots');
-            dots.innerHTML = Array.from({ length: _bm.totalSteps }, (_, i) => {
-                var cls = i + 1 < _bm.step ? 'done' : i + 1 === _bm.step ? 'active' : '';
+            var steps = visibleSteps();
+            var pos = steps.indexOf(_bm.step);
+            if (_bm.step > steps[steps.length - 1]) pos = steps.length;
+            dots.innerHTML = steps.map(function (_, i) {
+                var cls = i < pos ? 'done' : i === pos ? 'active' : '';
                 return `<div class="hbm-step-dot ${cls}"></div>`;
             }).join('');
         }
 
         function renderStep() {
-            renderDots();
-            var fns = [null, renderStep1, renderStep2, renderStep3, renderStep4, renderStep5, renderStep6, renderStep7];
+            var fns = [null, renderStep1, renderStep2, renderStep3, renderStep4, renderStep5, renderAccountStep, renderStep7];
             fns[_bm.step]();
+            renderDots();
         }
 
         function goStep(n) { _bm.step = n; renderStep(); document.getElementById('hbm-modal').scrollTop = 0; }
@@ -749,7 +802,7 @@
                 ? `From ${naira(d.startingPrice)}/person`
                 : `${naira(_bm.unitPrice)}/person`;
             document.getElementById('hbm-content').innerHTML = `
-            <div class="hbm-step-label">Step 1 of 7 — Confirm Destination</div>
+            <div class="hbm-step-label">${stepLabel(1)} — Confirm Destination</div>
             <h2 class="hbm-title">You're booking</h2>
             <p class="hbm-sub">Review your destination before we get started.</p>
             <div class="hbm-confirm-card">
@@ -767,77 +820,6 @@
             <button class="hbm-btn" onclick="goStep(2)">
                 Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>`;
-        }
-
-        // ── STEP 2 — Auth ─────────────────────────────────────────────────────
-        function renderStep2() {
-            if (_bm.user) { goStep(3); return; }
-            document.getElementById('hbm-content').innerHTML = `
-            <button class="hbm-btn-back" onclick="goStep(1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
-            <div class="hbm-step-label">Step 2 of 7 — Sign In or Register</div>
-            <h2 class="hbm-title">Create an account or log in</h2>
-            <p class="hbm-sub">We need an account to confirm your booking and send your receipt.</p>
-            <div class="hbm-auth-tabs">
-                <button class="hbm-auth-tab active" id="hbm-tab-login" onclick="hbmSwitchAuth('login')">Login</button>
-                <button class="hbm-auth-tab" id="hbm-tab-register" onclick="hbmSwitchAuth('register')">Register</button>
-            </div>
-            <div id="hbm-auth-login">
-                <div class="hbm-form-group"><label class="hbm-label">Email</label><input class="hbm-input" id="hbm-login-email" type="email" placeholder="you@example.com" /></div>
-                <div class="hbm-form-group"><label class="hbm-label">Password</label><input class="hbm-input" id="hbm-login-pass" type="password" placeholder="••••••••" /></div>
-                <div id="hbm-login-err" class="hbm-inline-error"></div>
-                <button class="hbm-btn" onclick="hbmLogin()">Login &amp; Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-            </div>
-            <div id="hbm-auth-register" style="display:none">
-                <div class="hbm-form-group"><label class="hbm-label">Full Name</label><input class="hbm-input" id="hbm-reg-name" type="text" placeholder="Your full name" /></div>
-                <div class="hbm-form-group"><label class="hbm-label">Email</label><input class="hbm-input" id="hbm-reg-email" type="email" placeholder="you@example.com" /></div>
-                <div class="hbm-form-group"><label class="hbm-label">Phone</label><input class="hbm-input" id="hbm-reg-phone" type="tel" placeholder="+234 xxx xxx xxxx" /></div>
-                <div class="hbm-form-group"><label class="hbm-label">Password</label><input class="hbm-input" id="hbm-reg-pass" type="password" placeholder="Min. 8 characters" /></div>
-                <div id="hbm-reg-err" class="hbm-inline-error"></div>
-                <button class="hbm-btn" onclick="hbmRegister()">Create Account &amp; Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
-            </div>`;
-        }
-
-        function hbmSwitchAuth(tab) {
-            document.getElementById('hbm-auth-login').style.display = tab === 'login' ? 'block' : 'none';
-            document.getElementById('hbm-auth-register').style.display = tab === 'register' ? 'block' : 'none';
-            document.getElementById('hbm-tab-login').classList.toggle('active', tab === 'login');
-            document.getElementById('hbm-tab-register').classList.toggle('active', tab === 'register');
-        }
-
-        async function hbmLogin() {
-            var email = document.getElementById('hbm-login-email').value.trim();
-            var pass = document.getElementById('hbm-login-pass').value;
-            var err = document.getElementById('hbm-login-err');
-            err.style.display = 'none';
-            if (!email || !pass) { err.textContent = 'Please fill in all fields.'; err.style.display = 'block'; return; }
-            try {
-                var res = await Auth.login(email, pass);
-                if (!res.ok) throw new Error(res.error || 'Login failed');
-                _bm.user = Auth.getCurrent();
-                _bm.leadName = _bm.user.name || '';
-                _bm.leadEmail = _bm.user.email || '';
-                _bm.leadPhone = _bm.user.phone || '';
-                await refreshClubStatus();
-                goStep(3);
-            } catch (e) { err.textContent = e.message; err.style.display = 'block'; }
-        }
-
-        async function hbmRegister() {
-            var name = document.getElementById('hbm-reg-name').value.trim();
-            var email = document.getElementById('hbm-reg-email').value.trim();
-            var phone = document.getElementById('hbm-reg-phone').value.trim();
-            var pass = document.getElementById('hbm-reg-pass').value;
-            var err = document.getElementById('hbm-reg-err');
-            err.style.display = 'none';
-            if (!name || !email || !pass) { err.textContent = 'Please fill in all required fields.'; err.style.display = 'block'; return; }
-            try {
-                var res = await Auth.register(name, email, pass, phone);
-                if (!res.ok) throw new Error(res.error || 'Registration failed');
-                _bm.user = Auth.getCurrent();
-                _bm.leadName = name; _bm.leadEmail = email; _bm.leadPhone = phone;
-                _bm.clubActive = false;
-                goStep(3);
-            } catch (e) { err.textContent = e.message; err.style.display = 'block'; }
         }
 
         // ── Additional traveller fields (renders when travellers count > 1) ────
@@ -858,18 +840,18 @@
             var rows = '';
             for (var i = 0; i < extraCount; i++) {
                 var t = existing[i] || { name: '', phone: '' };
-                rows += `<div class="hbm-row" style="margin-bottom:10px;">
-                    <div class="hbm-form-group" style="margin-bottom:0;">
+                rows += `<div class="hbm-row hbm-row--traveller">
+                    <div class="hbm-form-group hbm-form-group--flush">
                         <label class="hbm-label">Traveller ${i + 2} — Full Name</label>
                         <input class="hbm-input hbm-add-traveller-name" data-idx="${i}" type="text" placeholder="Full name" value="${escH(t.name)}" />
                     </div>
-                    <div class="hbm-form-group" style="margin-bottom:0;">
-                        <label class="hbm-label">Phone <span style="font-weight:400;color:#9AABCC;">(optional)</span></label>
+                    <div class="hbm-form-group hbm-form-group--flush">
+                        <label class="hbm-label">Phone <span class="hbm-optional">(optional)</span></label>
                         <input class="hbm-input hbm-add-traveller-phone" data-idx="${i}" type="tel" placeholder="+234..." value="${escH(t.phone || '')}" />
                     </div>
                 </div>`;
             }
-            wrap.innerHTML = `<div style="font-size:0.82rem;font-weight:600;color:#0D1560;margin:14px 0 8px;">Additional Travellers</div>` + rows;
+            wrap.innerHTML = `<div class="hbm-subhead">Additional Travellers</div>` + rows;
         }
 
         function collectAdditionalTravellers() {
@@ -883,12 +865,12 @@
             return list;
         }
 
-        // ── STEP 3 — Travel details ───────────────────────────────────────────
-        async function renderStep3() {
-            var availHtml = '<div style="color:#9AABCC;font-size:0.82rem;">Loading available dates…</div>';
+        // ── STEP 2 — Travel details ───────────────────────────────────────────
+        async function renderStep2() {
+            var availHtml = '<div class="hbm-muted">Loading available dates…</div>';
             document.getElementById('hbm-content').innerHTML = `
             <button class="hbm-btn-back" onclick="goStep(1)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
-            <div class="hbm-step-label">Step 3 of 7 — Travel Details</div>
+            <div class="hbm-step-label">${stepLabel(2)} — Travel Details</div>
             <h2 class="hbm-title">When are you travelling?</h2>
             <p class="hbm-sub">Pick your trip dates and enter your details. We've pre-filled what we know.</p>
             <div class="hbm-form-group">
@@ -933,9 +915,9 @@
                 if (!grid) return;
                 var openDates = dates.filter(d => !d.isFull);
                 if (!dates.length || !openDates.length) {
-                    grid.innerHTML = '<div style="text-align:center;padding:20px;color:#7480A0;font-size:0.85rem;line-height:1.6;">' +
+                    grid.innerHTML = '<div class="hbm-empty-dates">' +
                         'No open dates for this experience right now. Please check back soon, or explore another destination.' +
-                        '<div style="margin-top:14px;"><button class="hbm-btn" onclick="closeBookingModal()">Browse Other Experiences</button></div>' +
+                        '<div class="hbm-empty-dates-cta"><button class="hbm-btn" onclick="closeBookingModal()">Browse Other Experiences</button></div>' +
                         '</div>';
                     _bm.dateId = null;
                     _bm.dateStr = '';
@@ -955,7 +937,7 @@
                 }).join('');
             } catch (e) {
                 var g = document.getElementById('hbm-date-grid');
-                if (g) g.innerHTML = '<div style="color:#E31E24;font-size:0.82rem;">Could not load dates. Please try again.</div>';
+                if (g) g.innerHTML = '<div class="hbm-load-error">Could not load dates. Please try again.</div>';
             }
         }
 
@@ -1008,16 +990,16 @@
                 err.style.display = 'block';
                 return;
             }
-            goStep(4);
+            goStep(3);
         }
 
-        // ── STEP 4 — Room option (international trips only) ──────────────────
-        function renderStep4() {
+        // ── STEP 3 — Room option (international trips only) ──────────────────
+        function renderStep3() {
             var d = _bm.pkg || {};
             if (_bm.category !== 'INTERNATIONAL') {
                 _bm.occupancy = null;
                 _bm.unitPrice = d.price || 0;
-                goStep(5);
+                goStep(4);
                 return;
             }
             var options = [
@@ -1029,8 +1011,8 @@
                 _bm.unitPrice = options[0].price;
             }
             document.getElementById('hbm-content').innerHTML = `
-            <button class="hbm-btn-back" onclick="goStep(3)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
-            <div class="hbm-step-label">Step 4 of 7 — Room Option</div>
+            <button class="hbm-btn-back" onclick="goStep(2)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+            <div class="hbm-step-label">${stepLabel(3)} — Room Option</div>
             <h2 class="hbm-title">Choose your room</h2>
             <p class="hbm-sub">All options include the trip's standard inclusions.</p>
             <div class="hbm-tier-cards">
@@ -1065,29 +1047,29 @@
                 err.style.display = 'block';
                 return;
             }
-            goStep(5);
+            goStep(4);
         }
 
-        function stepBeforeClub() { return _bm.category === 'INTERNATIONAL' ? 4 : 3; }
+        function stepBeforeClub() { return _bm.category === 'INTERNATIONAL' ? 3 : 2; }
 
-        // ── STEP 5 — Travel Club upsell ───────────────────────────────────────
-        function renderStep5() {
+        // ── STEP 4 — Travel Club upsell ───────────────────────────────────────
+        function renderStep4() {
             if (_bm.clubActive) {
                 document.getElementById('hbm-content').innerHTML = `
                 <button class="hbm-btn-back" onclick="goStep(stepBeforeClub())"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
-                <div class="hbm-step-label">Step 5 of 7 — Travel Club</div>
+                <div class="hbm-step-label">${stepLabel(4)} — Travel Club</div>
                 <h2 class="hbm-title">You're a Travel Club member</h2>
                 <p class="hbm-sub">Your membership perks are automatically applied to this booking.</p>
                 <div class="hbm-already-member">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="m9 11 3 3L22 4"/></svg>
                     Active Jekafly Travel Club member — perks included
                 </div>
-                <button class="hbm-btn" onclick="goStep(6)">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+                <button class="hbm-btn" onclick="goStep(5)">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
                 return;
             }
             document.getElementById('hbm-content').innerHTML = `
             <button class="hbm-btn-back" onclick="goStep(stepBeforeClub())"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
-            <div class="hbm-step-label">Step 5 of 7 — Jekafly Travel Club</div>
+            <div class="hbm-step-label">${stepLabel(4)} — Jekafly Travel Club</div>
             <h2 class="hbm-title">Unlock exclusive perks</h2>
             <p class="hbm-sub">Add annual Travel Club membership and unlock benefits beyond this trip.</p>
             <div class="hbm-club-card">
@@ -1112,23 +1094,23 @@
                     </label>
                 </div>
             </div>
-            <button class="hbm-btn" onclick="goStep(6)">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+            <button class="hbm-btn" onclick="goStep(5)">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
         }
 
-        // ── STEP 6 — Order summary ────────────────────────────────────────────
+        // ── STEP 5 — Order summary ────────────────────────────────────────────
         function bookingTotals() {
             var packageTotal = _bm.unitPrice * _bm.travellers;
             var clubTotal = (!_bm.clubActive && _bm.addClub) ? _bm.clubFee : 0;
             return { packageTotal: packageTotal, clubTotal: clubTotal, grandTotal: packageTotal + clubTotal };
         }
 
-        function renderStep6() {
+        function renderStep5() {
             var t = bookingTotals();
             document.getElementById('hbm-content').innerHTML = `
-            <button class="hbm-btn-back" onclick="goStep(5)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
-            <div class="hbm-step-label">Step 6 of 7 — Order Summary</div>
+            <button class="hbm-btn-back" onclick="goStep(4)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+            <div class="hbm-step-label">${stepLabel(5)} — Order Summary</div>
             <h2 class="hbm-title">Review your booking</h2>
-            <p class="hbm-sub">Everything looks good? Proceed to payment.</p>
+            <p class="hbm-sub">${_bm.user ? 'Everything looks good? Proceed to payment.' : 'Check the details, then add a password to save your booking and pay.'}</p>
             <div class="hbm-summary-rows">
                 <div class="hbm-summary-row"><span>${escH(_bm.packageName)}</span><span>${_bm.days}D / ${_bm.nights}N</span></div>
                 <div class="hbm-summary-row"><span>Destination</span><span>${escH(_bm.state)}</span></div>
@@ -1141,15 +1123,183 @@
                 <div class="hbm-summary-row total"><span>Total</span><span>${naira(t.grandTotal)}</span></div>
             </div>
             <div id="hbm-step6-err" class="hbm-inline-error"></div>
-            <button class="hbm-btn" id="hbm-pay-btn" onclick="hbmProceedToPayment()">
-                Pay ${naira(t.grandTotal)} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            <button class="hbm-btn" id="hbm-pay-btn" onclick="hbmReviewNext()">
+                ${_bm.user ? 'Pay ' + naira(t.grandTotal) : 'Continue to payment'} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>`;
         }
 
-        async function hbmProceedToPayment() {
+        // ── STEP 6 — Account (only when not logged in, right before payment) ──
+        function renderAccountStep() {
+            if (_bm.user) { goStep(5); return; }
+            var t = bookingTotals();
+            var arrow = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+            document.getElementById('hbm-content').innerHTML = `
+            <button class="hbm-btn-back" onclick="goStep(5)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> Back</button>
+            <div class="hbm-step-label">${stepLabel(6)} — Your Account</div>
+            <h2 class="hbm-title">Almost done</h2>
+            <p class="hbm-sub">Save this booking to a free Jekafly account so we can confirm it, send your receipt and keep your trip in your dashboard.</p>
+            <div class="hbm-auth-tabs">
+                <button class="hbm-auth-tab active" id="hbm-tab-register" onclick="hbmSwitchAuth('register')">New to Jekafly</button>
+                <button class="hbm-auth-tab" id="hbm-tab-login" onclick="hbmSwitchAuth('login')">I have an account</button>
+            </div>
+            <div id="hbm-auth-register">
+                <div class="hbm-booking-for">
+                    <div class="hbm-booking-for-info">
+                        <span class="hbm-booking-for-label">Account details</span>
+                        <strong>${escH(_bm.leadName)}</strong>
+                        <span>${escH(_bm.leadEmail)}${_bm.leadPhone ? ' · ' + escH(_bm.leadPhone) : ''}</span>
+                    </div>
+                    <button class="hbm-link-btn" onclick="goStep(2)">Edit</button>
+                </div>
+                <div class="hbm-form-group"><label class="hbm-label" for="hbm-reg-pass">Choose a password</label><div class="hbm-pass-wrap"><input class="hbm-input" id="hbm-reg-pass" type="password" placeholder="At least 8 characters" autocomplete="new-password" oninput="hbmPassStrength()" /><button type="button" class="hbm-pass-eye" onclick="hbmTogglePass(\'hbm-reg-pass\', this)" aria-label="Show password" tabindex="-1"><svg class="hbm-eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="hbm-eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg></button></div><div class="hbm-strength" id="hbm-strength"><div class="hbm-strength-bars"><span></span><span></span><span></span><span></span></div><span class="hbm-strength-label" id="hbm-strength-label">Use 8+ characters with letters and numbers</span></div></div>
+                <div class="hbm-form-group"><label class="hbm-label" for="hbm-reg-pass2">Confirm password</label><div class="hbm-pass-wrap"><input class="hbm-input" id="hbm-reg-pass2" type="password" placeholder="Re-enter your password" autocomplete="new-password" oninput="hbmPassMatch()" /><button type="button" class="hbm-pass-eye" onclick="hbmTogglePass(\'hbm-reg-pass2\', this)" aria-label="Show password" tabindex="-1"><svg class="hbm-eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="hbm-eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg></button></div><div class="hbm-match" id="hbm-match"></div></div>
+                <div id="hbm-reg-err" class="hbm-inline-error"></div>
+                <button class="hbm-btn" id="hbm-reg-btn" onclick="hbmRegisterAndPay()">Create account &amp; pay ${naira(t.grandTotal)} ${arrow}</button>
+                <p class="hbm-fineprint">By creating an account, you agree to Jekafly's <a href="/terms" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+            </div>
+            <div id="hbm-auth-login" class="jkfh-is-hidden">
+                <div id="hbm-login-note" class="hbm-login-note jkfh-is-hidden"></div>
+                <div class="hbm-form-group"><label class="hbm-label">Email</label><input class="hbm-input" id="hbm-login-email" type="email" placeholder="you@example.com" value="${escH(_bm.leadEmail)}" autocomplete="email" /></div>
+                <div class="hbm-form-group"><label class="hbm-label" for="hbm-login-pass">Password</label><div class="hbm-pass-wrap"><input class="hbm-input" id="hbm-login-pass" type="password" placeholder="••••••••" autocomplete="current-password" /><button type="button" class="hbm-pass-eye" onclick="hbmTogglePass(\'hbm-login-pass\', this)" aria-label="Show password" tabindex="-1"><svg class="hbm-eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="hbm-eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg></button></div></div>
+                <div id="hbm-login-err" class="hbm-inline-error"></div>
+                <button class="hbm-btn" id="hbm-login-btn" onclick="hbmLoginAndPay()">Log in &amp; pay ${naira(t.grandTotal)} ${arrow}</button>
+                <p class="hbm-fineprint"><a href="/login?return=%2Fholidays">Forgot your password?</a></p>
+            </div>`;
+            setTimeout(function () { document.getElementById('hbm-reg-pass')?.focus(); }, 50);
+        }
+
+        function hbmSwitchAuth(tab) {
+            document.getElementById('hbm-auth-login').classList.toggle('jkfh-is-hidden', tab !== 'login');
+            document.getElementById('hbm-auth-register').classList.toggle('jkfh-is-hidden', tab !== 'register');
+            document.getElementById('hbm-tab-login').classList.toggle('active', tab === 'login');
+            document.getElementById('hbm-tab-register').classList.toggle('active', tab === 'register');
+        }
+
+        function hbmTogglePass(id, btn) {
+            var input = document.getElementById(id);
+            if (!input) return;
+            var show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            btn.classList.toggle('is-visible', show);
+            btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+        }
+
+        function hbmPassScore(pw) {
+            var score = 0;
+            if (pw.length >= 8) score++;
+            if (pw.length >= 12) score++;
+            if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
+            if (/\d/.test(pw)) score++;
+            if (/[^A-Za-z0-9]/.test(pw)) score++;
+            return score;
+        }
+
+        function hbmPassProblem(pw) {
+            if (pw.length < 8) return 'Your password needs at least 8 characters.';
+            if (!/[A-Za-z]/.test(pw) || !/\d/.test(pw)) return 'Your password needs at least one letter and one number.';
+            return '';
+        }
+
+        function hbmPassStrength() {
+            var pw = document.getElementById('hbm-reg-pass').value;
+            var box = document.getElementById('hbm-strength');
+            hbmShowErr('hbm-reg-err', '');
+            var label = document.getElementById('hbm-strength-label');
+            var levels = ['', 'weak', 'fair', 'good', 'strong'];
+            var names = { weak: 'Weak', fair: 'Fair', good: 'Good', strong: 'Strong' };
+            var level = 0;
+            if (pw) {
+                var sc = hbmPassScore(pw);
+                level = hbmPassProblem(pw) ? 1 : sc <= 2 ? 2 : sc === 3 ? 3 : 4;
+            }
+            box.className = 'hbm-strength' + (level ? ' hbm-strength--' + levels[level] : '');
+            label.textContent = !pw ? 'Use 8+ characters with letters and numbers'
+                : level === 1 ? 'Weak — ' + hbmPassProblem(pw).replace('Your password needs ', 'add ').replace(/\.$/, '')
+                : names[levels[level]] + (level === 2 ? ' — longer, or add symbols or capitals' : '');
+            if (document.getElementById('hbm-reg-pass2').value) hbmPassMatch();
+        }
+
+        function hbmPassMatch() {
+            var a = document.getElementById('hbm-reg-pass').value;
+            var b = document.getElementById('hbm-reg-pass2').value;
+            var el = document.getElementById('hbm-match');
+            if (!b) { el.className = 'hbm-match'; el.textContent = ''; return false; }
+            var ok = a === b;
+            el.className = 'hbm-match ' + (ok ? 'hbm-match--ok' : 'hbm-match--bad');
+            if (ok && !hbmPassProblem(a)) hbmShowErr('hbm-reg-err', '');
+            el.textContent = ok ? '✓ Passwords match' : 'Passwords don’t match yet';
+            return ok;
+        }
+
+        function hbmShowErr(id, msg) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.textContent = msg;
+            el.style.display = msg ? 'block' : 'none';
+        }
+
+        async function hbmRegisterAndPay() {
             if (_bm.submitting) return;
-            var err = document.getElementById('hbm-step6-err');
-            var btn = document.getElementById('hbm-pay-btn');
+            var pass = document.getElementById('hbm-reg-pass').value;
+            var pass2 = document.getElementById('hbm-reg-pass2').value;
+            hbmShowErr('hbm-reg-err', '');
+            var problem = hbmPassProblem(pass || '');
+            if (problem) { hbmShowErr('hbm-reg-err', problem); document.getElementById('hbm-reg-pass').focus(); return; }
+            if (pass !== pass2) { hbmShowErr('hbm-reg-err', pass2 ? 'The two passwords don’t match.' : 'Please confirm your password.'); hbmPassMatch(); document.getElementById('hbm-reg-pass2').focus(); return; }
+            var btn = document.getElementById('hbm-reg-btn');
+            btn.classList.add('btn-loading');
+            var res = await Auth.register(_bm.leadName, _bm.leadEmail, _bm.leadPhone, pass);
+            btn.classList.remove('btn-loading');
+            if (!res.ok) {
+                if (/already/i.test(res.msg || '')) {
+                    hbmSwitchAuth('login');
+                    var note = document.getElementById('hbm-login-note');
+                    note.textContent = 'You already have an account with ' + _bm.leadEmail + '. Log in to finish your booking.';
+                    note.classList.remove('jkfh-is-hidden');
+                    document.getElementById('hbm-login-pass').focus();
+                    return;
+                }
+                hbmShowErr('hbm-reg-err', res.msg || 'We could not create your account. Please try again.');
+                return;
+            }
+            _bm.user = Auth.getCurrent();
+            _bm.clubActive = false;
+            await hbmProceedToPayment('hbm-reg-err', 'hbm-reg-btn');
+        }
+
+        async function hbmLoginAndPay() {
+            if (_bm.submitting) return;
+            var email = document.getElementById('hbm-login-email').value.trim();
+            var pass = document.getElementById('hbm-login-pass').value;
+            hbmShowErr('hbm-login-err', '');
+            if (!email || !pass) { hbmShowErr('hbm-login-err', 'Please enter your email and password.'); return; }
+            var btn = document.getElementById('hbm-login-btn');
+            btn.classList.add('btn-loading');
+            var res = await Auth.login(email, pass);
+            if (!res.ok) {
+                btn.classList.remove('btn-loading');
+                hbmShowErr('hbm-login-err', res.msg || 'Login failed. Please check your details.');
+                return;
+            }
+            _bm.user = Auth.getCurrent();
+            await refreshClubStatus();
+            if (_bm.clubActive && _bm.addClub) {
+                _bm.addClub = false;
+                if (typeof showToast === 'function') showToast("You're already a Travel Club member, so we've removed the membership from your total.");
+            }
+            btn.classList.remove('btn-loading');
+            await hbmProceedToPayment('hbm-login-err', 'hbm-login-btn');
+        }
+
+        function hbmReviewNext() {
+            if (!_bm.user) { goStep(6); return; }
+            hbmProceedToPayment('hbm-step6-err', 'hbm-pay-btn');
+        }
+
+        async function hbmProceedToPayment(errId, btnId) {
+            if (_bm.submitting) return;
+            var err = document.getElementById(errId || 'hbm-step6-err');
+            var btn = document.getElementById(btnId || 'hbm-pay-btn');
             err.style.display = 'none';
             if (!_bm.holidayId || !_bm.dateId) {
                 err.textContent = 'Please go back and choose a travel date.';
@@ -1179,7 +1329,13 @@
                 });
                 var bd = await br.json();
                 if (bd?.ok) booking = bd.data?.booking || null;
-                else if (br.status === 401) failMsg = 'Your session has expired. Please log in again to continue.';
+                else if (br.status === 401) {
+                    _bm.submitting = false;
+                    _bm.user = null;
+                    if (typeof showToast === 'function') showToast('Please log in again to finish your booking.', 'error');
+                    goStep(6);
+                    return;
+                }
                 else if (bd?.error) failMsg = bd.error;
             } catch (e) { }
 
@@ -1218,7 +1374,7 @@
                 </div>
                 <h2 class="hbm-title">Booking Confirmed!</h2>
                 <p class="hbm-sub">Your holiday experience has been booked. Check your email for your confirmation and details.</p>
-                <div class="hbm-summary-rows" style="text-align:left">
+                <div class="hbm-summary-rows hbm-summary-rows--left">
                     <div class="hbm-summary-row"><span>Package</span><span>${escH(_bm.packageName)}</span></div>
                     <div class="hbm-summary-row"><span>Trip dates</span><span>${escH(_bm.dateStr)}</span></div>
                     ${_bm.occupancy ? `<div class="hbm-summary-row"><span>Room</span><span>${OCCUPANCY_LABELS[_bm.occupancy]}</span></div>` : ''}

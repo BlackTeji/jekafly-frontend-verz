@@ -2128,3 +2128,165 @@
     font-weight: 600;
     color: #0D1560;
 }
+
+/* ── Open dates on cards ── */
+.jkfh-card-dates {
+    margin: -4px 0 16px;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--jkfh-line-soft);
+    border-radius: 12px;
+}
+
+.jkfh-card-dates-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--jkfh-text-dim);
+    margin-bottom: 8px;
+}
+
+.jkfh-card-dates-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.jkfh-date-chip {
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--jkfh-text);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--jkfh-line);
+    white-space: nowrap;
+}
+
+.jkfh-date-chip--next {
+    color: #0C1008;
+    background: var(--jkfh-gold-light);
+    border-color: var(--jkfh-gold-light);
+}
+
+.jkfh-date-more {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--jkfh-gold-light);
+}
+
+.jkfh-card-dates--none {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: var(--jkfh-text-dim);
+}
+
+.jkfh-coll-next {
+    display: flex;
+    width: max-content;
+    max-width: 100%;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--jkfh-cream);
+    margin: -6px 0 14px;
+}
+
+.jkfh-coll-next-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #4ADE80;
+    box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.18);
+}
+
+.jkfh-coll-next--none {
+    font-weight: 600;
+    color: var(--jkfh-text-faint);
+}
+
+/* ── Booking modal: account step ── */
+.hbm-booking-for {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: #F5F7FF;
+    border: 1.5px solid #E3E8FA;
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+}
+
+.hbm-booking-for-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-size: 0.8rem;
+    color: #4A5580;
+}
+
+.hbm-booking-for-info strong {
+    font-size: 0.92rem;
+    color: #0D1560;
+}
+
+.hbm-booking-for-info span:last-child {
+    overflow-wrap: anywhere;
+}
+
+.hbm-booking-for-label {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #9AABCC;
+    margin-bottom: 2px;
+}
+
+.hbm-link-btn {
+    flex: 0 0 auto;
+    background: none;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #1C2FBF;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hbm-fineprint {
+    font-size: 0.72rem;
+    line-height: 1.55;
+    color: #7480A0;
+    text-align: center;
+    margin: 12px 0 0;
+}
+
+.hbm-fineprint a {
+    color: #0D1560;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.hbm-login-note {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: #0D1560;
+    background: #FFF7E8;
+    border: 1px solid #F5D9A8;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+}

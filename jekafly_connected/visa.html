@@ -1488,6 +1488,15 @@
                     nextByRegion[key] = best;
                 });
                 var cards = Array.prototype.slice.call(track.querySelectorAll('[data-region]'));
+                cards.forEach(function (el) {
+                    var t = nextByRegion[el.getAttribute('data-region')];
+                    var meta = el.querySelector('.ejkf-card-meta');
+                    if (!meta || t === undefined || !isFinite(t)) return;
+                    var pill = meta.querySelector('.ejkf-pill-next') || document.createElement('span');
+                    pill.className = 'ejkf-meta-pill ejkf-pill-next';
+                    pill.textContent = 'Next trip ' + new Date(t).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', timeZone: 'UTC' });
+                    meta.appendChild(pill);
+                });
                 cards.map(function (el, i) { return { el: el, i: i, t: nextByRegion[el.getAttribute('data-region')] }; })
                     .map(function (x) { if (x.t === undefined) x.t = Infinity; return x; })
                     .sort(function (a, b) { return a.t !== b.t ? (a.t < b.t ? -1 : 1) : a.i - b.i; })

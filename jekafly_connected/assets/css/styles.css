@@ -3797,3 +3797,49 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: #0D1560;
     white-space: nowrap;
 }
+
+.ejkf-pill-next {
+    background: rgba(74, 222, 128, 0.14);
+    border-color: rgba(74, 222, 128, 0.3);
+    color: #86EFAC;
+}
+
+/* ── Explore collections: grid on wider screens (no cut-off cards) ── */
+@media (min-width: 769px) {
+    .explore-jkf-track-wrap {
+        overflow: visible;
+    }
+
+    .explore-jkf-track {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        overflow: visible;
+        scroll-snap-type: none;
+        cursor: default;
+        padding: 0 5% 4px;
+    }
+
+    .explore-jkf-track:active {
+        cursor: default;
+    }
+
+    .ejkf-card,
+    .ejkf-card--featured {
+        flex: none;
+        width: auto;
+        height: 360px;
+        margin-top: 0;
+    }
+}
+
+@media (min-width: 1024px) {
+    .explore-jkf-track {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .ejkf-card,
+    .ejkf-card--featured {
+        height: 400px;
+    }
+}

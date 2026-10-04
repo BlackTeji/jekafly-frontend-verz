@@ -1,0 +1,420 @@
+/* ============================================================
+   HOLIDAYS BOOKING MODAL — dark & gold theme
+   ============================================================ */
+.hbm-overlay {
+    background: rgba(6, 8, 4, 0.78);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.hbm-overlay .hbm-modal {
+    background: var(--jkfh-bg-raised);
+    color: var(--jkfh-text);
+    border: 1px solid var(--jkfh-line);
+    border-top: 2px solid var(--jkfh-gold);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+}
+
+.hbm-modal .hbm-drag {
+    background: var(--jkfh-line);
+}
+
+.hbm-modal .hbm-close {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--jkfh-cream);
+}
+
+.hbm-modal .hbm-close:hover {
+    background: rgba(196, 131, 50, 0.16);
+    color: var(--jkfh-gold-light);
+}
+
+.hbm-modal .hbm-step-dot {
+    background: var(--jkfh-line);
+}
+
+.hbm-modal .hbm-step-dot.done {
+    background: rgba(232, 168, 74, 0.55);
+}
+
+.hbm-modal .hbm-step-dot.active {
+    background: var(--jkfh-gold-light);
+}
+
+.hbm-modal .hbm-step-label {
+    color: var(--jkfh-gold);
+}
+
+.hbm-modal .hbm-title {
+    color: var(--jkfh-cream);
+}
+
+.hbm-modal .hbm-sub,
+.hbm-modal .hbm-btn-back,
+.hbm-modal .hbm-label {
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-modal .hbm-btn-back:hover {
+    color: var(--jkfh-gold-light);
+}
+
+.hbm-modal .hbm-confirm-card,
+.hbm-modal .hbm-summary-rows,
+.hbm-modal .hbm-booking-for {
+    background: var(--jkfh-bg-raised-2);
+    border: 1px solid var(--jkfh-line);
+}
+
+.hbm-modal .hbm-confirm-img {
+    background-color: var(--jkfh-bg);
+}
+
+.hbm-modal .hbm-confirm-state {
+    color: var(--jkfh-gold);
+}
+
+.hbm-modal .hbm-confirm-name {
+    color: var(--jkfh-cream);
+}
+
+.hbm-modal .hbm-confirm-tag {
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-modal .hbm-pill {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--jkfh-line);
+    color: var(--jkfh-text);
+}
+
+.hbm-modal .hbm-pill--gold {
+    background: rgba(196, 131, 50, 0.16);
+    border-color: rgba(196, 131, 50, 0.32);
+    color: var(--jkfh-gold-light);
+}
+
+.hbm-modal .hbm-input {
+    background: var(--jkfh-bg);
+    border-color: var(--jkfh-line);
+    color: var(--jkfh-cream);
+    color-scheme: dark;
+}
+
+.hbm-modal .hbm-input::placeholder {
+    color: var(--jkfh-text-faint);
+}
+
+.hbm-modal .hbm-input:focus {
+    background: #10140C;
+    border-color: var(--jkfh-gold);
+    box-shadow: 0 0 0 3px rgba(196, 131, 50, 0.15);
+    outline: none;
+}
+
+.hbm-modal .hbm-date-slot,
+.hbm-modal .hbm-tier-card {
+    background: var(--jkfh-bg-raised-2);
+    border-color: var(--jkfh-line);
+}
+
+.hbm-modal .hbm-date-slot:hover,
+.hbm-modal .hbm-tier-card:hover {
+    border-color: rgba(196, 131, 50, 0.55);
+}
+
+.hbm-modal .hbm-date-slot.selected,
+.hbm-modal .hbm-tier-card.selected {
+    border-color: var(--jkfh-gold);
+    background: rgba(196, 131, 50, 0.12);
+}
+
+.hbm-modal .hbm-date-slot.full:hover {
+    border-color: var(--jkfh-line);
+}
+
+.hbm-modal .hbm-date-slot-date,
+.hbm-modal .hbm-tier-card-name {
+    color: var(--jkfh-cream);
+}
+
+.hbm-modal .hbm-date-slot-len,
+.hbm-modal .hbm-tier-card-price {
+    color: var(--jkfh-gold-light);
+}
+
+.hbm-modal .hbm-date-slot-avail,
+.hbm-modal .hbm-tier-card-desc {
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-modal .hbm-tier-card-icon--room {
+    background: rgba(196, 131, 50, 0.16);
+    color: var(--jkfh-gold-light);
+}
+
+.hbm-modal .hbm-club-card {
+    background: linear-gradient(135deg, #2B2010 0%, #1A1F14 100%);
+    border-color: rgba(196, 131, 50, 0.35);
+    color: var(--jkfh-cream);
+}
+
+.hbm-modal .hbm-club-card-icon {
+    background: rgba(196, 131, 50, 0.25);
+}
+
+.hbm-modal .hbm-club-card-sub {
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-modal .hbm-club-perk svg {
+    stroke: var(--jkfh-gold-light);
+}
+
+.hbm-modal .hbm-club-toggle {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.hbm-modal .hbm-club-toggle-price {
+    color: var(--jkfh-gold-light);
+}
+
+.hbm-modal .hbm-switch input:checked+.hbm-switch-slider {
+    background: var(--jkfh-gold);
+}
+
+.hbm-modal .hbm-already-member {
+    background: rgba(74, 222, 128, 0.08);
+    border-color: rgba(74, 222, 128, 0.25);
+    color: #86EFAC;
+}
+
+.hbm-modal .hbm-summary-row {
+    border-bottom-color: var(--jkfh-line-soft);
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-modal .hbm-summary-row span:last-child {
+    color: var(--jkfh-text);
+}
+
+.hbm-modal .hbm-summary-row.total,
+.hbm-modal .hbm-summary-row.total span:first-child {
+    color: var(--jkfh-cream);
+}
+
+.hbm-modal .hbm-summary-row.total span:last-child {
+    color: var(--jkfh-gold-light);
+}
+
+.hbm-modal .hbm-auth-tabs {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--jkfh-line-soft);
+}
+
+.hbm-modal .hbm-auth-tab {
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-modal .hbm-auth-tab.active {
+    background: var(--jkfh-bg-raised-2);
+    color: var(--jkfh-cream);
+    box-shadow: inset 0 0 0 1px rgba(196, 131, 50, 0.35);
+}
+
+.hbm-modal .hbm-booking-for-info {
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-modal .hbm-booking-for-info strong {
+    color: var(--jkfh-cream);
+}
+
+.hbm-modal .hbm-booking-for-label {
+    color: var(--jkfh-text-faint);
+}
+
+.hbm-modal .hbm-link-btn {
+    color: var(--jkfh-gold-light);
+}
+
+.hbm-modal .hbm-fineprint {
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-modal .hbm-fineprint a {
+    color: var(--jkfh-cream);
+}
+
+.hbm-modal .hbm-login-note {
+    background: rgba(196, 131, 50, 0.12);
+    border-color: rgba(196, 131, 50, 0.3);
+    color: var(--jkfh-cream);
+}
+
+.hbm-modal .hbm-inline-error,
+.hbm-modal .hbm-load-error {
+    color: #FF8A80;
+}
+
+.hbm-modal .hbm-btn {
+    background: var(--jkfh-gold);
+    color: #fff;
+    box-shadow: 0 8px 24px rgba(196, 131, 50, 0.28);
+}
+
+.hbm-modal .hbm-btn:hover {
+    background: #B5721F;
+}
+
+.hbm-modal .hbm-success-icon {
+    background: rgba(74, 222, 128, 0.1);
+}
+
+.hbm-row--traveller {
+    margin-bottom: 10px;
+}
+
+.hbm-form-group--flush {
+    margin-bottom: 0;
+}
+
+.hbm-optional {
+    font-weight: 400;
+    color: var(--jkfh-text-faint);
+}
+
+.hbm-subhead {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--jkfh-cream);
+    margin: 14px 0 8px;
+}
+
+.hbm-muted {
+    font-size: 0.82rem;
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-load-error {
+    font-size: 0.82rem;
+}
+
+.hbm-empty-dates {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-empty-dates-cta {
+    margin-top: 14px;
+}
+
+.hbm-summary-rows--left {
+    text-align: left;
+}
+
+/* ── Password fields: show/hide, strength, match ── */
+.hbm-pass-wrap {
+    position: relative;
+}
+
+.hbm-pass-wrap .hbm-input {
+    padding-right: 46px;
+}
+
+.hbm-pass-eye {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--jkfh-text-dim);
+    cursor: pointer;
+}
+
+.hbm-pass-eye:hover {
+    color: var(--jkfh-gold-light);
+    background: rgba(196, 131, 50, 0.1);
+}
+
+.hbm-pass-eye .hbm-eye-off,
+.hbm-pass-eye.is-visible .hbm-eye-on {
+    display: none;
+}
+
+.hbm-pass-eye.is-visible .hbm-eye-off {
+    display: block;
+}
+
+.hbm-strength {
+    margin-top: 8px;
+}
+
+.hbm-strength-bars {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin-bottom: 6px;
+}
+
+.hbm-strength-bars span {
+    height: 4px;
+    border-radius: 4px;
+    background: var(--jkfh-line);
+    transition: background .2s ease;
+}
+
+.hbm-strength-label {
+    font-size: 0.72rem;
+    color: var(--jkfh-text-dim);
+}
+
+.hbm-strength--weak .hbm-strength-bars span:nth-child(-n+1) {
+    background: #F87171;
+}
+
+.hbm-strength--fair .hbm-strength-bars span:nth-child(-n+2) {
+    background: #F59E0B;
+}
+
+.hbm-strength--good .hbm-strength-bars span:nth-child(-n+3) {
+    background: #E8A84A;
+}
+
+.hbm-strength--strong .hbm-strength-bars span {
+    background: #4ADE80;
+}
+
+.hbm-strength--weak .hbm-strength-label {
+    color: #FCA5A5;
+}
+
+.hbm-strength--strong .hbm-strength-label {
+    color: #86EFAC;
+}
+
+.hbm-match {
+    min-height: 16px;
+    margin-top: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+}
+
+.hbm-match--ok {
+    color: #86EFAC;
+}
+
+.hbm-match--bad {
+    color: #FCA5A5;
+}

@@ -981,3 +981,239 @@ body {
         border-radius: 18px;
     }
 }
+
+/* ── Holidays context (paying for a holiday booking) ── */
+.ctx-hol-only {
+    display: none !important;
+}
+
+.ctx-holidays .ctx-visa-only {
+    display: none !important;
+}
+
+.ctx-holidays .ctx-hol-only {
+    display: revert !important;
+}
+
+.ctx-holidays body {
+    background: #0C1008;
+    color: rgba(242, 233, 216, 0.92);
+}
+
+.ctx-holidays #main-nav {
+    background: rgba(12, 16, 8, 0.85);
+    border-bottom: 1px solid rgba(242, 233, 216, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.ctx-holidays #main-nav .nav-links a {
+    color: rgba(242, 233, 216, 0.56);
+}
+
+.ctx-holidays #main-nav .nav-links a:hover {
+    color: #E8A84A;
+}
+
+.ctx-holidays #main-nav .btn-outline,
+.ctx-holidays #main-nav .btn-outline-link {
+    background: transparent;
+    border-color: rgba(242, 233, 216, 0.12);
+    color: #F2E9D8;
+}
+
+.ctx-holidays #main-nav .btn-primary {
+    background: #C48332;
+    color: #fff;
+}
+
+.ctx-holidays .nav-user,
+.ctx-holidays .nav-user-hi {
+    color: rgba(242, 233, 216, 0.56);
+}
+
+.ctx-holidays .nav-user strong,
+.ctx-holidays .nav-user-hi strong {
+    color: #F2E9D8;
+}
+
+.ctx-holidays .nav-toggle,
+.ctx-holidays .nav-burger,
+.ctx-holidays .nav-toggle svg {
+    border-color: rgba(242, 233, 216, 0.1) !important;
+    color: #F2E9D8 !important;
+    background: transparent !important;
+}
+
+.ctx-holidays .nav-mobile-drawer {
+    background: rgba(12, 16, 8, 0.97);
+}
+
+.ctx-holidays .nav-mob-row-label {
+    color: #F2E9D8;
+}
+
+.ctx-holidays .pay-page {
+    background:
+        radial-gradient(1200px 500px at 10% -10%, rgba(196, 131, 50, 0.12), transparent 60%),
+        #0C1008;
+}
+
+.ctx-holidays .page-eyebrow {
+    color: #E8A84A;
+}
+
+.ctx-holidays .page-eyebrow::before {
+    background: #C48332;
+}
+
+.ctx-holidays .page-title {
+    color: #F2E9D8;
+}
+
+.ctx-holidays .page-sub {
+    color: rgba(242, 233, 216, 0.56);
+}
+
+.ctx-holidays .dest-card {
+    background: linear-gradient(145deg, #2B2010 0%, #1A1F14 70%, #14180F 100%);
+    border: 1px solid rgba(196, 131, 50, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.ctx-holidays .dest-card::before {
+    background: radial-gradient(circle, rgba(196, 131, 50, 0.22) 0%, transparent 70%);
+}
+
+.ctx-holidays .dest-flag-box {
+    background: rgba(196, 131, 50, 0.16);
+}
+
+.ctx-holidays .line-items,
+.ctx-holidays .pay-box,
+.ctx-holidays .receipt {
+    background: #14180F;
+    border-color: rgba(242, 233, 216, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.ctx-holidays .line-item,
+.ctx-holidays .receipt-row {
+    border-bottom-color: rgba(242, 233, 216, 0.06);
+}
+
+.ctx-holidays .line-item .li-label,
+.ctx-holidays .receipt-row .rl,
+.ctx-holidays .pay-box-sub,
+.ctx-holidays .pay-total-currency,
+.ctx-holidays .processing-sub,
+.ctx-holidays .pay-empty p {
+    color: rgba(242, 233, 216, 0.56);
+}
+
+.ctx-holidays .line-item .li-val,
+.ctx-holidays .receipt-row .rv {
+    color: rgba(242, 233, 216, 0.92);
+}
+
+.ctx-holidays .line-item .li-val.ref-val {
+    background: rgba(255, 255, 255, 0.06);
+    color: #E8A84A;
+}
+
+.ctx-holidays .line-item.total-line {
+    background: #1A1F14;
+    border-top-color: rgba(242, 233, 216, 0.1);
+}
+
+.ctx-holidays .line-item.total-line .li-label,
+.ctx-holidays .pay-box-title,
+.ctx-holidays .pay-total-amount,
+.ctx-holidays .processing-title {
+    color: #F2E9D8;
+}
+
+.ctx-holidays .line-item.total-line .li-val {
+    color: #E8A84A;
+}
+
+.ctx-holidays .included-strip {
+    background: rgba(74, 222, 128, 0.08);
+    border-color: rgba(74, 222, 128, 0.25);
+    color: #BBF7D0;
+    box-shadow: none;
+}
+
+.ctx-holidays .pay-divider {
+    background: rgba(242, 233, 216, 0.1);
+}
+
+.ctx-holidays .btn-pay,
+.ctx-holidays .btn-start {
+    background: #C48332;
+    box-shadow: 0 8px 26px rgba(196, 131, 50, 0.3);
+}
+
+.ctx-holidays .btn-pay:hover:not(:disabled) {
+    background: #B5721F;
+    box-shadow: 0 12px 34px rgba(196, 131, 50, 0.4);
+}
+
+.ctx-holidays .trust-badge {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(242, 233, 216, 0.1);
+    color: rgba(242, 233, 216, 0.56);
+}
+
+.ctx-holidays .spinner {
+    border-color: rgba(242, 233, 216, 0.1);
+    border-top-color: #C48332;
+}
+
+.ctx-holidays .success-overlay {
+    background: rgba(6, 8, 4, 0.8);
+}
+
+.ctx-holidays .success-modal {
+    background: #14180F;
+    border: 1px solid rgba(242, 233, 216, 0.1);
+    border-top: 2px solid #C48332;
+}
+
+.ctx-holidays .success-modal h2 {
+    color: #F2E9D8;
+}
+
+.ctx-holidays .success-modal p {
+    color: rgba(242, 233, 216, 0.56);
+}
+
+.ctx-holidays .success-icon-wrap {
+    background: rgba(74, 222, 128, 0.1);
+    box-shadow: none;
+}
+
+.ctx-holidays .btn-dashboard {
+    background: #C48332;
+}
+
+.ctx-holidays .btn-dashboard:hover {
+    background: #B5721F;
+    box-shadow: 0 4px 14px rgba(196, 131, 50, 0.3);
+}
+
+.ctx-holidays .btn-home {
+    border-color: rgba(242, 233, 216, 0.12);
+    color: rgba(242, 233, 216, 0.72);
+}
+
+.ctx-holidays .btn-home:hover {
+    border-color: #C48332;
+    color: #E8A84A;
+    background: rgba(196, 131, 50, 0.08);
+}
+
+.ctx-holidays .dest-flag-box svg {
+    stroke: #E8A84A;
+    color: #E8A84A;
+}
