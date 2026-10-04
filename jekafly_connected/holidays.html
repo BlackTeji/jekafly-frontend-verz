@@ -1094,7 +1094,52 @@
                     </label>
                 </div>
             </div>
+            ${!_bm.user ? `<div class="hbm-member-login" id="hbm-member-login">
+                <div class="hbm-member-login-row">
+                    <span>Already a Travel Club member?</span>
+                    <button type="button" class="hbm-link-btn" id="hbm-member-toggle" onclick="hbmToggleMemberLogin()">Log in</button>
+                </div>
+                <div class="hbm-member-login-form jkfh-is-hidden" id="hbm-member-form">
+                    <p class="hbm-member-login-note">Log in and we'll apply your membership to this booking. You won't be charged for it again.</p>
+                    <div class="hbm-form-group"><label class="hbm-label" for="hbm-club-email">Email</label><input class="hbm-input" id="hbm-club-email" type="email" autocomplete="email" value="${escH(_bm.leadEmail)}" /></div>
+                    <div class="hbm-form-group"><label class="hbm-label" for="hbm-club-pass">Password</label><div class="hbm-pass-wrap"><input class="hbm-input" id="hbm-club-pass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')hbmMemberLogin()" /><button type="button" class="hbm-pass-eye" onclick="hbmTogglePass('hbm-club-pass', this)" aria-label="Show password" tabindex="-1"><svg class="hbm-eye-on" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="hbm-eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg></button></div></div>
+                    <div id="hbm-club-err" class="hbm-inline-error"></div>
+                    <button type="button" class="hbm-btn hbm-btn--secondary" id="hbm-club-login-btn" onclick="hbmMemberLogin()">Log in &amp; check membership</button>
+                    <p class="hbm-fineprint"><a href="/login?return=%2Fholidays">Forgot your password?</a></p>
+                </div>
+            </div>` : ''}
             <button class="hbm-btn" onclick="goStep(5)">Continue <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>`;
+        }
+
+        function hbmToggleMemberLogin() {
+            var form = document.getElementById('hbm-member-form');
+            var open = form.classList.toggle('jkfh-is-hidden') === false;
+            document.getElementById('hbm-member-toggle').textContent = open ? 'Cancel' : 'Log in';
+            if (open) setTimeout(function () { document.getElementById('hbm-club-pass').focus(); }, 30);
+        }
+
+        async function hbmMemberLogin() {
+            var email = document.getElementById('hbm-club-email').value.trim();
+            var pass = document.getElementById('hbm-club-pass').value;
+            hbmShowErr('hbm-club-err', '');
+            if (!email || !pass) { hbmShowErr('hbm-club-err', 'Please enter your email and password.'); return; }
+            var btn = document.getElementById('hbm-club-login-btn');
+            btn.classList.add('btn-loading');
+            var res = await Auth.login(email, pass);
+            if (!res.ok) {
+                btn.classList.remove('btn-loading');
+                hbmShowErr('hbm-club-err', res.msg || 'Login failed. Please check your details.');
+                return;
+            }
+            _bm.user = Auth.getCurrent();
+            await refreshClubStatus();
+            if (_bm.clubActive) {
+                _bm.addClub = false;
+                if (typeof showToast === 'function') showToast('Welcome back — your Travel Club membership is applied to this booking.');
+            } else if (typeof showToast === 'function') {
+                showToast("You're logged in. We couldn't find an active Travel Club membership on this account.");
+            }
+            renderStep();
         }
 
         // ── STEP 5 — Order summary ────────────────────────────────────────────

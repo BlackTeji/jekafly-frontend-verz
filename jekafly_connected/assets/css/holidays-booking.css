@@ -418,3 +418,45 @@
 .hbm-match--bad {
     color: #FCA5A5;
 }
+
+/* ── Club step: member login ── */
+.hbm-member-login {
+    margin: 14px 0 16px;
+    padding: 12px 14px;
+    background: var(--jkfh-bg-raised-2);
+    border: 1px solid var(--jkfh-line);
+    border-radius: 14px;
+}
+
+.hbm-member-login-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 0.84rem;
+    color: var(--jkfh-text);
+}
+
+.hbm-member-login-form {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--jkfh-line-soft);
+}
+
+.hbm-member-login-note {
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--jkfh-text-dim);
+    margin: 0 0 12px;
+}
+
+.hbm-modal .hbm-btn.hbm-btn--secondary {
+    background: transparent;
+    border: 1.5px solid var(--jkfh-gold);
+    color: var(--jkfh-gold-light);
+    box-shadow: none;
+}
+
+.hbm-modal .hbm-btn.hbm-btn--secondary:hover {
+    background: rgba(196, 131, 50, 0.12);
+}
